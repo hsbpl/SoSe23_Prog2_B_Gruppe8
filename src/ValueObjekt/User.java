@@ -2,22 +2,22 @@ package ValueObjekt;
 
 public class User {
 
-    private String UserName;
+    private String userName;
     private String passwort;
     private String nachname;
     private String vorname;
-    private int Nummer;
+    private int nummer;
 
-    public User(String UserName, String passwort, String nachname, String vorname, int nummer) {
-        this.UserName = UserName;
+    public User(String userName, String passwort, String nachname, String vorname, int nummer) {
+        this.userName = userName;
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
-        this.Nummer = nummer;
+        this.nummer = nummer;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public String getNachname() {
@@ -25,7 +25,7 @@ public class User {
     }
 
     public int getNummer() {
-        return Nummer;
+        return nummer;
     }
 
     public String getVorname() {
