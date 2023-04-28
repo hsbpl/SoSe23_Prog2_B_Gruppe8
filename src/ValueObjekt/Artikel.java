@@ -5,15 +5,25 @@ public class Artikel {
     private int artikelNummer;
     private int bestand;
     private double preis;
-/*kommem
+    private boolean verfuegbar;
 
- */
 
-    public Artikel(String bezeichnung, int artikelNummer, int bestand, double preis) {
+    public Artikel(String bezeichnung, int artikelNummer, int bestand, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
         this.preis = preis;
+        this.verfuegbar = verfuegbar;
+    }
+
+    public boolean inStock(String name, int n ){
+        if(name == this.bezeichnung || n == this.artikelNummer){
+            while( this.bestand >= 1){
+                this.verfuegbar = true;
+            }
+
+        }
+
     }
 
     /*
