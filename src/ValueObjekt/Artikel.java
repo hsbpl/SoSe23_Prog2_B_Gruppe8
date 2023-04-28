@@ -5,7 +5,9 @@ public class Artikel {
     private int artikelNummer;
     private int bestand;
     private double preis;
+/*kommem
 
+ */
 
     public Artikel(String bezeichnung, int artikelNummer, int bestand, double preis) {
         this.bezeichnung = bezeichnung;
