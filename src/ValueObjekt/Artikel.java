@@ -65,4 +65,11 @@ public class Artikel {
     public void ArtikelbestandVerringern( int zahl){
         bestand = bestand - zahl;
     }
+
+    public void getArtikelnummer() {
+    }
+
+    public int getBestand() {
+        return bestand;
+    }
 }
