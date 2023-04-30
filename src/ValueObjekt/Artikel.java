@@ -16,15 +16,21 @@ public class Artikel {
         this.verfuegbar = verfuegbar;
     }
 
-    public boolean inStock(String name, int n ){
-        if(name == this.bezeichnung || n == this.artikelNummer){
-            while( this.bestand >= 1){
-                this.verfuegbar = true;
+    public boolean inStock(String name){
+        if(name == bezeichnung && bestand >= 1){
+                verfuegbar = true;
             }
-
+        return verfuegbar;
         }
 
+    public boolean inStock(int n){
+        if(n == artikelNummer && bestand >= 1){
+            verfuegbar = true;
+        }
+        return verfuegbar;
     }
+
+
 
     /*
     So wie ich es verstanden habe, sind setter dazu da den Wert eines Attributes zu ändern, meint ihr man
