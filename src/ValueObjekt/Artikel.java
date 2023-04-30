@@ -1,3 +1,5 @@
+
+
 package ValueObjekt;
 
 public class Artikel {
