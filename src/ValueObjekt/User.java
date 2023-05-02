@@ -30,8 +30,9 @@ public class User {
 
     public String getVorname() {
         return vorname;
-
-
+    }
+    public String getPasswort(){
+        return passwort;
     }
 
        /* public Mitarbeiter LoginAlsMitarbeiter (String UserName, String passwort) {
