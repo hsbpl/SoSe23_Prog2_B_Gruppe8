@@ -14,12 +14,21 @@ public class Artikelverwaltung {
     private ArrayList<Artikel> ArtikelListe = new ArrayList<>();
     private UnicodeSet artikelListe;
 
-    public Artikelverwaltung() {
+    public Artikelverwaltung(ArrayList<Artikel> ArtikelListe) {
         waren = new ArrayList<>();
+        this.ArtikelListe = ArtikelListe;
     }
 
     public void artikelAnlegen(Artikel artikel) {
         artikelListe.add((CharSequence) artikel);
+    }
+
+    public void setArtikelListe(ArrayList<Artikel> artikelListe) {
+        ArtikelListe = artikelListe;
+    }
+
+    public ArrayList<Artikel> getArtikelListe() {
+        return ArtikelListe;
     }
 
     public void artikelBearbeiten(Artikel artikel) {
