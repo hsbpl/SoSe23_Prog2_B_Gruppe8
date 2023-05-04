@@ -45,11 +45,12 @@ public class Kundenverwaltung {
     }
 * */
 
-    /* Es wird geprüft ob die zu entfernende Menge die Menge der Vorhandenen Artikel nicht
-     * übersteigt und die Artikel werden aus dem Warenkorb entfernt
+    /* Es wird geprüft ob der zu Vorhandenen Artikel im Warenkorb vorhanden ist.
+    Der Artikel wird aus dem Warenkorb entfernt
+     *
      * */
     public String rausnehmen(Artikel artikel, int menge) {
-        if (artikel.getBestand() > menge && meinWarenkorb.contains(artikel)) {
+        if (meinWarenkorb.contains(artikel)) {
             for (int i = 0; i < menge; i++) {
                 meinWarenkorb.remove(artikel);
             }
