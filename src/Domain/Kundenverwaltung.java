@@ -4,10 +4,7 @@ import ValueObjekt.Artikel;
 import ValueObjekt.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 public class Kundenverwaltung {
@@ -31,19 +28,16 @@ public class Kundenverwaltung {
         return kRegistrierung;
     }
 
-    /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie vorhanden sind
-     * Dammit das hier klappt muss in der Artikelverwaltung die Menge eingestellt werden
-     *
-     * Ich glaub ich habe einen Denkfehler bekomme das nicht Fehlerfrei (ArtikelListe ist rot
-     * Fehlermeldung schlägt vor Artikelliste Statisch zu setzen )...
-
-    public void reinlegen(Artikel artikel, int menge) {
+    /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
+    Warenbestandsliste vorhanden sind.
+     * */
+    public void reinlegen(List<Artikel> warenbestand, Artikel artikel, int menge) {
         for (int i = 0; i < menge; i++) {
-            if (Artikelverwaltung.ArtikelListe().contains(artikel))
+            if (warenbestand.contains(artikel))
                 meinWarenkorb.add(artikel);
         }
     }
-* */
+
 
     /* Es wird geprüft ob der zu Vorhandenen Artikel im Warenkorb vorhanden ist.
     Der Artikel wird aus dem Warenkorb entfernt
