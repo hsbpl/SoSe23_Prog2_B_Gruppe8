@@ -1,10 +1,16 @@
 package UI;
 
+import Domain.Kundenverwaltung;
 import Domain.Lagerverwaltung;
+import ValueObjekt.Artikel;
 import ValueObjekt.Mitarbeiter;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        //Scanner Klasse für Keyboard-Input
+        //Scanner scanner = new Scanner(System.in);
 
         Lagerverwaltung lagerverwaltung = new Lagerverwaltung();
 
@@ -25,4 +31,5 @@ public class Main {
         } else;
 
     }
+
 }

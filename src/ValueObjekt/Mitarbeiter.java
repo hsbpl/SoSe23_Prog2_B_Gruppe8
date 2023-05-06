@@ -1,7 +1,7 @@
 package ValueObjekt;
 
 public class Mitarbeiter extends User {
-
+//unterklasse private ?
     public int mitarbeiterNummer;
 
     public Mitarbeiter(String userName, String passwort, String nachname, String vorname, int nummer, int mitarbeiterNummer) {

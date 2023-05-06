@@ -32,7 +32,7 @@ public class Lagerverwaltung {
     }
     public Mitarbeiter mitarbeiterEinloggen(String benutzername, String passwort) {
         for (Mitarbeiter mitarbeiter : mitarbeiterListe) {
-            if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.userpasswort(passwort)) {
+            if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.benutzername(passwort)) {
                 return mitarbeiter;
             }
         }

@@ -1,12 +1,12 @@
 package ValueObjekt;
 
 public class User {
-
-    private String userName;
-    private String passwort;
-    private String nachname;
-    private String vorname;
-    private int nummer;
+//Oberklasse protected
+    protected String userName;
+    protected String passwort;
+    protected String nachname;
+    protected String vorname;
+    protected int nummer;
 
     public User(String userName, String passwort, String nachname, String vorname, int nummer) {
         this.userName = userName;
@@ -35,15 +35,6 @@ public class User {
         return passwort;
     }
 
-       /* public Mitarbeiter LoginAlsMitarbeiter (String UserName, String passwort) {
-
-
-            // Vérifier les informations d'identification et retourner l'objet Employe
-        }
-
-        public Kunde LoginAlsKunde (String UserName, String passwort) {
-            // Vérifier les informations d'identification et retourner l'objet Client
-        }*/
 }
 
 
