@@ -1,18 +1,22 @@
 package ValueObjekt;
 
+import java.util.Date;
+
 public class RechnungObjekt {
+    // Datum hinzugefügt
     private Kunde kunde;
-    private date Datum;
+    Date datum = new Date();
     private int anzahl;
     private double gesamtePreis;
 
-    public RechnungObjekt(Kunde kunde, date datum, int anzahl, double gesamtePreis) {
+    public RechnungObjekt(Kunde kunde, Date datum, int anzahl, double gesamtePreis) {
         this.kunde = kunde;
-        Datum = datum;
+        this.datum = datum;
         this.anzahl = anzahl;
         this.gesamtePreis = gesamtePreis;
     }
 
+    //in Domain umsetzen?
     public double getGesamtePreis() {
         return gesamtePreis;
     }
