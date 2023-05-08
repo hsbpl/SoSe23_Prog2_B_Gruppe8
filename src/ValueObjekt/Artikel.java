@@ -40,20 +40,29 @@ public class Artikel {
     Wenn Ja, müssten wir das in den anderen Klassen auch nochmal nachschauen.
 
      */
+
+    public int getBestand() {
+
+        return bestand;
+    }
+
     public void setBestand(int bestand) {
+
         this.bestand = bestand;
     }
     public String getBezeichnung() {
         return bezeichnung;
     }
+    public void setBezeichnung(String bezeichnung) {
+
+        this.bezeichnung = bezeichnung;
+    }
+
 
     public double getPreis() {
         return preis;
     }
 
-    public void setBezeichnung(String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
 
     public void setPreis(double preis) {
         this.preis = preis;
@@ -66,10 +75,8 @@ public class Artikel {
         bestand = bestand - zahl;
     }
 
-    public void getArtikelnummer() {
+    public int  getArtikelNummer() {
+        return artikelNummer;
     }
 
-    public int getBestand() {
-        return bestand;
-    }
 }
