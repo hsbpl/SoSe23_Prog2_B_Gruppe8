@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 
 public class Main {
+    //fast fertig
     public static void main(String[] args) {
         //Scanner Klasse für Keyboard-Input
         //Scanner scanner = new Scanner(System.in);
