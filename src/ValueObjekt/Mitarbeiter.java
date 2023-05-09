@@ -4,8 +4,8 @@ public class Mitarbeiter extends User {
 //unterklasse private ?
     public int mitarbeiterNummer;
 
-    public Mitarbeiter(String userName, String passwort, String nachname, String vorname, int nummer, int mitarbeiterNummer) {
-        super (userName,  passwort, nachname, vorname,  nummer);
+    public Mitarbeiter(String userName, String passwort, String nachname, String vorname, int mitarbeiterNummer) {
+        super (userName,  passwort, nachname, vorname;
         this.mitarbeiterNummer = mitarbeiterNummer;
     }
 

@@ -8,12 +8,11 @@ public class User {
     protected String vorname;
     protected int nummer;
 
-    public User(String userName, String passwort, String nachname, String vorname, int nummer) {
+    public User(String userName, String passwort, String nachname, String vorname) {
         this.userName = userName;
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
-        this.nummer = nummer;
     }
 
     public String getUserName() {
@@ -24,9 +23,7 @@ public class User {
         return nachname;
     }
 
-    public int getNummer() {
-        return nummer;
-    }
+
 
     public String getVorname() {
         return vorname;

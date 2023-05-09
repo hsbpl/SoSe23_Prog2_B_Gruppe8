@@ -4,8 +4,8 @@ public class Kunde extends User {
 
     private String kundeAdresse;
 
-    public Kunde( String UserName, String passwort, String nachname, String vorname, int nummer, String kundeAdresse) {
-         super (UserName, passwort, nachname, vorname, nummer);
+    public Kunde( String UserName, String passwort, String nachname, String vorname, String kundeAdresse) {
+         super (UserName, passwort, nachname, vorname);
          this.kundeAdresse = kundeAdresse;
     }
 

@@ -33,14 +33,6 @@ public class Artikel {
     }
 
 
-
-    /*
-    So wie ich es verstanden habe, sind setter dazu da den Wert eines Attributes zu ändern, meint ihr man
-    sollte dann nur Preis und Bestand setten ?
-    Wenn Ja, müssten wir das in den anderen Klassen auch nochmal nachschauen.
-
-     */
-
     public int getBestand() {
 
         return bestand;
