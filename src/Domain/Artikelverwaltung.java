@@ -28,6 +28,7 @@ public class Artikelverwaltung { // fertig
     public void artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
     }
+    public void ArtikelAnlegen(String bezeichnung, int bestand)
 
     public void artikelAusgeben() {
         for (Artikel artikel : artikelListe) {
@@ -53,6 +54,17 @@ public class Artikelverwaltung { // fertig
             if (a.getArtikelNummer() == artikel.getArtikelNummer()) {
                 a.setBezeichnung(artikel.getBezeichnung());
                 a.setBestand(artikel.getBestand());
+                break;
+            }
+        }
+    }
+
+    public void artikelLoeschen(int artikelnummer) {
+        Artikel artikelToRemove = null;
+
+        for (Artikel artikel : artikelListe) {
+            if (artikel.getArtikelNummer() == artikelnummer){
+                artikelToRemove = artikel;
                 break;
             }
         }
