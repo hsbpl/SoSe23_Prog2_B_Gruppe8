@@ -1,6 +1,7 @@
 package Domain;
 
 import ValueObjekt.Artikel;
+import ValueObjekt.Kunde;
 import ValueObjekt.User;
 
 import java.util.ArrayList;
@@ -78,6 +79,13 @@ public class Kundenverwaltung {
             }
             return "User nicht gefunden";
         }
+
+  /*   public void registriereKunde(String name, String nummer, String adresse, String benutzername, String passwort) {
+        Kunde neuerKunde = new Kunde(name, nummer, adresse, benutzername, passwort);
+        kundeListe.add(neuerKunde);
+        System.out.println("Der Kunde " + name + " wurde erfolgreich registriert.");
+
+    }*/
 
     }
 

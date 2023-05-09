@@ -1,6 +1,8 @@
 package UI;
 
+import Domain.Artikelverwaltung;
 import Domain.Lagerverwaltung;
+import Domain.Mitarbeiterverwaltung;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
@@ -21,20 +23,21 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Lagerverwaltung lagerverwaltung = new Lagerverwaltung();
+        Mitarbeiterverwaltung mitarbeiterverwaltung = new Mitarbeiterverwaltung();
+
 
         // Neue Artikel anlegen
         lagerverwaltung.neuenArtikelAnlegen("Artikel 1", 10);
         lagerverwaltung.neuenArtikelAnlegen("Artikel 2", 5);
 
         // Bestand erhöhen
-        lagerverwaltung.bestandErhoehen("Artikel 1", 20);
+       Artikelverwaltung.bestandErhoehen("Artikel 1", 20);
 
         // Neue Mitarbeiter registrieren
-        lagerverwaltung.neuenMitarbeiterRegistrieren("Benutzer1", "Passwort123");
+       Mitarbeiterverwaltung.neuenMitarbeiterRegistrieren("Benutzer1", "Passwort123");
 
         // usereinloggen
-        Mitarbeiter eingeloggterMitarbeiter = lagerverwaltung.mitarbeiterEinloggen("Benutzer1", "Passwort123");
+        Mitarbeiter eingeloggterMitarbeiter = mitarbeiterverwaltung.("Benutzer1", "Passwort123");
         if (eingeloggterMitarbeiter != null) {
             System.out.println("Erfolgreich eingeloggt: " + eingeloggterMitarbeiter.getUserName());
         } else;
