@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 
 
-public class Artikelverwaltung {
+public class Artikelverwaltung { // fertig
     private List<Artikel> artikelListe;
 
     public Artikelverwaltung() {
