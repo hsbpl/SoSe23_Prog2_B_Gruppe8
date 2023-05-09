@@ -1,16 +1,25 @@
 package UI;
 
-import Domain.Kundenverwaltung;
 import Domain.Lagerverwaltung;
 import ValueObjekt.Artikel;
+import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
+import ValueObjekt.Rechnung;
 
-import java.util.Scanner;
+import java.util.HashMap;
+
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 
 public class Main {
+    private Kunde kunde;
+    private Mitarbeiter mitarbeiter;
+    private double gesamtePreis;
+    private HashMap<Artikel, Integer> gekaufteArtikel;
+
+
+
+
     public static void main(String[] args) {
-        //Scanner Klasse für Keyboard-Input
-        //Scanner scanner = new Scanner(System.in);
 
         Lagerverwaltung lagerverwaltung = new Lagerverwaltung();
 
@@ -32,4 +41,16 @@ public class Main {
 
     }
 
+    // anzeigen() gibt die Rechnung auf dem Bildschirm aus.
+    public void anzeigen() {
+        System.out.println("Rechnung für " + kunde.getUserName());
+        System.out.println("Datum: " + date ());
+        System.out.println("Gekaufte Artikel:");
+        for (Artikel artikel : gekaufteArtikel.keySet()) {
+            int stueckzahl = gekaufteArtikel.get(artikel);
+            double preis = artikel.getPreis() * stueckzahl;
+            System.out.println(artikel.getArtikelNummer() + " (Stückzahl: " + stueckzahl + ", Preis: " + preis + ")");
+        }
+        System.out.println("Gesamtpreis: " + gesamtePreis());
+    }
 }
