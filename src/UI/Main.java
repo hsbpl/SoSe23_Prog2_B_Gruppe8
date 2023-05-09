@@ -7,6 +7,7 @@ import ValueObjekt.Mitarbeiter;
 
 import java.util.Scanner;
 
+
 public class Main {
     public static void main(String[] args) {
         //Scanner Klasse für Keyboard-Input
