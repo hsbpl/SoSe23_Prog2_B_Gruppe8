@@ -49,7 +49,7 @@ public class Artikelverwaltung {
     public void artikelSortierenNachBezeichnung() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
 
-        public void artikelSortierenNachArtikelnummer () {
+        //public void artikelSortierenNachArtikelnummer () {
             Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
         }
 //Die Methoden "sortieren nach Bezeichnung und sortieren nach Artikelnummer" sortieren die Artikel in der Datenbank je nach Bezeichnung und Artikelnummer.

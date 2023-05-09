@@ -12,6 +12,7 @@ public class Main {
         //Scanner Klasse für Keyboard-Input
         //Scanner scanner = new Scanner(System.in);
 
+
         Lagerverwaltung lagerverwaltung = new Lagerverwaltung();
 
         // Neue Artikel anlegen

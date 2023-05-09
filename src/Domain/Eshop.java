@@ -40,15 +40,27 @@ while(it.hasNext()){                        //wenn das geht
 
     /* NOCH NICHT FERTIG
 public String rechnungErzeugen(List<Artikel> warenkorb, Kunde kunde){
-    String kundenInfo ="Vielen Dank für Ihren Einkauf Lieber/Liebe " + kunde.getVorname() + " " + kunde.getNachname() + " " + ".";
+    String kundenInfo ="Vielen Dank für Ihren Einkauf Lieber/Liebe " + kunde.getVorname() + " " + kunde.getNachname() + ".";
     String einkauf = " ";
+    int anzahl = 0;
 
-
-    Stream<Artikel> art = warenkorb.stream().count(a -> a .getBezeichnung == a.getBezeichnung);
+    Stream<Artikel> art = warenkorb.stream().count(a -> a.getBezeichnung == a.getBezeichnung);
     art.forEach(a -> einkauf = a.getBezeichnung() + " " + StückzahlAusCount + " stk." + a.getPreis() + a.getPreis()*StückzahlAusCount);
 
 
     return kundenInfo + "\n" + einkauf + "\n";
 
-}*/
+}
+
+    public void kaufen(List <Artikel> meinEinkauf, Kunde kunde){
+        //rechnungErzeugen(meinEinkauf);
+        Iterator it = meinEinkauf.iterator();
+        while(it.hasNext()){
+            Artikelverwaltung.getArtikelListe.remove(it);
+        }
+        meinEinkauf.clear();
+
+    }
+
+     */
 }
