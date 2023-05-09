@@ -18,6 +18,7 @@ public class Artikel {
         this.verfuegbar = verfuegbar;
     }
 
+
     public boolean inStock(){
         if(this.bezeichnung == bezeichnung && bestand >= 1){
                 verfuegbar = true;
