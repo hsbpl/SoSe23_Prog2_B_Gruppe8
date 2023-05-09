@@ -35,15 +35,6 @@ public class User {
         return passwort;
     }
 
-       /* public Mitarbeiter LoginAlsMitarbeiter (String UserName, String passwort) {
-
-
-            // Vérifier les informations d'identification et retourner l'objet Employe
-        }
-
-        public Kunde LoginAlsKunde (String UserName, String passwort) {
-            // Vérifier les informations d'identification et retourner l'objet Client
-        }*/
 }
 
 

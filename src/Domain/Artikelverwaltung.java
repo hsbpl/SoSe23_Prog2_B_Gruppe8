@@ -1,39 +1,56 @@
 package Domain;
 
 import ValueObjekt.Artikel;
-import jdk.internal.icu.text.UnicodeSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 
 
 public class Artikelverwaltung {
-    private ArrayList<Artikel> ArtikelListe = new ArrayList<>();
-    private UnicodeSet artikelListe;
+    private List<Artikel> artikelListe;
 
-    public Artikelverwaltung(ArrayList<Artikel> ArtikelListe) {
-        waren = new ArrayList<>();
-        this.ArtikelListe = ArtikelListe;
+    public Artikelverwaltung() {
+        artikelListe = new ArrayList<>();
     }
 
-    public void artikelAnlegen(Artikel artikel) {
-        artikelListe.add((CharSequence) artikel);
+    public void artikelHinzufuegen(Artikel artikel) {
+        artikelListe.add(artikel);
     }
+
+    public void artikelSortierenNachBezeichnung() {
+        Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
+    }
+
+    public void artikelSortierenNachArtikelnummer() {
+        Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
+    }
+
+    public void artikelAusgeben() {
+        for (Artikel artikel : artikelListe) {
+            System.out.println("Bezeichnung: " + artikel.getBezeichnung());
+            System.out.println("ArtikelNummer: " + artikel.getArtikelNummer());
+            System.out.println("Bestand: " + artikel.getBestand());
+            System.out.println("---------------------");
+        }
+    }
+
 
     public void setArtikelListe(ArrayList<Artikel> artikelListe) {
-        ArtikelListe = artikelListe;
+        artikelListe = artikelListe;
     }
 
     public ArrayList<Artikel> getArtikelListe() {
-        return ArtikelListe;
+        return (ArrayList<Artikel>) artikelListe;
     }
 
+    //artikelBearbeiten könnte man theoretisch rausnehmen da es eig. nicht in der Aufgabenstellung genannt wurde.
     public void artikelBearbeiten(Artikel artikel) {
         for (Artikel a : artikelListe) {
-            if (a.getArtikelnummer() == artikel.getArtikelnummer()) {
+            if (a.getArtikelNummer() == artikel.getArtikelNummer()) {
                 a.setBezeichnung(artikel.getBezeichnung());
                 a.setBestand(artikel.getBestand());
                 break;
@@ -41,26 +58,17 @@ public class Artikelverwaltung {
         }
     }
 
-    public void ArtikelLoeschen(Artikel artikel) {
-        artikelListe.removeIf(a -> a.getArtikelnummer() == artikel);
-    }
 
-    //Die Methoden "artikelAnlegen","artikelBearbeiten" und "artikelLoeschen" ermöglichen uns das Hinzufügen, Bearbeiten und Löschen von Artikeln aus der Datenbank.
-    public void artikelSortierenNachBezeichnung() {
-        Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
+// Soll ich ArtikelLoeschen drin lassen? wäre an sich logisch eszu behalten für die main.
+    //die Methoden "artikelAnlegen","artikelBearbeiten" ermöglichen uns das Hinzufügen, Bearbeiten von Artikeln aus der Datenbank.
 
-        //public void artikelSortierenNachArtikelnummer () {
-            Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
-        }
+
+
 //Die Methoden "sortieren nach Bezeichnung und sortieren nach Artikelnummer" sortieren die Artikel in der Datenbank je nach Bezeichnung und Artikelnummer.
 
-        public void artikelAusgeben() {
-            for (Artikel artikel : artikelListe) {
-                System.out.println(artikel);
-            }
-        }
+
 //"artikel Ausgeben" gibt alle artikel in der Datenbank aus.
     }
-}
+
 
 
