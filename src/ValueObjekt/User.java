@@ -3,10 +3,10 @@ package ValueObjekt;
 public class User {
 //Oberklasse protected
     protected String userName;
-    protected String passwort;
+    protected String passwort; 
     protected String nachname;
     protected String vorname;
-    protected int nummer;
+
 
     public User(String userName, String passwort, String nachname, String vorname) {
         this.userName = userName;
