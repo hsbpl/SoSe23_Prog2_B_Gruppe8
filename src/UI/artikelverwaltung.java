@@ -20,6 +20,7 @@ public class artikelverwaltung {
 
 
     public void start() {
+        // ToDo: gehört nicht in ui diese klasse (sondern domain)
         artikelverwaltung = new Artikelverwaltung();
 //hier musste die Variable 'Artikelverwaltung artikelverwaltung;' noch initialisiert werden das musste ich hier im start hinzufügen.
 
