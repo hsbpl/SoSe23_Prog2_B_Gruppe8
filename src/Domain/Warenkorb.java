@@ -4,6 +4,7 @@ import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Warenkorb{
@@ -12,12 +13,22 @@ public class Warenkorb{
         private Kunde kunde;
         private Map<Artikel, Integer> artikelMap;
 
-        public Warenkorb(Kunde kunde) {
+        private List<Artikel> artikelListe;
+        private Warenkorb warenkorb;
+        public Warenkorb() {
             this.kunde = kunde;
             this.artikelMap = new HashMap<>();
         }
 
-        public Kunde getKunde() {
+    public Warenkorb getWarenkorb() {
+        return warenkorb;
+    }
+
+    public List<Artikel> getArtikelListe() {
+        return getArtikelListe();
+    }
+
+    public Kunde getKunde() {
             return kunde;
         }
 
