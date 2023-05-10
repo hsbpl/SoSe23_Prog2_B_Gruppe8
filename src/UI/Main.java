@@ -1,9 +1,6 @@
 package UI;
 
-import Domain.Artikelverwaltung;
-import Domain.Kundenverwaltung;
-import Domain.Lagerverwaltung;
-import Domain.Mitarbeiterverwaltung;
+import Domain.*;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
@@ -16,11 +13,23 @@ import java.util.Scanner;
 public class Main {
     //fast fertig
 
+    static EShop shop = new EShop();
+
     public static void main(String[] args) {
         //Scanner Klasse für Keyboard-Input
         //Scanner scanner = new Scanner(System.in);
 
 
+
+
+        shop.getAlleArtikel();
+
+       // shop.login(name, passwort);
+        //shop.erhoeheBestand(4, 50);
+       // shop.......
+
+        // ToDo: Initialisierung der lagerverwaltung, beispielartikel usw. gehört in Domain
+        // Todo: Eine Klasse Eshop
         Lagerverwaltung lagerverwaltung = new Lagerverwaltung();
 
         // Neue Artikel anlegen
