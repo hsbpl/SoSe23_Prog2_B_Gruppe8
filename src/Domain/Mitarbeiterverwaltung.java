@@ -20,8 +20,8 @@ public class Mitarbeiterverwaltung {
 
 
 
-    public void neuenMitarbeiterRegistrieren(String userName, String passwort, String nachname, String vorname, int nummer, int mitarbeiterNummer) {
-        Mitarbeiter neuerMitarbeiter = new Mitarbeiter(userName, passwort,nachname,vorname,nummer,mitarbeiterNummer);
+    public void neuenMitarbeiterRegistrieren(String userName, String passwort, String nachname, String vorname, int mitarbeiterNummer) {
+        Mitarbeiter neuerMitarbeiter = new Mitarbeiter(userName, passwort,nachname,vorname,mitarbeiterNummer);
         mitarbeiterListe.add(neuerMitarbeiter);
     }
 }

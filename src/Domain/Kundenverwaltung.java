@@ -16,11 +16,11 @@ public class Kundenverwaltung {
 
 
     public Kundenverwaltung(List<Artikel> meinWarenkorb) {
-        this.meinWarenkorb = meinWarenkorb;
+       this.meinWarenkorb = meinWarenkorb;
         this.kRegistrierung = kRegistrierung;
     }
 
-    public List<Artikel> getMeinWarenkorb() {
+  public List<Artikel> getMeinWarenkorb() {
         return meinWarenkorb;
     }
 
@@ -41,15 +41,12 @@ public class Kundenverwaltung {
 
     /* Es wird geprüft ob der zu Vorhandenen Artikel im Warenkorb vorhanden ist.
     Der Artikel wird aus dem Warenkorb entfernt
-     *
+
      * */
-    public String rausnehmen(Artikel artikel, int menge) {
-        if (meinWarenkorb.contains(artikel)) {
+    public void rausnehmen(Artikel artikel, int menge) {
             for (int i = 0; i < menge; i++) {
-                meinWarenkorb.remove(artikel);
+                meinWarenkorb.removeIf(art -> art == artikel);
             }
-        }
-        return "Sie haben " + artikel + " " + menge + "x" + "aus dem Warenkorb genommen";
     }
 
     /* Warenkorb wird geleert*/
@@ -78,6 +75,8 @@ public class Kundenverwaltung {
             }
             return "User nicht gefunden";
         }
+
+
 
     }
 
