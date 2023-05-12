@@ -28,7 +28,9 @@ public class Artikelverwaltung { // fertig
     public void artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
     }
-    public void ArtikelAnlegen(String bezeichnung, int bestand)
+    public void ArtikelAnlegen(String bezeichnung, int bestand){
+
+    }
 
     public void artikelAusgeben() {
         for (Artikel artikel : artikelListe) {
