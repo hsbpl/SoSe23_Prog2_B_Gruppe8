@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 
 public class Artikelverwaltung { // fertig
+    //Lagerwerwaltung zusammenführen
     private List<Artikel> artikelListe;
 
     public Artikelverwaltung() {

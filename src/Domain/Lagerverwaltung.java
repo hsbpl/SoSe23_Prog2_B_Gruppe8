@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Lagerverwaltung {
+
+    //mit Artikelverwaltung zusammenführen
+    //Login und Registrierung in Mitarbeiter
     private List<Artikel> artikelListe;
     private List<Mitarbeiter> mitarbeiterListe;
 
