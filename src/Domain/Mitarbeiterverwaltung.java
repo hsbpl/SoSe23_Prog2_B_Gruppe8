@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Mitarbeiterverwaltung {
+    //extension von User
+    //Konstruktor
+    //mit Artikelverwaltung arbeiten, um neue Artike anlegne zu können zum Beispiel
+    //Login
     private List<Mitarbeiter> listMitarbeiter = new ArrayList<>();
     private List<Mitarbeiter> mitarbeiterListe;
     private List<Artikel> artikelList ;
