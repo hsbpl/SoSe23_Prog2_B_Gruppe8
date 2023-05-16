@@ -12,7 +12,7 @@ public class Kundenverwaltung {
     private List<User> kRegistrierung = new ArrayList();
 
 
-    /* Artikel a = new Artikel("Cola", 19282, 19, 1.5, true);*/
+
 
 
     public Kundenverwaltung(List<Artikel> meinWarenkorb) {
