@@ -6,16 +6,18 @@ public class Artikel {
     private String bezeichnung;
     private int artikelNummer;
     private int bestand;
+    private int stueckzahl;
     private double preis;
     private boolean verfuegbar;
 
 
-    public Artikel(String bezeichnung, int artikelNummer, int bestand, double preis, boolean verfuegbar) {
+    public Artikel(String bezeichnung, int stueckzahl int artikelNummer, int bestand, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
         this.preis = preis;
         this.verfuegbar = verfuegbar;
+        this.stueckzahl= stückzahl;
     }
 
     public Artikel(String bezeichnung, int artikelnummer) {
@@ -52,7 +54,9 @@ public class Artikel {
 
         this.bezeichnung = bezeichnung;
     }
-
+    public int getStueckzahl(){
+        return stueckzahl;
+    }
 
     public double getPreis() {
         return preis;

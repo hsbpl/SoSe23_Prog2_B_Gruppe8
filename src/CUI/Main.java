@@ -2,14 +2,40 @@
         package CUI;
 import Domain.*;
 import ValueObjekt.Artikel;
+import ValueObjekt.RechnungObjekt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
         public class Main {
-    //fast fertig
-    public Main() {
+            //fast fertig
+                public static void main(String[]args){
+                    //gekaufte Artikel erstellen
+                    Artikel artikel1 = new Artikel("Artikel 1", 2, 10.0);
+                    Artikel artikel2 = new Artikel("Artikel 2", 3, 15.0);
+
+                    // eine Liste für gekaufte Artikel Erstellen
+                    List<Artikel> gekaufteArtikel = new ArrayList<>();
+                    gekaufteArtikel.add(artikel1);
+                    gekaufteArtikel.add(artikel2);
+
+                // Erzeugen des Rechnungsobjekts
+                RechnungObjekt rechnung = new RechnungObjekt("Roha Ahmad", new Date(), gekaufteArtikel);
+
+                //Rechnungsinformationen ausgeben
+                System.out.println("Kunde: " + rechnung.getKunde());
+                System.out.println("Datum: " + rechnung.getDatum());
+                System.out.println("Gekaufte Artikel: ");
+                for (Artikel artikel : rechnung.getGekaufteArtikel()) {
+                    System.out.println("-" + artikel.getBezeichnung() + "(Stückzahl: " + artikel.getStueckzahl() + ",Preis:" + artikel.getPreis() + ")";
+                }
+                System.out.println("Gesamtpreis: " + rechnung.getGesamtpreis());
+            }
+
+
         this.warenkorb = new Warenkorb();
     }
     private void menue() {
