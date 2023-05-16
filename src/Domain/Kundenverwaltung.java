@@ -1,9 +1,11 @@
 package Domain;
 
 import ValueObjekt.Artikel;
+import ValueObjekt.Kunde;
 import ValueObjekt.User;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -12,15 +14,7 @@ public class Kundenverwaltung {
     private List<User> kRegistrierung = new ArrayList();
 
 
-    /* Artikel a = new Artikel("Cola", 19282, 19, 1.5, true);*/
-
-
-    public Kundenverwaltung(List<Artikel> meinWarenkorb) {
-       this.meinWarenkorb = meinWarenkorb;
-        this.kRegistrierung = kRegistrierung;
-    }
-
-  public List<Artikel> getMeinWarenkorb() {
+    public List<Artikel> getMeinWarenkorb() {
         return meinWarenkorb;
     }
 
@@ -41,12 +35,12 @@ public class Kundenverwaltung {
 
     /* Es wird geprüft ob der zu Vorhandenen Artikel im Warenkorb vorhanden ist.
     Der Artikel wird aus dem Warenkorb entfernt
-
+     
      * */
     public void rausnehmen(Artikel artikel, int menge) {
-            for (int i = 0; i < menge; i++) {
-                meinWarenkorb.removeIf(art -> art == artikel);
-            }
+        for (int i = 0; i < menge; i++) {
+            meinWarenkorb.removeIf(art -> art == artikel);
+        }
     }
 
     /* Warenkorb wird geleert*/
@@ -54,6 +48,13 @@ public class Kundenverwaltung {
         meinWarenkorb.clear();
     }
 
+//Artikel vom Warenkorb aus Bestand nehmen
+    public void bestandAktualisieren(List <Artikel> bestandsliste){
+        for(Artikel n : meinWarenkorb){
+            bestandsliste.remove(n);
+           // n.setBestand(n.getBestand()-1);
+        }
+    }
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public String register(User neu) {
         String ausgabe = "";
@@ -66,17 +67,28 @@ public class Kundenverwaltung {
         return ausgabe;
     }
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
-        public String login(String username, String password){
+    public String login(String username, String password){
 
-            for (User u : kRegistrierung) {
-                if (u.getUserName().equals(username) && u.getPasswort().equals(password)) {
-                    return "User " + username + "ist angemeldet";
-                }
+        for (User u : kRegistrierung) {
+            if (u.getUserName().equals(username) && u.getPasswort().equals(password)) {
+                return "User " + username + "ist angemeldet";
             }
-            return "User nicht gefunden";
         }
+        return "User nicht gefunden";
+    }
+
+    public String einkaufsliste(){
+        String s = "";
+        float gesamtsumme = 0;
+        for(Artikel a : meinWarenkorb){
+            s += a.getBezeichnung() + " " + a.getPreis() + "\n";
+            gesamtsumme+= a.getPreis();
+        }
+        return s + "\n" + gesamtsumme;
+    }
 
 
+       
 
     }
 

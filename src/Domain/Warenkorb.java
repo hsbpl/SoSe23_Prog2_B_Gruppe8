@@ -2,7 +2,10 @@ package Domain;
 
 import ValueObjekt.Artikel;
 
-public class Warenkorb{
+import java.util.ArrayList;
+import java.util.List;
 
-  
+public class Warenkorb {
+
+
 }
