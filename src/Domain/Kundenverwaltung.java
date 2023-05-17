@@ -22,6 +22,9 @@ public class Kundenverwaltung {
         return kRegistrierung;
     }
 
+    Kunde k1 = new Kunde("k1", "123", "Mann", "Thomas", "Am Berg");
+
+
     /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
     Warenbestandsliste vorhanden sind.
      * */
