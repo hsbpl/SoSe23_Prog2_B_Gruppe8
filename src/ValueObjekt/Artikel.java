@@ -11,13 +11,13 @@ public class Artikel {
     private boolean verfuegbar;
 
 
-    public Artikel(String bezeichnung, int stueckzahl int artikelNummer, int bestand, double preis, boolean verfuegbar) {
+    public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, int bestand, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
         this.preis = preis;
         this.verfuegbar = verfuegbar;
-        this.stueckzahl= stückzahl;
+        this.stueckzahl= stueckzahl;
     }
 
     public Artikel(String bezeichnung, int artikelnummer) {
