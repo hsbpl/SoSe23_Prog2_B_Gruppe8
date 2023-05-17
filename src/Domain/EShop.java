@@ -1,11 +1,10 @@
 package Domain;
 
-import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
-import ValueObjekt.Mitarbeiter;
-import ValueObjekt.User;
+import ValueObjekt.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class EShop {
 
@@ -37,7 +36,7 @@ public class EShop {
 
     //Initialisierung
     Artikelverwaltung av = new Artikelverwaltung();
-    Kundenverwaltung kv = new Kundenverwaltung(meinWarenkorb());
+    Kundenverwaltung kv = new Kundenverwaltung();
     Mitarbeiterverwaltung mv = new Mitarbeiterverwaltung();
 
 
@@ -51,29 +50,50 @@ public class EShop {
         return kv.getMeinWarenkorb();
     }
 
+    //Zugriff auf bereits registrierte Kunden
     public List<User> getAlleKundenkonten(){
        return kv.getKRegistrierung();
     }
-//sobald artikelliste aus Artikelverwaltung da ist muss warenL mit austauschen
-    public String reinWarenkorb(Artikel a, int anzahl){
-        kv.reinlegen(warenList,a, anzahl);
-        return kv.toString();
+
+    //Artikel im den Warenkorb legen
+    //sobald artikelliste aus Artikelverwaltung da ist muss warenL mit austauschen
+    public String reinWarenkorb(List<Artikel> warenbestand, Artikel artikel, int menge){
+        kv.reinlegen(warenbestand,artikel, menge);
+       return kv.toString();
     }
 
-    public void rausWarenkorb(Artikel a, int anzahl){
-        kv.rausnehmen(a, anzahl);
+    //Artikel aus dem Warenkorb nehmen
+    public void rausWarenkorb(Artikel ausWarenkorb, int menge){
+        kv.rausnehmen(ausWarenkorb, menge);
     }
 
     public void warenkorbLeeren(){
         kv.leeren();
     }
 
-    public String einloggen(User u){
-        return kv.login(u.getUserName(), u.getPasswort());
+    public String kundenlogin(String username, String password){
+        return kv.login(username,password);
     }
 
-    public String registrieren(User u){
-        return kv.register(u);
+    public String kundenregister(User neu){
+        return kv.register(neu);
     }
+
+    // bestandsliste aus Artikelverwaltung rein sobald sie da ist
+    public String kaufen(List <Artikel> bestandsliste, Kunde kunde){
+       String rechnung ="";
+        kv.bestandAktualisieren(bestandsliste);
+        warenkorbLeeren();
+        //Rechnung erstellen noch reintun
+        return rechnung;
+    }
+
+    public String einkauslist(){
+        return kv.einkaufsliste();
+    }
+
+
+
+
 
 }

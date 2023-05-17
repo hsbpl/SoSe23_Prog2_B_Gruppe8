@@ -1,47 +1,43 @@
-package CUI;
 
+        package CUI;
 import Domain.*;
 import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
-import ValueObjekt.Mitarbeiter;
+import ValueObjekt.RechnungObjekt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Main {
-    private Artikelverwaltung artikelverwaltung;
-    private Kundenverwaltung kundenVerwaltung;
-    private Mitarbeiterverwaltung mitarbeiterVerwaltung;
+        public class Main {
+            //fast fertig
+                public static void main(String[]args){
+                    //gekaufte Artikel erstellen
+                    Artikel artikel1 = new Artikel("Artikel 1", 2, 10.0);
+                    Artikel artikel2 = new Artikel("Artikel 2", 3, 15.0);
 
-    private Warenkorb warenkorb;
-    public Main() {
-        this.eshop = new EShop();
+                    // eine Liste für gekaufte Artikel Erstellen
+                    List<Artikel> gekaufteArtikel = new ArrayList<>();
+                    gekaufteArtikel.add(artikel1);
+                    gekaufteArtikel.add(artikel2);
+
+                // Erzeugen des Rechnungsobjekts
+                RechnungObjekt rechnung = new RechnungObjekt("Roha Ahmad", new Date(), gekaufteArtikel);
+
+                //Rechnungsinformationen ausgeben
+                System.out.println("Kunde: " + rechnung.getKunde());
+                System.out.println("Datum: " + rechnung.getDatum());
+                System.out.println("Gekaufte Artikel: ");
+                for (Artikel artikel : rechnung.getGekaufteArtikel()) {
+                    System.out.println("-" + artikel.getBezeichnung() + "(Stückzahl: " + artikel.getStueckzahl() + ",Preis:" + artikel.getPreis() + ")";
+                }
+                System.out.println("Gesamtpreis: " + rechnung.getGesamtpreis());
+            }
+
+
+        this.warenkorb = new Warenkorb();
     }
-    public class EShop {
-
-
-        public main() {
-            this.artikelverwaltung = new Artikelverwaltung();
-            this.kundenverwaltung = new Kundenverwaltung();
-            this.mitarbeiterverwaltung = new Mitarbeiterverwaltung();
-            this.warenkorb = new Warenkorb();
-
-        }
-
-        public void init() {
-            // Beispielartikel hinzufügen
-            artikelVerwaltung.artikelHinzufuegen(new Artikel("Apfel", "frisches Obst", 1.0, 10));
-
-            // Beispielkunde hinzufügen
-            kundenVerwaltung.kundeHinzufuegen(new Kunde("Max Mustermann", "12345", "Musterstraße 1"));
-
-            // Beispielmitarbeiter hinzufügen
-            mitarbeiterVerwaltung.mitarbeiterHinzufuegen(new Mitarbeiter("Anna Müller", "98765", "Musterweg 2", "Verkauf"));
-        }
-
-    }
-
     private void menue() {
         System.out.println("\nBefehle:");
         System.out.println("Artikel ausgeben: 'a'");
@@ -73,4 +69,56 @@ public class Main {
                 } catch (NumberFormatException e) {
                     System.out.println("Ungültige Eingabe!");
                 }
+                break;
+            case "c":
+                System.out.print("Artikelname: ");
+                String name = "";
+                try {
+                    name = liesEingabe();
+                } catch (IOException e1) {
+                    System.out.println("Fehler beim Einlesen des Namens!");
+                    break;
+                }
+                System.out.print("Artikelnummer: ");
+                int artikelnummer = 0;
+                try {
+                    artikelnummer = Integer.parseInt(liesEingabe());
+                } catch (NumberFormatException e) {
+                    System.out.println("Ungültige Eingabe!");
+                    break;
+                }
+                System.out.print("Preis: ");
+                double preis = 0;
+                try {
+                    preis = Double.parseDouble(liesEingabe());
+                } catch (NumberFormatException e) {
+                    System.out.println("Ungültige Eingabe!");
+                    break;
+                }
+                Artikel artikel = new Artikel(, artikelnummer, preis);
+                this.warenkorb.addArtikel(artikel);
+                System.out.println("Artikel hinzugefügt.");
+                break;
+            case "d":
+                System.out.print("Suchbegriff: ");
+                String suchbegriff = "";
+                try {
+                    suchbegriff = liesEingabe();
+                } catch (IOException e1) {
+                    System.out.println("Fehler beim Einlesen des Suchbegriffs!");
+                    break;
+                }
+                System.out.println(this.warenkorb.getWarenkorb());
+                break;
+            case "e":
+                System.out.println(this.warenkorb.getWarenkorb());
+                break;
+            case "f":
+                this.warenkorb.leereWarenkorb();
+                System.out.println("Warenkorb geleert.");
+                break;
+            case "x":
+        }
+    }
 }
+
