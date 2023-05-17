@@ -37,6 +37,7 @@ public class EShop {
     //Initialisierung
     Artikelverwaltung av = new Artikelverwaltung();
     Kundenverwaltung kv = new Kundenverwaltung();
+
     Mitarbeiterverwaltung mv = new Mitarbeiterverwaltung();
 
 

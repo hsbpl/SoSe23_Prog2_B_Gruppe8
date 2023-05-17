@@ -15,6 +15,10 @@ public class User {
         this.vorname = vorname;
     }
 
+    public User() {
+
+    }
+
     public String getUserName() {
         return userName;
     }
