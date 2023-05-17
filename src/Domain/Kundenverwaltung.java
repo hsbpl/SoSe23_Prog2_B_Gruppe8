@@ -13,6 +13,10 @@ public class Kundenverwaltung {
     private List<Artikel> meinWarenkorb = new ArrayList();
     private List<User> kRegistrierung = new ArrayList();
 
+public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> kRegistrierung){
+    this.meinWarenkorb= meinWarenkorb;
+    this.kRegistrierung=kRegistrierung;
+}
 
     public List<Artikel> getMeinWarenkorb() {
         return meinWarenkorb;
