@@ -1,17 +1,47 @@
+package CUI;
 
-        package CUI;
 import Domain.*;
 import ValueObjekt.Artikel;
+import ValueObjekt.Kunde;
+import ValueObjekt.Mitarbeiter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-        public class Main {
-    //fast fertig
+public class Main {
+    private Artikelverwaltung artikelverwaltung;
+    private Kundenverwaltung kundenVerwaltung;
+    private Mitarbeiterverwaltung mitarbeiterVerwaltung;
+
+    private Warenkorb warenkorb;
     public Main() {
-        this.warenkorb = new Warenkorb();
+        this.eshop = new EShop();
     }
+    public class EShop {
+
+
+        public main() {
+            this.artikelverwaltung = new Artikelverwaltung();
+            this.kundenverwaltung = new Kundenverwaltung();
+            this.mitarbeiterverwaltung = new Mitarbeiterverwaltung();
+            this.warenkorb = new Warenkorb();
+
+        }
+
+        public void init() {
+            // Beispielartikel hinzufügen
+            artikelVerwaltung.artikelHinzufuegen(new Artikel("Apfel", "frisches Obst", 1.0, 10));
+
+            // Beispielkunde hinzufügen
+            kundenVerwaltung.kundeHinzufuegen(new Kunde("Max Mustermann", "12345", "Musterstraße 1"));
+
+            // Beispielmitarbeiter hinzufügen
+            mitarbeiterVerwaltung.mitarbeiterHinzufuegen(new Mitarbeiter("Anna Müller", "98765", "Musterweg 2", "Verkauf"));
+        }
+
+    }
+
     private void menue() {
         System.out.println("\nBefehle:");
         System.out.println("Artikel ausgeben: 'a'");
@@ -43,56 +73,4 @@ import java.io.InputStreamReader;
                 } catch (NumberFormatException e) {
                     System.out.println("Ungültige Eingabe!");
                 }
-                break;
-            case "c":
-                System.out.print("Artikelname: ");
-                String name = "";
-                try {
-                    name = liesEingabe();
-                } catch (IOException e1) {
-                    System.out.println("Fehler beim Einlesen des Namens!");
-                    break;
-                }
-                System.out.print("Artikelnummer: ");
-                int artikelnummer = 0;
-                try {
-                    artikelnummer = Integer.parseInt(liesEingabe());
-                } catch (NumberFormatException e) {
-                    System.out.println("Ungültige Eingabe!");
-                    break;
-                }
-                System.out.print("Preis: ");
-                double preis = 0;
-                try {
-                    preis = Double.parseDouble(liesEingabe());
-                } catch (NumberFormatException e) {
-                    System.out.println("Ungültige Eingabe!");
-                    break;
-                }
-                Artikel artikel = new Artikel(, artikelnummer, preis);
-                this.warenkorb.addArtikel(artikel);
-                System.out.println("Artikel hinzugefügt.");
-                break;
-            case "d":
-                System.out.print("Suchbegriff: ");
-                String suchbegriff = "";
-                try {
-                    suchbegriff = liesEingabe();
-                } catch (IOException e1) {
-                    System.out.println("Fehler beim Einlesen des Suchbegriffs!");
-                    break;
-                }
-                System.out.println(this.warenkorb.getWarenkorb());
-                break;
-            case "e":
-                System.out.println(this.warenkorb.getWarenkorb());
-                break;
-            case "f":
-                this.warenkorb.leereWarenkorb();
-                System.out.println("Warenkorb geleert.");
-                break;
-            case "x":
-        }
-    }
 }
-

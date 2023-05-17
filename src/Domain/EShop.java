@@ -16,6 +16,7 @@ public class EShop {
 
 
 
+
     //vorläufig zum testen
 
         //Beispielartikel

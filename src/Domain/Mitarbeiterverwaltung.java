@@ -28,4 +28,24 @@ public class Mitarbeiterverwaltung {
         Mitarbeiter neuerMitarbeiter = new Mitarbeiter(userName, passwort,nachname,vorname,mitarbeiterNummer);
         mitarbeiterListe.add(neuerMitarbeiter);
     }
+    public void bestandErhoehen(String artikelBezeichnung, int Anzahl) {
+        for (Artikel artikel : artikelListe) {
+            if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
+                artikel.ArtikelbestandErhoehen(Anzahl);
+                break;
+            }
+        }
+    }
+    public void neuenMitarbeiterRegistrieren(String userName, String passwort) {
+        Mitarbeiter neuerMitarbeiter = new Mitarbeiter(userName, passwort);
+        mitarbeiterListe.add(neuerMitarbeiter);
+    }
+    public Mitarbeiter mitarbeiterEinloggen(String benutzername, String passwort) {
+        for (Mitarbeiter mitarbeiter : mitarbeiterListe) {
+            if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.getUserName(passwort)) {
+                return mitarbeiter;
+            }
+        }
+        return null; // Mitarbeiter nicht gefunden oder falsches Passwort
+    }
 }
