@@ -54,6 +54,12 @@ public class Artikelverwaltung { // fertig
             public void setArtikelListe (ArrayList < Artikel > artikelListe) {
                 artikelListe = artikelListe;
             }
+            Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2, true);
+            Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99, true);
+            Artikel chips = new Artikel("Chips", 39003, 100, 1.79, true);
+            Artikel wasser = new Artikel("Wasser)", 3890, 400, 0.49, true);
+            Artikel mehl = new Artikel("Mehl", 29290, 0, 0.39, false);
+
 
             public ArrayList<Artikel> getArtikelListe () {
                 return (ArrayList<Artikel>) artikelListe;
