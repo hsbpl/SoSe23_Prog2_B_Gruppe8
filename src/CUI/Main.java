@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
         public class Main {
             //fast fertig
                 public static void main(String[]args){
@@ -36,10 +38,19 @@ import java.util.List;
             }
 
 
-        this.warenkorb = new Warenkorb();
+
+            private EShop eShop; // die Bib-Verwaltung erledigt alle Aufgaben, die nichts mit Ein-/Ausgabe zu tun haben
+            private BufferedReader in;
+
+            public BibClientCUI(String datei) throws IOException {
+                EShop = new eshop (datei);
+                in = new BufferedReader(new InputStreamReader(System.in));
+            }
+
+        this.EShop = new eshop();
     }
     private void menue() {
-        System.out.println("\nBefehle:");
+        System.out.println("\n Befehle:");
         System.out.println("Artikel ausgeben: 'a'");
         System.out.println("Artikel löschen: 'b'");
         System.out.println("Artikel einfügen: 'c'");
@@ -58,13 +69,14 @@ import java.util.List;
     private void verarbeiteEingabe(String input) {
         switch (input) {
             case "a":
-                System.out.println(this.warenkorb.getArtikelListe());
+                System.out.println(this.EShop.getArtikelListe());
                 break;
+
             case "b":
                 System.out.print("Artikelnummer: ");
                 try {
                     int artikelnummer = Integer.parseInt(liesEingabe());
-                    this.warenkorb.removeArtikel(artikelnummer);
+                    this.EShop.removeArtikel(artikelnummer);
                     System.out.println("Artikel gelöscht.");
                 } catch (NumberFormatException e) {
                     System.out.println("Ungültige Eingabe!");
@@ -96,7 +108,7 @@ import java.util.List;
                     break;
                 }
                 Artikel artikel = new Artikel(, artikelnummer, preis);
-                this.warenkorb.addArtikel(artikel);
+                this.EShop.addArtikel(artikel);
                 System.out.println("Artikel hinzugefügt.");
                 break;
             case "d":
@@ -108,13 +120,13 @@ import java.util.List;
                     System.out.println("Fehler beim Einlesen des Suchbegriffs!");
                     break;
                 }
-                System.out.println(this.warenkorb.getWarenkorb());
+                System.out.println(this.EShop.getWarenkorb());
                 break;
             case "e":
-                System.out.println(this.warenkorb.getWarenkorb());
+                System.out.println(this.EShop.getWarenkorb());
                 break;
             case "f":
-                this.warenkorb.leereWarenkorb();
+                this.EShop.leereWarenkorb();
                 System.out.println("Warenkorb geleert.");
                 break;
             case "x":
