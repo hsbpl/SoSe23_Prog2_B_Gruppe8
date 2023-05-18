@@ -136,9 +136,13 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
 
 }*/
 
+=======
+}
+>>>>>>> origin/main
