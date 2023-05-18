@@ -2,18 +2,76 @@ package Domain;
 
 import ValueObjekt.*;
 
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Stream;
-
 public class EShop {
+
+        private Artikelverwaltung av;
+        private Kundenverwaltung kv;
+        private Mitarbeiterverwaltung mv;
+
+        public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv) {
+            this.av = av;
+            this.kv = kv;
+            this.mv = mv;
+        }
+
+        public void initializierung() {
+            // Erstellung einiger Artikel
+            Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2, true);
+            Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99, true);
+            Artikel chips = new Artikel("Chips", 39003, 100, 1.79, true);
+            Artikel wasser = new Artikel("Wasser)", 3890, 400, 0.49, true);
+            Artikel mehl = new Artikel("Mehl", 29290, 0, 0.39, false);
+
+            // Hinzufügen von Artikeln zur Artikelverwaltung
+            av.artikelHinzufuegen(cola);
+            av.artikelHinzufuegen(kuchen);
+            av.artikelHinzufuegen(chips);
+            av.artikelHinzufuegen(wasser);
+            av.artikelHinzufuegen(mehl);
+
+            // Einige Kunden anlegen
+            Kunde kevine = new Kunde("kunde1", "123", "Doe", "John", "langemarstr156");
+            Kunde Sandjana = new Kunde("kunde2", "456", "Doe", "Jane", "peterstre123");
+            Kunde Roha= new Kunde("kunde3", "789", "Smith", "Bob", "mainstr23");
+
+            // Hinzufügen von Kunden zur Kundenverwaltung
+            kv.register(kevine);
+            kv.register(Sandjana);
+            kv.register(Roha);
+
+            // Erstellen einiger Mitarbeiter
+            Mitarbeiter Lars = new Mitarbeiter("mit1", "345", "Mitarbeiterin", "Dieerste", 1829);
+            Mitarbeiter Phillip = new Mitarbeiter("mit2", "678", "Mitarbeiter", "Dazweite", 1975);
+
+            // Hinzufügen von Mitarbeitern zur Mitarbeiterverwaltung
+            mv.neuenMitarbeiterRegistrieren(Lars);
+            mv.neuenMitarbeiterRegistrieren(Phillip);
+        }
+
+        //Methode, um die Verwaltung von Artikeln zu erhalten
+        public Artikelverwaltung getArtikelverwaltung() {
+            return av;
+        }
+
+        // Methode, um die Verwaltung von Kunden zu erhalten
+        public Kundenverwaltung getKundenverwaltung() {
+            return kv;
+        }
+
+        // Methode, um die Verwaltung von Mitarbeitern zu erhalten
+        public Mitarbeiterverwaltung getMitarbeiterverwaltung() {
+            return mv;
+        }
+
+
+}
 
 
         // ToDO: ArtikelVerwaltung initialisieren (mit beispielartikel)
         // ToDO: Dasselbe mit Kunde und Mitarbeiterverwalunt
 
 
-    Artikelverwaltung av = new Artikelverwaltung();
+   /* Artikelverwaltung av = new Artikelverwaltung();
     Kundenverwaltung kv = new Kundenverwaltung();
     Mitarbeiterverwaltung mv = new Mitarbeiterverwaltung();
 
@@ -82,4 +140,4 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
 
 
 
-}
+}*/
