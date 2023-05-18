@@ -13,11 +13,6 @@ public class Kundenverwaltung {
     private List<Artikel> meinWarenkorb = new ArrayList();
     private List<User> kRegistrierung = new ArrayList();
 
-public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> kRegistrierung){
-    this.meinWarenkorb= meinWarenkorb;
-    this.kRegistrierung=kRegistrierung;
-}
-
     public List<Artikel> getMeinWarenkorb() {
         return meinWarenkorb;
     }
@@ -26,7 +21,7 @@ public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> 
         return kRegistrierung;
     }
 
-    Kunde k1 = new Kunde("k1", "123", "Mann", "Thomas", "Am Berg");
+   // Kunde k1 = new Kunde("k1", "123", "Mann", "Thomas", "Am Berg");
 
 
     /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
@@ -38,7 +33,6 @@ public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> 
                 meinWarenkorb.add(artikel);
         }
     }
-
 
     /* Es wird geprüft ob der zu Vorhandenen Artikel im Warenkorb vorhanden ist.
     Der Artikel wird aus dem Warenkorb entfernt
@@ -55,13 +49,16 @@ public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> 
         meinWarenkorb.clear();
     }
 
-//Artikel vom Warenkorb aus Bestand nehmen
+/*
+    //Artikel vom Warenkorb aus Bestand nehmen
     public void bestandAktualisieren(List <Artikel> bestandsliste){
         for(Artikel n : meinWarenkorb){
             bestandsliste.remove(n);
            // n.setBestand(n.getBestand()-1);
         }
     }
+
+ */
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public String register(User neu) {
         String ausgabe = "";
@@ -69,7 +66,7 @@ public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> 
             ausgabe = "Das Konto existiert bereits.";
         } else {
             kRegistrierung.add(neu);
-            ausgabe = "Herzlichen glückwusch zu deinem Eshop Account";
+            ausgabe = "Wilkommen auf deinem Eshop Account";
         }
         return ausgabe;
     }
@@ -93,9 +90,6 @@ public Kundenverwaltung(private List<Artikel> meinWarenkorb, private List<User> 
         }
         return s + "\n" + gesamtsumme;
     }
-
-
-       
 
     }
 

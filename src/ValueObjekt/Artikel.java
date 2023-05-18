@@ -11,7 +11,7 @@ public class Artikel {
     private boolean verfuegbar;
 
 
-    public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, int bestand, double preis, boolean verfuegbar) {
+    public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
@@ -78,4 +78,8 @@ public class Artikel {
         return artikelNummer;
     }
 
+
+    public String toString() {
+        return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + preis + " Bestand: " +bestand;
+    }
 }
