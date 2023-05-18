@@ -8,14 +8,14 @@ public class User {
     protected String vorname;
 
 
-    public User(String userName, String passwort, String nachname, String vorname) {
+    public User(String userName, String passwort, String nachname, String vorname, String kundeAdresse) {
         this.userName = userName;
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
     }
 
-    public User() {
+    public User(String userName, String passwort, String nachname, String vorname) {
 
     }
 

@@ -5,7 +5,7 @@ package ValueObjekt;
 
 public class Mitarbeiter extends User {
 
-    private int mitarbeiterNummer;
+     int mitarbeiterNummer;
 
 
     public Mitarbeiter(String userName, String passwort, String nachname, String vorname, int mitarbeiterNummer) {

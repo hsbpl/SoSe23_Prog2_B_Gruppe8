@@ -125,19 +125,20 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
 
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
     public String kaufen(List <Artikel> bestandsliste, Kunde kunde){
-       String rechnung ="";
-        kv.bestandAktualisieren(bestandsliste);
+        //artikel aus der Liste des Warenkorb aus dem Bestand der av nehmen
+        RechnungObjekt rechnung = new RechnungObjekt(kunde,meinWarenkorb());
         warenkorbLeeren();
-        //Rechnung erstellen noch reintun
-        return rechnung;
+        return rechnung.toString();
     }
 
     public String einkauslist(){
         return kv.einkaufsliste();
     }
 
+<<<<<<< HEAD
 
 
 
 
 }*/
+

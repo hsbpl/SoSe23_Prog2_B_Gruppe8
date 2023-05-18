@@ -11,7 +11,7 @@ public class Artikel {
     private boolean verfuegbar;
 
 
-    public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, int bestand, double preis, boolean verfuegbar) {
+    public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
@@ -20,7 +20,7 @@ public class Artikel {
         this.stueckzahl= stueckzahl;
     }
 
-    public Artikel(String bezeichnung, int artikelnummer) {
+    public Artikel(String bezeichnung, String pc_de_dernière_génération, double v, int artikelnummer) {
     }
 
     public boolean inStock(){
@@ -36,7 +36,6 @@ public class Artikel {
         }
         return verfuegbar;
     }
-
 
     public int getBestand() {
 
@@ -78,4 +77,5 @@ public class Artikel {
         return artikelNummer;
     }
 
-}
+
+   }
