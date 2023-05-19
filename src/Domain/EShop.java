@@ -37,7 +37,7 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     }
 
     //Zugriff auf bereits registrierte Kunden
-    public List<User> getAlleKundenkonten(){
+    public List<Kunde> getAlleKundenkonten(){
        return kv.getKRegistrierung();
     }
 
@@ -61,7 +61,7 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
         return kv.login(username,password);
     }
 
-    public String kundenregister(User neu){
+    public String kundenregister(Kunde neu){
         return kv.register(neu);
     }
 

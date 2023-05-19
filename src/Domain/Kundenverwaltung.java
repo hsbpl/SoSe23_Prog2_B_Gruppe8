@@ -5,13 +5,12 @@ import ValueObjekt.Kunde;
 import ValueObjekt.User;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
 public class Kundenverwaltung {
     private List<Artikel> meinWarenkorb;
-    private List<User> kRegistrierung;
+    private List<Kunde> kRegistrierung;
 
     public Kundenverwaltung(){
         this.meinWarenkorb = new ArrayList<>();
@@ -22,7 +21,7 @@ public class Kundenverwaltung {
         return meinWarenkorb;
     }
 
-    public List<User> getKRegistrierung() {
+    public List<Kunde> getKRegistrierung() {
         return kRegistrierung;
     }
 
@@ -65,7 +64,7 @@ public class Kundenverwaltung {
 
  */
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
-    public String register(User neu) {
+    public String register(Kunde neu) {
         String ausgabe = "";
         if (kRegistrierung.contains(neu)) {
             ausgabe = "Das Konto existiert bereits.";
@@ -78,7 +77,7 @@ public class Kundenverwaltung {
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
     public String login(String username, String password){
 
-        for (User u : kRegistrierung) {
+        for (Kunde u : kRegistrierung) {
             if (u.getUserName().equals(username) && u.getPasswort().equals(password)) {
                 return "User " + username + "ist angemeldet";
             }
@@ -86,6 +85,13 @@ public class Kundenverwaltung {
         return "User nicht gefunden";
     }
 
+    public String registrierteKunden(){
+        String liste = "";
+        for(Kunde k : kRegistrierung){
+            liste += k.toString() +"\n";
+        }
+        return  liste;
+    }
     public String einkaufsliste(){
         String s = "";
         float gesamtsumme = 0;
