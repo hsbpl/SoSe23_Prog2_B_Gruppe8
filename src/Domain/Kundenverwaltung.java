@@ -10,8 +10,13 @@ import java.util.List;
 
 
 public class Kundenverwaltung {
-    private List<Artikel> meinWarenkorb = new ArrayList();
-    private List<User> kRegistrierung = new ArrayList();
+    private List<Artikel> meinWarenkorb;
+    private List<User> kRegistrierung;
+
+    public Kundenverwaltung(){
+        this.meinWarenkorb = new ArrayList<>();
+        this.kRegistrierung = new ArrayList<>();
+    }
 
     public List<Artikel> getMeinWarenkorb() {
         return meinWarenkorb;
