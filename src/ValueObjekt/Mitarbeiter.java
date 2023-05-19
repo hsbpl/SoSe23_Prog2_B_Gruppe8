@@ -21,5 +21,10 @@ public class Mitarbeiter extends User {
     public void setMitarbeiterNummer(int mitarbeiterNummer) {
         this.mitarbeiterNummer = mitarbeiterNummer;
     }
+
+
+    public String toString() {
+        return "Mitarbeiter-" + super.toString();
+    }
 }
 

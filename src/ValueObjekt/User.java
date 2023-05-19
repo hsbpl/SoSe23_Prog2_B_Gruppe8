@@ -36,6 +36,10 @@ public class User {
         return passwort;
     }
 
+
+    public String toString() {
+       return "Username "+ userName + " Vor- und Nachname: " + vorname+" " + nachname;
+    }
 }
 
 

@@ -17,4 +17,9 @@ public class Kunde extends User {
     public void setKundeAdresse(String kundeAdresse) {
         this.kundeAdresse = kundeAdresse;
     }
+
+
+    public String toString() {
+        return "Kunde-" + super.toString();
+    }
 }

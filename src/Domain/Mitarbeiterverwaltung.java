@@ -1,6 +1,5 @@
 package Domain;
 
-import ValueObjekt.Artikel;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.User;
 
@@ -61,6 +60,9 @@ public class Mitarbeiterverwaltung extends User {
             }
         }
         return false;
+    }
+
+    public void neuemitarbeiterEinfuegen(Mitarbeiter phillip) {
     }
 
 
