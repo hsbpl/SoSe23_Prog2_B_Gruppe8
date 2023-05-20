@@ -5,6 +5,7 @@ import ValueObjekt.Kunde;
 import ValueObjekt.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -14,7 +15,7 @@ public class Kundenverwaltung {
 
     public Kundenverwaltung(){
         this.meinWarenkorb = new ArrayList<>();
-        this.kRegistrierung = new ArrayList<>();
+        this.kRegistrierung = new ArrayList<>(Arrays.asList(k1));
     }
 
     public List<Artikel> getMeinWarenkorb() {
@@ -25,8 +26,19 @@ public class Kundenverwaltung {
         return kRegistrierung;
     }
 
-   // Kunde k1 = new Kunde("k1", "123", "Mann", "Thomas", "Am Berg");
+    //Beispielkunde
+   Kunde k1 = new Kunde("k1", "123", "Mann", "Thomas", "Am Berg");
 
+
+    public Artikel choice(List<Artikel> warenliste, String warenname){
+        Artikel art = null;
+        for(Artikel a : warenliste){
+            if(a.getBezeichnung() == warenname){
+                art = a;
+            }
+        }
+        return art;
+    }
 
     /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
     Warenbestandsliste vorhanden sind.
@@ -53,36 +65,36 @@ public class Kundenverwaltung {
         meinWarenkorb.clear();
     }
 
-/*
-    //Artikel vom Warenkorb aus Bestand nehmen
-    public void bestandAktualisieren(List <Artikel> bestandsliste){
+
+    //gehört eig in die Artikelverwaltung
+    public void bestandAktualisieren(){
         for(Artikel n : meinWarenkorb){
-            bestandsliste.remove(n);
-           // n.setBestand(n.getBestand()-1);
+            n.setBestand(n.getBestand()-1);
+          // bestandsliste.removeIf(art -> art.getBestand() <= 0); // will man den artikel ganz entfernen?
+           ;
         }
     }
 
- */
+
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
-    public String register(Kunde neu) {
-        String ausgabe = "";
+    public Kunde register(Kunde neu) {
         if (kRegistrierung.contains(neu)) {
-            ausgabe = "Das Konto existiert bereits.";
+            return null;
         } else {
             kRegistrierung.add(neu);
-            ausgabe = "Wilkommen auf deinem Eshop Account";
+            return neu;
         }
-        return ausgabe;
+
     }
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
-    public String login(String username, String password){
+    public Kunde login(String username, String password){
 
         for (Kunde u : kRegistrierung) {
             if (u.getUserName().equals(username) && u.getPasswort().equals(password)) {
-                return "User " + username + "ist angemeldet";
+                return u;
             }
         }
-        return "User nicht gefunden";
+        return null;
     }
 
     public String registrierteKunden(){
