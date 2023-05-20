@@ -15,13 +15,17 @@ public class EShop {
     Kundenverwaltung kv;
     Mitarbeiterverwaltung mv;
 
-    Mitarbeiter m1 = new Mitarbeiter("mit1", "345", "Mitarbeiterin", "Dieerste", 1829);
+    Mitarbeiter m1 = new Mitarbeiter("mit1", "341", "Kevine", "Michele", 1821);
+    Mitarbeiter m2 = new Mitarbeiter("mit2", "342", "Sajana", "Dieerste", 1822);
+    Mitarbeiter m3 = new Mitarbeiter("mit3", "343", "Roha", "Dieste", 1823);
+    Mitarbeiter m4 = new Mitarbeiter("mit4", "344", "Lars", "Dieer", 18294);
+    Mitarbeiter m5 = new Mitarbeiter("mit5", "345", "Philipp", "erste", 1825);
 
 
 public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv ){
     this.av = new Artikelverwaltung();
     this.kv = new Kundenverwaltung();
-    this.mv = new Mitarbeiterverwaltung();
+    this.mv = new Mitarbeiterverwaltung(m1.getUserName(), m1.getPasswort(), m1.getNachname(), m1.getVorname());
 
 }
 
