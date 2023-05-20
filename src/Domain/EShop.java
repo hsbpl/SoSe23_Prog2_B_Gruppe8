@@ -5,7 +5,9 @@ import ValueObjekt.*;
 import java.util.*;
 
 public class EShop {
-
+private List<Mitarbeiter> mitarbeiterList ;
+    private List<Artikel> artikelList ;
+    private List<Kunde> kundeList ;
 
         // ToDO: ArtikelVerwaltung initialisieren (mit beispielartikel)
         // ToDO: Dasselbe mit Kunde und Mitarbeiterverwalunt
@@ -28,6 +30,45 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     this.mv = new Mitarbeiterverwaltung(m1.getUserName(), m1.getPasswort(), m1.getNachname(), m1.getVorname());
 
 }
+
+    public List<Mitarbeiter> getMitarbeiterList() {
+        return mitarbeiterList;
+    }
+    // zeigen, ob der aktuelle Benutzer ein Mitarbeiter ist oder nicht
+    public boolean istMitarbeiter = false;
+
+   //  zeigen, ob der aktuelle Benutzer ein Kunde ist oder nicht
+    public boolean istKunde = false;
+    //   zeigen, ob der aktuelle Benutzer eingelogt ist oder nicht
+    public boolean istlog = false;
+
+    public User einloggen(String benutzername, String passwort) {
+        if (mitarbeiterList.stream().anyMatch(m -> m.getUserName().equals(benutzername))) {
+            for (Mitarbeiter mitarbeiter : mitarbeiterList) {
+                if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.getPasswort().equals(passwort)) {
+                    istMitarbeiter = true;
+                    istlog = true;
+                    return mitarbeiter;
+                }
+            }
+        } else if (kundeList.stream().anyMatch(k -> k.getUserName().equals(benutzername))) {
+            for (Kunde kunde : kundeList) {
+                if (kunde.getUserName().equals(benutzername) && kunde.getPasswort().equals(passwort)) {
+                    istKunde = true;
+                    istlog = true;
+                    return kunde;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void mitarbeiterRegistrieren(Mitarbeiter mitarbeiter) {
+        mitarbeiterList.add(mitarbeiter);
+
+    }
+    public boolean istEinloggen(){return istlog;}
+
 
     public List<Artikel> getAlleArtikel() {
        return av.getArtikelListe();

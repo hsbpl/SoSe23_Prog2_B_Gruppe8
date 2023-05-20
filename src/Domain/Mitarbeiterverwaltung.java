@@ -44,6 +44,8 @@ public class Mitarbeiterverwaltung extends User {
         }
         return null;
     }
+
+
     //  Methode fügt einen neuen Mitarbeiter zur Mitarbeiterliste hinzu
     public Mitarbeiter neuemitarbeiterEinfuegen(String userName, String passwort, String nachname, String vorname, int mitarbeiterNummer) throws MitarbeiterExistiertBereitsException {
         if (mitarbeiterBereitsVorhanden(userName, passwort)) {
@@ -54,6 +56,7 @@ public class Mitarbeiterverwaltung extends User {
         mitarbeiterListe.add(neuerMitarbeiter);
         return neuerMitarbeiter;
     }
+
 
     //Diese Methode überprüft, ob ein Mitarbeiter mit
     // dem angegebenen Benutzernamen und Passwort bereits in der Mitarbeiterliste vorhanden ist
