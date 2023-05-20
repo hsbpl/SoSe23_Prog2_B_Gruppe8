@@ -3,11 +3,7 @@ package Domain;
 import ValueObjekt.Artikel;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
+import java.util.*;
 
 
 public class Artikelverwaltung { // fertig
@@ -16,8 +12,13 @@ public class Artikelverwaltung { // fertig
     private List<Artikel> artikelListe;
 
     public Artikelverwaltung() {
-        artikelListe = new ArrayList<>();
+        artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl));
     }
+    Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2f, true);
+    Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99f, true);
+    Artikel chips = new Artikel("Chips", 39003, 100, 1.79f, true);
+    Artikel wasser = new Artikel("Wasser)", 3890, 400, 0.49f, true);
+    Artikel mehl = new Artikel("Mehl", 29290, 0, 0.39f, false);
 
     public void artikelHinzufuegen(Artikel artikel) {
         artikelListe.add(artikel);
@@ -41,6 +42,7 @@ public class Artikelverwaltung { // fertig
         return null;
     }
 
+
     public void artikelAusgeben() {
         for (Artikel artikel : artikelListe) {
             System.out.println("Bezeichnung: " + artikel.getBezeichnung());
@@ -54,11 +56,6 @@ public class Artikelverwaltung { // fertig
         this.artikelListe = artikelListe;
     }
 
-    Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2, true);
-    Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99, true);
-    Artikel chips = new Artikel("Chips", 39003, 100, 1.79, true);
-    Artikel wasser = new Artikel("Wasser)", 3890, 400, 0.49, true);
-    Artikel mehl = new Artikel("Mehl", 29290, 0, 0.39, false);
 
     public ArrayList<Artikel> getArtikelListe() {
         return (ArrayList<Artikel>) artikelListe;

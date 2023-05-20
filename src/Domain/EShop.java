@@ -2,9 +2,7 @@ package Domain;
 
 import ValueObjekt.*;
 
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class EShop {
 
@@ -13,31 +11,35 @@ public class EShop {
         // ToDO: Dasselbe mit Kunde und Mitarbeiterverwalunt
 
 
-    Artikelverwaltung av = new Artikelverwaltung();
-    Kundenverwaltung kv = new Kundenverwaltung();
-    Mitarbeiterverwaltung mv = new Mitarbeiterverwaltung();
+    Artikelverwaltung av;
+    Kundenverwaltung kv;
+    Mitarbeiterverwaltung mv;
 
     Mitarbeiter m1 = new Mitarbeiter("mit1", "345", "Mitarbeiterin", "Dieerste", 1829);
 
 
 public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv ){
-    this.av = av;
-    this.kv = kv;
-    this.mv = mv;
+    this.av = new Artikelverwaltung();
+    this.kv = new Kundenverwaltung();
+    this.mv = new Mitarbeiterverwaltung();
 
 }
 
     public List<Artikel> getAlleArtikel() {
-        return null; // ToDO: Zugriff auf Artikelverwaltung
+       return av.getArtikelListe();
     }
 
+    //Listet alle Artikel aus der Artikelverwaltung auf
+    public void artikelListen(){
+    av.artikelAusgeben();
+    }
     //Zugriff auf Warenkorb des Kunden
     public List<Artikel> meinWarenkorb() {
         return kv.getMeinWarenkorb();
     }
 
     //Zugriff auf bereits registrierte Kunden
-    public List<User> getAlleKundenkonten(){
+    public List<Kunde> getAlleKundenkonten(){
        return kv.getKRegistrierung();
     }
 
@@ -57,23 +59,30 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
         kv.leeren();
     }
 
-    public String kundenlogin(String username, String password){
+    public Kunde kundenlogin(String username, String password){
         return kv.login(username,password);
     }
 
-    public String kundenregister(User neu){
+    public Kunde kundenregister(Kunde neu){
         return kv.register(neu);
     }
 
+    public Artikel artikelAuswaehlen(String a){
+    return kv.choice(getAlleArtikel(), a);
+    }
+
+    public void betsandAkt(){
+    kv.bestandAktualisieren();
+    }
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
     public String kaufen(List <Artikel> bestandsliste, Kunde kunde){
-        //artikel aus der Liste des Warenkorb aus dem Bestand der av nehmen
+        betsandAkt();
         RechnungObjekt rechnung = new RechnungObjekt(kunde,meinWarenkorb());
         warenkorbLeeren();
         return rechnung.toString();
     }
 
-    public String einkauslist(){
+    public String einkaufsliste(){
         return kv.einkaufsliste();
     }
 
