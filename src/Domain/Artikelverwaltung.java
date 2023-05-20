@@ -31,12 +31,7 @@ public class Artikelverwaltung { // fertig
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));
     }
 
-    public void ArtikelAnlegen(String bezeichnung, int bestand) {
-        Artikel neuerArtikel = new Artikel(bezeichnung, "PC de dernière génération", 1200.0, bestand);
-        artikelListe.add(neuerArtikel);
-    }
-
-    public ArrayList<Artikel> bestandErhoehen(String artikelBezeichnung, int Anzahl) {
+       public ArrayList<Artikel> bestandErhoehen(String artikelBezeichnung, int Anzahl) {
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(Anzahl);

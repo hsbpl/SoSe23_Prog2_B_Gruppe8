@@ -37,6 +37,7 @@ public class Artikel {
         return verfuegbar;
     }
 
+
     public int getBestand() {
 
         return bestand;
@@ -78,11 +79,7 @@ public class Artikel {
     }
 
 
-<<<<<<< HEAD
-   }
-=======
     public String toString() {
         return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + preis + " Bestand: " +bestand;
     }
 }
->>>>>>> origin/main
