@@ -35,6 +35,7 @@ public class Mitarbeiterverwaltung extends User {
         super(userName, passwort, nachname, vorname);
     }
 
+    //  Mitarbeiter einloggen
     public Mitarbeiter mitarbeiterEinloggen(String benutzername, String passwort) {
         for (Mitarbeiter mitarbeiter : mitarbeiterListe) {
             if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.getPasswort().equals(passwort)) {
@@ -43,6 +44,7 @@ public class Mitarbeiterverwaltung extends User {
         }
         return null;
     }
+    //  Methode fügt einen neuen Mitarbeiter zur Mitarbeiterliste hinzu
     public Mitarbeiter neuemitarbeiterEinfuegen(String userName, String passwort, String nachname, String vorname, int mitarbeiterNummer) throws MitarbeiterExistiertBereitsException {
         if (mitarbeiterBereitsVorhanden(userName, passwort)) {
             throw new MitarbeiterExistiertBereitsException(userName, passwort);
@@ -53,6 +55,8 @@ public class Mitarbeiterverwaltung extends User {
         return neuerMitarbeiter;
     }
 
+    //Diese Methode überprüft, ob ein Mitarbeiter mit
+    // dem angegebenen Benutzernamen und Passwort bereits in der Mitarbeiterliste vorhanden ist
     private boolean mitarbeiterBereitsVorhanden(String userName, String passwort) {
         for (Mitarbeiter mitarbeiter : mitarbeiterListe) {
             if (mitarbeiter.getUserName().equals(userName) && mitarbeiter.getPasswort().equals(passwort)) {
@@ -61,12 +65,7 @@ public class Mitarbeiterverwaltung extends User {
         }
         return false;
     }
-
-    public void neuemitarbeiterEinfuegen(Mitarbeiter phillip) {
-    }
-
-
-    private class MitarbeiterExistiertBereitsException extends Throwable {
+        private class MitarbeiterExistiertBereitsException extends Throwable {
         public MitarbeiterExistiertBereitsException(String userName, String passwort) {
         }
     }
