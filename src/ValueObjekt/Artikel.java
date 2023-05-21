@@ -2,9 +2,6 @@
 
 package ValueObjekt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Artikel {
     private String bezeichnung;
     private int artikelNummer;
@@ -12,7 +9,6 @@ public class Artikel {
     private int stueckzahl;
     private double preis;
     private boolean verfuegbar;
-    private List<Ereignis> ereignisse;
 
 
     public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, double preis, boolean verfuegbar) {
@@ -22,13 +18,9 @@ public class Artikel {
         this.preis = preis;
         this.verfuegbar = verfuegbar;
         this.stueckzahl= stueckzahl;
-        this.ereignisse = new ArrayList<>();
     }
 
     public Artikel(String bezeichnung, String pc_de_dernière_génération, double v, int artikelnummer) {
-    }
-
-    public Artikel(int artikelnummer, double preis) {
     }
 
     public boolean inStock(){
@@ -90,24 +82,4 @@ public class Artikel {
     public String toString() {
         return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + preis + " Bestand: " +bestand;
     }
-
-    public void setArtikelnummer(int artikelNummer) {
-        this.artikelNummer = artikelNummer;
-    }
-
-    public void addEreignis(Ereignis ereignis){
-        ereignisse.add(ereignis);
-        // Aktualisiere den bestand basierend auf dem ereignis
-        if (ereignis.getAnzahl()> 0){
-            bestand += ereignis.getAnzahl();
-        } else {
-            bestand -= Math.abs(ereignis.getAnzahl());
-        }
-    }
-
-
-    public List<Ereignis> getEreignisse(){
-        return ereignisse;
-    }
-
 }
