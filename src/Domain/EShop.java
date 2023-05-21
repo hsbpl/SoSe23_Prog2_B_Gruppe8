@@ -24,7 +24,7 @@ private List<Mitarbeiter> mitarbeiterList ;
     Mitarbeiter m5 = new Mitarbeiter("mit5", "345", "Philipp", "erste", 1825);
 
 
-public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv ){
+public EShop(){
     this.av = new Artikelverwaltung();
     this.kv = new Kundenverwaltung();
     this.mv = new Mitarbeiterverwaltung(m1.getUserName(), m1.getPasswort(), m1.getNachname(), m1.getVorname());
