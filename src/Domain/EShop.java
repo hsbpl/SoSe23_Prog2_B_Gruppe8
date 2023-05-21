@@ -1,6 +1,9 @@
 package Domain;
 
 import ValueObjekt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Comparator;
 
 import java.util.*;
 
@@ -8,6 +11,7 @@ public class EShop {
 private List<Mitarbeiter> mitarbeiterList ;
     private List<Artikel> artikelList ;
     private List<Kunde> kundeList ;
+    //private Artikelverwaltung av;
 
         // ToDO: ArtikelVerwaltung initialisieren (mit beispielartikel)
         // ToDO: Dasselbe mit Kunde und Mitarbeiterverwalunt
@@ -28,8 +32,11 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     this.av = new Artikelverwaltung();
     this.kv = new Kundenverwaltung();
     this.mv = new Mitarbeiterverwaltung(m1.getUserName(), m1.getPasswort(), m1.getNachname(), m1.getVorname());
-
 }
+
+    public EShop() {
+        // leerer Konstruktor
+    }
 
     public List<Mitarbeiter> getMitarbeiterList() {
         return mitarbeiterList;
@@ -74,6 +81,14 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
        return av.getArtikelListe();
     }
 
+    public void removeArtikel(int artikelnummer){
+        av.artikelLoeschen(artikelnummer);
+    }
+
+    public void addArtikel(Artikel art) {
+        av.artikelHinzufuegen(art);
+    }
+
     //Listet alle Artikel aus der Artikelverwaltung auf
     public void artikelListen(){
     av.artikelAusgeben();
@@ -108,6 +123,10 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
         return kv.login(username,password);
     }
 
+    public Mitarbeiter mitarbeiterEinloggen(String username, String password) {
+        return mv.mitarbeiterEinloggen(username, password);
+    }
+
     public Kunde kundenregister(Kunde neu){
         return kv.register(neu);
     }
@@ -116,7 +135,7 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     return kv.choice(getAlleArtikel(), a);
     }
 
-    public void betsandAkt(){
+    public void bestandAkt(){
     kv.bestandAktualisieren();
     }
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
@@ -130,5 +149,15 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     public String einkaufsliste(){
         return kv.einkaufsliste();
     }
+
+
+
+
+
+
+
+
+
+
 
 }

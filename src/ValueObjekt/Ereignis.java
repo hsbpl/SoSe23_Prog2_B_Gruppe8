@@ -57,7 +57,9 @@ public class Ereignis {
     public void setKunde(Kunde kunde) {
         this.kunde = kunde;
     }
-}
+
+    }
+
 
 
 

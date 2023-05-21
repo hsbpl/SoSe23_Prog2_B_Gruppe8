@@ -41,6 +41,21 @@ public class Artikelverwaltung { // fertig
         }
         return null;
     }
+    public void bestandVerringern(Artikel artikel, int menge){
+        if (artikelListe.contains(artikel)) {
+            int aktuellerBestand = artikel.getBestand();
+            if (menge <= aktuellerBestand) {
+                int neuerBestand = aktuellerBestand - menge;
+                artikel.setBestand(neuerBestand);
+                System.out.println("Bestand verringert für Artikel: " + artikel.getBezeichnung());
+            } else {
+                System.out.println("Nicht genügend Bestand für Artikel: " + artikel.getBezeichnung());
+            }
+        }else{
+            System.out.println("Artikel nicht vorhanden: " + artikel.getBezeichnung());
+            }
+        }
+
 
 
     public void artikelAusgeben() {

@@ -3,6 +3,7 @@
 import Domain.*;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
+import Domain.EShop;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +11,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
-import static sun.security.util.Debug.args;
 
 
         public class Main {
@@ -20,7 +20,7 @@ import static sun.security.util.Debug.args;
             List<Artikel> bestandaliste = shop.getAlleArtikel();
             List<Kunde> registrierteKunden = shop.getAlleKundenkonten();
 
-            private void start() {
+            private static void start() {
 
                 //je nachdem ein anderes Menü
                 int choice;
@@ -71,7 +71,7 @@ import static sun.security.util.Debug.args;
                 }
             }
 
-                    private void kaufen(Kunde k){
+            private void kaufen(Kunde k){
                         shop.artikelListen();
 
                         System.out.println("---------------------");
@@ -85,11 +85,11 @@ import static sun.security.util.Debug.args;
                         System.out.println("Beenden: '6'");
 
                         kundenEingabe(scan.nextInt(), k);
-                        }
+            }
                     private void kundenEingabe(int eingabe, Kunde k) {
-                            List<Artikel> warenkorb = shop.meinWarenkorb();
+                        List<Artikel> warenkorb = shop.meinWarenkorb();
 
-                        switch (eingabe){
+                        switch (eingabe) {
                             case 1:
                                 System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
                                 Artikel gewaehlterArtikel = shop.artikelAuswaehlen(scan.next());
@@ -122,12 +122,13 @@ import static sun.security.util.Debug.args;
                                 kaufen(k);
 
                             case 5:
-                               System.out.println(shop.kaufen(warenkorb,k));
-                               start();
+                                System.out.println(shop.kaufen(warenkorb, k));
+                                start();
 
                             case 6:
                                 start();
 
+                        }
                     }
 
                         private void arbeiten(){
@@ -152,14 +153,14 @@ import static sun.security.util.Debug.args;
                         private void verarbeiteEingabe(String input) {
                             switch (input) {
                                 case "a":
-                                    System.out.println(this.EShop.getArtikelListe());
+                                    System.out.println(this.shop.getAlleArtikel());
                                     break;
 
                                 case "b":
                                     System.out.print("Artikelnummer: ");
                                     try {
                                         int artikelnummer = Integer.parseInt(liesEingabe());
-                                        this.EShop.removeArtikel(artikelnummer);
+                                        this.shop.removeArtikel(artikelnummer);
                                         System.out.println("Artikel gelöscht.");
                                     } catch (NumberFormatException e) {
                                         System.out.println("Ungültige Eingabe!");
@@ -190,8 +191,8 @@ import static sun.security.util.Debug.args;
                                         System.out.println("Ungültige Eingabe!");
                                         break;
                                     }
-                                    Artikel artikel = new Artikel(, artikelnummer, preis);
-                                    this.EShop.addArtikel(artikel);
+                                    Artikel artikel = new Artikel(artikelnummer, preis);
+                                    this.shop.addArtikel(artikel);
                                     System.out.println("Artikel hinzugefügt.");
                                     break;
                                 case "d":
@@ -203,13 +204,14 @@ import static sun.security.util.Debug.args;
                                         System.out.println("Fehler beim Einlesen des Suchbegriffs!");
                                         break;
                                     }
-                                    System.out.println(this.EShop.getWarenkorb());
+                                    // Soll hier der Warenkorb angezeigt werden?
+                                    System.out.println(this.shop.meinWarenkorb());
                                     break;
                                 case "e":
-                                    System.out.println(this.EShop.getWarenkorb());
+                                    System.out.println(this.shop.meinWarenkorb());
                                     break;
                                 case "f":
-                                    this.EShop.leereWarenkorb();
+                                    this.shop.warenkorbLeeren();
                                     System.out.println("Warenkorb geleert.");
                                     break;
                                 case "x":
@@ -221,9 +223,4 @@ import static sun.security.util.Debug.args;
                         start();
                         }
                     }
-
-
-
-
-}
 
