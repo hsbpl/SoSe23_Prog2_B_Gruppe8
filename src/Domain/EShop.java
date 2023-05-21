@@ -90,8 +90,8 @@ public EShop(Artikelverwaltung av, Kundenverwaltung kv, Mitarbeiterverwaltung mv
     }
 
     //Listet alle Artikel aus der Artikelverwaltung auf
-    public void artikelListen(){
-    av.artikelAusgeben();
+    public String artikelListen(){
+    return av.artikelAusgeben();
     }
     //Zugriff auf Warenkorb des Kunden
     public List<Artikel> meinWarenkorb() {

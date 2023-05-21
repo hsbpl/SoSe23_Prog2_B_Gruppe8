@@ -72,7 +72,8 @@ import java.util.Scanner;
             }
 
             private void kaufen(Kunde k){
-                        shop.artikelListen();
+                        String list = shop.artikelListen();
+                        System.out.println(list);
 
                         System.out.println("---------------------");
                         System.out.println("Was möchten Sie tun!"+"\n");

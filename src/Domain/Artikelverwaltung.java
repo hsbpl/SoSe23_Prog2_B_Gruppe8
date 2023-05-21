@@ -58,13 +58,13 @@ public class Artikelverwaltung { // fertig
 
 
 
-    public void artikelAusgeben() {
+    public String artikelAusgeben() {
+        String s ="";
         for (Artikel artikel : artikelListe) {
-            System.out.println("Bezeichnung: " + artikel.getBezeichnung());
-            System.out.println("ArtikelNummer: " + artikel.getArtikelNummer());
-            System.out.println("Bestand: " + artikel.getBestand());
-            System.out.println("---------------------");
+
+            s +=  artikel.toString() + "\n";
         }
+        return s;
     }
 
     public void setArtikelListe(ArrayList<Artikel> artikelListe) {
