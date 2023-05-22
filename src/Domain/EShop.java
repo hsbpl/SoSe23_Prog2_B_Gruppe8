@@ -5,7 +5,7 @@ import ValueObjekt.*;
 import java.util.*;
 
 public class EShop {
-private List<Mitarbeiter> mitarbeiterList ;
+    private List<Mitarbeiter> mitarbeiterList ;
     private List<Artikel> artikelList ;
     private List<Kunde> kundeList ;
 
@@ -17,86 +17,72 @@ private List<Mitarbeiter> mitarbeiterList ;
     Kundenverwaltung kv;
     Mitarbeiterverwaltung mv;
 
-    Mitarbeiter m1 = new Mitarbeiter("mit1", "341", "Kevine", "Michele", 1821);
-    Mitarbeiter m2 = new Mitarbeiter("mit2", "342", "Sajana", "Dieerste", 1822);
-    Mitarbeiter m3 = new Mitarbeiter("mit3", "343", "Roha", "Dieste", 1823);
-    Mitarbeiter m4 = new Mitarbeiter("mit4", "344", "Lars", "Dieer", 18294);
-    Mitarbeiter m5 = new Mitarbeiter("mit5", "345", "Philipp", "erste", 1825);
 
 
 public EShop(){
     this.av = new Artikelverwaltung();
     this.kv = new Kundenverwaltung();
-    this.mv = new Mitarbeiterverwaltung(m1.getUserName(), m1.getPasswort(), m1.getNachname(), m1.getVorname());
+    this.mv = new Mitarbeiterverwaltung();
 
 }
 
     public List<Mitarbeiter> getMitarbeiterList() {
-        return mitarbeiterList;
+        return mv.getListMitarbeiter();
     }
-    // zeigen, ob der aktuelle Benutzer ein Mitarbeiter ist oder nicht
-    public boolean istMitarbeiter = false;
-
-   //  zeigen, ob der aktuelle Benutzer ein Kunde ist oder nicht
-    public boolean istKunde = false;
-    //   zeigen, ob der aktuelle Benutzer eingelogt ist oder nicht
-    public boolean istlog = false;
-
-    public User einloggen(String benutzername, String passwort) {
-        if (mitarbeiterList.stream().anyMatch(m -> m.getUserName().equals(benutzername))) {
-            for (Mitarbeiter mitarbeiter : mitarbeiterList) {
-                if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.getPasswort().equals(passwort)) {
-                    istMitarbeiter = true;
-                    istlog = true;
-                    return mitarbeiter;
-                }
-            }
-        } else if (kundeList.stream().anyMatch(k -> k.getUserName().equals(benutzername))) {
-            for (Kunde kunde : kundeList) {
-                if (kunde.getUserName().equals(benutzername) && kunde.getPasswort().equals(passwort)) {
-                    istKunde = true;
-                    istlog = true;
-                    return kunde;
-                }
-            }
-        }
-        return null;
-    }
-
-    public void mitarbeiterRegistrieren(Mitarbeiter mitarbeiter) {
-        mitarbeiterList.add(mitarbeiter);
-
-    }
-    public boolean istEinloggen(){return istlog;}
-
 
     public List<Artikel> getAlleArtikel() {
        return av.getArtikelListe();
     }
 
-    //Listet alle Artikel aus der Artikelverwaltung auf
-    public String artikelListen(){
-    return av.artikelAusgeben();
-    }
-    //Zugriff auf Warenkorb des Kunden
     public List<Artikel> meinWarenkorb() {
         return kv.getMeinWarenkorb();
     }
-
-    //Zugriff auf bereits registrierte Kunden
     public List<Kunde> getAlleKundenkonten(){
-       return kv.getKRegistrierung();
+        return kv.getKRegistrierung();
     }
 
-    //Artikel im den Warenkorb legen
-    //sobald artikelliste aus Artikelverwaltung da ist muss warenL mit austauschen
-    public String reinWarenkorb(List<Artikel> warenbestand, Artikel artikel, int menge){
+    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) {
+        return mv.mRegister(neu);
+
+    }
+
+    public Mitarbeiter mitarbeiterLogin(String passwort, String username){
+        return mv.mitarbeiterEinloggen(username, passwort);
+    }
+    public String artikelListen(){
+        return av.artikelAusgeben();
+    }
+
+    public void artHinzufügen(Artikel a){
+        av.artikelHinzufuegen(a);
+    }
+
+    public void bestandHöher(String artikelname, int menge){
+        av.bestandErhoehen(artikelname, menge);
+    }
+    public void bestanNiedriger(String artikelname, int menge){
+        av.bestandVerringern(artikelname, menge);
+    }
+
+    public void alphaArtikel(){
+        av.artikelSortierenNachBezeichnung();
+    }
+
+    public void nummerArtikel(){
+        av.artikelSortierenNachArtikelnummer();
+    }
+
+    public void rausSortiment(int artikelnummer){
+        av.artikelLoeschen(artikelnummer);
+    }
+
+    public String reinWarenkorb(List<Artikel> warenbestand, String artikel, int menge){
         kv.reinlegen(warenbestand,artikel, menge);
-       return kv.toString();
+        return kv.toString();
     }
 
     //Artikel aus dem Warenkorb nehmen
-    public void rausWarenkorb(Artikel ausWarenkorb, int menge){
+    public void rausWarenkorb(String ausWarenkorb, int menge){
         kv.rausnehmen(ausWarenkorb, menge);
     }
 
@@ -120,10 +106,9 @@ public EShop(){
     kv.bestandAktualisieren();
     }
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
-    public String kaufen(List <Artikel> bestandsliste, Kunde kunde){
+    public String kaufen(Kunde kunde){
         betsandAkt();
         RechnungObjekt rechnung = new RechnungObjekt(kunde,meinWarenkorb());
-        warenkorbLeeren();
         return rechnung.toString();
     }
 

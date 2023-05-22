@@ -5,7 +5,7 @@ package ValueObjekt;
 
 public class Mitarbeiter extends User {
 
-     int mitarbeiterNummer;
+    int mitarbeiterNummer;
 
 
     public Mitarbeiter(String userName, String passwort, String nachname, String vorname, int mitarbeiterNummer) {
@@ -13,6 +13,7 @@ public class Mitarbeiter extends User {
         this.mitarbeiterNummer = mitarbeiterNummer;
 
     }
+
 
     public int getMitarbeiterNummer() {
         return mitarbeiterNummer;

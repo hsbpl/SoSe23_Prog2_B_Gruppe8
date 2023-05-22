@@ -9,64 +9,52 @@ public class Artikel {
     private int stueckzahl;
     private double preis;
     private boolean verfuegbar;
+    private int einkaufsmenge;
 
-
-    public Artikel(String bezeichnung, int stueckzahl, int artikelNummer, double preis, boolean verfuegbar) {
+    public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
         this.preis = preis;
         this.verfuegbar = verfuegbar;
-        this.stueckzahl= stueckzahl;
+        this.einkaufsmenge = 0;
     }
 
-    public Artikel(String bezeichnung, String pc_de_dernière_génération, double v, int artikelnummer) {
-    }
 
     public boolean inStock(){
         if(this.bezeichnung == bezeichnung && bestand >= 1){
-                verfuegbar = true;
-            }
-        return verfuegbar;
-        }
-
-    public boolean inStock(int n){
-        if(n == artikelNummer && bestand >= 1){
             verfuegbar = true;
         }
         return verfuegbar;
     }
 
-
+    public int getEinkaufsmenge(){
+        return einkaufsmenge;
+    }
+    public void setEinkaufsmenge(int menge){
+        einkaufsmenge += menge;
+    }
     public int getBestand() {
-
         return bestand;
     }
 
     public void setBestand(int bestand) {
-
         this.bestand = bestand;
     }
     public String getBezeichnung() {
         return bezeichnung;
     }
     public void setBezeichnung(String bezeichnung) {
-
         this.bezeichnung = bezeichnung;
-    }
-    public int getStueckzahl(){
-        return stueckzahl;
     }
 
     public double getPreis() {
         return preis;
     }
 
-
     public void setPreis(double preis) {
         this.preis = preis;
     }
-
     public void ArtikelbestandErhoehen(int zahl){
         bestand = bestand + zahl;
     }

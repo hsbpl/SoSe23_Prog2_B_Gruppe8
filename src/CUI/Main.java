@@ -12,26 +12,18 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
-import static sun.security.util.Debug.args;
+
 
 
         public class Main {
-            Scanner scan = new Scanner(System.in);
-            EShop shop = new EShop();
-            private Mitarbeiterverwaltung mv;
-            private BufferedReader input;
-            private String eingabe = "";
-            boolean ersteLogin = true;
+            static Scanner scan = new Scanner(System.in);
+            static EShop eshop = new EShop();
 
-            Main(String datei) throws IOException {
-                mv = new EShop(datei);
-                input = new BufferedReader(new InputStreamReader(System.in));
-            }
+            //List<Artikel> bestandaliste = eshop.getAlleArtikel();
 
-            List<Artikel> bestandaliste = shop.getAlleArtikel();
-            List<Kunde> registrierteKunden = shop.getAlleKundenkonten();
 
-            private void start() {
+
+            private static void start() {
 
                 //je nachdem ein anderes Menü
                 int choice;
@@ -48,9 +40,13 @@ import static sun.security.util.Debug.args;
                         String username = scan.next();
                         System.out.println("Passwort:");
                         String pw = scan.next();
-                        Kunde aktuellerKunde = shop.kundenlogin(username, pw);
+                        Kunde aktuellerKunde = eshop.kundenlogin(username, pw);
                         System.out.println(aktuellerKunde);
+
+
                         kaufen(aktuellerKunde);
+
+
 
                     } else if (scan.nextInt() == 2) {
                         System.out.println("Unsername:");
@@ -64,7 +60,7 @@ import static sun.security.util.Debug.args;
                         System.out.println("Adressse:");
                         String adr = scan.next();
                         Kunde kunde = new Kunde(username, pw, nachname, vorname, adr);
-                        System.out.println(shop.kundenregister(kunde));
+                        System.out.println(eshop.kundenregister(kunde));
                         System.out.println(kunde);
 
                         kaufen(kunde);
@@ -76,14 +72,15 @@ import static sun.security.util.Debug.args;
                     String username = scan.next();
                     System.out.println("Passwort:");
                     String pw = scan.next();
-                    System.out.println(shop.mitarbeiterEinloggen(username, pw)); // möglich sobald Mitarbeiter im Eshop ist
+                    Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(username, pw);
+                    System.out.println(aktuellerMitarbeiter);
 
-                    arbeiten();
+                    artbeitsMenue(aktuellerMitarbeiter);
                 }
             }
 
-            private void kaufen(Kunde k) {
-                shop.artikelListen();
+            private static void kaufen(Kunde k) {
+                System.out.println(eshop.artikelListen());
 
                 System.out.println("---------------------");
                 System.out.println("Was möchten Sie tun!" + "\n");
@@ -98,218 +95,161 @@ import static sun.security.util.Debug.args;
                 kundenEingabe(scan.nextInt(), k);
             }
 
-            private void kundenEingabe(int eingabe, Kunde k) {
-                List<Artikel> warenkorb = shop.meinWarenkorb();
+            private static void kundenEingabe(int eingabe, Kunde k) {
 
                 switch (eingabe) {
                     case 1:
                         System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                        Artikel gewaehlterArtikel = shop.artikelAuswaehlen(scan.next());
+                        String gewaArtikel = scan.next();
                         System.out.println("Menge des gewählten Artikels");
                         int menge = scan.nextInt();
-                        shop.reinWarenkorb(bestandaliste, gewaehlterArtikel, menge);
+                        eshop.reinWarenkorb(eshop.getAlleArtikel(), gewaArtikel, menge);
                         System.out.println("Ihr Warenkorb: ");
-                        System.out.println(shop.einkaufsliste());
+                        System.out.println(eshop.einkaufsliste());
+                        System.out.println("---------------------");
                         kaufen(k);
+                        break;
 
                     case 2:
                         System.out.println("Ihr Warenkorb: ");
-                        System.out.println(shop.einkaufsliste());
+                        System.out.println(eshop.einkaufsliste());
                         System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                        Artikel gewArtikel = shop.artikelAuswaehlen(scan.next());
+                        String  gewArtikel = scan.next();
                         System.out.println("Menge des gewählten Artikels");
                         int m = scan.nextInt();
-                        shop.rausWarenkorb(gewArtikel, m);
-                        System.out.println(shop.einkaufsliste());
+                        eshop.rausWarenkorb(gewArtikel, m);
+                        System.out.println("Ihr Warenkorb: ");
+                        System.out.println(eshop.einkaufsliste());
+                        System.out.println("---------------------");
                         kaufen(k);
+                        break;
 
                     case 3:
-                        shop.warenkorbLeeren();
+                        eshop.warenkorbLeeren();
                         System.out.println("Warenkorb wurde geleert.");
+                        System.out.println("---------------------");
                         kaufen(k);
+                        break;
 
                     case 4:
                         System.out.println("Ihr Warenkorb: ");
-                        System.out.println(shop.einkaufsliste());
+                        System.out.println(eshop.einkaufsliste());
+                        System.out.println("---------------------");
                         kaufen(k);
+                        break;
 
                     case 5:
-                        System.out.println(shop.kaufen(warenkorb, k));
+                        System.out.println(eshop.kaufen(k));
+                        eshop.warenkorbLeeren();
+                        System.out.println("---------------------");
                         start();
+                        break;
 
                     case 6:
                         start();
-
-
-                        // Einloggen Methode
-                        public void einloggen(String benutzername, String passwort, Mitarbeiter Mitarbeiter) throws IOException {
-                        User user = mv.einloggen(benutzername, passwort);
-                        if (mv.istEinloggen()) {
-                            if (mv.istMitarbeiter) {
-                                if (ersteLogin) {
-                                    System.out.println("Login als Mitarbeiter erfolgreich");
-                                }
-                                mitarbeiterMenuAnzeingen();
-                                Mitarbeiter mitarbeiter;
-                                eingabe = liesEingabe();
-                                startMitarbeiterOperation(benutzername, eingabe);
-                            } else {
-                            System.out.println("Benutzername oder Passwort falsch !!!");
-                        }
-                    }
-
-                        // Mitarbeiter auswahloptionen
-                        public void mitarbeiterMenuAnzeingen() {
-                        System.out.print("Befehle: \n  Artikel ausgeben:       'a'");
-                        System.out.print("         \n  Neuer Artikel anlegen: 'b'");
-                        System.out.print("         \n  Artikel bestand erhöhen: 'f'");
-                        System.out.print("         \n  Neuer Mitarbeiter einlegen:   'e'");
-                        System.out.print("         \n  ---------------------------");
-                        System.out.println("       \n  Beenden:                'q'");
-                        System.out.print("> ");
-                        System.out.flush();
-                    }   System.out.print("> "); // Prompt
-                        System.out.flush(); // ohne new line ausgeben*/
-                    }
-
-
-                    private String liesEingabe() throws IOException {
-                        return input.readLine();
-                    }
-                    public Mitarbeiter neuerMitarbeiter() {
-                        String benutzername = null;
-                        String passwort = null;
-                        int nummer = 0;
-                        try {
-                            System.out.print("Benutzername des Mitarbeiters eingeben: ");
-                            benutzername = liesEingabe();
-                            System.out.print("Passwort des Mitarbeiters eingeben: ");
-                            passwort = liesEingabe();
-                            System.out.print("Nummer des Mitarbeiters eingeben: ");
-                            nummer = (int) scan.nextDouble();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        Mitarbeiter mitarbeiter = new Mitarbeiter(nummer, benutzername, passwort);
-                        return mitarbeiter;
-                    }
-
-                    // Mitarbeiter Methoden auslisten
-                    public void startMitarbeiterOperation(Benutzer benutzer, String operation) throws IOException {
-                        switch (operation) {
-                            // Artikel ausgeben
-                            case "a":
-                                artikelListAnzeigen();
-                                break;
-                            // neuer Artikel anlegen
-                            case "b":
-                                Artikel artikel = neueArtikel();
-                                if (artikel != null) {
-                                    vw.getStock().artikelHinzufuegen(artikel, 1);
-                                }
-                                break;
-                            // Artikel Bestand erhöhen
-                            case "f":
-                                vw.artikelBestandErhoehen(artikelAusgeben(), 1);
-                                break;
-                            // neue Mitarbeiter einlegen
-                            case "e":
-                                Mitarbeiter mitarbeiter = neuerMitarbeiter();
-                                if (mitarbeiter != null) {
-                                    vw.mitarbeiterRegistrieren(mitarbeiter);
-                                }
-                                break;
-                            default:
-                                vw.schreibeDatei();
-                                eingabe = "q";
-                        }
-                    }
-
-                    private String liesEingabe () throws IOException {
-                        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                        return br.readLine();
-                    }
-                    private void verarbeiteEingabe (String input){
-                        switch (input) {
-                            case "a":
-                                System.out.println(this.EShop.getArtikelListe());
-                                break;
-
-                            case "b":
-                                System.out.print("Artikelnummer: ");
-                                try {
-                                    int artikelnummer = Integer.parseInt(liesEingabe());
-                                    this.EShop.removeArtikel(artikelnummer);
-                                    System.out.println("Artikel gelöscht.");
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Ungültige Eingabe!");
-                                }
-                                break;
-                            case "c":
-                                System.out.print("Artikelname: ");
-                                String name = "";
-                                try {
-                                    name = liesEingabe();
-                                } catch (IOException e1) {
-                                    System.out.println("Fehler beim Einlesen des Namens!");
-                                    break;
-                                }
-                                System.out.print("Artikelnummer: ");
-                                int artikelnummer = 0;
-                                try {
-                                    artikelnummer = Integer.parseInt(liesEingabe());
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Ungültige Eingabe!");
-                                    break;
-                                }
-                                System.out.print("Preis: ");
-                                double preis = 0;
-                                try {
-                                    preis = Double.parseDouble(liesEingabe());
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Ungültige Eingabe!");
-                                    break;
-                                }
-                                Artikel artikel = new Artikel(, artikelnummer, preis);
-                                this.EShop.addArtikel(artikel);
-                                System.out.println("Artikel hinzugefügt.");
-                                break;
-                            case "d":
-                                System.out.print("Suchbegriff: ");
-                                String suchbegriff = "";
-                                try {
-                                    suchbegriff = liesEingabe();
-                                } catch (IOException e1) {
-                                    System.out.println("Fehler beim Einlesen des Suchbegriffs!");
-                                    break;
-                                }
-                                System.out.println(this.EShop.getWarenkorb());
-                                break;
-                            case "e":
-                                System.out.println(this.EShop.getWarenkorb());
-                                break;
-                            case "f":
-                                this.EShop.leereWarenkorb();
-                                System.out.println("Warenkorb geleert.");
-                                break;
-                            case "x":
-                        }
-                    }
-
-
-                    public static void Main (String[]args) throws IOException {
-                        Main mainShop;
-                        mainShop = new Main();
-
-                        try {
-                            mainShop.start();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
+                        break;
 
                 }
+            }
+            public static void artbeitsMenue(Mitarbeiter m) {
+
+                System.out.println("Befehle: \n  Artikel ausgeben:       '1'");
+                System.out.println("Befehle: \n  Artikel alphabetisch geordnet ausgeben:       '2 '");
+                System.out.println("Befehle: \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
+                System.out.println("         \n  Neuer Artikel anlegen: '4'");
+                System.out.println("         \n  Artikel Bestand erhöhen: '5'");
+                System.out.println("         \n  Neuen Bestand verringern:   '6'");
+                System.out.println("         \n  Neuen Mitarbeiter einlegen:   '7'");
+                System.out.println("         \n  ---------------------------");
+                System.out.println("       \n  Beenden:                '8'");
+
+                arbeiten(scan.nextInt(),m);
+            }
+
+
+
+            private static void arbeiten(int eingabe, Mitarbeiter m) {
+
+
+                switch (eingabe) {
+                    case 1:
+                        System.out.println(eshop.artikelListen());
+                        break;
+
+                    case 2:
+                        eshop.alphaArtikel();
+                        System.out.println(eshop.artikelListen());
+                        artbeitsMenue(m);
+                        break;
+
+                    case 3:
+                        eshop.nummerArtikel();
+                        System.out.println(eshop.artikelListen());
+                        artbeitsMenue(m);
+                        break;
+
+                    case 4:
+                        System.out.println("Artikelname: ");
+                        String bezeichnung = scan.next();
+                        System.out.println("Artikelnummer: ");
+                        int artikelnummer = scan.nextInt();
+                        System.out.println("Bestand: ");
+                        int bestand = scan.nextInt();
+                        System.out.println("Preis: ");
+                        float preis = scan.nextFloat();
+                        System.out.println("Verfügbar: ");
+                        boolean verfügbarkeit = scan.nextBoolean();
+                        eshop.artHinzufügen(new Artikel(bezeichnung,artikelnummer,bestand,preis,verfügbarkeit));
+                        artbeitsMenue(m);
+                        break;
+
+                    case 5:
+
+                        System.out.println("Artikelname:");
+                        String artikelname =scan.next();
+                        System.out.println("Zu erhöhende Menge: ");
+                        int menge = scan.nextInt();
+                        eshop.bestandHöher(artikelname, menge);
+                        artbeitsMenue(m);
+                        break;
+
+                    case 6:
+                        System.out.println("Artikelname:");
+                        String artikelbez =scan.next();
+                        System.out.println("Zu verringernde Menge: ");
+                        int me = scan.nextInt();
+                        eshop.bestanNiedriger(artikelbez, me);
+                        artbeitsMenue(m);
+                        break;
+
+                    case 7:
+                        System.out.println("Unsername:");
+                        String username = scan.next();
+                        System.out.println("Passwort:");
+                        String pw = scan.next();
+                        System.out.println("Nachname:");
+                        String nachname = scan.next();
+                        System.out.println("Vorname:");
+                        String vorname = scan.next();
+                        System.out.println("Adressse:");
+                        int id = scan.nextInt();
+                        Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
+                        System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
+                        System.out.println(neuerMitarbeiter);
+                        artbeitsMenue(m);
+                        break;
+
+                    case 8:
+                        start();
+                        break;
+
+                }
+            }
+
+            public static void main(String[] args){
+                start();
+
+
             }
         }
 

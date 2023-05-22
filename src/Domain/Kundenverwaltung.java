@@ -11,11 +11,13 @@ import java.util.List;
 
 public class Kundenverwaltung {
     private List<Artikel> meinWarenkorb;
-    private List<Kunde> kRegistrierung;
+    private List<Kunde> kunden;
 
-    public Kundenverwaltung(){
+    //Beispielkunde
+
+    public Kundenverwaltung() {
         this.meinWarenkorb = new ArrayList<>();
-        this.kRegistrierung = new ArrayList<>(Arrays.asList(k1));
+        this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas", "Am Berg")));
     }
 
     public List<Artikel> getMeinWarenkorb() {
@@ -23,17 +25,14 @@ public class Kundenverwaltung {
     }
 
     public List<Kunde> getKRegistrierung() {
-        return kRegistrierung;
+        return kunden;
     }
 
-    //Beispielkunde
-   Kunde k1 = new Kunde("k1", "123", "Mann", "Thomas", "Am Berg");
 
-
-    public Artikel choice(List<Artikel> warenliste, String warenname){
+    public Artikel choice(List<Artikel> warenliste, String warenname) {
         Artikel art = null;
-        for(Artikel a : warenliste){
-            if(a.getBezeichnung() == warenname){
+        for (Artikel a : warenliste) {
+            if (a.getBezeichnung() == warenname) {
                 art = a;
             }
         }
@@ -43,63 +42,80 @@ public class Kundenverwaltung {
     /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
     Warenbestandsliste vorhanden sind.
      * */
-    public void reinlegen(List<Artikel> warenbestand, Artikel artikel, int menge) {
-        for (int i = 0; i < menge; i++) {
-            if (warenbestand.contains(artikel))
-                meinWarenkorb.add(artikel);
-        }
+    public void reinlegen(List<Artikel> warenbestand, String artikel, int menge) {
+        warenbestand.stream()
+                .filter(a -> a.getBezeichnung().equals(artikel))
+                .filter(a -> a.getBestand() > 0)
+                .forEach(a -> {
+                    a.setEinkaufsmenge(menge);
+                    getMeinWarenkorb().add(a);
+                });
+
     }
 
     /* Es wird geprüft ob der zu Vorhandenen Artikel im Warenkorb vorhanden ist.
     Der Artikel wird aus dem Warenkorb entfernt
-     
+
      * */
-    public void rausnehmen(Artikel artikel, int menge) {
-        for (int i = 0; i < menge; i++) {
-            meinWarenkorb.removeIf(art -> art == artikel);
+    public void rausnehmen(String artikel, int menge) {
+        for(Artikel a: meinWarenkorb) {
+            if(artikel.equals(a.getBezeichnung())){
+                int warenentnommen = a.getEinkaufsmenge() -menge;
+                a.setEinkaufsmenge(warenentnommen);
+            }
         }
     }
 
     /* Warenkorb wird geleert*/
     public void leeren() {
+        meinWarenkorb.stream()
+                .forEach(a -> {
+                    a.ArtikelbestandVerringern(a.getEinkaufsmenge());
+                });
         meinWarenkorb.clear();
     }
 
-
-    //gehört eig in die Artikelverwaltung
-    public void bestandAktualisieren(){
-        for(Artikel n : meinWarenkorb){
-            n.setBestand(n.getBestand()-1);
-          // bestandsliste.removeIf(art -> art.getBestand() <= 0); // will man den artikel ganz entfernen?
-           ;
+    public String kundenliste() {
+        String s = "";
+        for(Kunde k : kunden){
+            s+= k.getUserName() +"\n";
+        }
+        return s;
+    }
+   public void bestandAktualisieren() {
+        for (Artikel n : meinWarenkorb) {
+            n.ArtikelbestandVerringern(1);
         }
     }
+
 
 
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) {
-        if (kRegistrierung.contains(neu)) {
+        if (kunden.contains(neu)) {
             return null;
         } else {
-            kRegistrierung.add(neu);
+            kunden.add(neu);
             return neu;
         }
 
     }
-    /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
-    public Kunde login(String username, String password){
 
-        for (Kunde u : kRegistrierung) {
-            if (u.getUserName().equals(username) && u.getPasswort().equals(password)) {
-                return u;
+    /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
+    public Kunde login(String username, String password) {
+        Kunde loginstatus = null;
+        for (Kunde u : kunden) {
+            if (u.getUserName().equals(username) && u.getPasswort().equals(password) ){
+                loginstatus = u;
             }
         }
-        return null;
+        return loginstatus;
     }
+
 
     public String registrierteKunden(){
         String liste = "";
-        for(Kunde k : kRegistrierung){
+        for(Kunde k : kunden){
             liste += k.toString() +"\n";
         }
         return  liste;
@@ -108,13 +124,16 @@ public class Kundenverwaltung {
         String s = "";
         float gesamtsumme = 0;
         for(Artikel a : meinWarenkorb){
-            s += a.getBezeichnung() + " " + a.getPreis() + "\n";
-            gesamtsumme+= a.getPreis();
+            s += a.getEinkaufsmenge() + " "+ a.getBezeichnung() + " " + " " + a.getPreis() + "\n";
+            gesamtsumme+= a.getEinkaufsmenge()*a.getPreis();
         }
         return s + "\n" + gesamtsumme;
     }
 
-    }
+
+
+
+}
 
 
 

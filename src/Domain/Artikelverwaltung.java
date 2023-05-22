@@ -32,16 +32,24 @@ public class Artikelverwaltung { // fertig
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));
     }
 
-       public ArrayList<Artikel> bestandErhoehen(String artikelBezeichnung, int Anzahl) {
+    public void bestandErhoehen(String artikelBezeichnung, int Anzahl) {
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(Anzahl);
-                break;
+
             }
         }
-        return null;
+
     }
 
+    public void bestandVerringern(String artikelname, int menge) {   // kopieren oder pushen
+        for (Artikel artikel : artikelListe) {
+            if (artikel.getBezeichnung().equals(artikelname)) {
+                artikel.ArtikelbestandVerringern(menge);
+            }
+        }
+
+    }
 
     public String artikelAusgeben() {
         String s ="";

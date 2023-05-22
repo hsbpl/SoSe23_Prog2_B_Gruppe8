@@ -23,35 +23,24 @@ public class RechnungObjekt {
     }
 
 
+
     public void setKunde(Kunde kunde) {
         this.kunde = kunde;
     }
 
 
- /*
- public void setGesamtePreis(double gesamtePreis) {
-        this.gesamtePreis = gesamtePreis;
-    }
 
-   public double getGesamtpreis() {
-        double gesamtpreis = 0.0;
-        for (RechnungObjekt artikel : artikelList) {
-            gesamtpreis += artikel.getGesamtePreis();
-        }
-        return gesamtpreis;
-    }
-
-  */
 
     public String toString(){
         String einkauf = "";
         float gesamtpreis = 0;
         for(Artikel a : gekaufteArtikel){
-            einkauf ="Artikel: "+  a.getBezeichnung() + " " + a.getPreis();
-            gesamtpreis += a.getPreis();
+            einkauf +="Artikel: "+  a.getBezeichnung() + " " + a.getPreis()+ "\n";
+            gesamtpreis += a.getEinkaufsmenge()*a.getPreis();
         }
 
-        return LocalDateTime.now() + "\n" + kunde.toString() + "\n" + einkauf +"\n" + gesamtpreis+ "\n"+
-                "Vielen Dank für Ihren Einkauf!";
+        return "-------------------------------"+ "\n"+
+                LocalDateTime.now() + "\n" + kunde.toString() + "\n" + einkauf +"\n" + gesamtpreis+ "\n"+
+                "Vielen Dank für Ihren Einkauf!"+ "\n" + "-------------------------------";
     }
 }

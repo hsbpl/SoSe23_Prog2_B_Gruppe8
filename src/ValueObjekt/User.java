@@ -1,23 +1,21 @@
 package ValueObjekt;
 
 public class User {
-//Oberklasse protected
+    //Oberklasse protected
     protected String userName;
-    protected String passwort; 
+    protected String passwort;
     protected String nachname;
     protected String vorname;
 
 
-    public User(String userName, String passwort, String nachname, String vorname, String kundeAdresse) {
+    public User(String userName, String passwort, String nachname, String vorname) {
         this.userName = userName;
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
     }
 
-    public User(String userName, String passwort, String nachname, String vorname) {
 
-    }
 
     public String getUserName() {
         return userName;
@@ -27,8 +25,6 @@ public class User {
         return nachname;
     }
 
-
-
     public String getVorname() {
         return vorname;
     }
@@ -37,8 +33,9 @@ public class User {
     }
 
 
+
     public String toString() {
-       return "Username "+ userName + " Vor- und Nachname: " + vorname+" " + nachname;
+        return "-Username"+ userName + " Vor- und Nachname: " + vorname+" " + nachname;
     }
 }
 

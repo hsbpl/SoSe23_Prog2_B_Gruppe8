@@ -1,30 +1,19 @@
-package ValueObjekt;
+/*package ValueObjekt;
 
 import java.util.Date;
 
 public class Ereignis {
-    private Date datum;
     private int anzahl;
     private Artikel artikel;
-    private Mitarbeiter mitarbeiter;
-    private Kunde kunde;
+    private User user;
 
-    public Ereignis(Date datum, int anzahl, Artikel artikel, Mitarbeiter mitarbeiter, Kunde kunde) {
-        this.datum = datum;
+    public Ereignis(int anzahl, Artikel artikel, User user) {
         this.anzahl = anzahl;
         this.artikel = artikel;
-        this.mitarbeiter = mitarbeiter;
-        this.kunde = kunde;
+        this.user = user;
+
     }
 
-    // Getters und Setters
-    public Date getDatum() {
-        return datum;
-    }
-
-    public void setDatum(Date datum) {
-        this.datum = datum;
-    }
 
     public int getAnzahl() {
         return anzahl;
@@ -42,23 +31,19 @@ public class Ereignis {
         this.artikel = artikel;
     }
 
-    public Mitarbeiter getMitarbeiter() {
-        return mitarbeiter;
+    public User getUser() {
+        return user;
     }
 
-    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
-        this.mitarbeiter = mitarbeiter;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Kunde getKunde() {
-        return kunde;
-    }
-
-    public void setKunde(Kunde kunde) {
-        this.kunde = kunde;
+    public String toString(){
+        LocalTimeDate.now();
     }
 }
-
+*/
 
 
 

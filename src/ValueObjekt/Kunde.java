@@ -2,24 +2,24 @@ package ValueObjekt;
 
 public class Kunde extends User {
 
-    private String kundeAdresse;
+    private String kundenAdresse;
 
     public Kunde(String UserName, String passwort, String nachname, String vorname, String kundeAdresse) {
-         super (UserName, passwort, nachname, vorname);
-         this.kundeAdresse = kundeAdresse;
+        super (UserName, passwort, nachname, vorname);
+        this.kundenAdresse = kundeAdresse;
     }
 
-    public String getKundeAdresse() {
-        return kundeAdresse;
+    public String getKundenAdresse() {
+        return kundenAdresse;
+    }
+
+    public void setKundenAdresse(String kundeAdresse) {
+        this.kundenAdresse = kundeAdresse;
     }
 
 
-    public void setKundeAdresse(String kundeAdresse) {
-        this.kundeAdresse = kundeAdresse;
-    }
-
-
+    @Override
     public String toString() {
-        return "Kunde-" + super.toString();
+        return "Kunden-" + super.toString();
     }
 }
