@@ -9,6 +9,7 @@ import ValueObjekt.User;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -215,7 +216,7 @@ import java.util.Scanner;
                         String artikelname =scan.next();
                         System.out.println("Zu erhöhende Menge: ");
                         int menge = scan.nextInt();
-                        eshop.bestandHöher(artikelname, menge);
+                        eshop.bestandHöher(artikelname, menge, m);
                         artbeitsMenue(m);
                         break;
 
@@ -224,7 +225,7 @@ import java.util.Scanner;
                         String artikelbez =scan.next();
                         System.out.println("Zu verringernde Menge: ");
                         int me = scan.nextInt();
-                        eshop.bestanNiedriger(artikelbez, me);
+                        eshop.bestanNiedriger(artikelbez, me, m);
                         artbeitsMenue(m);
                         break;
 
@@ -255,6 +256,8 @@ import java.util.Scanner;
 
                 }
             }
+
+
 
 
             public static void main(String[] args){
