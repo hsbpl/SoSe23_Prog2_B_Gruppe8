@@ -1,6 +1,7 @@
 package Domain;
 
 import ValueObjekt.Artikel;
+import ValueObjekt.Ereignis;
 import ValueObjekt.Kunde;
 
 import java.util.ArrayList;
@@ -91,9 +92,11 @@ public class Kundenverwaltung {
         }
         return s;
     }
-    public void bestandAktualisieren() {
+    public void bestandAktualisieren(Kunde k) {
         for (Artikel n : meinWarenkorb) {
+            Ereignis e = new Ereignis("Bestand verringert",n.getEinkaufsmenge(),n,k);
             n.ArtikelbestandVerringern(0);
+
         }
     }
 

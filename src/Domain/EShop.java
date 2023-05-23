@@ -105,13 +105,13 @@ public class EShop {
         return kv.choice(getAlleArtikel(), a);
     }
 
-    public void betsandAkt(){
-        kv.bestandAktualisieren();
+    public void betsandAkt(Kunde kunde){
+        kv.bestandAktualisieren(kunde);
     }
 
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
     public String kaufen(Kunde kunde){
-        betsandAkt();
+        betsandAkt(kunde);
         RechnungObjekt rechnung = new RechnungObjekt(kunde,meinWarenkorb());
         return rechnung.toString();
     }
