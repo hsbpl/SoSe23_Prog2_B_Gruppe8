@@ -43,7 +43,7 @@ public class User {
 
 
     public String toString() {
-        return "-Username"+ userName + " Vor- und Nachname: " + vorname+" " + nachname;
+        return "Username: "+ userName + "\n" +"Vor- und Nachname: " + vorname+" " + nachname;
     }
 }
 

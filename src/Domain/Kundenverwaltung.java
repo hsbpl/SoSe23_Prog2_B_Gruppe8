@@ -16,7 +16,7 @@ public class Kundenverwaltung {
 
     public Kundenverwaltung() {
         this.meinWarenkorb = new ArrayList<>();
-        this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg" )));
+        this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg")));
     }
 
     public List<Artikel> getMeinWarenkorb() {
@@ -65,15 +65,25 @@ public class Kundenverwaltung {
                 });
     }
 
+
+
+
     /* Warenkorb wird geleert*/
-    public void leeren() {
+    public void beimKaufleeren() {
         meinWarenkorb.stream()
                 .forEach(a -> {
-                    a.artikelbestandVerringern(a.getEinkaufsmenge());
+                    a.ArtikelbestandVerringern(a.getEinkaufsmenge());
                 });
         meinWarenkorb.clear();
     }
 
+    public void leeren() {
+        meinWarenkorb.stream()
+                .forEach(a -> {
+                    a.setEinkaufsmenge(0);
+                });
+        meinWarenkorb.clear();
+    }
     public String kundenliste() {
         String s = "";
         for(Kunde k : kunden){
@@ -81,7 +91,7 @@ public class Kundenverwaltung {
         }
         return s;
     }
-   public void bestandAktualisieren() {
+    public void bestandAktualisieren() {
         for (Artikel n : meinWarenkorb) {
             n.artikelbestandVerringern(0);
         }

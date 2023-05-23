@@ -41,7 +41,7 @@ public class Artikel {
         return einkaufsmenge;
     }
     public void setEinkaufsmenge(int menge){
-        einkaufsmenge += menge;
+        einkaufsmenge = menge;
     }
     public int getBestand() {
         return bestand;
