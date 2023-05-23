@@ -92,11 +92,11 @@ public class Kundenverwaltung {
         }
         return s;
     }
-    public void bestandAktualisieren(Kunde k) {
+    public void bestandAktualisieren(Kunde k, List <Ereignis> ereignisse) {
         for (Artikel n : meinWarenkorb) {
             Ereignis e = new Ereignis("Bestand verringert",n.getEinkaufsmenge(),n,k);
             n.ArtikelbestandVerringern(0);
-
+            ereignisse.add(e);
         }
     }
 

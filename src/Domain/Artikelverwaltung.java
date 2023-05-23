@@ -85,6 +85,13 @@ public class Artikelverwaltung { // fertig
         return s;
     }
 
+    public List<Ereignis> getBestandsänderung() {
+        return bestandsänderung;
+    }
+
+    public void setArtikelListe(List<Artikel> artikelListe) {
+        this.artikelListe = artikelListe;
+    }
     public String ereignisseAusgeben() {
         String s ="";
         for (Ereignis a : bestandsänderung) {

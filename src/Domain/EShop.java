@@ -106,7 +106,7 @@ public class EShop {
     }
 
     public void betsandAkt(Kunde kunde){
-        kv.bestandAktualisieren(kunde);
+        kv.bestandAktualisieren(kunde, av.getBestandsänderung());
     }
 
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
