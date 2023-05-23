@@ -66,8 +66,12 @@ public class Artikel {
         return artikelNummer;
     }
 
-
     public String toString() {
-        return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + preis + " Bestand: " +bestand;
+        return "Artikel{" +
+                "bezeichnung='" + bezeichnung + '\'' +
+                ", artikelnummer=" + artikelNummer +
+                ", bestand=" + bestand +
+                '}';
     }
+
 }

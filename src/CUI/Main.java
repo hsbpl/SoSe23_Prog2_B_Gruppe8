@@ -25,6 +25,8 @@ import java.util.Scanner;
 
             private static void start() {
 
+                System.out.println("Welcome to our E-Shop : \n");
+
                 //je nachdem ein anderes Menü
                 int choice;
                 System.out.println("Wählen Sie eine Option");
@@ -245,6 +247,7 @@ import java.util.Scanner;
 
                 }
             }
+
 
             public static void main(String[] args){
                 start();
