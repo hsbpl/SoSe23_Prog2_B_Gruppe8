@@ -5,14 +5,6 @@ import ValueObjekt.*;
 import java.util.*;
 
 public class EShop {
-    private List<Mitarbeiter> mitarbeiterList ;
-    private List<Artikel> artikelList ;
-    private List<Kunde> kundeList ;
-
-        // ToDO: ArtikelVerwaltung initialisieren (mit beispielartikel)
-        // ToDO: Dasselbe mit Kunde und Mitarbeiterverwalunt
-
-
     Artikelverwaltung av;
     Kundenverwaltung kv;
     Mitarbeiterverwaltung mv;
@@ -46,7 +38,7 @@ public EShop(){
 
     }
 
-    public Mitarbeiter mitarbeiterLogin(String passwort, String username){
+    public Mitarbeiter mitarbeiterLogin(String username, String passwort){
         return mv.mitarbeiterEinloggen(username, passwort);
     }
     public String artikelListen(){
@@ -110,6 +102,12 @@ public EShop(){
         betsandAkt();
         RechnungObjekt rechnung = new RechnungObjekt(kunde,meinWarenkorb());
         return rechnung.toString();
+    }
+    public String ausgabeKundenkonten(){
+        return kv.kundenliste();
+    }
+    public String ausgabeMitarbeiterkonten() {
+        return mv.registrierteMitarbeiter();
     }
 
     public String einkaufsliste(){

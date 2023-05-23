@@ -22,15 +22,14 @@ public class Mitarbeiterverwaltung{
 
 
     //  Mitarbeiter einloggen
-    public Mitarbeiter mitarbeiterEinloggen(String benutzername, String passwort) {
-        Mitarbeiter m = null;
-        for (Mitarbeiter mitarbeiter : listMitarbeiter) {
-            if (mitarbeiter.getUserName().equals(benutzername) && mitarbeiter.getPasswort().equals(passwort)) {
-                m = mitarbeiter;
+    public Mitarbeiter mitarbeiterEinloggen(String username, String passwort) {
+        Mitarbeiter loginstatus = null;
+        for (Mitarbeiter m : listMitarbeiter) {
+            if (m.getUserName().equals(username) && m.getPasswort().equals(passwort)){
+                loginstatus = m;
             }
-
         }
-        return m;
+        return loginstatus;
     }
 
     //  Methode fügt einen neuen Mitarbeiter zur Mitarbeiterliste hinzu
@@ -42,6 +41,15 @@ public class Mitarbeiterverwaltung{
             return neu;
         }
     }
+
+    public String registrierteMitarbeiter(){
+        String liste = "";
+        for(Mitarbeiter n : listMitarbeiter){
+            liste += n.toString() +"\n";
+        }
+        return  liste;
+    }
+
 }
 
 
