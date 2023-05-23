@@ -72,7 +72,7 @@ public class Kundenverwaltung {
     public void beimKaufleeren() {
         meinWarenkorb.stream()
                 .forEach(a -> {
-                    a.ArtikelbestandVerringern(a.getEinkaufsmenge());
+                    a.artikelbestandVerringern(a.getEinkaufsmenge());
                 });
         meinWarenkorb.clear();
     }
