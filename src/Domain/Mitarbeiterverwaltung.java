@@ -8,18 +8,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Mitarbeiterverwaltung{
+public class Mitarbeiterverwaltung {
     private List<Mitarbeiter> listMitarbeiter;
 
     public Mitarbeiterverwaltung() {
-        this.listMitarbeiter = new ArrayList<>(Arrays.asList(m1));
+        this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1", 001)));
     }
-    Mitarbeiter m1 = new Mitarbeiter("m1", "123", "Mitarbeiter", "m1", 001);
 
     public List<Mitarbeiter> getListMitarbeiter() {
         return listMitarbeiter;
     }
-
 
     //  Mitarbeiter einloggen
     public Mitarbeiter mitarbeiterEinloggen(String username, String passwort) {
@@ -49,7 +47,6 @@ public class Mitarbeiterverwaltung{
         }
         return  liste;
     }
-
 }
 
 

@@ -1,7 +1,6 @@
 package ValueObjekt;
 
 public class User {
-    //Oberklasse protected
     protected String userName;
     protected String passwort;
     protected String nachname;
@@ -13,7 +12,7 @@ public class User {
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
-        this.idNummer=idNummer;
+        this.idNummer= idNummer;
     }
 
 
@@ -24,7 +23,6 @@ public class User {
     public void setIdNummer(int idNummer) {
         this.idNummer = idNummer;
     }
-
     public String getUserName() {
         return userName;
     }
@@ -43,7 +41,7 @@ public class User {
 
 
     public String toString() {
-        return "Username: "+ userName + "\n" +"Vor- und Nachname: " + vorname+" " + nachname;
+        return "Username: "+ userName + "\n" + " Name: " + vorname+" " + nachname;
     }
 }
 

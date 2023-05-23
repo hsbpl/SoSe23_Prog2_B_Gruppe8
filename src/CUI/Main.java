@@ -23,8 +23,6 @@ import java.util.Scanner;
 
             private static void start() {
 
-                System.out.println("Welcome to our E-Shop : \n");
-
                 //je nachdem ein anderes Menü
 
                 int choice;
@@ -50,16 +48,22 @@ import java.util.Scanner;
                     } else if (scan.nextInt() == 2) {
                         System.out.println("Unsername:");
                         String username = scan.next();
+
                         System.out.println("Passwort:");
                         String pw = scan.next();
+
                         System.out.println("Nachname:");
                         String nachname = scan.next();
+
                         System.out.println("Vorname:");
                         String vorname = scan.next();
+
+                        System.out.println("id: ");
                         int id = scan.nextInt();
-                        System.out.println(id);
+
                         System.out.println("Adressse:");
                         String adr = scan.next();
+
                         Kunde kunde = new Kunde(username, pw, nachname, vorname,id, adr);
                         System.out.println(eshop.kundenregister(kunde));
                         System.out.println(kunde);
@@ -185,27 +189,21 @@ import java.util.Scanner;
                         break;
 
                     case 3:
-                        eshop.nummerArtikel();
-                        System.out.println(eshop.artikelListen());
+                        System.out.println(eshop.nummerArtikel());
                         artbeitsMenue(m);
                         break;
 
                     case 4:
                         System.out.println("Artikelname: ");
                         String bezeichnung = scan.next();
-
                         System.out.println("Artikelnummer: ");
                         int artikelnummer = scan.nextInt();
-
                         System.out.println("Bestand: ");
                         int bestand = scan.nextInt();
-
                         System.out.println("Preis: ");
                         double preis = scan.nextDouble();
-
                         System.out.println("Verfügbar: ");
                         boolean verfügbarkeit = true;
-
                         eshop.artHinzufügen(new Artikel(bezeichnung,artikelnummer,bestand,preis,verfügbarkeit));
                         artbeitsMenue(m);
                         break;
@@ -232,21 +230,16 @@ import java.util.Scanner;
                     case 7:
                         System.out.println("Unsername:");
                         String username = scan.next();
-
                         System.out.println("Passwort:");
                         String pw = scan.next();
-
                         System.out.println("Nachname:");
                         String nachname = scan.next();
-
                         System.out.println("Vorname:");
                         String vorname = scan.next();
-
                         System.out.println("Mitarbeiternummer:");
                         int id = scan.nextInt();
                         Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
                         System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
-                        System.out.println(neuerMitarbeiter);
                         artbeitsMenue(m);
                         break;
 
@@ -257,12 +250,18 @@ import java.util.Scanner;
                 }
             }
 
-
-
-
             public static void main(String[] args){
                 start();
+       /* System.out.println(eshop.artikelListen());
+        eshop.bestandHöher("Chips", 200, eshop.mitarbeiterLogin("m1", "123"));
+        System.out.println(eshop.artikelListen());
+        System.out.println(eshop.ereignisListeAusgeben());
 
+        */
+                //System.out.println(eshop.nummerArtikel());
+
+                //System.out.println(eshop.mitarbeiterLogin("m1", "123"));
+                //System.out.println(eshop.kundenlogin("k1", "abc"));
 
             }
         }

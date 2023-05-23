@@ -9,7 +9,8 @@ public class EShop {
     Artikelverwaltung av;
     Kundenverwaltung kv;
     Mitarbeiterverwaltung mv;
-    public EShop() {
+
+    public EShop(){
         this.av = new Artikelverwaltung();
         this.mv = new Mitarbeiterverwaltung();
         this.kv = new Kundenverwaltung();
@@ -51,16 +52,16 @@ public class EShop {
         av.bestandErhoehen(artikelname, menge, u);
     }
 
-    public void bestanNiedriger(String artikelname, int menge, User u){
+    public void bestanNiedriger(String artikelname, int menge, User u ){
         av.bestandVerringern(artikelname, menge, u);
     }
 
     public String alphaArtikel(){
-       return av.artikelSortierenNachBezeichnung();
+        return av.artikelSortierenNachBezeichnung();
     }
 
     public String nummerArtikel(){
-       return av.artikelSortierenNachArtikelnummer();
+        return av.artikelSortierenNachArtikelnummer();
     }
 
     public void rausSortiment(int artikelnummer){
@@ -74,6 +75,10 @@ public class EShop {
     public String reinWarenkorb(List<Artikel> warenbestand, String artikel, int menge){
         kv.reinlegen(warenbestand,artikel, menge);
         return kv.toString();
+    }
+
+    public String ereignisListeAusgeben(){
+        return av.ereignisseAusgeben();
     }
 
     //Artikel aus dem Warenkorb nehmen

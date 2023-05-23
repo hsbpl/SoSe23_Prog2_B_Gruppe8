@@ -20,14 +20,6 @@ public class Artikel {
         this.einkaufsmenge = 0;
     }
 
-
-    public boolean inStock(){
-        if(this.bezeichnung == bezeichnung && this.bestand >= 1){
-            verfuegbar = true;
-        }
-        return verfuegbar;
-    }
-
     public boolean mengeVerfügbar(int m){
         if(this.bezeichnung == bezeichnung && this.einkaufsmenge >= m){
             verfuegbar = true;
@@ -35,6 +27,12 @@ public class Artikel {
         return verfuegbar;
     }
 
+    public boolean inStock(){
+        if(this.bezeichnung == bezeichnung && bestand >= 1){
+            verfuegbar = true;
+        }
+        return verfuegbar;
+    }
 
 
     public int getEinkaufsmenge(){
@@ -64,12 +62,13 @@ public class Artikel {
     public void setPreis(double preis) {
         this.preis = preis;
     }
-    public void artikelbestandErhoehen(int zahl){
+    public void ArtikelbestandErhoehen(int zahl){
         bestand = bestand + zahl;
     }
-    public void artikelbestandVerringern(int zahl){
+    public void ArtikelbestandVerringern( int zahl){
         bestand = bestand - zahl;
     }
+
     public void mengeErhoehen(int m){
         einkaufsmenge+= m;
     }
@@ -81,12 +80,9 @@ public class Artikel {
         return artikelNummer;
     }
 
+
     public String toString() {
-        return "Artikel{" +
-                "bezeichnung='" + bezeichnung + '\'' +
-                ", artikelnummer=" + artikelNummer +
-                ", bestand=" + bestand +
-                '}';
+        return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + preis + " Bestand: " +bestand;
     }
 
 }
