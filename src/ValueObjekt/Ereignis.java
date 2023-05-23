@@ -1,13 +1,16 @@
-/*package ValueObjekt;
+package ValueObjekt;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Ereignis {
+    String aktion;
     private int anzahl;
     private Artikel artikel;
     private User user;
 
-    public Ereignis(int anzahl, Artikel artikel, User user) {
+    public Ereignis(String aktion, int anzahl, Artikel artikel, User user) {
+        this.aktion = aktion;
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
@@ -38,12 +41,16 @@ public class Ereignis {
     public void setUser(User user) {
         this.user = user;
     }
+    public User getUser(User user){
+        return user;
+    }
 
     public String toString(){
-        LocalTimeDate.now();
+    return "Datum: " + LocalDateTime.now() +" "+ aktion + "um" + anzahl + "durchgeführt über" +
+            user + "Neuer Bestand: " + artikel.getBezeichnung()+ "" + artikel.getBestand();
     }
 }
-*/
+
 
 
 

@@ -47,20 +47,20 @@ public class EShop {
         av.artikelHinzufuegen(a);
     }
 
-    public void bestandHöher(String artikelname, int menge){
-        av.bestandErhoehen(artikelname, menge);
+    public void bestandHöher(String artikelname, int menge, User u){
+        av.bestandErhoehen(artikelname, menge, u);
     }
 
-    public void bestanNiedriger(String artikelname, int menge){
-        av.bestandVerringern(artikelname, menge);
+    public void bestanNiedriger(String artikelname, int menge, User u){
+        av.bestandVerringern(artikelname, menge, u);
     }
 
-    public void alphaArtikel(){
-        av.artikelSortierenNachBezeichnung();
+    public String alphaArtikel(){
+       return av.artikelSortierenNachBezeichnung();
     }
 
-    public void nummerArtikel(){
-        av.artikelSortierenNachArtikelnummer();
+    public String nummerArtikel(){
+       return av.artikelSortierenNachArtikelnummer();
     }
 
     public void rausSortiment(int artikelnummer){

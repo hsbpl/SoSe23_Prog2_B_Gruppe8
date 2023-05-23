@@ -1,6 +1,8 @@
 package Domain;
 
 import ValueObjekt.Artikel;
+import ValueObjekt.Ereignis;
+import ValueObjekt.User;
 
 
 import java.util.*;
@@ -9,10 +11,13 @@ import java.util.*;
 public class Artikelverwaltung { // fertig
     //Lagerwerwaltung zusammenführen artikel liste
 
+    private List<Ereignis> bestandsänderung;
+
     private List<Artikel> artikelListe;
 
     public Artikelverwaltung() {
-        artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl));
+        artikelListe = new ArrayList<>(Arrays.asList(cola, kuchen, chips, wasser, mehl));
+        bestandsänderung = new ArrayList();
     }
     Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2f, true);
     Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99f, true);
@@ -24,28 +29,44 @@ public class Artikelverwaltung { // fertig
         artikelListe.add(artikel);
     }
 
-    public void artikelSortierenNachBezeichnung() {
+    public String artikelSortierenNachBezeichnung() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
+        String s = "";
+        for (Artikel artikel : artikelListe) {
+            s += artikel.toString() + "\n";
+        }
+            return s;
     }
 
-    public void artikelSortierenNachArtikelnummer() {
+
+    public String artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));
+        String s = "";
+        for (Artikel artikel : artikelListe) {
+            s += artikel.toString() + "\n";
+        }
+        return s;
     }
 
-    public void bestandErhoehen(String artikelBezeichnung, int Anzahl) {
+
+    public void bestandErhoehen(String artikelBezeichnung, int anzahl, User u) {
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
-                artikel.artikelbestandErhoehen(Anzahl);
+                artikel.artikelbestandErhoehen(anzahl);
+                Ereignis e = new Ereignis("Bestand Erhöht", anzahl, artikel, u);
+                bestandsänderung.add(e);
 
             }
         }
 
     }
 
-    public void bestandVerringern(String artikelname, int menge) {   // kopieren oder pushen
+    public void bestandVerringern(String artikelname, int menge, User u) {   // kopieren oder pushen
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelname)) {
                 artikel.artikelbestandVerringern(menge);
+                Ereignis e = new Ereignis("Bestand Verringert", menge, artikel, u);
+                bestandsänderung.add(e);
             }
         }
 
@@ -58,6 +79,14 @@ public class Artikelverwaltung { // fertig
             s +=  artikel.toString() + "\n";
         }
         return s;
+    }
+    public String ereignisseAusgeben(){
+        String s = "";
+        for (Ereignis a : bestandsänderung){
+            s += a.toString() + "\n";
+        }
+        return s;
+
     }
 
     public void setArtikelListe(ArrayList<Artikel> artikelListe) {
@@ -89,6 +118,7 @@ public class Artikelverwaltung { // fertig
         }
         artikelListe.remove(artikelToRemove);
     }
+
 }
 
 
