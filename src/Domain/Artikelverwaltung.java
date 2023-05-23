@@ -35,7 +35,7 @@ public class Artikelverwaltung { // fertig
     public void bestandErhoehen(String artikelBezeichnung, int Anzahl) {
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
-                artikel.ArtikelbestandErhoehen(Anzahl);
+                artikel.artikelbestandErhoehen(Anzahl);
 
             }
         }
@@ -45,7 +45,7 @@ public class Artikelverwaltung { // fertig
     public void bestandVerringern(String artikelname, int menge) {   // kopieren oder pushen
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelname)) {
-                artikel.ArtikelbestandVerringern(menge);
+                artikel.artikelbestandVerringern(menge);
             }
         }
 

@@ -2,7 +2,6 @@ package Domain;
 
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
-import ValueObjekt.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +16,7 @@ public class Kundenverwaltung {
 
     public Kundenverwaltung() {
         this.meinWarenkorb = new ArrayList<>();
-        this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas", "Am Berg")));
+        this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg" )));
     }
 
     public List<Artikel> getMeinWarenkorb() {
@@ -45,9 +44,9 @@ public class Kundenverwaltung {
     public void reinlegen(List<Artikel> warenbestand, String artikel, int menge) {
         warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
-                .filter(a -> a.getBestand() > 0)
+                .filter(a -> a.inStock() == true)
                 .forEach(a -> {
-                    a.setEinkaufsmenge(menge);
+                    a.mengeErhoehen(menge);
                     getMeinWarenkorb().add(a);
                 });
 
@@ -58,19 +57,19 @@ public class Kundenverwaltung {
 
      * */
     public void rausnehmen(String artikel, int menge) {
-        for(Artikel a: meinWarenkorb) {
-            if(artikel.equals(a.getBezeichnung())){
-                int warenentnommen = a.getEinkaufsmenge() -menge;
-                a.setEinkaufsmenge(warenentnommen);
-            }
-        }
+        meinWarenkorb.stream()
+                .filter(a -> a.getBezeichnung().equals(artikel))
+                .filter(a -> a.mengeVerfügbar(menge) == true)
+                .forEach(a -> {
+                    a.mengeVerringern(menge);
+                });
     }
 
     /* Warenkorb wird geleert*/
     public void leeren() {
         meinWarenkorb.stream()
                 .forEach(a -> {
-                    a.ArtikelbestandVerringern(a.getEinkaufsmenge());
+                    a.artikelbestandVerringern(a.getEinkaufsmenge());
                 });
         meinWarenkorb.clear();
     }
@@ -84,7 +83,7 @@ public class Kundenverwaltung {
     }
    public void bestandAktualisieren() {
         for (Artikel n : meinWarenkorb) {
-            n.ArtikelbestandVerringern(1);
+            n.artikelbestandVerringern(0);
         }
     }
 

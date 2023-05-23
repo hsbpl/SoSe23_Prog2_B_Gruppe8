@@ -57,9 +57,11 @@ import java.util.Scanner;
                         String nachname = scan.next();
                         System.out.println("Vorname:");
                         String vorname = scan.next();
+                        int id = scan.nextInt();
+                        System.out.println(id);
                         System.out.println("Adressse:");
                         String adr = scan.next();
-                        Kunde kunde = new Kunde(username, pw, nachname, vorname, adr);
+                        Kunde kunde = new Kunde(username, pw, nachname, vorname,id, adr);
                         System.out.println(eshop.kundenregister(kunde));
                         System.out.println(kunde);
 

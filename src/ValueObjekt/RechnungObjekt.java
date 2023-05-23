@@ -33,14 +33,19 @@ public class RechnungObjekt {
 
     public String toString(){
         String einkauf = "";
-        float gesamtpreis = 0;
+        double gesamtpreis = 0;
+        double zwischensumme = 0;
         for(Artikel a : gekaufteArtikel){
-            einkauf +="Artikel: "+  a.getBezeichnung() + " " + a.getPreis()+ "\n";
+            zwischensumme = a.getEinkaufsmenge()*a.getPreis();
+            einkauf +="Artikel: "+ a.getEinkaufsmenge()+"st. "+  a.getBezeichnung() + " " + a.getPreis()+"€" +  "_____" +zwischensumme+"\n";
             gesamtpreis += a.getEinkaufsmenge()*a.getPreis();
         }
 
         return "-------------------------------"+ "\n"+
-                LocalDateTime.now() + "\n" + kunde.toString() + "\n" + einkauf +"\n" + gesamtpreis+ "\n"+
+                "Ihre Rechnung"+"\n"+
+                LocalDateTime.now() + "\n" + kunde.toString() + "\n" + einkauf +"\n" + "_____" + gesamtpreis+"€"+ "\n" +
                 "Vielen Dank für Ihren Einkauf!"+ "\n" + "-------------------------------";
     }
+
+
 }
