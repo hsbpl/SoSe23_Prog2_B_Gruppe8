@@ -146,6 +146,7 @@ import java.util.Scanner;
                     case 5:
                         System.out.println(eshop.kaufen(k));
                         eshop.kaufenUndWarenkorbLeeren();
+                        //System.out.println(eshop.ereignisListeAusgeben());
                         System.out.println("---------------------");
                         start();
                         break;
@@ -215,6 +216,7 @@ import java.util.Scanner;
                         System.out.println("Zu erhöhende Menge: ");
                         int menge = scan.nextInt();
                         eshop.bestandHöher(artikelname, menge, m);
+                        //System.out.println(eshop.ereignisListeAusgeben());
                         artbeitsMenue(m);
                         break;
 
@@ -224,6 +226,7 @@ import java.util.Scanner;
                         System.out.println("Zu verringernde Menge: ");
                         int me = scan.nextInt();
                         eshop.bestanNiedriger(artikelbez, me, m);
+                        //System.out.println(eshop.ereignisListeAusgeben());
                         artbeitsMenue(m);
                         break;
 
@@ -261,6 +264,7 @@ import java.util.Scanner;
                 //System.out.println(eshop.nummerArtikel());
 
                 //System.out.println(eshop.mitarbeiterLogin("m1", "123"));
+
                 //System.out.println(eshop.kundenlogin("k1", "abc"));
 
             }
