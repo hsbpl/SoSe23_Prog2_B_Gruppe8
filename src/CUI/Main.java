@@ -19,15 +19,13 @@ import java.util.Scanner;
             static Scanner scan = new Scanner(System.in);
             static EShop eshop = new EShop();
 
-            //List<Artikel> bestandaliste = eshop.getAlleArtikel();
-
-
 
             private static void start() {
 
                 System.out.println("Welcome to our E-Shop : \n");
 
                 //je nachdem ein anderes Menü
+
                 int choice;
                 System.out.println("Wählen Sie eine Option");
                 System.out.println("1. Ich bin ein Kunde.");
@@ -48,8 +46,6 @@ import java.util.Scanner;
 
                         kaufen(aktuellerKunde);
 
-
-
                     } else if (scan.nextInt() == 2) {
                         System.out.println("Unsername:");
                         String username = scan.next();
@@ -59,9 +55,11 @@ import java.util.Scanner;
                         String nachname = scan.next();
                         System.out.println("Vorname:");
                         String vorname = scan.next();
+                        int id = scan.nextInt();
+                        System.out.println(id);
                         System.out.println("Adressse:");
                         String adr = scan.next();
-                        Kunde kunde = new Kunde(username, pw, nachname, vorname, adr);
+                        Kunde kunde = new Kunde(username, pw, nachname, vorname,id, adr);
                         System.out.println(eshop.kundenregister(kunde));
                         System.out.println(kunde);
 
@@ -85,7 +83,7 @@ import java.util.Scanner;
                 System.out.println(eshop.artikelListen());
 
                 System.out.println("---------------------");
-                System.out.println("Was möchten Sie tun!" + "\n");
+                System.out.println("Was möchten Sie tun?" + "\n");
                 System.out.println("Artikel in den Warenkorb legen: 1");
                 System.out.println("Artikel aus dem Warenkorb entfernen: 2");
                 System.out.println("Warenkorb leeren: 3");
@@ -102,10 +100,10 @@ import java.util.Scanner;
                 switch (eingabe) {
                     case 1:
                         System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                        String gewaArtikel = scan.next();
+                        String gewaehlterArtikel = scan.next();
                         System.out.println("Menge des gewählten Artikels");
                         int menge = scan.nextInt();
-                        eshop.reinWarenkorb(eshop.getAlleArtikel(), gewaArtikel, menge);
+                        eshop.reinWarenkorb(eshop.getAlleArtikel(), gewaehlterArtikel, menge);
                         System.out.println("Ihr Warenkorb: ");
                         System.out.println(eshop.einkaufsliste());
                         System.out.println("---------------------");
@@ -142,7 +140,7 @@ import java.util.Scanner;
 
                     case 5:
                         System.out.println(eshop.kaufen(k));
-                        eshop.warenkorbLeeren();
+                        eshop.kaufenUndWarenkorbLeeren();
                         System.out.println("---------------------");
                         start();
                         break;
@@ -155,13 +153,13 @@ import java.util.Scanner;
             }
             public static void artbeitsMenue(Mitarbeiter m) {
 
-                System.out.println("Befehle: \n  Artikel ausgeben:       '1'");
-                System.out.println("Befehle: \n  Artikel alphabetisch geordnet ausgeben:       '2 '");
-                System.out.println("Befehle: \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
-                System.out.println("         \n  Neuer Artikel anlegen: '4'");
-                System.out.println("         \n  Artikel Bestand erhöhen: '5'");
-                System.out.println("         \n  Neuen Bestand verringern:   '6'");
-                System.out.println("         \n  Neuen Mitarbeiter einlegen:   '7'");
+                System.out.println("         \n  Artikel ausgeben:       '1'");
+                System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2 '");
+                System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
+                System.out.println("         \n  Neuen Artikel anlegen: '4'");
+                System.out.println("         \n  Bestand erhöhen: '5'");
+                System.out.println("         \n  Bestand verringern:   '6'");
+                System.out.println("         \n  Neuen Mitarbeiter anlegen:   '7'");
                 System.out.println("         \n  ---------------------------");
                 System.out.println("       \n  Beenden:                '8'");
 
@@ -176,6 +174,7 @@ import java.util.Scanner;
                 switch (eingabe) {
                     case 1:
                         System.out.println(eshop.artikelListen());
+                        artbeitsMenue(m);
                         break;
 
                     case 2:
@@ -193,14 +192,19 @@ import java.util.Scanner;
                     case 4:
                         System.out.println("Artikelname: ");
                         String bezeichnung = scan.next();
+
                         System.out.println("Artikelnummer: ");
                         int artikelnummer = scan.nextInt();
+
                         System.out.println("Bestand: ");
                         int bestand = scan.nextInt();
+
                         System.out.println("Preis: ");
-                        float preis = scan.nextFloat();
+                        double preis = scan.nextDouble();
+
                         System.out.println("Verfügbar: ");
-                        boolean verfügbarkeit = scan.nextBoolean();
+                        boolean verfügbarkeit = true;
+
                         eshop.artHinzufügen(new Artikel(bezeichnung,artikelnummer,bestand,preis,verfügbarkeit));
                         artbeitsMenue(m);
                         break;
@@ -227,13 +231,17 @@ import java.util.Scanner;
                     case 7:
                         System.out.println("Unsername:");
                         String username = scan.next();
+
                         System.out.println("Passwort:");
                         String pw = scan.next();
+
                         System.out.println("Nachname:");
                         String nachname = scan.next();
+
                         System.out.println("Vorname:");
                         String vorname = scan.next();
-                        System.out.println("Adressse:");
+
+                        System.out.println("Mitarbeiternummer:");
                         int id = scan.nextInt();
                         Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
                         System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));

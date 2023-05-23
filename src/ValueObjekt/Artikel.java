@@ -22,17 +22,26 @@ public class Artikel {
 
 
     public boolean inStock(){
-        if(this.bezeichnung == bezeichnung && bestand >= 1){
+        if(this.bezeichnung == bezeichnung && this.bestand >= 1){
             verfuegbar = true;
         }
         return verfuegbar;
     }
 
+    public boolean mengeVerfügbar(int m){
+        if(this.bezeichnung == bezeichnung && this.einkaufsmenge >= m){
+            verfuegbar = true;
+        }
+        return verfuegbar;
+    }
+
+
+
     public int getEinkaufsmenge(){
         return einkaufsmenge;
     }
     public void setEinkaufsmenge(int menge){
-        einkaufsmenge += menge;
+        einkaufsmenge = menge;
     }
     public int getBestand() {
         return bestand;
@@ -55,11 +64,17 @@ public class Artikel {
     public void setPreis(double preis) {
         this.preis = preis;
     }
-    public void ArtikelbestandErhoehen(int zahl){
+    public void artikelbestandErhoehen(int zahl){
         bestand = bestand + zahl;
     }
-    public void ArtikelbestandVerringern( int zahl){
+    public void artikelbestandVerringern(int zahl){
         bestand = bestand - zahl;
+    }
+    public void mengeErhoehen(int m){
+        einkaufsmenge+= m;
+    }
+    public void mengeVerringern( int m){
+        einkaufsmenge-=  m;
     }
 
     public int  getArtikelNummer() {
