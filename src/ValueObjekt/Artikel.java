@@ -6,7 +6,6 @@ public class Artikel {
     private String bezeichnung;
     private int artikelNummer;
     private int bestand;
-    private int stueckzahl;
     private double preis;
     private boolean verfuegbar;
     private int einkaufsmenge;

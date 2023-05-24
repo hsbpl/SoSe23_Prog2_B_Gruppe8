@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Ereignis {
+    // Datum als Atribut
     private String aktion;
     private int anzahl;
     private Artikel artikel;
     private User user;
+
+    //enum ereignistyp{Auslagerung, Einlagerung};
 
     public Ereignis(String aktion, int anzahl, Artikel artikel, User user) {
         this.aktion = aktion;

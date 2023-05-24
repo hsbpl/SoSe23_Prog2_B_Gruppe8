@@ -116,17 +116,7 @@ import java.util.Scanner;
                         break;
 
                     case 2:
-                        System.out.println("Ihr Warenkorb: ");
-                        System.out.println(eshop.einkaufsliste());
-                        System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                        String  gewArtikel = scan.next();
-                        System.out.println("Menge des gewählten Artikels");
-                        int m = scan.nextInt();
-                        eshop.rausWarenkorb(gewArtikel, m);
-                        System.out.println("Ihr Warenkorb: ");
-                        System.out.println(eshop.einkaufsliste());
-                        System.out.println("---------------------");
-                        kaufen(k);
+                        warenkorbAusgeben(k);
                         break;
 
                     case 3:
@@ -146,7 +136,7 @@ import java.util.Scanner;
                     case 5:
                         System.out.println(eshop.kaufen(k));
                         eshop.kaufenUndWarenkorbLeeren();
-                        //System.out.println(eshop.ereignisListeAusgeben());
+                        System.out.println(eshop.ereignisListeAusgeben());
                         System.out.println("---------------------");
                         start();
                         break;
@@ -157,6 +147,21 @@ import java.util.Scanner;
 
                 }
             }
+
+            private static void warenkorbAusgeben(Kunde k) {
+                System.out.println("Ihr Warenkorb: ");
+                System.out.println(eshop.einkaufsliste());
+                System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
+                String  gewArtikel = scan.next();
+                System.out.println("Menge des gewählten Artikels");
+                int m = scan.nextInt();
+                eshop.rausWarenkorb(gewArtikel, m);
+                System.out.println("Ihr Warenkorb: ");
+                System.out.println(eshop.einkaufsliste());
+                System.out.println("---------------------");
+                kaufen(k);
+            }
+
             public static void artbeitsMenue(Mitarbeiter m) {
 
                 System.out.println("         \n  Artikel ausgeben:       '1'");
@@ -216,7 +221,7 @@ import java.util.Scanner;
                         System.out.println("Zu erhöhende Menge: ");
                         int menge = scan.nextInt();
                         eshop.bestandHöher(artikelname, menge, m);
-                        //System.out.println(eshop.ereignisListeAusgeben());
+                        System.out.println(eshop.ereignisListeAusgeben());
                         artbeitsMenue(m);
                         break;
 
@@ -226,7 +231,7 @@ import java.util.Scanner;
                         System.out.println("Zu verringernde Menge: ");
                         int me = scan.nextInt();
                         eshop.bestanNiedriger(artikelbez, me, m);
-                        //System.out.println(eshop.ereignisListeAusgeben());
+                        System.out.println(eshop.ereignisListeAusgeben());
                         artbeitsMenue(m);
                         break;
 
@@ -255,7 +260,10 @@ import java.util.Scanner;
 
             public static void main(String[] args){
                 start();
-       /* System.out.println(eshop.artikelListen());
+
+
+
+                /* System.out.println(eshop.artikelListen());
         eshop.bestandHöher("Chips", 200, eshop.mitarbeiterLogin("m1", "123"));
         System.out.println(eshop.artikelListen());
         System.out.println(eshop.ereignisListeAusgeben());

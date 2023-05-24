@@ -58,7 +58,7 @@ public class Artikelverwaltung { // fertig
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(anzahl);
-                Ereignis e = new Ereignis("Bestand Erhöht", anzahl, artikel, u);
+                Ereignis e = new Ereignis("Bestand erhöht", anzahl, artikel, u);
                 bestandsänderung.add(e);
 
             }
@@ -67,6 +67,7 @@ public class Artikelverwaltung { // fertig
     }
 
     public void bestandVerringern(String artikelname, int menge, User u) {   // kopieren oder pushen
+
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelname)) {
                 artikel.ArtikelbestandVerringern(menge);

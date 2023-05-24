@@ -7,10 +7,14 @@ import ValueObjekt.Kunde;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 public class Kundenverwaltung {
     private List<Artikel> meinWarenkorb;
+    //Klasse Warekorb
+    //Map<Artikel, Integer> meinWarenkorb
+
     private List<Kunde> kunden;
 
     //Beispielkunde
