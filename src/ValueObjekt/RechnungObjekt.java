@@ -47,6 +47,6 @@ public class RechnungObjekt {
                 LocalDateTime.now() + "\n" + kunde.toString() + "\n" + einkauf +"\n" + "Gesamt:__________" + gesamtpreis+"€"+ "\n" +
                 "Vielen Dank für Ihren Einkauf!"+ "\n" + "-------------------------------";
     }
-
+//LocalDateTime auch hier umändern
 
 }

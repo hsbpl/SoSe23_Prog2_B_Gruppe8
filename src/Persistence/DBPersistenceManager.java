@@ -1,4 +1,9 @@
 package Persistence;
 
-public class DBPersistenceManager {
+import java.io.IOException;
+import java.util.List;
+
+public class DBPersistenceManager implements PersistenceManager{
+
+
 }

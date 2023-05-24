@@ -1,19 +1,19 @@
 package ValueObjekt;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Ereignis {
     // Datum als Atribut
-    private String aktion;
     private int anzahl;
     private Artikel artikel;
     private User user;
 
     //enum ereignistyp{Auslagerung, Einlagerung};
+    //neues Datum erzeugen
+    //Datum muss nicht in den Konstruktor
 
-    public Ereignis(String aktion, int anzahl, Artikel artikel, User user) {
-        this.aktion = aktion;
+
+    public Ereignis( int anzahl, Artikel artikel, User user) {
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
@@ -43,8 +43,9 @@ public class Ereignis {
         return user;
     }
 
+    //LocalDateTime ändern auch in RechnungsObjekt
     public String toString(){
-        return "Datum: " +  LocalDateTime.now() + " " + aktion+ " um "+ anzahl +" durchgeführt über " +
+        return "Datum: " +  + anzahl +" durchgeführt über " +
                 user + "Neuer Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand();
     }
 }

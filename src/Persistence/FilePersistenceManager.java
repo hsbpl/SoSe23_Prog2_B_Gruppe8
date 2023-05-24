@@ -1,4 +1,5 @@
 package Persistence;
 
-public class FilePersistenceManager {
+public class FilePersistenceManager implements PersistenceManager{
+
 }
