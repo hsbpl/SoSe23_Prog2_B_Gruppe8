@@ -3,6 +3,7 @@ package Domain;
 import ValueObjekt.Artikel;
 import ValueObjekt.Ereignis;
 import ValueObjekt.Kunde;
+import ValueObjekt.Warenkorb;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,21 +12,13 @@ import java.util.Map;
 
 
 public class Kundenverwaltung {
-    private List<Artikel> meinWarenkorb;
-    //Klasse Warekorb
-    //Map<Artikel, Integer> meinWarenkorb
 
     private List<Kunde> kunden;
 
     //Beispielkunde
 
     public Kundenverwaltung() {
-        this.meinWarenkorb = new ArrayList<>();
         this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg")));
-    }
-
-    public List<Artikel> getMeinWarenkorb() {
-        return meinWarenkorb;
     }
 
     public List<Kunde> getKRegistrierung() {
@@ -46,7 +39,7 @@ public class Kundenverwaltung {
     /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
     Warenbestandsliste vorhanden sind.
      * */
-    public void reinlegen(List<Artikel> warenbestand, String artikel, int menge) {
+    public void reinlegen(List<Artikel> warenbestand, String artikel, Warenkorb warenkorb) {
         warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .filter(a -> a.inStock() == true)
