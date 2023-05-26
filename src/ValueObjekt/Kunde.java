@@ -13,9 +13,7 @@ public class Kunde extends User {
 
         }
 
-    public void setWarenkorb(Warenkorb warenkorb) {
 
-    }
 
 
 

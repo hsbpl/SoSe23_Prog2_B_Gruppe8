@@ -8,15 +8,17 @@ public class Ereignis {
     private Artikel artikel;
     private User user;
 
+    String aktion;
     //enum ereignistyp{Auslagerung, Einlagerung};
     //neues Datum erzeugen
     //Datum muss nicht in den Konstruktor
 
 
-    public Ereignis( int anzahl, Artikel artikel, User user) {
+    public Ereignis( int anzahl, Artikel artikel, User user, String aktion) {
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
+        this.aktion = aktion;
 
     }
 

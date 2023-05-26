@@ -10,27 +10,17 @@ import java.util.*;
 
 public class Kundenverwaltung {
 
-    private List<Kunde> kunden;
-    private List<Warenkorb> warenkörbe;
-    private HashMap<Kunde,Warenkorb> gespeicherteWarenkörbe;
-
+Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg");
+Warenkorb w1 = new Warenkorb();
+    private HashMap<Kunde,Warenkorb> kundenUndDazugehörigeWarenkörbe;
 
     public Kundenverwaltung() {
-        this.kunden = new ArrayList<>(Arrays.asList(new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg")));
-        this.warenkörbe = new ArrayList<>();
-        this.gespeicherteWarenkörbe = new HashMap<>();
-        }
-
-
-    public List<Kunde> getKRegistrierung() {
-        return kunden;
+        this.kundenUndDazugehörigeWarenkörbe = (HashMap<Kunde, Warenkorb>) new HashMap<>().put(k1, w1);
     }
 
-    public List<Warenkorb> getWarenkörbe() {
-        return warenkörbe;
-    }
+
     public HashMap<Kunde, Warenkorb> getGespeicherteWarenkörbe() {
-        return gespeicherteWarenkörbe;
+        return kundenUndDazugehörigeWarenkörbe;
     }
 
 
@@ -86,7 +76,6 @@ public class Kundenverwaltung {
                 }
             }
         }
-        gespeicherteWarenkörbe.remove(warenkorb);
 
     }
 
@@ -94,13 +83,6 @@ public class Kundenverwaltung {
     public void leeren(Warenkorb warenkorb) {
 
         warenkorb.getWarenkorb().clear();
-    }
-    public String kundenliste() {
-        String s = "";
-        for(Kunde k : kunden){
-            s+= k.getUserName() +"\n";
-        }
-        return s;
     }
    /* public void bestandAktualisieren(Kunde k, List <Ereignis> ereignisse) {
         for (Artikel n : meinWarenkorb) {
@@ -116,12 +98,10 @@ public class Kundenverwaltung {
 
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) {
-        if (kunden.contains(neu)) {
+        if (kundenUndDazugehörigeWarenkörbe.containsKey(neu)) {
             return null;
         } else {
-            kunden.add(neu);
-            Warenkorb meinWarenkorb = new Warenkorb();
-            gespeicherteWarenkörbe.put(neu, meinWarenkorb);
+            kundenUndDazugehörigeWarenkörbe.put(neu, neuerWarenkorb(neu));
             return neu;
         }
 
@@ -129,25 +109,30 @@ public class Kundenverwaltung {
 
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
     public Kunde login(String username, String password) {
-        Kunde loginstatus = null;
-        for (Kunde u : kunden) {
-            if (u.getUserName().equals(username) && u.getPasswort().equals(password) ){
-                loginstatus = u;
-                Warenkorb meinWarenkorb = new Warenkorb();
-                gespeicherteWarenkörbe.put(u, meinWarenkorb);
-            }
-        }
-        return loginstatus;
+        return kundenUndDazugehörigeWarenkörbe.keySet().stream()
+                .filter(a -> a.getUserName().equals(username) && a.getPasswort().equals(password))
+                .findFirst()
+                .orElse(null);
     }
 
 
-    public String registrierteKundenAusgeben(){
+    public Warenkorb neuerWarenkorb(Kunde k){
+        Warenkorb w = new Warenkorb();
+        return kundenUndDazugehörigeWarenkörbe.put(k,w);
+    }
+
+
+
+   /* public String registrierteKundenAusgeben(){
+
         String liste = "";
         for(Kunde k : kunden){
             liste += k.toString() +"\n";
         }
         return  liste;
     }
+
+    */
     public String einkaufsliste(Warenkorb warenkorb){
         return warenkorb.toString();
     }

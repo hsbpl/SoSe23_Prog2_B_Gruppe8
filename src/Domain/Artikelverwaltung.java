@@ -58,7 +58,7 @@ public class Artikelverwaltung { // fertig
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(anzahl);
-                Ereignis e = new Ereignis("Bestand erhöht", anzahl, artikel, u);
+                Ereignis e = new Ereignis( anzahl, artikel, u, "Bestand erhöht");
                 ereignisse.add(e);
 
             }
@@ -71,7 +71,7 @@ public class Artikelverwaltung { // fertig
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelname)) {
                 artikel.ArtikelbestandVerringern(menge);
-                Ereignis e = new Ereignis("Bestand Verringert", menge, artikel, u);
+                Ereignis e = new Ereignis(menge, artikel, u, "Bestand Verringert");
                 ereignisse.add(e);
             }
         }

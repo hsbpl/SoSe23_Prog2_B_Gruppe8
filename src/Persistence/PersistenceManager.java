@@ -1,6 +1,8 @@
 package Persistence;
 
-public class PersistenceManager {
+/*public class PersistenceManager {
     //Exceptions
 
 }
+
+ */

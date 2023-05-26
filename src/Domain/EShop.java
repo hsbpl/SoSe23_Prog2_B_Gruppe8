@@ -21,15 +21,13 @@ public class EShop {
     public List<Mitarbeiter> getMitarbeiterList() {
         return mv.getListMitarbeiter();
     }
-    public List<Warenkorb> getAlleWarenköerbe() {
-        return kv.getWarenkörbe();
-    }
+
     public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
         return kv.getGespeicherteWarenkörbe();
     }
 
-    public List<Kunde> getAlleKundenkonten(){
-        return kv.getKRegistrierung();
+    public Warenkorb neuenWarenkorbErstellen(Kunde k){
+      return   kv.neuerWarenkorb(k);
     }
 
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) {
@@ -67,7 +65,7 @@ public class EShop {
         return av.artikelSortierenNachArtikelnummer();
     }
 
-    public void rausSortiment(int artikelnummer){
+    public void artikelAusDemSortimentEntfernen(int artikelnummer){
         av.artikelLoeschen(artikelnummer);
     }
     //Zugriff auf Warenkorb des Kunden
@@ -75,7 +73,7 @@ public class EShop {
 
     //Artikel im den Warenkorb legen
     //sobald artikelliste aus Artikelverwaltung da ist muss warenL mit austauschen
-    public String reinWarenkorb(String artikel, int menge, Warenkorb warenkorb){
+    public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb){
         kv.reinlegen(av.getArtikelListe(),artikel, menge, warenkorb);
         return kv.toString();
     }
@@ -96,32 +94,31 @@ public class EShop {
     public void warenkorbLeeren(Warenkorb warenkorb){
         kv.leeren(warenkorb);;
     }
-    public Kunde kundenlogin(String username, String password){
+    public Kunde kundenLogin(String username, String password){
         return kv.login(username,password);
     }
 
-    public Kunde kundenregister(Kunde neu){
+    public Kunde kundenRegistrieren(Kunde neu){
         return kv.register(neu);
     }
 
-    public Artikel artikelAuswaehlen(String a){
-        return kv.choice(getAlleArtikel(), a);
-    }
 
-    public void betsandAkt(Kunde kunde){
-        kv.bestandAktualisieren(kunde, av.getEreignisse());
-    }
+
+    //public void betsandAkt(Kunde kunde){
+      //  kv.bestandAktualisieren(kunde, av.getEreignisse());
+    //}
 
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
-    public String kaufen(Kunde kunde){
-        betsandAkt(kunde);
-        RechnungObjekt rechnung = new RechnungObjekt(kunde,meinWarenkorb());
+    public String kaufen(Kunde kunde, Warenkorb warenkorb){
+        RechnungObjekt rechnung = new RechnungObjekt(kunde, warenkorb.getWarenkorb());
         return rechnung.toString();
     }
 
-    public String ausgabeKundenkonten(){
+  /*  public String ausgabeKundenkonten(){
         return kv.kundenliste();
     }
+
+   */
     public String ausgabeMitarbeiterkonten(){
         return mv.registrierteMitarbeiter();
     }

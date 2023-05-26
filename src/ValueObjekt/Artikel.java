@@ -3,12 +3,12 @@
 package ValueObjekt;
 
 public class Artikel {
-    private String bezeichnung;
-    private int artikelNummer;
-    private int bestand;
-    private double preis;
-    private boolean verfuegbar;
-    private int einkaufsmenge;
+    protected String bezeichnung; //TODO nachdem enum verwendet wird String entfernen, habe ihn nur zum ausprobieren wieder reingesetzt
+    protected int artikelNummer;
+    protected int bestand;
+    protected double preis;
+    protected boolean verfuegbar;
+
 
     public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis, boolean verfuegbar) {
         this.bezeichnung = bezeichnung;
@@ -16,7 +16,7 @@ public class Artikel {
         this.bestand = bestand;
         this.preis = preis;
         this.verfuegbar = verfuegbar;
-        this.einkaufsmenge = 0;
+
     }
 
 

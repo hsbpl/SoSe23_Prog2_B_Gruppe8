@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Warenkorb {
 
-    private HashMap<Artikel, Integer> warenkorb;
+    protected HashMap<Artikel, Integer> warenkorb;
 
     public Warenkorb() {
         this.warenkorb = new HashMap<>();
@@ -28,5 +28,4 @@ public class Warenkorb {
         }
         return einkaufsliste + "\n" + gesamtsumme;
     }
-}
 }
