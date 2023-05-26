@@ -4,13 +4,7 @@ import Domain.*;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
-import ValueObjekt.User;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 
 
@@ -155,7 +149,7 @@ import java.util.Scanner;
                 String  gewArtikel = scan.next();
                 System.out.println("Menge des gewählten Artikels");
                 int m = scan.nextInt();
-                eshop.rausWarenkorb(gewArtikel, m);
+                eshop.ArtikelAusdemWarenkorbNehmen(gewArtikel, m,);
                 System.out.println("Ihr Warenkorb: ");
                 System.out.println(eshop.einkaufsliste());
                 System.out.println("---------------------");

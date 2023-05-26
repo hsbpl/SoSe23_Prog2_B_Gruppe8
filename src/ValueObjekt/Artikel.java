@@ -19,12 +19,6 @@ public class Artikel {
         this.einkaufsmenge = 0;
     }
 
-    public boolean mengeVerfügbar(int m){
-        if(this.bezeichnung == bezeichnung && this.einkaufsmenge >= m){
-            verfuegbar = true;
-        }
-        return verfuegbar;
-    }
 
     public boolean inStock(){
         if(this.bezeichnung == bezeichnung && bestand >= 1){
@@ -33,13 +27,6 @@ public class Artikel {
         return verfuegbar;
     }
 
-
-    public int getEinkaufsmenge(){
-        return einkaufsmenge;
-    }
-    public void setEinkaufsmenge(int menge){
-        einkaufsmenge = menge;
-    }
     public int getBestand() {
         return bestand;
     }
@@ -58,21 +45,14 @@ public class Artikel {
         return preis;
     }
 
-    public void setPreis(double preis) {
-        this.preis = preis;
-    }
+
+    // Wir haben ein kleines Problem evtl, ich meine solche Custom Methoden sollen nicht in die ValueObjects selbst rein
+    // Frage die Tutorin sonst.
     public void ArtikelbestandErhoehen(int zahl){
         bestand = bestand + zahl;
     }
     public void ArtikelbestandVerringern( int zahl){
         bestand = bestand - zahl;
-    }
-
-    public void mengeErhoehen(int m){
-        einkaufsmenge+= m;
-    }
-    public void mengeVerringern( int m){
-        einkaufsmenge-=  m;
     }
 
     public int  getArtikelNummer() {

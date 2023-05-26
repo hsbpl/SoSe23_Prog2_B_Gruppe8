@@ -7,17 +7,26 @@ import java.util.Map;
 
 public class Warenkorb {
 
-  private Map<Artikel, Integer> meinWarenkorb;
+    private HashMap<Artikel, Integer> warenkorb;
 
-  public Warenkorb(){
-      this.meinWarenkorb = new HashMap<>();
-  }
-
-    public Map<Artikel, Integer> getMeinWarenkorb() {
-        return meinWarenkorb;
+    public Warenkorb() {
+        this.warenkorb = new HashMap<>();
     }
 
-    public void setMeinWarenkorb(Map<Artikel, Integer> meinWarenkorb) {
-        this.meinWarenkorb = meinWarenkorb;
+    public HashMap<Artikel, Integer> getWarenkorb() {
+        return warenkorb;
     }
+
+    public String toString() {
+
+        String einkaufsliste = "";
+        int gesamtsumme = 0;
+        for (Map.Entry<Artikel, Integer> artikel : getWarenkorb().entrySet()) {
+            einkaufsliste += getWarenkorb().get(artikel.getKey().getPreis()) +
+            "x " + "Artikel:" + getWarenkorb().get(artikel.getKey().getBezeichnung().toString()) + "Preis: " + "             " + getWarenkorb().get(artikel.getKey().getPreis());
+            gesamtsumme += getWarenkorb().get(artikel.getValue()) * getWarenkorb().get(artikel.getKey().getPreis());
+        }
+        return einkaufsliste + "\n" + gesamtsumme;
+    }
+}
 }

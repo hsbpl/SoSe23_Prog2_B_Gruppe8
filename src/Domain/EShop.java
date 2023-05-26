@@ -21,8 +21,11 @@ public class EShop {
     public List<Mitarbeiter> getMitarbeiterList() {
         return mv.getListMitarbeiter();
     }
-    public List<Artikel> meinWarenkorb() {
-        return kv.getMeinWarenkorb();
+    public List<Warenkorb> getAlleWarenköerbe() {
+        return kv.getWarenkörbe();
+    }
+    public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
+        return kv.getGespeicherteWarenkörbe();
     }
 
     public List<Kunde> getAlleKundenkonten(){
@@ -72,8 +75,8 @@ public class EShop {
 
     //Artikel im den Warenkorb legen
     //sobald artikelliste aus Artikelverwaltung da ist muss warenL mit austauschen
-    public String reinWarenkorb(List<Artikel> warenbestand, String artikel, int menge){
-        kv.reinlegen(warenbestand,artikel, menge);
+    public String reinWarenkorb(String artikel, int menge, Warenkorb warenkorb){
+        kv.reinlegen(av.getArtikelListe(),artikel, menge, warenkorb);
         return kv.toString();
     }
 
@@ -82,16 +85,16 @@ public class EShop {
     }
 
     //Artikel aus dem Warenkorb nehmen
-    public void rausWarenkorb(String ausWarenkorb, int menge){
-        kv.rausnehmen(ausWarenkorb, menge);
+    public void ArtikelAusdemWarenkorbNehmen(String artikel, int menge, Warenkorb warenkorb){
+        kv.rausnehmen(artikel, menge, warenkorb);
     }
 
-    public void kaufenUndWarenkorbLeeren(){
-        kv.beimKaufleeren();
+    public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb){
+        kv.beimKaufleeren(warenkorb,av.getArtikelListe());
     }
 
-    public void warenkorbLeeren(){
-        kv.leeren();;
+    public void warenkorbLeeren(Warenkorb warenkorb){
+        kv.leeren(warenkorb);;
     }
     public Kunde kundenlogin(String username, String password){
         return kv.login(username,password);
@@ -106,7 +109,7 @@ public class EShop {
     }
 
     public void betsandAkt(Kunde kunde){
-        kv.bestandAktualisieren(kunde, av.getBestandsänderung());
+        kv.bestandAktualisieren(kunde, av.getEreignisse());
     }
 
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
@@ -122,8 +125,8 @@ public class EShop {
     public String ausgabeMitarbeiterkonten(){
         return mv.registrierteMitarbeiter();
     }
-    public String einkaufsliste(){
-        return kv.einkaufsliste();
+    public String einkaufsliste(Warenkorb warenkorb){
+        return kv.einkaufsliste(warenkorb);
     }
 
 }

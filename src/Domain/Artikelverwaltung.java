@@ -10,14 +10,14 @@ import java.util.*;
 
 public class Artikelverwaltung { // fertig
 
-    private List<Ereignis> bestandsänderung;
+    private List<Ereignis> ereignisse;
 
     private List<Artikel> artikelListe;
 
     //liste in den Constructor
     public Artikelverwaltung() {
         artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl));
-        bestandsänderung = new  ArrayList<>();
+        ereignisse = new  ArrayList<>();
     }
 
 
@@ -59,7 +59,7 @@ public class Artikelverwaltung { // fertig
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(anzahl);
                 Ereignis e = new Ereignis("Bestand erhöht", anzahl, artikel, u);
-                bestandsänderung.add(e);
+                ereignisse.add(e);
 
             }
         }
@@ -72,7 +72,7 @@ public class Artikelverwaltung { // fertig
             if (artikel.getBezeichnung().equals(artikelname)) {
                 artikel.ArtikelbestandVerringern(menge);
                 Ereignis e = new Ereignis("Bestand Verringert", menge, artikel, u);
-                bestandsänderung.add(e);
+                ereignisse.add(e);
             }
         }
 
@@ -86,8 +86,8 @@ public class Artikelverwaltung { // fertig
         return s;
     }
 
-    public List<Ereignis> getBestandsänderung() {
-        return bestandsänderung;
+    public List<Ereignis> getEreignisse() {
+        return ereignisse;
     }
 
     public void setArtikelListe(List<Artikel> artikelListe) {
@@ -95,7 +95,7 @@ public class Artikelverwaltung { // fertig
     }
     public String ereignisseAusgeben() {
         String s ="";
-        for (Ereignis a : bestandsänderung) {
+        for (Ereignis a : ereignisse) {
             s +=  a.toString() + "\n";
         }
         return s;
