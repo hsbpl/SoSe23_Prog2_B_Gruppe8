@@ -131,7 +131,7 @@ import java.util.Scanner;
                         break;
 
                     case 5:
-                        System.out.println(eshop.kaufen(k,w));
+                        System.out.println(eshop.kaufenUndRechnungEhalten(k,w));
                         eshop.kaufenUndWarenkorbLeeren(w);
                         System.out.println(eshop.ereignisListeAusgeben());
                         System.out.println("---------------------");
@@ -256,6 +256,8 @@ import java.util.Scanner;
             }
 
             public static void main(String[] args){
+                Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg");
+                eshop.neuenWarenkorbErstellen(k1);
                 start();
 
 

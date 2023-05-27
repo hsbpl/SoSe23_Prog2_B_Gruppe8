@@ -10,12 +10,11 @@ import java.util.*;
 
 public class Kundenverwaltung {
 
-Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg");
-Warenkorb w1 = new Warenkorb();
-    private HashMap<Kunde,Warenkorb> kundenUndDazugehörigeWarenkörbe;
+
+    private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
 
     public Kundenverwaltung() {
-        this.kundenUndDazugehörigeWarenkörbe = (HashMap<Kunde, Warenkorb>) new HashMap<>().put(k1, w1);
+        this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
     }
 
 
@@ -24,9 +23,11 @@ Warenkorb w1 = new Warenkorb();
     }
 
 
-    public void  mengeVerringern(Artikel artikel, int menge, Warenkorb warenkorb){
-        int aktuelleMenge = warenkorb.getWarenkorb().get(artikel);
-        aktuelleMenge -=menge;
+    public int  mengeVerringern(Artikel artikel, int menge, Warenkorb warenkorb){
+        int aktuelleMenge = warenkorb.getWarenkorb().get(artikel).intValue();
+        int neueMenge = aktuelleMenge - menge;
+        warenkorb.getWarenkorb().put(artikel, neueMenge);
+        return neueMenge;
     }
     public Artikel choice(List<Artikel> warenliste, String warenname) {
         Artikel art = null;
@@ -44,7 +45,9 @@ Warenkorb w1 = new Warenkorb();
     public void reinlegen(List<Artikel> warenbestand, String artikel,int menge, Warenkorb warenkorb) {
         warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
-                .forEach(a -> { warenkorb.getWarenkorb().put(a,menge);
+                .findFirst()
+                .ifPresent(a -> { warenkorb.getWarenkorb().put(a,menge);
+                //.forEach(a -> { warenkorb.getWarenkorb().put(a,menge);
 
                 });
 
@@ -53,17 +56,42 @@ Warenkorb w1 = new Warenkorb();
     public void rausnehmen(String artikel, int menge, Warenkorb warenkorb) {
      warenkorb.getWarenkorb().keySet().stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
-                .forEach(a -> {
-                   mengeVerringern(a, menge, warenkorb);
-                });
+                 .findFirst()
+             .ifPresent(a -> {
+                 mengeVerringern(a, menge, warenkorb);
+             });
     }
 
 
 
 
-    /* Warenkorb wird geleert*/
+    /* Warenkorb wird geleert*/ //TODO Methode checken, beim Bestand wurde bei, Vrsuch z viel abgezogen und Rechnung wurde nicht erstellt
     public void beimKaufleeren(Warenkorb warenkorb, List<Artikel> warenbestand) {
-        Map<Artikel, Integer> warenkorbMap = warenkorb.getWarenkorb();
+        warenkorb.getWarenkorb().forEach((artikel, integer) -> {
+            warenbestand.stream()
+                    .filter(bestandsartikel -> bestandsartikel.equals(artikel))
+                    .forEach(bestandsartikel -> {
+                        int zuReduzierendeMenge = integer;
+                        int neuerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
+                        bestandsartikel.setBestand(neuerBestand);
+                    });
+        });
+/*
+        warenkorb.getWarenkorb().keySet().stream()
+                .filter(a -> warenbestand.equals(a))
+                .forEach(a -> { int bestandVerringern = warenkorb.getWarenkorb().get(a).intValue();
+                    int aktualisierterBestand = a.getBestand() - bestandVerringern;
+                });
+
+
+                  /*  warenbestand.stream()
+                            .filter(bestadartikel -> a.equals(warenbestand))
+                            .forEach(bestadartikel -> bestadartikel.ArtikelbestandVerringern());
+                        })
+
+                   */
+
+       /* Map<Artikel, Integer> warenkorbMap = warenkorb.getWarenkorb();
 
         for (Map.Entry<Artikel, Integer> entry : warenkorbMap.entrySet()) {
             Artikel artikel = entry.getKey();
@@ -77,6 +105,8 @@ Warenkorb w1 = new Warenkorb();
             }
         }
 
+        */
+
     }
 
 
@@ -84,7 +114,7 @@ Warenkorb w1 = new Warenkorb();
 
         warenkorb.getWarenkorb().clear();
     }
-   /* public void bestandAktualisieren(Kunde k, List <Ereignis> ereignisse) {
+   /*public void bestandAktualisieren(Kunde k, List <Ereignis> ereignisse) {
         for (Artikel n : meinWarenkorb) {
             Ereignis e = new Ereignis("Bestand verringert",n.getEinkaufsmenge(),n,k);
             n.ArtikelbestandVerringern(0);
@@ -134,7 +164,7 @@ Warenkorb w1 = new Warenkorb();
 
     */
     public String einkaufsliste(Warenkorb warenkorb){
-        return warenkorb.toString();
+        return warenkorb.getWarenkorb().toString();
     }
 
 

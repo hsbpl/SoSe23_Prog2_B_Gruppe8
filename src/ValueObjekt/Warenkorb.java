@@ -17,6 +17,7 @@ public class Warenkorb {
         return warenkorb;
     }
 
+    //Todo Die ToString Methode umschreiben so das es sauberer ausgegeben wird
     public String toString() {
 
         String einkaufsliste = "";
