@@ -42,12 +42,14 @@ public class Kundenverwaltung {
     /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
     Warenbestandsliste vorhanden sind.
      * */
+    //TODO wenn man menge erhöhen will wird diese nur mit "menge" ausgetauscht entweder CUI methode umschreiben oder beheben
     public void reinlegen(List<Artikel> warenbestand, String artikel,int menge, Warenkorb warenkorb) {
         warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
-                .ifPresent(a -> { warenkorb.getWarenkorb().put(a,menge);
-                //.forEach(a -> { warenkorb.getWarenkorb().put(a,menge);
+                .ifPresent(a -> { int neueMenge = warenkorb.getWarenkorb().get(a).intValue() +menge;
+                    warenkorb.getWarenkorb().put(a,menge);
+
 
                 });
 
@@ -67,7 +69,7 @@ public class Kundenverwaltung {
 
     /* Warenkorb wird geleert*/ //TODO Methode checken, beim Bestand wurde bei, Vrsuch z viel abgezogen und Rechnung wurde nicht erstellt
     public void beimKaufleeren(Warenkorb warenkorb, List<Artikel> warenbestand) {
-        warenkorb.getWarenkorb().forEach((artikel, integer) -> {
+       /* warenkorb.getWarenkorb().forEach((artikel, integer) -> {
             warenbestand.stream()
                     .filter(bestandsartikel -> bestandsartikel.equals(artikel))
                     .forEach(bestandsartikel -> {
@@ -76,6 +78,8 @@ public class Kundenverwaltung {
                         bestandsartikel.setBestand(neuerBestand);
                     });
         });
+
+        */
 /*
         warenkorb.getWarenkorb().keySet().stream()
                 .filter(a -> warenbestand.equals(a))
@@ -91,7 +95,7 @@ public class Kundenverwaltung {
 
                    */
 
-       /* Map<Artikel, Integer> warenkorbMap = warenkorb.getWarenkorb();
+       Map<Artikel, Integer> warenkorbMap = warenkorb.getWarenkorb();
 
         for (Map.Entry<Artikel, Integer> entry : warenkorbMap.entrySet()) {
             Artikel artikel = entry.getKey();
@@ -105,7 +109,7 @@ public class Kundenverwaltung {
             }
         }
 
-        */
+
 
     }
 

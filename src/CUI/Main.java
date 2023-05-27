@@ -132,7 +132,7 @@ import java.util.Scanner;
 
                     case 5:
                         System.out.println(eshop.kaufenUndRechnungEhalten(k,w));
-                        eshop.kaufenUndWarenkorbLeeren(w);
+                        //eshop.kaufenUndWarenkorbLeeren(w);
                         System.out.println(eshop.ereignisListeAusgeben());
                         System.out.println("---------------------");
                         start();

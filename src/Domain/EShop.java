@@ -110,9 +110,10 @@ public class EShop {
 
     // bestandsliste aus Artikelverwaltung rein sobald sie da ist
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb){
-        RechnungObjekt rechnung = new RechnungObjekt(kunde, warenkorb.getWarenkorb());
-        kv.beimKaufleeren(warenkorb, getAlleArtikel());
-        return rechnung.toString();
+        RechnungObjekt rechnung = new RechnungObjekt(kunde, warenkorb);
+        String r =  rechnung.toString();
+        // kv.beimKaufleeren(warenkorb,av.getArtikelListe());
+        return r;
     }
 
   /*  public String ausgabeKundenkonten(){
