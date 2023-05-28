@@ -1,5 +1,6 @@
 package ValueObjekt;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,9 @@ public class RechnungObjekt  {
 
 
 
+
+
+
         public String toString() {
 
             String einkaufsliste = "";
@@ -34,8 +38,8 @@ public class RechnungObjekt  {
             return einkaufsliste + "\n" + gesamtsumme;
 
             */
-            return kunde + "  " + "\n" + warenkorb.getWarenkorb().toString();
-        }
+                return "Kunde: " + kunde + "\n" +
+                        "Warenkorb: " + warenkorb.getWarenkorb().toString();        }
 
 
 }

@@ -1,8 +1,11 @@
 package Persistence;
 
-/*public class PersistenceManager {
-    //Exceptions
+
+//Exceptions
+public class PersistenceManager {
+
+
 
 }
 
- */
+

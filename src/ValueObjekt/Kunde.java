@@ -1,8 +1,9 @@
 package ValueObjekt;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Kunde extends User {
+public class Kunde extends User implements Serializable {
 
         private String kundenAdresse;
 
