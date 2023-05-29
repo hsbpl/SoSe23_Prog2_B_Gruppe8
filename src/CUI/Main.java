@@ -36,8 +36,8 @@ import java.util.Scanner;
                         System.out.println("Passwort:");
                         String pw = scan.next();
                         Kunde aktuellerKunde = eshop.kundenLogin(username, pw);
-                        Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
                         System.out.println(aktuellerKunde);
+                        Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
                         eshopMenue(aktuellerKunde, warenkorb);
 
                         break;
@@ -238,7 +238,7 @@ import java.util.Scanner;
 
             public static void main(String[] args){
                 Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg");
-                eshop.neuenWarenkorbErstellen(k1);
+               eshop.neuenWarenkorbErstellen(k1);
                 startMenue();
 
 
