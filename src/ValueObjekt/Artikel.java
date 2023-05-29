@@ -22,13 +22,6 @@ public class Artikel implements Serializable {
     }
 
 
-    public boolean inStock(){
-        if(this.bezeichnung == bezeichnung && bestand >= 1){
-            verfuegbar = true;
-        }
-        return verfuegbar;
-    }
-
     public int getBestand() {
         return bestand;
     }
@@ -50,8 +43,7 @@ public class Artikel implements Serializable {
 
 
 
-    // Wir haben ein kleines Problem evtl, ich meine solche Custom Methoden sollen nicht in die ValueObjects selbst rein
-    // Frage die Tutorin sonst.
+    //TODO diese Methoden müssten in der Artikelverwaltung realisiert werden
     public void ArtikelbestandErhoehen(int zahl){
         bestand = bestand + zahl;
     }

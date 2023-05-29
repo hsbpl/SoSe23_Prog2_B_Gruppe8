@@ -87,12 +87,9 @@ public class EShop {
     public Kunde kundenRegistrieren(Kunde neu){
         return kv.register(neu);
     }
-    public Warenkorb warenkorbNeuRegistruerterKunden(Kunde kunde){
-        return kv.neuerWarenkorb(kunde);
-    }
 
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb){
-        RechnungObjekt rechnung = new RechnungObjekt(kunde, warenkorb);
+        Rechnung rechnung = new Rechnung(kunde, warenkorb);
         String r =  rechnung.toString();
         kaufenUndWarenkorbLeeren(warenkorb);
         return r;

@@ -1,13 +1,8 @@
 package ValueObjekt;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class RechnungObjekt  {
+public class Rechnung {
 
     private Date datum = new Date();
     private Kunde kunde;
@@ -15,7 +10,7 @@ public class RechnungObjekt  {
     private Warenkorb warenkorb;
 
 
-    public RechnungObjekt(Kunde kunde, Warenkorb warenkorb) {
+    public Rechnung(Kunde kunde, Warenkorb warenkorb) {
         this.warenkorb= warenkorb;
         this.kunde = kunde;
     }
@@ -24,7 +19,7 @@ public class RechnungObjekt  {
 
 
 
-
+//TODO toString Methode zum laufen bringen
         public String toString() {
 
            /*  String einkaufsliste = "";

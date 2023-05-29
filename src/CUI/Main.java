@@ -58,7 +58,7 @@ import java.util.Scanner;
                         Kunde kunde = new Kunde(uname, pasw, nachname, vorname,id, adr);
                        // Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
                         System.out.println(eshop.kundenRegistrieren(kunde));
-                        Warenkorb w = eshop.warenkorbNeuRegistruerterKunden(kunde);
+                        Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
                         eshopMenue(kunde, w);
                         break;
 

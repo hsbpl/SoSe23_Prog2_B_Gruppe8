@@ -89,7 +89,8 @@ public class Kundenverwaltung {
     //Ein neuer Warenkorb wird erstellt und in der Hashmap gespeichert
     public Warenkorb neuerWarenkorb(Kunde k){
         Warenkorb w = new Warenkorb();
-        return kundenUndDazugehörigeWarenkörbe.put(k,w);
+        kundenUndDazugehörigeWarenkörbe.put(k,w);
+        return kundenUndDazugehörigeWarenkörbe.get(k);
     }
 
 
