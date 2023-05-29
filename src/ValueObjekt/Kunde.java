@@ -20,6 +20,6 @@ public class Kunde extends User implements Serializable {
 
     @Override
         public String toString() {
-            return "Kunden-" + super.toString() + "\n";
+            return  super.toString() + "\n";
         }
 }

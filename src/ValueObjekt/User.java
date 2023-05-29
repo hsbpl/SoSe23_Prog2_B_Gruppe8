@@ -16,32 +16,16 @@ public class User {
     }
 
 
-    public int getIdNummer() {
-        return idNummer;
-    }
-
-    public void setIdNummer(int idNummer) {
-        this.idNummer = idNummer;
-    }
     public String getUserName() {
         return userName;
     }
 
-    public String getNachname() {
-        return nachname;
-    }
-
-    public String getVorname() {
-        return vorname;
-    }
     public String getPasswort(){
         return passwort;
     }
 
-
-
     public String toString() {
-        return "Username: "+ userName + "\n" + " Name: " + vorname+" " + nachname;
+        return "Username: "+ userName + "\n" + "Name: " + vorname+" " + nachname;
     }
 }
 

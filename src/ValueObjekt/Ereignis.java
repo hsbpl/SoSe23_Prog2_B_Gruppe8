@@ -5,17 +5,12 @@ import java.util.Date;
 
 public class Ereignis {
     // Datum als Atribut
+    private Date datum = new Date();
     private int anzahl;
     private Artikel artikel;
     private User user;
-    private EreignisTyp ereignisTyp;
+    private enum ereignisTyp{Auslagerung, Einlagerung, Kauf, Anlegen};
 
-    public enum EreignisTyp{
-        AUSLAGERUNG,
-        EINLAGERUNG,
-        KAUF,
-        ANLEGEN,
-    }
     //Die noch initialisieren
 
     String aktion;
@@ -29,7 +24,7 @@ public class Ereignis {
         this.artikel = artikel;
         this.user = user;
         this.aktion = aktion;
-        this.ereignisTyp = ereignisTyp;
+       // this.ereignisTyp = ereignisTyp; // Recherche wie wird das enum im Konstruktor gesetzt?
 
     }
 
@@ -55,7 +50,7 @@ public class Ereignis {
     public User getUser() {
         return user;
     }
-
+/*
     public EreignisTyp getEreignisTyp(){
         return ereignisTyp;
     }
@@ -63,9 +58,12 @@ public class Ereignis {
         this. ereignisTyp = ereignisTyp;
     }
 
+ */
+
     //LocalDateTime ändern auch in RechnungsObjekt
     public String toString(){
-        return  anzahl +" durchgeführt über " +
+        return  datum.toString() + "\n"+
+                anzahl +" durchgeführt über " +
                 user + "Neuer Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand();
     }
 }

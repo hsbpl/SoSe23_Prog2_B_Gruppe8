@@ -34,13 +34,10 @@ public class EShop {
         return mv.mRegister(neu);
 
     }
-
     public Mitarbeiter mitarbeiterLogin(String username, String passwort){
         return mv.mitarbeiterEinloggen(username, passwort);
     }
 
-
-    //Listet alle Artikel aus der Artikelverwaltung auf
     public String artikelListen(){
         return av.artikelAusgeben();
     }
@@ -68,29 +65,18 @@ public class EShop {
     public void artikelAusDemSortimentEntfernen(int artikelnummer){
         av.artikelLoeschen(artikelnummer);
     }
-    //Zugriff auf Warenkorb des Kunden
 
-
-    //Artikel im den Warenkorb legen
-    //sobald artikelliste aus Artikelverwaltung da ist muss warenL mit austauschen
     public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb){
-        kv.reinlegen(av.getArtikelListe(),artikel, menge, warenkorb);
+        kv.reinlegenOderMengeÄndern(getAlleArtikel(),artikel, menge, warenkorb);
         return kv.toString();
     }
-
     public String ereignisListeAusgeben(){
         return av.ereignisseAusgeben();
     }
 
-    //Artikel aus dem Warenkorb nehmen
-    public void ArtikelAusdemWarenkorbNehmen(String artikel, int menge, Warenkorb warenkorb){
-        kv.rausnehmen(artikel, menge, warenkorb);
-    }
-
     public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb){
-        kv.beimKaufleeren(warenkorb,av.getArtikelListe());
+        kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel());
     }
-
     public void warenkorbLeeren(Warenkorb warenkorb){
         kv.leeren(warenkorb);;
     }
@@ -101,30 +87,26 @@ public class EShop {
     public Kunde kundenRegistrieren(Kunde neu){
         return kv.register(neu);
     }
+    public Warenkorb warenkorbNeuRegistruerterKunden(Kunde kunde){
+        return kv.neuerWarenkorb(kunde);
+    }
 
-
-
-    //public void betsandAkt(Kunde kunde){
-      //  kv.bestandAktualisieren(kunde, av.getEreignisse());
-    //}
-
-    // bestandsliste aus Artikelverwaltung rein sobald sie da ist
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb){
         RechnungObjekt rechnung = new RechnungObjekt(kunde, warenkorb);
         String r =  rechnung.toString();
-        // kv.beimKaufleeren(warenkorb,av.getArtikelListe());
+        kaufenUndWarenkorbLeeren(warenkorb);
         return r;
     }
 
   /*  public String ausgabeKundenkonten(){
         return kv.kundenliste();
     }
-
    */
+
     public String ausgabeMitarbeiterkonten(){
         return mv.registrierteMitarbeiter();
     }
-    public String einkaufsliste(Warenkorb warenkorb){
+    public String artikelImWarenkorb(Warenkorb warenkorb){
         return kv.einkaufsliste(warenkorb);
     }
 

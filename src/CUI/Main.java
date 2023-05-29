@@ -16,20 +16,21 @@ import java.util.Scanner;
             static EShop eshop = new EShop();
 
 
-            private static void start() {
-
-                //je nachdem ein anderes Menü
-
-                int choice;
-                System.out.println("Wählen Sie eine Option");
-                System.out.println("1. Ich bin ein Kunde.");
-                System.out.println("2. Ich bin ein Mitarbeiter.");
+            private static void startMenue() {
 
 
-                if (scan.nextInt() == 1) {
-                    System.out.println("1. Einloggen");
-                    System.out.println("2. Registrieren");
-                    if (scan.nextInt() == 1) {
+                System.out.println("Was möchten Sie tun: ");
+                System.out.println("Zum Kundenlogin        `1`");
+                System.out.println("Zur Kundenregistrierung        `2`");
+                System.out.println("Zum Mitarbeiterlogin        `3`");
+
+                startEingabenVerarbeiten(scan.nextInt());
+            }
+
+            private static void startEingabenVerarbeiten(int choice){
+
+            switch (choice){
+                    case 1:
                         System.out.println("Unsername:");
                         String username = scan.next();
                         System.out.println("Passwort:");
@@ -37,146 +38,126 @@ import java.util.Scanner;
                         Kunde aktuellerKunde = eshop.kundenLogin(username, pw);
                         Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
                         System.out.println(aktuellerKunde);
+                        eshopMenue(aktuellerKunde, warenkorb);
 
+                        break;
 
-                        kaufen(aktuellerKunde, warenkorb);
-
-                    } else if (scan.nextInt() == 2) {
+                    case 2:
                         System.out.println("Unsername:");
-                        String username = scan.next();
-
+                        String uname = scan.next();
                         System.out.println("Passwort:");
-                        String pw = scan.next();
-
+                        String pasw = scan.next();
                         System.out.println("Nachname:");
                         String nachname = scan.next();
-
                         System.out.println("Vorname:");
                         String vorname = scan.next();
-
                         System.out.println("id: ");
                         int id = scan.nextInt();
-
                         System.out.println("Adressse:");
                         String adr = scan.next();
-
-                        Kunde kunde = new Kunde(username, pw, nachname, vorname,id, adr);
-                        Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(kunde);
+                        Kunde kunde = new Kunde(uname, pasw, nachname, vorname,id, adr);
+                       // Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
                         System.out.println(eshop.kundenRegistrieren(kunde));
-                        System.out.println(kunde);
+                        Warenkorb w = eshop.warenkorbNeuRegistruerterKunden(kunde);
+                        eshopMenue(kunde, w);
+                        break;
 
-                        kaufen(kunde, warenkorb);
-                    }
+                    case 3:
+                        System.out.println("Unsername:");
+                        String usname = scan.next();
+                        System.out.println("Passwort:");
+                        String paw = scan.next();
+                        Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(usname, paw);
+                        System.out.println(aktuellerMitarbeiter);
 
+                        artbeitsMenue(aktuellerMitarbeiter);
 
-                } else if (scan.nextInt() == 2) {
-                    System.out.println("Unsername:");
-                    String username = scan.next();
-                    System.out.println("Passwort:");
-                    String pw = scan.next();
-                    Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(username, pw);
-                    System.out.println(aktuellerMitarbeiter);
+                        break;
 
-                    artbeitsMenue(aktuellerMitarbeiter);
                 }
+
             }
 
-            private static void kaufen(Kunde k, Warenkorb w) {
+
+            private static void eshopMenue(Kunde k, Warenkorb w) {
                 System.out.println(eshop.artikelListen());
 
                 System.out.println("---------------------");
                 System.out.println("Was möchten Sie tun?" + "\n");
-                System.out.println("Artikel in den Warenkorb legen: 1");
-                System.out.println("Artikel aus dem Warenkorb entfernen: 2");
-                System.out.println("Warenkorb leeren: 3");
-                System.out.println("Zum Warenkorb: 4");
-                System.out.println("Kauf abschließen: 5");
+                System.out.println("Artikel in den Warenkorb legen oder" +
+                        "         \nMenge eines bereits vorhandenen Artikels ändern:       '1'");
+                System.out.println("Warenkorb leeren:       '2'");
+                System.out.println("Zum Warenkorb:       '3'");
+                System.out.println("Kauf abschließen:       '4'");
                 System.out.println("---------------------");
-                System.out.println("Beenden: '6'");
+                System.out.println("Beenden:       '0'");
 
-                kundenEingabe(scan.nextInt(), k, w);
+                eshopEingabenVerarbeiten(scan.nextInt(), k, w);
             }
 
-            private static void kundenEingabe(int eingabe, Kunde k, Warenkorb w) {
+            private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
 
                 switch (eingabe) {
-                    case 1:
+                    case 1: //funktioniert
                         System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
                         String gewaehlterArtikel = scan.next();
                         System.out.println("Menge des gewählten Artikels");
                         int menge = scan.nextInt();
                         eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
                         System.out.println("Ihr Warenkorb: ");
-                        System.out.println(eshop.einkaufsliste(w));
+                        System.out.println(eshop.artikelImWarenkorb(w));
                         System.out.println("---------------------");
-                        kaufen(k,w);
+                        eshopMenue(k,w);
                         break;
 
                     case 2:
-                        warenkorbAusgeben(k,w);
-                        break;
-
-                    case 3:
-                        eshop.warenkorbLeeren(w);
+                        eshop.warenkorbLeeren(w); //funktioniert
                         System.out.println("Warenkorb wurde geleert.");
                         System.out.println("---------------------");
-                        kaufen(k,w);
+                        eshopMenue(k,w);
                         break;
 
-                    case 4:
+                    case 3: //funktioniert
                         System.out.println("Ihr Warenkorb: ");
-                        System.out.println(eshop.einkaufsliste(w));
+                        System.out.println(eshop.artikelImWarenkorb(w));
                         System.out.println("---------------------");
-                        kaufen(k,w);
+                        eshopMenue(k,w);
                         break;
 
-                    case 5:
+                    case 4: // Dadurch das die toString Methode nicht funktioniert unklar ob es funktioniert
                         System.out.println(eshop.kaufenUndRechnungEhalten(k,w));
                         //eshop.kaufenUndWarenkorbLeeren(w);
                         System.out.println(eshop.ereignisListeAusgeben());
                         System.out.println("---------------------");
-                        start();
+                        startMenue();
                         break;
 
-                    case 6:
-                        start();
+                    case 0:
+                        startMenue();
                         break;
 
                 }
             }
 
-            private static void warenkorbAusgeben(Kunde k, Warenkorb w) {
-                System.out.println("Ihr Warenkorb: ");
-                System.out.println(eshop.einkaufsliste(w));
-                System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                String  gewArtikel = scan.next();
-                System.out.println("Menge des gewählten Artikels");
-                int m = scan.nextInt();
-                eshop.ArtikelAusdemWarenkorbNehmen(gewArtikel, m, w);
-                System.out.println("Ihr Warenkorb: ");
-                System.out.println(eshop.einkaufsliste(w));
-                System.out.println("---------------------");
-                kaufen(k,w);
-            }
 
             public static void artbeitsMenue(Mitarbeiter m) {
 
                 System.out.println("         \n  Artikel ausgeben:       '1'");
-                System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2 '");
+                System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
                 System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
                 System.out.println("         \n  Neuen Artikel anlegen: '4'");
                 System.out.println("         \n  Bestand erhöhen: '5'");
                 System.out.println("         \n  Bestand verringern:   '6'");
                 System.out.println("         \n  Neuen Mitarbeiter anlegen:   '7'");
                 System.out.println("         \n  ---------------------------");
-                System.out.println("       \n  Beenden:                '8'");
+                System.out.println("       \n  Beenden:                '0'");
 
-                arbeiten(scan.nextInt(),m);
+                arbeitsEingabenVerarbeiten(scan.nextInt(),m);
             }
 
 
 
-            private static void arbeiten(int eingabe, Mitarbeiter m) {
+            private static void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) {
 
 
                 switch (eingabe) {
@@ -248,8 +229,8 @@ import java.util.Scanner;
                         artbeitsMenue(m);
                         break;
 
-                    case 8:
-                        start();
+                    case 0:
+                        startMenue();
                         break;
 
                 }
@@ -258,21 +239,8 @@ import java.util.Scanner;
             public static void main(String[] args){
                 Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg");
                 eshop.neuenWarenkorbErstellen(k1);
-                start();
+                startMenue();
 
-
-
-                /* System.out.println(eshop.artikelListen());
-        eshop.bestandHöher("Chips", 200, eshop.mitarbeiterLogin("m1", "123"));
-        System.out.println(eshop.artikelListen());
-        System.out.println(eshop.ereignisListeAusgeben());
-
-        */
-                //System.out.println(eshop.nummerArtikel());
-
-                //System.out.println(eshop.mitarbeiterLogin("m1", "123"));
-
-                //System.out.println(eshop.kundenlogin("k1", "abc"));
 
             }
         }

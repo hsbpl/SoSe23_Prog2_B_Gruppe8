@@ -1,8 +1,6 @@
 package ValueObjekt;
 
-import java.net.http.WebSocket;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Warenkorb {
@@ -21,20 +19,36 @@ public class Warenkorb {
     @Override
     public String toString() {
 
-        String einkaufsliste = "";
+       String einkaufsliste = "\n";
         double gesamtsumme = 0;
-        for (Map.Entry<Artikel, Integer> artikel : getWarenkorb().entrySet()) {
-            String aktuellerArtikel = artikel.getKey().getBezeichnung();
-            Integer aktuelleMenge = artikel.getValue();
-            double aktuellerPreis = artikel.getKey().getPreis();
+
+        for (Map.Entry<Artikel, Integer> entry : getWarenkorb().entrySet()) {
+            Artikel artikel = entry.getKey();
+            Integer menge = entry.getValue();
+            String aktuellerArtikel = artikel.getBezeichnung();
+            double einzelPreis = artikel.getPreis();
+            int aktuelleMenge = menge;
+
+            String artikelDaten = aktuelleMenge + "x  " + aktuellerArtikel + "          " + einzelPreis;
+
+            einkaufsliste += "\n"+ artikelDaten;
+            gesamtsumme += aktuelleMenge * einzelPreis;
+        }
+
+       /* for (Map.Entry<Artikel, Integer> entry : getWarenkorb().entrySet()) {
+            String aktuellerArtikel = entry.getKey().getBezeichnung().toString();
+            int aktuelleMenge = entry.getValue();
+            double aktuellerPreis = entry.getKey().getPreis();
             gesamtsumme = aktuellerPreis * aktuelleMenge;
-            einkaufsliste = aktuelleMenge+ " " +aktuellerArtikel+"        " + aktuellerPreis + "€ \n";
-          /*  einkaufsliste += getWarenkorb().get(artikel.getKey().getPreis()) +
+
+        */
+           /* einkaufsliste += aktuelleMenge+ " " +aktuellerArtikel+"        " + aktuellerPreis + "€ ";
+          einkaufsliste += getWarenkorb().get(artikel.getKey().getPreis()) +
             "x " + "Artikel:" + getWarenkorb().get(artikel.getKey().getBezeichnung()) + "Preis: " + "             " + getWarenkorb().get(artikel.getKey().getPreis());
             gesamtsumme += getWarenkorb().get(artikel.getValue()) * getWarenkorb().get(artikel.getKey().getPreis());
 
-           */
-        }
+
+        }*/
         return einkaufsliste + "\n" + gesamtsumme;
     }
 }

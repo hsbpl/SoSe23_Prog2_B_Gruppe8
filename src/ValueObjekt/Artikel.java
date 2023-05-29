@@ -5,11 +5,11 @@ package ValueObjekt;
 import java.io.Serializable;
 
 public class Artikel implements Serializable {
-    private String bezeichnung; //TODO nachdem enum verwendet wird String entfernen, habe ihn nur zum ausprobieren wieder reingesetzt
-    private int artikelNummer;
-    private int bestand;
-    private double preis;
-    private boolean verfuegbar;
+    protected String bezeichnung; //TODO nachdem enum verwendet wird String entfernen, habe ihn nur zum ausprobieren wieder reingesetzt
+    protected int artikelNummer;
+    protected int bestand;
+    protected double preis;
+    protected boolean verfuegbar;
 
 
     public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis, boolean verfuegbar) {

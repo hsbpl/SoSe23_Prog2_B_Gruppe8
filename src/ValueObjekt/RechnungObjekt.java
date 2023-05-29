@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class RechnungObjekt  {
 
+    private Date datum = new Date();
     private Kunde kunde;
     //TODO Datum hinzufügen
     private Warenkorb warenkorb;
@@ -26,8 +27,8 @@ public class RechnungObjekt  {
 
         public String toString() {
 
-            String einkaufsliste = "";
-           /* int gesamtsumme = 0;
+           /*  String einkaufsliste = "";
+           int gesamtsumme = 0;
             for (Map.Entry<Artikel, Integer> artikel : warenkorb.getWarenkorb().entrySet()) {
                 einkaufsliste += warenkorb.getWarenkorb().get(artikel.getKey().getPreis()) +
                         "x " + "Artikel:" + warenkorb.getWarenkorb().get(artikel.getKey().getBezeichnung().toString()) + "Preis: " + "             " + warenkorb.getWarenkorb().get(artikel.getKey().getPreis());
@@ -38,8 +39,7 @@ public class RechnungObjekt  {
             return einkaufsliste + "\n" + gesamtsumme;
 
             */
-                return "Kunde: " + kunde + "\n" +
-                        "Warenkorb: " + warenkorb.getWarenkorb().toString();        }
+                return datum.toString()+ "\n" + "Kunde: " + kunde + "\n" + "Warenkorb: " + warenkorb.getWarenkorb().toString();        }
 
 
 }

@@ -1,7 +1,6 @@
 package Domain;
 
 import ValueObjekt.Artikel;
-import ValueObjekt.Ereignis;
 import ValueObjekt.Kunde;
 import ValueObjekt.Warenkorb;
 
@@ -23,13 +22,7 @@ public class Kundenverwaltung {
     }
 
 
-    public int  mengeVerringern(Artikel artikel, int menge, Warenkorb warenkorb){
-        int aktuelleMenge = warenkorb.getWarenkorb().get(artikel).intValue();
-        int neueMenge = aktuelleMenge - menge;
-        warenkorb.getWarenkorb().put(artikel, neueMenge);
-        return neueMenge;
-    }
-    public Artikel choice(List<Artikel> warenliste, String warenname) {
+   /* public Artikel choice(List<Artikel> warenliste, String warenname) {
         Artikel art = null;
         for (Artikel a : warenliste) {
             if (a.getBezeichnung() == warenname) {
@@ -39,106 +32,50 @@ public class Kundenverwaltung {
         return art;
     }
 
-    /* Kunde legt gewünschte Menge an Artikeln in den Warenkorb, sofern sie in der zu übergebenden
-    Warenbestandsliste vorhanden sind.
-     * */
-    //TODO wenn man menge erhöhen will wird diese nur mit "menge" ausgetauscht entweder CUI methode umschreiben oder beheben
-    public void reinlegen(List<Artikel> warenbestand, String artikel,int menge, Warenkorb warenkorb) {
+    */
+
+// man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
+    public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) {
         warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
-                .ifPresent(a -> { int neueMenge = warenkorb.getWarenkorb().get(a).intValue() +menge;
-                    warenkorb.getWarenkorb().put(a,menge);
-
+                .ifPresent(a -> {warenkorb.getWarenkorb().put(a,menge);
 
                 });
 
     }
 
-    public void rausnehmen(String artikel, int menge, Warenkorb warenkorb) {
-     warenkorb.getWarenkorb().keySet().stream()
-                .filter(a -> a.getBezeichnung().equals(artikel))
-                 .findFirst()
-             .ifPresent(a -> {
-                 mengeVerringern(a, menge, warenkorb);
-             });
-    }
-
-
-
-
-    /* Warenkorb wird geleert*/ //TODO Methode checken, beim Bestand wurde bei, Vrsuch z viel abgezogen und Rechnung wurde nicht erstellt
-    public void beimKaufleeren(Warenkorb warenkorb, List<Artikel> warenbestand) {
-       /* warenkorb.getWarenkorb().forEach((artikel, integer) -> {
+    //TODO sollte funktionieren aber dadurch das die String Methode nicht funktioniert habe ich gerade keine gewissheit
+    //Die im Warenkorb enthaltenen Waren werden mit dem Warenbestand abgeglichen und deren Bestand wird aktualisiert.
+    // danach wird der Warenkorb geleert
+    public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand) {
+        warenkorb.getWarenkorb().forEach((artikel, menge) -> {
             warenbestand.stream()
                     .filter(bestandsartikel -> bestandsartikel.equals(artikel))
                     .forEach(bestandsartikel -> {
-                        int zuReduzierendeMenge = integer;
-                        int neuerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
-                        bestandsartikel.setBestand(neuerBestand);
+                        int zuReduzierendeMenge =menge;
+                        int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
+                        bestandsartikel.setBestand(aktuellerBestand);
                     });
         });
 
-        */
-/*
-        warenkorb.getWarenkorb().keySet().stream()
-                .filter(a -> warenbestand.equals(a))
-                .forEach(a -> { int bestandVerringern = warenkorb.getWarenkorb().get(a).intValue();
-                    int aktualisierterBestand = a.getBestand() - bestandVerringern;
-                });
-
-
-                  /*  warenbestand.stream()
-                            .filter(bestadartikel -> a.equals(warenbestand))
-                            .forEach(bestadartikel -> bestadartikel.ArtikelbestandVerringern());
-                        })
-
-                   */
-
-       Map<Artikel, Integer> warenkorbMap = warenkorb.getWarenkorb();
-
-        for (Map.Entry<Artikel, Integer> entry : warenkorbMap.entrySet()) {
-            Artikel artikel = entry.getKey();
-            int menge = entry.getValue();
-
-            for (Artikel bestandsArtikel : warenbestand) {
-                if (bestandsArtikel.equals(artikel)) {
-                    bestandsArtikel.ArtikelbestandVerringern(menge);
-                    break;
-                }
-            }
-        }
-
-
+        leeren(warenkorb);
 
     }
 
-
+//Der Warenkorb wird kompltett geleert
     public void leeren(Warenkorb warenkorb) {
-
         warenkorb.getWarenkorb().clear();
     }
-   /*public void bestandAktualisieren(Kunde k, List <Ereignis> ereignisse) {
-        for (Artikel n : meinWarenkorb) {
-            Ereignis e = new Ereignis("Bestand verringert",n.getEinkaufsmenge(),n,k);
-            n.ArtikelbestandVerringern(0);
-            ereignisse.add(e);
-        }
-    }
-
-    */
-
 
 
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) {
-        if (kundenUndDazugehörigeWarenkörbe.containsKey(neu)) {
-            return null;
-        } else {
-            kundenUndDazugehörigeWarenkörbe.put(neu, neuerWarenkorb(neu));
-            return neu;
+        Kunde k = null;
+        if (!kundenUndDazugehörigeWarenkörbe.containsKey(neu)){
+        k = neu;
         }
-
+        return k;
     }
 
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
@@ -149,29 +86,17 @@ public class Kundenverwaltung {
                 .orElse(null);
     }
 
-
+    //Ein neuer Warenkorb wird erstellt und in der Hashmap gespeichert
     public Warenkorb neuerWarenkorb(Kunde k){
         Warenkorb w = new Warenkorb();
         return kundenUndDazugehörigeWarenkörbe.put(k,w);
     }
 
 
-
-   /* public String registrierteKundenAusgeben(){
-
-        String liste = "";
-        for(Kunde k : kunden){
-            liste += k.toString() +"\n";
-        }
-        return  liste;
-    }
-
-    */
+    //Liste der im Warenkorb gelegten Artikel wird ausgegeben
     public String einkaufsliste(Warenkorb warenkorb){
         return warenkorb.getWarenkorb().toString();
     }
-
-
 
 
 }
