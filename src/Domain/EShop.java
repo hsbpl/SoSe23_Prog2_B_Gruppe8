@@ -22,6 +22,9 @@ public class EShop {
         return mv.getListMitarbeiter();
     }
 
+    public List<Ereignis> getAlleEreignisse(){
+        return av.getEreignisse();
+    }
     public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
         return kv.getGespeicherteWarenkörbe();
     }
@@ -42,8 +45,8 @@ public class EShop {
         return av.artikelAusgeben();
     }
 
-    public void artHinzufügen(Artikel a){
-        av.artikelHinzufuegen(a);
+    public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter){
+        av.artikelHinzufuegen(a, mitarbeiter);
     }
 
     public void bestandHöher(String artikelname, int menge, User u){
@@ -74,8 +77,8 @@ public class EShop {
         return av.ereignisseAusgeben();
     }
 
-    public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb){
-        kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel());
+    public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde){
+        kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel(),kunde, getAlleEreignisse());
     }
     public void warenkorbLeeren(Warenkorb warenkorb){
         kv.leeren(warenkorb);;
@@ -91,7 +94,7 @@ public class EShop {
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb){
         Rechnung rechnung = new Rechnung(kunde, warenkorb);
         String r =  rechnung.toString();
-        kaufenUndWarenkorbLeeren(warenkorb);
+        kaufenUndWarenkorbLeeren(warenkorb, kunde);
         return r;
     }
 

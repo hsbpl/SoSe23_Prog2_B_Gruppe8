@@ -2,6 +2,7 @@ package Domain;
 
 import ValueObjekt.Artikel;
 import ValueObjekt.Ereignis;
+import ValueObjekt.Mitarbeiter;
 import ValueObjekt.User;
 
 
@@ -29,8 +30,10 @@ public class Artikelverwaltung { // fertig
 
 
 
-    public void artikelHinzufuegen(Artikel artikel) {
+    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) {
         artikelListe.add(artikel);
+        Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, "angelegt");
+        ereignisse.add(e);
     }
 
     public String artikelSortierenNachBezeichnung() {

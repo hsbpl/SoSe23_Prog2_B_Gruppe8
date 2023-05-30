@@ -188,7 +188,7 @@ import java.util.Scanner;
                         double preis = scan.nextDouble();
                         System.out.println("Verfügbar: ");
                         boolean verfügbarkeit = true;
-                        eshop.artHinzufügen(new Artikel(bezeichnung,artikelnummer,bestand,preis,verfügbarkeit));
+                        eshop.artHinzufügen(new Artikel(bezeichnung,artikelnummer,bestand,preis,verfügbarkeit), m);
                         artbeitsMenue(m);
                         break;
 

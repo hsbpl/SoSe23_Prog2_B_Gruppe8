@@ -1,8 +1,6 @@
 package Domain;
 
-import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
-import ValueObjekt.Warenkorb;
+import ValueObjekt.*;
 
 import java.util.*;
 
@@ -48,7 +46,7 @@ public class Kundenverwaltung {
     //TODO sollte funktionieren aber dadurch das die String Methode nicht funktioniert habe ich gerade keine gewissheit
     //Die im Warenkorb enthaltenen Waren werden mit dem Warenbestand abgeglichen und deren Bestand wird aktualisiert.
     // danach wird der Warenkorb geleert
-    public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand) {
+    public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand, Kunde kunde, List<Ereignis> ereignisliste) {
         warenkorb.getWarenkorb().forEach((artikel, menge) -> {
             warenbestand.stream()
                     .filter(bestandsartikel -> bestandsartikel.equals(artikel))
@@ -56,6 +54,8 @@ public class Kundenverwaltung {
                         int zuReduzierendeMenge =menge;
                         int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
                         bestandsartikel.setBestand(aktuellerBestand);
+                        Ereignis e = new Ereignis(menge, artikel,kunde,"Kaufen");
+                        ereignisliste.add(e);
                     });
         });
 
