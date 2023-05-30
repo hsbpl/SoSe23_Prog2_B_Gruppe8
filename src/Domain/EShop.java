@@ -1,5 +1,6 @@
 package Domain;
 
+import Exceptions.ArtikelExistiertNichtException;
 import ValueObjekt.*;
 
 import java.util.*;
@@ -69,9 +70,13 @@ public class EShop {
         av.artikelLoeschen(artikelnummer);
     }
 
-    public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb){
-        kv.reinlegenOderMengeÄndern(getAlleArtikel(),artikel, menge, warenkorb);
-        return kv.toString();
+    public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException {
+        if(!getAlleArtikel().contains(artikel)){
+            throw new ArtikelExistiertNichtException();
+        } else {
+            kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);
+            return kv.toString();
+        }
     }
     public String ereignisListeAusgeben(){
         return av.ereignisseAusgeben();

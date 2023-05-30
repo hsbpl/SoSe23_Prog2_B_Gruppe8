@@ -1,11 +1,13 @@
 
         package CUI;
 import Domain.*;
+import Exceptions.ArtikelExistiertNichtException;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Warenkorb;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.util.Scanner;
 
 
@@ -22,7 +24,7 @@ import java.util.Scanner;
                 System.out.println("Was möchten Sie tun: ");
                 System.out.println("Zum Kundenlogin        `1`");
                 System.out.println("Zur Kundenregistrierung        `2`");
-                System.out.println("Zum Mitarbeiterlogin        `3`");
+                System.out.println("Zum Mitarbeiterlogin        `3`"); //TODO überall wo Int erwatet wird >UngültigeEingabeException-cause=Inpumismatchexception
 
                 startEingabenVerarbeiten(scan.nextInt());
             }
@@ -84,13 +86,13 @@ import java.util.Scanner;
 
                 System.out.println("---------------------");
                 System.out.println("Was möchten Sie tun?" + "\n");
-                System.out.println("Artikel in den Warenkorb legen oder" +
-                        "         \nMenge eines bereits vorhandenen Artikels ändern:       '1'");
-                System.out.println("Warenkorb leeren:       '2'");
-                System.out.println("Zum Warenkorb:       '3'");
-                System.out.println("Kauf abschließen:       '4'");
+                System.out.println("\nArtikel in den Warenkorb legen oder" +
+                        "         \nMenge eines bereits im Warenkorb vorhandenen Artikels ändern:       '1'");
+                System.out.println("\nWarenkorb leeren:       '2'");
+                System.out.println("\nZum Warenkorb:       '3'");
+                System.out.println("\nKauf abschließen:       '4'");
                 System.out.println("---------------------");
-                System.out.println("Beenden:       '0'");
+                System.out.println("\nBeenden:       '0'");
 
                 eshopEingabenVerarbeiten(scan.nextInt(), k, w);
             }
@@ -98,16 +100,26 @@ import java.util.Scanner;
             private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
 
                 switch (eingabe) {
-                    case 1: //funktioniert
-                        System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                        String gewaehlterArtikel = scan.next();
-                        System.out.println("Menge des gewählten Artikels");
-                        int menge = scan.nextInt();
-                        eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
-                        System.out.println("Ihr Warenkorb: ");
-                        System.out.println(eshop.artikelImWarenkorb(w));
-                        System.out.println("---------------------");
-                        eshopMenue(k,w);
+                    case 1: //TODO Wenn der Bestand überschritten Wird >UngültigeMengeException
+                        try{
+                            System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
+                            String gewaehlterArtikel = scan.next();
+                            System.out.println("Menge des gewählten Artikels");
+                            int menge = scan.nextInt();
+                            eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
+                            System.out.println("Ihr Warenkorb: ");
+                            System.out.println(eshop.artikelImWarenkorb(w));
+                            System.out.println("---------------------");
+                            eshopMenue(k,w);}
+                        catch (ArtikelExistiertNichtException e) {
+                            System.out.println(
+                                    "*********************************************************************************\n"+
+                                    "Der von Ihnen gewählte Artikel existiert nicht bitte versuchen Sie es nochmal\n"+
+                            "*********************************************************************************\n");
+                            eshopMenue(k, w);
+                        }
+
+
                         break;
 
                     case 2:
@@ -117,16 +129,16 @@ import java.util.Scanner;
                         eshopMenue(k,w);
                         break;
 
-                    case 3: //funktioniert
+                    case 3:
                         System.out.println("Ihr Warenkorb: ");
                         System.out.println(eshop.artikelImWarenkorb(w));
                         System.out.println("---------------------");
                         eshopMenue(k,w);
                         break;
 
-                    case 4: // Dadurch das die toString Methode nicht funktioniert unklar ob es funktioniert
+                    case 4: //>
+                        // Dadurch das die toString Methode nicht funktioniert unklar ob es funktioniert
                         System.out.println(eshop.kaufenUndRechnungEhalten(k,w));
-                        //eshop.kaufenUndWarenkorbLeeren(w);
                         System.out.println(eshop.ereignisListeAusgeben());
                         System.out.println("---------------------");
                         startMenue();
