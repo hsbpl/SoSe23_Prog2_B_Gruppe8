@@ -1,6 +1,7 @@
 package Domain;
 
 import ValueObjekt.*;
+import ValueObjekt.Enum;
 
 import java.util.*;
 
@@ -54,7 +55,7 @@ public class Kundenverwaltung {
                         int zuReduzierendeMenge =menge;
                         int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
                         bestandsartikel.setBestand(aktuellerBestand);
-                        Ereignis e = new Ereignis(menge, artikel,kunde,"Kaufen");
+                        Ereignis e = new Ereignis(menge, artikel,kunde, Enum.KAUF);
                         ereignisliste.add(e);
                     });
         });

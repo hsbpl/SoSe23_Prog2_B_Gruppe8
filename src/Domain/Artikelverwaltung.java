@@ -1,9 +1,7 @@
 package Domain;
 
-import ValueObjekt.Artikel;
-import ValueObjekt.Ereignis;
-import ValueObjekt.Mitarbeiter;
-import ValueObjekt.User;
+import ValueObjekt.*;
+import ValueObjekt.Enum;
 
 
 import java.util.*;
@@ -22,6 +20,7 @@ public class Artikelverwaltung { // fertig
     }
 
 
+
     Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2, true);
     Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99, true);
     Artikel chips = new Artikel("Chips", 39003, 100, 1.79, true);
@@ -32,7 +31,7 @@ public class Artikelverwaltung { // fertig
 
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) {
         artikelListe.add(artikel);
-        Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, "angelegt");
+        Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
         ereignisse.add(e);
     }
 
@@ -61,7 +60,7 @@ public class Artikelverwaltung { // fertig
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(anzahl);
-                Ereignis e = new Ereignis( anzahl, artikel, u, "Bestand erhöht");
+                Ereignis e = new Ereignis( anzahl, artikel, u, Enum.EINLAGERUNG);
                 ereignisse.add(e);
 
             }
@@ -74,7 +73,7 @@ public class Artikelverwaltung { // fertig
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelname)) {
                 artikel.ArtikelbestandVerringern(menge);
-                Ereignis e = new Ereignis(menge, artikel, u, "Bestand Verringert");
+                Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
                 ereignisse.add(e);
             }
         }

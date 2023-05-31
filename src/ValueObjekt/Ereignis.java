@@ -1,6 +1,5 @@
 package ValueObjekt;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Ereignis {
@@ -9,24 +8,36 @@ public class Ereignis {
     private int anzahl;
     private Artikel artikel;
     private User user;
-    private enum ereignisTyp{Auslagerung, Einlagerung, Kauf, Anlegen};
+
+
+
+    private Enum typ;
 
     //Die noch initialisieren
 
-    String aktion;
+    Enum aktion;
     //enum ereignistyp{Auslagerung, Einlagerung};
-    //neues Datum erzeugen
-    //Datum muss nicht in den Konstruktor
 
 
-    public Ereignis( int anzahl, Artikel artikel, User user, String aktion) {
+    public Ereignis( int anzahl, Artikel artikel, User user, Enum aktion) {
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
         this.aktion = aktion;
+        this.typ = typ;
        // this.ereignisTyp = ereignisTyp; // Recherche wie wird das enum im Konstruktor gesetzt?
-
     }
+    public Enum getTyp() {
+        return typ;
+    }
+    public void setTyp(Enum typ){
+        this.typ = typ;
+    }
+
+
+
+
+
 
 
     public void setArtikel(Artikel artikel) {
@@ -50,15 +61,10 @@ public class Ereignis {
     public User getUser() {
         return user;
     }
-/*
-    public EreignisTyp getEreignisTyp(){
-        return ereignisTyp;
-    }
-    public void setEreignisTyp(EreignisTyp ereignisTyp){
-        this. ereignisTyp = ereignisTyp;
-    }
 
- */
+
+
+
 
     //LocalDateTime ändern auch in RechnungsObjekt
     public String toString(){
