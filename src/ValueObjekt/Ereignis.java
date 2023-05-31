@@ -8,37 +8,16 @@ public class Ereignis {
     private int anzahl;
     private Artikel artikel;
     private User user;
-
-
-
-    private Enum typ;
-
-    //Die noch initialisieren
-
-    Enum aktion;
+    private Enum ereignistyp;
     //enum ereignistyp{Auslagerung, Einlagerung};
 
 
-    public Ereignis( int anzahl, Artikel artikel, User user, Enum aktion) {
+    public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp) {
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
-        this.aktion = aktion;
-        this.typ = typ;
-       // this.ereignisTyp = ereignisTyp; // Recherche wie wird das enum im Konstruktor gesetzt?
+        this.ereignistyp = ereignistyp;
     }
-    public Enum getTyp() {
-        return typ;
-    }
-    public void setTyp(Enum typ){
-        this.typ = typ;
-    }
-
-
-
-
-
-
 
     public void setArtikel(Artikel artikel) {
         this.artikel = artikel;
@@ -70,7 +49,8 @@ public class Ereignis {
     public String toString(){
         return  datum.toString() + "\n"+
                 anzahl +" durchgeführt über " +
-                user + "Neuer Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand();
+                user + "Neuer Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand()
+                + " "+ ereignistyp.toString();
     }
 }
 
