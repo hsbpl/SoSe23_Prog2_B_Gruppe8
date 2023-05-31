@@ -1,259 +1,382 @@
 
-        package CUI;
+package CUI;
+
 import Domain.*;
-import Exceptions.ArtikelExistiertNichtException;
+import Exceptions.*;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Warenkorb;
 
-import java.nio.channels.ScatteringByteChannel;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
+public class Main {
+    static Scanner scan = new Scanner(System.in);
+    static EShop eshop = new EShop();
 
 
-        public class Main {
-            static Scanner scan = new Scanner(System.in);
-            static EShop eshop = new EShop();
+    private static void startMenue() {
 
 
-            private static void startMenue() {
+        System.out.println("Was möchten Sie tun: ");
+        System.out.println("Zum Kundenlogin        `1`");
+        System.out.println("Zur Kundenregistrierung        `2`");
+        System.out.println("Zum Mitarbeiterlogin        `3`"); //TODO überall wo Int erwatet wird >UngültigeEingabeException-cause=Inpumismatchexception
 
-
-                System.out.println("Was möchten Sie tun: ");
-                System.out.println("Zum Kundenlogin        `1`");
-                System.out.println("Zur Kundenregistrierung        `2`");
-                System.out.println("Zum Mitarbeiterlogin        `3`"); //TODO überall wo Int erwatet wird >UngültigeEingabeException-cause=Inpumismatchexception
-
+        try {
+            if (scan.nextInt() > 3) {
+                throw new UngueltigeEingabeException();
+            } else
                 startEingabenVerarbeiten(scan.nextInt());
-            }
+        } catch (UngueltigeEingabeException e) {
+            System.out.println(
+                    "*********************************************************************************\n" +
+                            "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2' oder '3'. \n" +
+                            "*********************************************************************************\n");
+            startMenue();
 
-            private static void startEingabenVerarbeiten(int choice){
+        } catch (InputMismatchException e) {
 
-            switch (choice){
-                    case 1:
-                        System.out.println("Unsername:");
-                        String username = scan.next();
-                        System.out.println("Passwort:");
-                        String pw = scan.next();
-                        Kunde aktuellerKunde = eshop.kundenLogin(username, pw);
-                        System.out.println(aktuellerKunde);
-                        Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
-                        eshopMenue(aktuellerKunde, warenkorb);
+            System.out.println(
+                    "*********************************************************************************\n" +
+                            "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2' oder '3' ein.\n" +
+                            "*********************************************************************************\n");
+            startMenue();
+        }
+    }
 
-                        break;
+    private static void startEingabenVerarbeiten(int choice) {
 
-                    case 2:
-                        System.out.println("Unsername:");
-                        String uname = scan.next();
-                        System.out.println("Passwort:");
-                        String pasw = scan.next();
-                        System.out.println("Nachname:");
-                        String nachname = scan.next();
-                        System.out.println("Vorname:");
-                        String vorname = scan.next();
-                        System.out.println("id: ");
-                        int id = scan.nextInt();
-                        System.out.println("Adressse:");
-                        String adr = scan.next();
-                        Kunde kunde = new Kunde(uname, pasw, nachname, vorname,id, adr);
-                       // Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
-                        System.out.println(eshop.kundenRegistrieren(kunde));
-                        Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
-                        eshopMenue(kunde, w);
-                        break;
-
-                    case 3:
-                        System.out.println("Unsername:");
-                        String usname = scan.next();
-                        System.out.println("Passwort:");
-                        String paw = scan.next();
-                        Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(usname, paw);
-                        System.out.println(aktuellerMitarbeiter);
-
-                        artbeitsMenue(aktuellerMitarbeiter);
-
-                        break;
+        switch (choice) {
+            case 1:
+                try {
+                    System.out.println("Unsername:");
+                    String username = scan.next();
+                    System.out.println("Passwort:");
+                    String pw = scan.next();
+                    Kunde aktuellerKunde = eshop.kundenLogin(username, pw);
+                    System.out.println(aktuellerKunde);
+                    Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
+                    eshopMenue(aktuellerKunde, warenkorb);
+                }catch (LoginFehlgeschlagenException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
+                                    "*********************************************************************************\n");
+                    startMenue();
 
                 }
 
-            }
+                break;
+
+            case 2:
+                try{
+                System.out.println("Unsername:");
+                String uname = scan.next();
+                System.out.println("Passwort:");
+                String pasw = scan.next();
+                System.out.println("Nachname:");
+                String nachname = scan.next();
+                System.out.println("Vorname:");
+                String vorname = scan.next();
+                System.out.println("id: ");
+                int id = scan.nextInt();
+                System.out.println("Adressse:");
+                String adr = scan.next();
+                Kunde kunde = new Kunde(uname, pasw, nachname, vorname, id, adr);
+                System.out.println(eshop.kundenRegistrieren(kunde));
+                Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
+                eshopMenue(kunde, w);}catch (UserExistiertBereitsException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+                    startMenue();
+
+                }
+                break;
+
+            case 3:
+                try{
+                System.out.println("Unsername:");
+                String usname = scan.next();
+                System.out.println("Passwort:");
+                String paw = scan.next();
+                Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(usname, paw);
+                System.out.println(aktuellerMitarbeiter);
+
+                artbeitsMenue(aktuellerMitarbeiter);} catch (LoginFehlgeschlagenException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
+                                    "*********************************************************************************\n");
+                    startMenue();
+
+                }
+
+                break;
+
+        }
+
+    }
 
 
-            private static void eshopMenue(Kunde k, Warenkorb w) {
-                System.out.println(eshop.artikelListen());
+    private static void eshopMenue(Kunde k, Warenkorb w) {
+        System.out.println(eshop.artikelListen());
 
-                System.out.println("---------------------");
-                System.out.println("Was möchten Sie tun?" + "\n");
-                System.out.println("\nArtikel in den Warenkorb legen oder" +
-                        "         \nMenge eines bereits im Warenkorb vorhandenen Artikels ändern:       '1'");
-                System.out.println("\nWarenkorb leeren:       '2'");
-                System.out.println("\nZum Warenkorb:       '3'");
-                System.out.println("\nKauf abschließen:       '4'");
-                System.out.println("---------------------");
-                System.out.println("\nBeenden:       '0'");
+        System.out.println("---------------------");
+        System.out.println("Was möchten Sie tun?" + "\n");
+        System.out.println("\nArtikel in den Warenkorb legen oder" +
+                "         \nMenge eines bereits im Warenkorb vorhandenen Artikels ändern:       '1'");
+        System.out.println("\nWarenkorb leeren:       '2'");
+        System.out.println("\nZum Warenkorb:       '3'");
+        System.out.println("\nKauf abschließen:       '4'");
+        System.out.println("---------------------");
+        System.out.println("\nBeenden:       '0'");
 
+        try {
+            if (scan.nextInt() > 4) {
+                throw new UngueltigeEingabeException();
+            } else {
                 eshopEingabenVerarbeiten(scan.nextInt(), k, w);
             }
-
-            private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
-
-                switch (eingabe) {
-                    case 1: //TODO Wenn der Bestand überschritten Wird >UngültigeMengeException
-                        try{
-                            System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
-                            String gewaehlterArtikel = scan.next();
-                            System.out.println("Menge des gewählten Artikels");
-                            int menge = scan.nextInt();
-                            eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
-                            System.out.println("Ihr Warenkorb: ");
-                            System.out.println(eshop.artikelImWarenkorb(w));
-                            System.out.println("---------------------");
-                            eshopMenue(k,w);}
-                        catch (ArtikelExistiertNichtException e) {
-                            System.out.println(
-                                    "*********************************************************************************\n"+
-                                    "Der von Ihnen gewählte Artikel existiert nicht bitte versuchen Sie es nochmal\n"+
+        } catch (UngueltigeEingabeException e) {
+            System.out.println(
+                    "*********************************************************************************\n" +
+                            "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4' oder '0'. \n" +
                             "*********************************************************************************\n");
-                            eshopMenue(k, w);
-                        }
+            eshopMenue(k, w);
 
+        } catch (InputMismatchException e) {
 
-                        break;
-
-                    case 2:
-                        eshop.warenkorbLeeren(w); //funktioniert
-                        System.out.println("Warenkorb wurde geleert.");
-                        System.out.println("---------------------");
-                        eshopMenue(k,w);
-                        break;
-
-                    case 3:
-                        System.out.println("Ihr Warenkorb: ");
-                        System.out.println(eshop.artikelImWarenkorb(w));
-                        System.out.println("---------------------");
-                        eshopMenue(k,w);
-                        break;
-
-                    case 4: //>
-                        // Dadurch das die toString Methode nicht funktioniert unklar ob es funktioniert
-                        System.out.println(eshop.kaufenUndRechnungEhalten(k,w));
-                        System.out.println(eshop.ereignisListeAusgeben());
-                        System.out.println("---------------------");
-                        startMenue();
-                        break;
-
-                    case 0:
-                        startMenue();
-                        break;
-
-                }
-            }
-
-
-            public static void artbeitsMenue(Mitarbeiter m) {
-
-                System.out.println("         \n  Artikel ausgeben:       '1'");
-                System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
-                System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
-                System.out.println("         \n  Neuen Artikel anlegen: '4'");
-                System.out.println("         \n  Bestand erhöhen: '5'");
-                System.out.println("         \n  Bestand verringern:   '6'");
-                System.out.println("         \n  Neuen Mitarbeiter anlegen:   '7'");
-                System.out.println("         \n  ---------------------------");
-                System.out.println("       \n  Beenden:                '0'");
-
-                arbeitsEingabenVerarbeiten(scan.nextInt(),m);
-            }
-
-
-
-            private static void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) {
-
-
-                switch (eingabe) {
-                    case 1:
-                        System.out.println(eshop.artikelListen());
-                        artbeitsMenue(m);
-                        break;
-
-                    case 2:
-                        eshop.alphaArtikel();
-                        System.out.println(eshop.artikelListen());
-                        artbeitsMenue(m);
-                        break;
-
-                    case 3:
-                        System.out.println(eshop.nummerArtikel());
-                        artbeitsMenue(m);
-                        break;
-
-                    case 4:
-                        System.out.println("Artikelname: ");
-                        String bezeichnung = scan.next();
-                        System.out.println("Artikelnummer: ");
-                        int artikelnummer = scan.nextInt();
-                        System.out.println("Bestand: ");
-                        int bestand = scan.nextInt();
-                        System.out.println("Preis: ");
-                        double preis = scan.nextDouble();
-                        System.out.println("Verfügbar: ");
-                        boolean verfügbarkeit = true;
-                        eshop.artHinzufügen(new Artikel(bezeichnung,artikelnummer,bestand,preis,verfügbarkeit), m);
-                        artbeitsMenue(m);
-                        break;
-
-                    case 5:
-
-                        System.out.println("Artikelname:");
-                        String artikelname =scan.next();
-                        System.out.println("Zu erhöhende Menge: ");
-                        int menge = scan.nextInt();
-                        eshop.bestandHöher(artikelname, menge, m);
-                        System.out.println(eshop.ereignisListeAusgeben());
-                        artbeitsMenue(m);
-                        break;
-
-                    case 6:
-                        System.out.println("Artikelname:");
-                        String artikelbez =scan.next();
-                        System.out.println("Zu verringernde Menge: ");
-                        int me = scan.nextInt();
-                        eshop.bestanNiedriger(artikelbez, me, m);
-                        System.out.println(eshop.ereignisListeAusgeben());
-                        artbeitsMenue(m);
-                        break;
-
-                    case 7:
-                        System.out.println("Unsername:");
-                        String username = scan.next();
-                        System.out.println("Passwort:");
-                        String pw = scan.next();
-                        System.out.println("Nachname:");
-                        String nachname = scan.next();
-                        System.out.println("Vorname:");
-                        String vorname = scan.next();
-                        System.out.println("Mitarbeiternummer:");
-                        int id = scan.nextInt();
-                        Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
-                        System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
-                        artbeitsMenue(m);
-                        break;
-
-                    case 0:
-                        startMenue();
-                        break;
-
-                }
-            }
-
-            public static void main(String[] args){
-                Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",001, "Am Berg");
-               eshop.neuenWarenkorbErstellen(k1);
-                startMenue();
-
-
-            }
+            System.out.println(
+                    "*********************************************************************************\n" +
+                            "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2', '3','4' oder '0' ein.\n" +
+                            "*********************************************************************************\n");
+            eshopMenue(k, w);
         }
+    }
+
+    private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
+
+        switch (eingabe) {
+            case 1: //TODO Wenn der Bestand überschritten Wird >UngültigeMengeException
+                try {
+                    System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
+                    String gewaehlterArtikel = scan.next();
+                    System.out.println("Menge des gewählten Artikels");
+                    int menge = scan.nextInt();
+                    eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
+                    System.out.println("Ihr Warenkorb: ");
+                    System.out.println(eshop.artikelImWarenkorb(w));
+                    System.out.println("---------------------");
+                    eshopMenue(k, w);
+                } catch (ArtikelExistiertNichtException e) {
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+                    eshopMenue(k, w);
+                }catch (UngueltigeMengeException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Leider haben wir nicht genügend Artikel im Bestand. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+                    eshopMenue(k, w);
+                }
+
+
+                break;
+
+            case 2:
+                eshop.warenkorbLeeren(w); //funktioniert
+                System.out.println("Warenkorb wurde geleert.");
+                System.out.println("---------------------");
+                eshopMenue(k, w);
+                break;
+
+            case 3:
+                System.out.println("Ihr Warenkorb: ");
+                System.out.println(eshop.artikelImWarenkorb(w));
+                System.out.println("---------------------");
+                eshopMenue(k, w);
+                break;
+
+            case 4: //>
+                // Dadurch das die toString Methode nicht funktioniert unklar ob es funktioniert
+                System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
+                System.out.println(eshop.ereignisListeAusgeben());
+                System.out.println("---------------------");
+                startMenue();
+                break;
+
+            case 0:
+                startMenue();
+                break;
+
+        }
+    }
+
+
+    public static void artbeitsMenue(Mitarbeiter m) {
+
+        System.out.println("         \n  Artikel ausgeben:       '1'");
+        System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
+        System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
+        System.out.println("         \n  Neuen Artikel anlegen: '4'");
+        System.out.println("         \n  Bestand erhöhen: '5'");
+        System.out.println("         \n  Bestand verringern:   '6'");
+        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '7'");
+        System.out.println("         \n  ---------------------------");
+        System.out.println("       \n  Beenden:                '0'");
+
+        try {
+            if (scan.nextInt() > 7) {
+                throw new UngueltigeEingabeException();
+
+            } else {
+                arbeitsEingabenVerarbeiten(scan.nextInt(), m);
+            }
+        } catch (UngueltigeEingabeException e) {
+            System.out.println(
+                    "*********************************************************************************\n" +
+                            "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4', '5', '6', '7' oder '0'. \n" +
+                            "*********************************************************************************\n");
+            artbeitsMenue(m);
+
+        } catch (InputMismatchException e) {
+
+            System.out.println(
+                    "*********************************************************************************\n" +
+                            "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option 1', '2', '3','4', '5', '6', '7' oder '0' ein.\n" +
+                            "*********************************************************************************\n");
+            artbeitsMenue(m);
+        }
+    }
+
+
+    private static void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) {
+
+
+        switch (eingabe) {
+            case 1:
+                System.out.println(eshop.artikelListen());
+                artbeitsMenue(m);
+                break;
+
+            case 2:
+                eshop.artikelAlphabetischAusgeben();
+                System.out.println(eshop.artikelListen());
+                artbeitsMenue(m);
+                break;
+
+            case 3:
+                System.out.println(eshop.artikelNachArtikelnummerGeordnetAusgeben());
+                artbeitsMenue(m);
+                break;
+
+            case 4:
+                try {
+                    System.out.println("Artikelname: ");
+                    String bezeichnung = scan.next();
+                    System.out.println("Artikelnummer: ");
+                    int artikelnummer = scan.nextInt();
+                    System.out.println("Bestand: ");
+                    int bestand = scan.nextInt();
+                    System.out.println("Preis: ");
+                    double preis = scan.nextDouble();
+                    System.out.println("Verfügbar: ");
+                    boolean verfügbarkeit = true;
+                    eshop.artHinzufügen(new Artikel(bezeichnung, artikelnummer, bestand, preis, verfügbarkeit), m);
+                    artbeitsMenue(m);
+                } catch (ArtikelExistiertBereitsException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal\n" +
+                            "*********************************************************************************\n");
+                    artbeitsMenue(m);
+                }
+
+                break;
+
+            case 5:
+                try {
+                    System.out.println("Artikelname:");
+                    String artikelname = scan.next();
+                    System.out.println("Zu erhöhende Menge: ");
+                    int menge = scan.nextInt();
+                    eshop.bestandErhöhen(artikelname, menge, m);
+                    System.out.println(eshop.ereignisListeAusgeben());
+                    artbeitsMenue(m);
+                } catch (ArtikelExistiertNichtException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal\n" +
+                            "*********************************************************************************\n");
+                    artbeitsMenue(m);
+                }
+                break;
+
+            case 6:
+                try {
+                    System.out.println("Artikelname:");
+                    String artikelbez = scan.next();
+                    System.out.println("Zu verringernde Menge: ");
+                    int me = scan.nextInt();
+                    eshop.bestanNiedriger(artikelbez, me, m);
+                    System.out.println(eshop.ereignisListeAusgeben());
+                    artbeitsMenue(m);
+                } catch (ArtikelExistiertNichtException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal\n" +
+                            "*********************************************************************************\n");
+                    artbeitsMenue(m);
+                } catch (UngueltigeMengeException u) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal\n" +
+                            "*********************************************************************************\n");
+                    artbeitsMenue(m);
+                }
+                ;
+                break;
+
+            case 7:
+                try{
+                System.out.println("Unsername:");
+                String username = scan.next();
+                System.out.println("Passwort:");
+                String pw = scan.next();
+                System.out.println("Nachname:");
+                String nachname = scan.next();
+                System.out.println("Vorname:");
+                String vorname = scan.next();
+                System.out.println("Mitarbeiternummer:");
+                int id = scan.nextInt();
+                Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
+                System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
+                artbeitsMenue(m);}catch (UserExistiertBereitsException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+                   artbeitsMenue(m);
+
+                }
+                break;
+
+            case 0:
+                startMenue();
+                break;
+
+        }
+    }
+
+    public static void main(String[] args) {
+        Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
+        eshop.neuenWarenkorbErstellen(k1);
+        startMenue();
+
+
+    }
+}
 

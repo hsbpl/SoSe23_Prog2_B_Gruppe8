@@ -1,5 +1,8 @@
 package Domain;
 
+import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.ArtikelExistiertNichtException;
+import Exceptions.UngueltigeMengeException;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
 
@@ -19,8 +22,6 @@ public class Artikelverwaltung { // fertig
         ereignisse = new  ArrayList<>();
     }
 
-
-
     Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2, true);
     Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99, true);
     Artikel chips = new Artikel("Chips", 39003, 100, 1.79, true);
@@ -29,10 +30,13 @@ public class Artikelverwaltung { // fertig
 
 
 
-    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) {
+    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
+        if(getArtikelListe().contains(artikel)){
+            throw new ArtikelExistiertBereitsException();
+        } else{
         artikelListe.add(artikel);
         Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
-        ereignisse.add(e);
+        ereignisse.add(e);}
     }
 
     public String artikelSortierenNachBezeichnung() {
@@ -55,28 +59,36 @@ public class Artikelverwaltung { // fertig
         return s;
     }
 
-    public void bestandErhoehen(String artikelBezeichnung, int anzahl, User u) {
+    public void bestandErhoehen(String artikelBezeichnung, int anzahl, User u) throws ArtikelExistiertNichtException{
 
         for (Artikel artikel : artikelListe) {
+
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 artikel.ArtikelbestandErhoehen(anzahl);
                 Ereignis e = new Ereignis( anzahl, artikel, u, Enum.EINLAGERUNG);
                 ereignisse.add(e);
 
+            } else {
+                throw new ArtikelExistiertNichtException();
             }
         }
 
     }
 
-    public void bestandVerringern(String artikelname, int menge, User u) {   // kopieren oder pushen
+    public void bestandVerringern(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException {   // kopieren oder pushen
 
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelname)) {
-                artikel.ArtikelbestandVerringern(menge);
-                Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
-                ereignisse.add(e);
+                if (artikel.getBestand() < menge){
+                    throw new UngueltigeMengeException();
+                }else {
+                    artikel.ArtikelbestandVerringern(menge);
+                    Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
+                    ereignisse.add(e);}
+            }else {
+                throw new ArtikelExistiertNichtException();
+                }
             }
-        }
 
     }
 
@@ -92,9 +104,6 @@ public class Artikelverwaltung { // fertig
         return ereignisse;
     }
 
-    public void setArtikelListe(List<Artikel> artikelListe) {
-        this.artikelListe = artikelListe;
-    }
     public String ereignisseAusgeben() {
         String s ="";
         for (Ereignis a : ereignisse) {
@@ -102,10 +111,6 @@ public class Artikelverwaltung { // fertig
         }
         return s;
     }
-    public void setArtikelListe(ArrayList<Artikel> artikelListe) {
-        this.artikelListe = artikelListe;
-    }
-
 
     public ArrayList<Artikel> getArtikelListe() {
         return (ArrayList<Artikel>) artikelListe;
@@ -121,12 +126,14 @@ public class Artikelverwaltung { // fertig
         }
     }
 
-    public void artikelLoeschen(int artikelnummer) {
+    public void artikelLoeschen(int artikelnummer) throws ArtikelExistiertNichtException{
         Artikel artikelToRemove = null;
         for (Artikel artikel : artikelListe) {
             if (artikel.getArtikelNummer() == artikelnummer) {
                 artikelToRemove = artikel;
                 break;
+            } else {
+                throw new ArtikelExistiertNichtException();
             }
         }
         artikelListe.remove(artikelToRemove);

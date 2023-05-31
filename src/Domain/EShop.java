@@ -1,6 +1,6 @@
 package Domain;
 
-import Exceptions.ArtikelExistiertNichtException;
+import Exceptions.*;
 import ValueObjekt.*;
 
 import java.util.*;
@@ -34,49 +34,54 @@ public class EShop {
       return   kv.neuerWarenkorb(k);
     }
 
-    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) {
-        return mv.mRegister(neu);
+    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException{
+        Mitarbeiter neuerMitarbeiter = mv.mRegister(neu);
+        if(neuerMitarbeiter == null){
+            throw new UserExistiertBereitsException();
+        }
+        return neuerMitarbeiter;
 
     }
-    public Mitarbeiter mitarbeiterLogin(String username, String passwort){
-        return mv.mitarbeiterEinloggen(username, passwort);
+    public Mitarbeiter mitarbeiterLogin(String username, String passwort) throws LoginFehlgeschlagenException {
+        Mitarbeiter erfolgreicherLogin =mv.mitarbeiterEinloggen(username, passwort);
+        if(erfolgreicherLogin == null){
+            throw new LoginFehlgeschlagenException();
+        } else{
+        return erfolgreicherLogin;}
     }
 
     public String artikelListen(){
         return av.artikelAusgeben();
     }
 
-    public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter){
+    public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
         av.artikelHinzufuegen(a, mitarbeiter);
     }
 
-    public void bestandHöher(String artikelname, int menge, User u){
+    public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{
         av.bestandErhoehen(artikelname, menge, u);
     }
 
-    public void bestanNiedriger(String artikelname, int menge, User u ){
+    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException {
         av.bestandVerringern(artikelname, menge, u);
     }
 
-    public String alphaArtikel(){
+    public String artikelAlphabetischAusgeben(){
         return av.artikelSortierenNachBezeichnung();
     }
 
-    public String nummerArtikel(){
+    public String artikelNachArtikelnummerGeordnetAusgeben(){
         return av.artikelSortierenNachArtikelnummer();
     }
 
-    public void artikelAusDemSortimentEntfernen(int artikelnummer){
+    public void artikelAusDemSortimentEntfernen(int artikelnummer) throws ArtikelExistiertNichtException{
         av.artikelLoeschen(artikelnummer);
     }
-
-    public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException {
-        if(!getAlleArtikel().contains(artikel)){
-            throw new ArtikelExistiertNichtException();
-        } else {
+    //TODO ArtikelExistiertnicht--> nochmal schauen  , UngültigeMenge
+    public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
             kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);
             return kv.toString();
-        }
+
     }
     public String ereignisListeAusgeben(){
         return av.ereignisseAusgeben();
@@ -88,12 +93,20 @@ public class EShop {
     public void warenkorbLeeren(Warenkorb warenkorb){
         kv.leeren(warenkorb);;
     }
-    public Kunde kundenLogin(String username, String password){
-        return kv.login(username,password);
+    public Kunde kundenLogin(String username, String password) throws LoginFehlgeschlagenException{
+        Kunde erfolgreicherLogin=kv.login(username,password);
+        if(erfolgreicherLogin == null){
+            throw new LoginFehlgeschlagenException();
+        } else{
+            return erfolgreicherLogin;}
     }
 
-    public Kunde kundenRegistrieren(Kunde neu){
-        return kv.register(neu);
+    public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException {
+        Kunde neuerKunde = kv.register(neu);
+        if(neuerKunde == null){
+            throw new UserExistiertBereitsException();
+        }else{
+        return neuerKunde;}
     }
 
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb){

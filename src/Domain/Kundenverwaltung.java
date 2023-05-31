@@ -1,5 +1,6 @@
 package Domain;
 
+import Exceptions.UngueltigeMengeException;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
 
@@ -20,26 +21,15 @@ public class Kundenverwaltung {
         return kundenUndDazugehörigeWarenkörbe;
     }
 
-
-   /* public Artikel choice(List<Artikel> warenliste, String warenname) {
-        Artikel art = null;
-        for (Artikel a : warenliste) {
-            if (a.getBezeichnung() == warenname) {
-                art = a;
-            }
-        }
-        return art;
-    }
-
-    */
-
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
+
+    //TODO ArtikelExistiertnicht--> nochmal schauen  , UngültigeMenge
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) {
         warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
-                .ifPresent(a -> {warenkorb.getWarenkorb().put(a,menge);
-
+                .ifPresent(a ->{
+                        warenkorb.getWarenkorb().put(a,menge);
                 });
 
     }
