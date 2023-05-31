@@ -14,7 +14,7 @@ public enum Enum {
             case 1:
                 return "EINLAGERUNG";
             case 2:
-                return "Kauf";
+                return "KAUF";
             case 3:
                 return "ANLEGEN";
             default:

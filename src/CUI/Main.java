@@ -26,10 +26,10 @@ public class Main {
         System.out.println("Zum Mitarbeiterlogin        `3`"); //TODO überall wo Int erwatet wird >UngültigeEingabeException-cause=Inpumismatchexception
 
         try {
+            startEingabenVerarbeiten(scan.nextInt());
             if (scan.nextInt() > 3) {
-                throw new UngueltigeEingabeException();
-            } else
-                startEingabenVerarbeiten(scan.nextInt());
+                throw new UngueltigeEingabeException();}
+
         } catch (UngueltigeEingabeException e) {
             System.out.println(
                     "*********************************************************************************\n" +
@@ -88,7 +88,9 @@ public class Main {
                 Kunde kunde = new Kunde(uname, pasw, nachname, vorname, id, adr);
                 System.out.println(eshop.kundenRegistrieren(kunde));
                 Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
-                eshopMenue(kunde, w);}catch (UserExistiertBereitsException e){
+                eshopMenue(kunde, w);
+                }
+                catch (UserExistiertBereitsException e){
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
@@ -137,10 +139,9 @@ public class Main {
         System.out.println("\nBeenden:       '0'");
 
         try {
+            eshopEingabenVerarbeiten(scan.nextInt(), k, w);
             if (scan.nextInt() > 4) {
                 throw new UngueltigeEingabeException();
-            } else {
-                eshopEingabenVerarbeiten(scan.nextInt(), k, w);
             }
         } catch (UngueltigeEingabeException e) {
             System.out.println(
@@ -233,11 +234,10 @@ public class Main {
         System.out.println("       \n  Beenden:                '0'");
 
         try {
+            arbeitsEingabenVerarbeiten(scan.nextInt(), m);
             if (scan.nextInt() > 7) {
                 throw new UngueltigeEingabeException();
 
-            } else {
-                arbeitsEingabenVerarbeiten(scan.nextInt(), m);
             }
         } catch (UngueltigeEingabeException e) {
             System.out.println(
