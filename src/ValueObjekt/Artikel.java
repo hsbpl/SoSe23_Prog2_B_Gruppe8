@@ -21,6 +21,9 @@ public class Artikel implements Serializable {
 
     }
 
+    public Artikel(int artikelnummer, String bestand, int preis) {
+    }
+
 
     public int getBestand() {
         return bestand;
