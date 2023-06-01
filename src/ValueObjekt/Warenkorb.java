@@ -29,12 +29,12 @@ public class Warenkorb {
             double einzelPreis = artikel.getPreis();
             int aktuelleMenge = menge;
 
-            String artikelDaten = aktuelleMenge + "x  " + aktuellerArtikel + "          " + einzelPreis;
+            String artikelDaten = aktuelleMenge + "x  " + aktuellerArtikel + "          Einzelpreis: " + einzelPreis + "€";
 
-            einkaufsliste += "\n"+ artikelDaten;
+            einkaufsliste += "\n" + artikelDaten;
             gesamtsumme += aktuelleMenge * einzelPreis;
         }
 
-        return einkaufsliste + "\n" + "Gesamtsumme:" +"                "+gesamtsumme;
+        return einkaufsliste + "\n" + "\nGesamtsumme:" + "                " + gesamtsumme + "€";
     }
 }
