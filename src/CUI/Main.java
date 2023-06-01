@@ -192,7 +192,7 @@ public class Main {
                 break;
 
             case 2:
-                eshop.warenkorbLeeren(w); //funktioniert
+                eshop.warenkorbLeeren(w);
                 System.out.println("Warenkorb wurde geleert.");
                 System.out.println("---------------------");
                 eshopMenue(k, w);
@@ -205,10 +205,10 @@ public class Main {
                 eshopMenue(k, w);
                 break;
 
-            case 4: //>
-                // Dadurch das die toString Methode nicht funktioniert unklar ob es funktioniert
+            case 4:
+                System.out.println("---------------------");
                 System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
-                System.out.println(eshop.ereignisListeAusgeben());
+                //System.out.println(eshop.ereignisListeAusgeben());
                 System.out.println("---------------------");
                 startMenue();
                 break;

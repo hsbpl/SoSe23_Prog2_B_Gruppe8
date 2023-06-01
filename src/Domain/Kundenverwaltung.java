@@ -87,7 +87,7 @@ public class Kundenverwaltung {
 
     //Liste der im Warenkorb gelegten Artikel wird ausgegeben
     public String einkaufsliste(Warenkorb warenkorb){
-        return warenkorb.getWarenkorb().toString();
+        return warenkorb.toString();
     }
 
 
