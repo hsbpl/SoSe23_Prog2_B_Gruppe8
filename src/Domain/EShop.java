@@ -25,7 +25,7 @@ public class EShop {
     public static final String CUSTOMER_FILE = "customers.txt";
 
     // Ergänze die Methoden saveData und loadData
-   /* public void saveData() {
+   public void saveData() {
         FilePersistenceManager.saveData(av.getArtikelListe(), mv.getListMitarbeiter(), kv.getKundenListe());
     }
 
@@ -33,17 +33,20 @@ public class EShop {
         FilePersistenceManager.loadData(av.getArtikelListe(), mv.getListMitarbeiter(), kv.getKundenListe());
     }
 
-    */
-//TODO: kundenliste in der Kundenverwaltung implementieren, solange kommwntiere ich die hier aus
+
+
 
 
 
     public List<Artikel> getAlleArtikel() {
         return av.getArtikelListe();
     }
-    public List<Mitarbeiter> getMitarbeiterList() {
+    public List<Mitarbeiter> getAlleMitarbeiter() {
         return mv.getListMitarbeiter();
     }
+    public List<Kunde> getAlleKunden(){return kv.getKundenListe();}
+
+
 
     public List<Ereignis> getAlleEreignisse(){
         return av.getEreignisse();
@@ -75,6 +78,7 @@ public class EShop {
     public String artikelListen(){
         return av.artikelAusgeben();
     }
+
 
     public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
         av.artikelHinzufuegen(a, mitarbeiter);

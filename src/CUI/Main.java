@@ -17,6 +17,8 @@ public class Main {
     static EShop eshop = new EShop();
 
 
+
+
     private static void startMenue() {
 
 
@@ -373,7 +375,14 @@ public class Main {
     public static void main(String[] args) {
         Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
         eshop.neuenWarenkorbErstellen(k1);
+
+        //Vor dem Start des Menüs die Daten laden
+        eshop.loadData();
+
         startMenue();
+
+        //Nach dem Beenden des Menüs werden die Daten gespeichert
+        eshop.saveData();
 
 
     }

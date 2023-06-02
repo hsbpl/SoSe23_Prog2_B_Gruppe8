@@ -1,6 +1,5 @@
 package Domain;
 
-import Exceptions.ArtikelExistiertNichtException;
 import Exceptions.UngueltigeMengeException;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
@@ -10,14 +9,16 @@ import java.util.*;
 
 public class Kundenverwaltung {
 
-
+    private HashMap<String, Kunde> kundenliste;
     private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
 
     public Kundenverwaltung() {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
+        this.kundenliste = new HashMap<>();
     }
-
-
+    public List<Kunde> getKundenListe(){
+        return new ArrayList<>(kundenliste.values());
+    }
     public HashMap<Kunde, Warenkorb> getGespeicherteWarenkörbe() {
         return kundenUndDazugehörigeWarenkörbe;
     }
