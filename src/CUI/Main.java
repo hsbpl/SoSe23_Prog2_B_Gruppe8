@@ -25,26 +25,19 @@ public class Main {
         System.out.println("Zur Kundenregistrierung        `2`");
         System.out.println("Zum Mitarbeiterlogin        `3`"); //TODO überall wo Int erwatet wird >UngültigeEingabeException-cause=Inpumismatchexception
 
-        try {
-            startEingabenVerarbeiten(scan.nextInt());
-            if (scan.nextInt() > 3) {
-                throw new UngueltigeEingabeException();}
-
-        } catch (UngueltigeEingabeException e) {
-            System.out.println(
-                    "*********************************************************************************\n" +
-                            "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2' oder '3'. \n" +
-                            "*********************************************************************************\n");
-            startMenue();
-
-        } catch (InputMismatchException e) {
+        int input = scan.nextInt();
+        try{startEingabenVerarbeiten(input);
+        }
+         catch (InputMismatchException e) {
 
             System.out.println(
                     "*********************************************************************************\n" +
                             "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2' oder '3' ein.\n" +
                             "*********************************************************************************\n");
+            scan.nextLine();
             startMenue();
         }
+
     }
 
     private static void startEingabenVerarbeiten(int choice) {
@@ -60,7 +53,7 @@ public class Main {
                     System.out.println(aktuellerKunde);
                     Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
                     eshopMenue(aktuellerKunde, warenkorb);
-                }catch (LoginFehlgeschlagenException e){
+                } catch (LoginFehlgeschlagenException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
@@ -72,25 +65,24 @@ public class Main {
                 break;
 
             case 2:
-                try{
-                System.out.println("Unsername:");
-                String uname = scan.next();
-                System.out.println("Passwort:");
-                String pasw = scan.next();
-                System.out.println("Nachname:");
-                String nachname = scan.next();
-                System.out.println("Vorname:");
-                String vorname = scan.next();
-                System.out.println("id: ");
-                int id = scan.nextInt();
-                System.out.println("Adressse:");
-                String adr = scan.next();
-                Kunde kunde = new Kunde(uname, pasw, nachname, vorname, id, adr);
-                System.out.println(eshop.kundenRegistrieren(kunde));
-                Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
-                eshopMenue(kunde, w);
-                }
-                catch (UserExistiertBereitsException e){
+                try {
+                    System.out.println("Unsername:");
+                    String uname = scan.next();
+                    System.out.println("Passwort:");
+                    String pasw = scan.next();
+                    System.out.println("Nachname:");
+                    String nachname = scan.next();
+                    System.out.println("Vorname:");
+                    String vorname = scan.next();
+                    System.out.println("id: ");
+                    int id = scan.nextInt();
+                    System.out.println("Adressse:");
+                    String adr = scan.next();
+                    Kunde kunde = new Kunde(uname, pasw, nachname, vorname, id, adr);
+                    System.out.println(eshop.kundenRegistrieren(kunde));
+                    Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
+                    eshopMenue(kunde, w);
+                } catch (UserExistiertBereitsException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
@@ -101,15 +93,16 @@ public class Main {
                 break;
 
             case 3:
-                try{
-                System.out.println("Unsername:");
-                String usname = scan.next();
-                System.out.println("Passwort:");
-                String paw = scan.next();
-                Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(usname, paw);
-                System.out.println(aktuellerMitarbeiter);
+                try {
+                    System.out.println("Unsername:");
+                    String usname = scan.next();
+                    System.out.println("Passwort:");
+                    String paw = scan.next();
+                    Mitarbeiter aktuellerMitarbeiter = eshop.mitarbeiterLogin(usname, paw);
+                    System.out.println(aktuellerMitarbeiter);
 
-                artbeitsMenue(aktuellerMitarbeiter);} catch (LoginFehlgeschlagenException e){
+                    artbeitsMenue(aktuellerMitarbeiter);
+                } catch (LoginFehlgeschlagenException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
@@ -119,7 +112,13 @@ public class Main {
                 }
 
                 break;
-
+            default:
+                System.out.println(
+                        "*********************************************************************************\n" +
+                                "Ungültige Eingabe! Bitte wählen Sie zwischen Optionen '1', '2' oder '3'. \n" +
+                                "*********************************************************************************\n");
+                startMenue();
+                break;
         }
 
     }
@@ -127,7 +126,6 @@ public class Main {
 
     private static void eshopMenue(Kunde k, Warenkorb w) {
         System.out.println(eshop.artikelListen());
-
         System.out.println("---------------------");
         System.out.println("Was möchten Sie tun?" + "\n");
         System.out.println("\nArtikel in den Warenkorb legen oder" +
@@ -138,26 +136,22 @@ public class Main {
         System.out.println("---------------------");
         System.out.println("\nBeenden:       '0'");
 
+
         try {
-            eshopEingabenVerarbeiten(scan.nextInt(), k, w);
-            if (scan.nextInt() > 4) {
-                throw new UngueltigeEingabeException();
-            }
-        } catch (UngueltigeEingabeException e) {
-            System.out.println(
-                    "*********************************************************************************\n" +
-                            "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4' oder '0'. \n" +
-                            "*********************************************************************************\n");
-            eshopMenue(k, w);
 
-        } catch (InputMismatchException e) {
-
+               int input= scan.nextInt();
+                eshopEingabenVerarbeiten(input, k, w);
+        }
+        catch (InputMismatchException e) {
             System.out.println(
                     "*********************************************************************************\n" +
                             "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2', '3','4' oder '0' ein.\n" +
                             "*********************************************************************************\n");
-            eshopMenue(k, w);
+            scan.nextLine();
+            eshopMenue(k,w);
+
         }
+
     }
 
     private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
@@ -180,14 +174,13 @@ public class Main {
                                     "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
                                     "*********************************************************************************\n");
                     eshopMenue(k, w);
-                }catch (UngueltigeMengeException e){
+                } catch (UngueltigeMengeException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Leider haben wir nicht genügend Artikel im Bestand. Bitte versuchen Sie es nochmal.\n" +
                                     "*********************************************************************************\n");
                     eshopMenue(k, w);
                 }
-
 
                 break;
 
@@ -216,7 +209,13 @@ public class Main {
             case 0:
                 startMenue();
                 break;
-
+            default:
+                System.out.println(
+                        "*********************************************************************************\n" +
+                                "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4' oder '0'. \n" +
+                                "*********************************************************************************\n");
+                eshopMenue(k, w);
+                break;
         }
     }
 
@@ -234,17 +233,8 @@ public class Main {
         System.out.println("       \n  Beenden:                '0'");
 
         try {
-            arbeitsEingabenVerarbeiten(scan.nextInt(), m);
-            if (scan.nextInt() > 7) {
-                throw new UngueltigeEingabeException();
-
-            }
-        } catch (UngueltigeEingabeException e) {
-            System.out.println(
-                    "*********************************************************************************\n" +
-                            "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4', '5', '6', '7' oder '0'. \n" +
-                            "*********************************************************************************\n");
-            artbeitsMenue(m);
+            int input = scan.nextInt();
+            arbeitsEingabenVerarbeiten(input, m);
 
         } catch (InputMismatchException e) {
 
@@ -252,6 +242,7 @@ public class Main {
                     "*********************************************************************************\n" +
                             "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option 1', '2', '3','4', '5', '6', '7' oder '0' ein.\n" +
                             "*********************************************************************************\n");
+            scan.nextLine();
             artbeitsMenue(m);
         }
     }
@@ -341,25 +332,26 @@ public class Main {
                 break;
 
             case 7:
-                try{
-                System.out.println("Unsername:");
-                String username = scan.next();
-                System.out.println("Passwort:");
-                String pw = scan.next();
-                System.out.println("Nachname:");
-                String nachname = scan.next();
-                System.out.println("Vorname:");
-                String vorname = scan.next();
-                System.out.println("Mitarbeiternummer:");
-                int id = scan.nextInt();
-                Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
-                System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
-                artbeitsMenue(m);}catch (UserExistiertBereitsException e){
+                try {
+                    System.out.println("Unsername:");
+                    String username = scan.next();
+                    System.out.println("Passwort:");
+                    String pw = scan.next();
+                    System.out.println("Nachname:");
+                    String nachname = scan.next();
+                    System.out.println("Vorname:");
+                    String vorname = scan.next();
+                    System.out.println("Mitarbeiternummer:");
+                    int id = scan.nextInt();
+                    Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
+                    System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
+                    artbeitsMenue(m);
+                } catch (UserExistiertBereitsException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                                     "*********************************************************************************\n");
-                   artbeitsMenue(m);
+                    artbeitsMenue(m);
 
                 }
                 break;
@@ -368,6 +360,13 @@ public class Main {
                 startMenue();
                 break;
 
+            default:
+                System.out.println(
+                        "*********************************************************************************\n" +
+                                "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4', '5', '6', '7' oder '0'. \n" +
+                                "*********************************************************************************\n");
+                artbeitsMenue(m);
+            break;
         }
     }
 
