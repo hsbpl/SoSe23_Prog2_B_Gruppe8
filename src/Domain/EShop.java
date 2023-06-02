@@ -2,8 +2,11 @@ package Domain;
 
 import Exceptions.*;
 import ValueObjekt.*;
-
 import java.util.*;
+import Persistence.FilePersistenceManager;
+import ValueObjekt.Artikel;
+import ValueObjekt.Mitarbeiter;
+import ValueObjekt.Kunde;
 
 public class EShop {
 
@@ -16,6 +19,25 @@ public class EShop {
         this.mv = new Mitarbeiterverwaltung();
         this.kv = new Kundenverwaltung();
     }
+    //Klassen aus der Persistence:
+    public static final String ARTICLE_FILE = "artikel.txt";
+    public static final String EMPLOYEE_FILE = "employees.txt";
+    public static final String CUSTOMER_FILE = "customers.txt";
+
+    // Ergänze die Methoden saveData und loadData
+   /* public void saveData() {
+        FilePersistenceManager.saveData(av.getArtikelListe(), mv.getListMitarbeiter(), kv.getKundenListe());
+    }
+
+    public void loadData() {
+        FilePersistenceManager.loadData(av.getArtikelListe(), mv.getListMitarbeiter(), kv.getKundenListe());
+    }
+
+    */
+//TODO: kundenliste in der Kundenverwaltung implementieren, solange kommwntiere ich die hier aus
+
+
+
     public List<Artikel> getAlleArtikel() {
         return av.getArtikelListe();
     }
@@ -127,5 +149,8 @@ public class EShop {
     public String artikelImWarenkorb(Warenkorb warenkorb){
         return kv.einkaufsliste(warenkorb);
     }
+
+
+
 
 }

@@ -16,5 +16,6 @@ public class Mitarbeiter extends User {
     public String toString() {
         return "Mitarbeiter-" + super.toString();
     }
-}
+    }
+
 

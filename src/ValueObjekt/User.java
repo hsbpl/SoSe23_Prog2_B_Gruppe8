@@ -23,6 +23,11 @@ public class User {
     public String getPasswort(){
         return passwort;
     }
+    public String getNachname(){return nachname;}
+    public String getVorname(){ return vorname;}
+    public int getidNummer(){return idNummer;}
+
+
 
     public String toString() {
         return "Username: "+ userName + "\n" + "Name: " + vorname+" " + nachname;
