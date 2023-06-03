@@ -12,12 +12,12 @@ public class User {
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
-        this.idNummer= idNummer + generateId();
+        this.idNummer= generateId(idNummer);
     }
 
     //TODO schauen ob das hier funktioniert!
-    private static String generateId() {
-        String prefix = "USR";
+    private static String generateId(String usertype) {
+        String prefix = usertype;
         String timestamp = String.valueOf(System.currentTimeMillis());
         String random = String.valueOf((int) (Math.random() * 1000));
         return prefix + timestamp + random;
