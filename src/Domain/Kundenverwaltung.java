@@ -1,6 +1,8 @@
 package Domain;
 
+import Exceptions.ArtikelExistiertNichtException;
 import Exceptions.UngueltigeMengeException;
+import Exceptions.WarenkorbIstLeerException;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
 
@@ -12,55 +14,71 @@ public class Kundenverwaltung {
     private HashMap<String, Kunde> kundenliste;
     private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
 
+    //Beispielkunde
+    Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",  "Am Berg");
     public Kundenverwaltung() {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
+        kundenUndDazugehörigeWarenkörbe.put(k1, null);
+
         this.kundenliste = new HashMap<>();
     }
-    public List<Kunde> getKundenListe(){
+
+    public List<Kunde> getKundenListe() {
         return new ArrayList<>(kundenliste.values());
     }
-    public HashMap<Kunde, Warenkorb> getGespeicherteWarenkörbe() {
+
+    public HashMap<Kunde, Warenkorb> getGespeicherteWarenkörbeUndKunden() {
         return kundenUndDazugehörigeWarenkörbe;
     }
 
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
-    //TODO ArtikelExistiertnicht--> nochmal schauen  , UngültigeMenge !!!!!!
-    public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb)throws UngueltigeMengeException {
+    //TODO Funktioert das ?
+    public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
 
-        warenbestand.stream()
+
+        Artikel gefundenerArtikel = warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
-                .ifPresent(a ->{
-                    if (menge>a.getBestand()){
-                       // throw new UngueltigeMengeException();
-                    }else{
-                    warenkorb.getWarenkorb().put(a,menge);}
-                });
+                .orElse(null);
+
+        if (gefundenerArtikel != null) {
+            if (menge > gefundenerArtikel.getBestand()) {
+                throw new UngueltigeMengeException();
+            } else {
+                warenkorb.getWarenkorb().put(gefundenerArtikel, menge);
+            }
+        } else {
+            throw new ArtikelExistiertNichtException();
+        }
 
     }
 
-    //TODO sollte funktionieren aber dadurch das die String Methode nicht funktioniert habe ich gerade keine gewissheit
     //Die im Warenkorb enthaltenen Waren werden mit dem Warenbestand abgeglichen und deren Bestand wird aktualisiert.
     // danach wird der Warenkorb geleert
-    public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand, Kunde kunde, List<Ereignis> ereignisliste) {
-        warenkorb.getWarenkorb().forEach((artikel, menge) -> {
-            warenbestand.stream()
-                    .filter(bestandsartikel -> bestandsartikel.equals(artikel))
-                    .forEach(bestandsartikel -> {
-                        int zuReduzierendeMenge =menge;
-                        int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
-                        bestandsartikel.setBestand(aktuellerBestand);
-                        Ereignis e = new Ereignis(menge, artikel,kunde, Enum.KAUF);
-                        ereignisliste.add(e);
-                    });
-        });
+    public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand, Kunde kunde, List<Ereignis> ereignisliste) throws WarenkorbIstLeerException {
+        if (warenkorb.getWarenkorb().isEmpty()) {
+            throw new WarenkorbIstLeerException();
+        } else {
+
+            warenkorb.getWarenkorb().forEach((artikel, menge) -> {
+                warenbestand.stream()
+                        .filter(bestandsartikel -> bestandsartikel.equals(artikel))
+                        .forEach(bestandsartikel -> {
+                            int zuReduzierendeMenge = menge;
+                            int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
+                            bestandsartikel.setBestand(aktuellerBestand);
+                            Ereignis e = new Ereignis(menge, artikel, kunde, Enum.KAUF);
+                            ereignisliste.add(e);
+                        });
+            });
+        }
 
         leeren(warenkorb);
 
     }
 
-//Der Warenkorb wird kompltett geleert
+    //Der Warenkorb wird kompltett geleert
     public void leeren(Warenkorb warenkorb) {
         warenkorb.getWarenkorb().clear();
     }
@@ -69,8 +87,8 @@ public class Kundenverwaltung {
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) {
         Kunde k = null;
-        if (!kundenUndDazugehörigeWarenkörbe.containsKey(neu)){
-        k = neu;
+        if (!kundenUndDazugehörigeWarenkörbe.containsKey(neu)) {
+            k = neu;
         }
         return k;
     }
@@ -84,15 +102,15 @@ public class Kundenverwaltung {
     }
 
     //Ein neuer Warenkorb wird erstellt und in der Hashmap gespeichert
-    public Warenkorb neuerWarenkorb(Kunde k){
+    public Warenkorb neuerWarenkorb(Kunde k) {
         Warenkorb w = new Warenkorb();
-        kundenUndDazugehörigeWarenkörbe.put(k,w);
+        kundenUndDazugehörigeWarenkörbe.put(k, w);
         return kundenUndDazugehörigeWarenkörbe.get(k);
     }
 
 
     //Liste der im Warenkorb gelegten Artikel wird ausgegeben
-    public String einkaufsliste(Warenkorb warenkorb){
+    public String einkaufsliste(Warenkorb warenkorb) {
         return warenkorb.toString();
     }
 

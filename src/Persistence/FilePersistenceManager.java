@@ -73,12 +73,13 @@ public class FilePersistenceManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                int idNummer = Integer.parseInt(parts[0]);
+                String idNummer = parts[0];
+                //TODO hier dasselbe wie bei Mitarbeiter
                 String userName = parts[1];
                 String passwort = parts[2];
                 String nachname = parts[3];
                 String vorname = parts[4];
-                Mitarbeiter mitarbeiter = new Mitarbeiter( userName, passwort, nachname, vorname, idNummer);
+                Mitarbeiter mitarbeiter = new Mitarbeiter( userName, passwort, nachname, vorname);
                 mitarbeiterList.add(mitarbeiter);
             }
         }catch (IOException e){
@@ -107,9 +108,9 @@ public class FilePersistenceManager {
                 String passwort = parts[1];
                 String nachname = parts[2];
                 String vorname = parts[3];
-                int idNr = Integer.parseInt(parts[4]);
+                String idNr = parts[4]; //TODO habe Id automatisch generieren lassen, ist jetzt ein String. müssten schauen wie das hier gespeichert werden muss. Habe auch deshalb die Id unten rausgenommen.
                 String kundeAdresse = parts[5];
-                Kunde kunde = new Kunde(UserName, passwort, nachname, vorname, idNr, kundeAdresse);
+                Kunde kunde = new Kunde(UserName, passwort, nachname, vorname, kundeAdresse);
                 kundeList.add(kunde);
             }
         }catch (IOException e){

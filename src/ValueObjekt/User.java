@@ -5,16 +5,23 @@ public class User {
     protected String passwort;
     protected String nachname;
     protected String vorname;
-    protected int idNummer;
+    protected String idNummer;
 
-    public User(String userName, String passwort, String nachname, String vorname,int idNummer) {
+    public User(String userName, String passwort, String nachname, String vorname,String idNummer) {
         this.userName = userName;
         this.passwort = passwort;
         this.nachname = nachname;
         this.vorname = vorname;
-        this.idNummer= idNummer;
+        this.idNummer= idNummer + generateId();
     }
 
+    //TODO schauen ob das hier funktioniert!
+    private static String generateId() {
+        String prefix = "USR";
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String random = String.valueOf((int) (Math.random() * 1000));
+        return prefix + timestamp + random;
+    }
 
     public String getUserName() {
         return userName;
@@ -25,7 +32,7 @@ public class User {
     }
     public String getNachname(){return nachname;}
     public String getVorname(){ return vorname;}
-    public int getidNummer(){return idNummer;}
+    public String getidNummer(){return idNummer;}
 
 
 

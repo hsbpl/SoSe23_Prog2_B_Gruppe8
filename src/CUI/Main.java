@@ -25,7 +25,7 @@ public class Main {
         System.out.println("Was möchten Sie tun: ");
         System.out.println("Zum Kundenlogin        `1`");
         System.out.println("Zur Kundenregistrierung        `2`");
-        System.out.println("Zum Mitarbeiterlogin        `3`"); //TODO überall wo Int erwatet wird >UngültigeEingabeException-cause=Inpumismatchexception
+        System.out.println("Zum Mitarbeiterlogin        `3`");
 
         int input = scan.nextInt();
         try{startEingabenVerarbeiten(input);
@@ -76,11 +76,9 @@ public class Main {
                     String nachname = scan.next();
                     System.out.println("Vorname:");
                     String vorname = scan.next();
-                    System.out.println("id: ");
-                    int id = scan.nextInt();
                     System.out.println("Adressse:");
                     String adr = scan.next();
-                    Kunde kunde = new Kunde(uname, pasw, nachname, vorname, id, adr);
+                    Kunde kunde = new Kunde(uname, pasw, nachname, vorname,adr);
                     System.out.println(eshop.kundenRegistrieren(kunde));
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
                     eshopMenue(kunde, w);
@@ -201,11 +199,19 @@ public class Main {
                 break;
 
             case 4:
+                try
+                {//TODO Ausprobieren
                 System.out.println("---------------------");
                 System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
                 //System.out.println(eshop.ereignisListeAusgeben());
                 System.out.println("---------------------");
-                startMenue();
+                startMenue();}
+                catch (WarenkorbIstLeerException e){
+                    System.out.println("*********************************************************************************\n" +
+                            "Ihr Warenkorb ist leer.\n" +
+                            "*********************************************************************************\n");
+                    eshopMenue(k, w);
+                }
                 break;
 
             case 0:
@@ -345,7 +351,7 @@ public class Main {
                     String vorname = scan.next();
                     System.out.println("Mitarbeiternummer:");
                     int id = scan.nextInt();
-                    Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname, id);
+                    Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
                     System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
                     artbeitsMenue(m);
                 } catch (UserExistiertBereitsException e) {
@@ -373,8 +379,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
-        eshop.neuenWarenkorbErstellen(k1);
+        //Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
+        //eshop.neuenWarenkorbErstellen(k1);
 
         //Vor dem Start des Menüs die Daten laden
         eshop.loadData();

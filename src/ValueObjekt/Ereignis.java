@@ -50,7 +50,7 @@ public class Ereignis {
         return  datum.toString() + "\n"+
                 anzahl +" durchgeführt über " +
                 user + "Neuer Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand()
-                + " "+ ereignistyp.toString();
+                + " "+ ereignistyp.toString() + "\n";
     }
 }
 

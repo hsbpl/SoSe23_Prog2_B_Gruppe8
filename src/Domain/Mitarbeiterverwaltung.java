@@ -12,7 +12,7 @@ public class Mitarbeiterverwaltung {
     private List<Mitarbeiter> listMitarbeiter;
 
     public Mitarbeiterverwaltung() {
-        this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1", 001)));
+        this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1")));
     }
 
     public List<Mitarbeiter> getListMitarbeiter() {

@@ -52,7 +52,7 @@ public class EShop {
         return av.getEreignisse();
     }
     public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
-        return kv.getGespeicherteWarenkörbe();
+        return kv.getGespeicherteWarenkörbeUndKunden();
     }
 
     public Warenkorb neuenWarenkorbErstellen(Kunde k){
@@ -104,16 +104,17 @@ public class EShop {
         av.artikelLoeschen(artikelnummer);
     }
     //TODO ArtikelExistiertnicht--> nochmal schauen  , UngültigeMenge
-    public String inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
-            kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);
-            return kv.toString();
+    public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
+
+       kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);
+
 
     }
     public String ereignisListeAusgeben(){
         return av.ereignisseAusgeben();
     }
 
-    public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde){
+    public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde) throws WarenkorbIstLeerException{
         kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel(),kunde, getAlleEreignisse());
     }
     public void warenkorbLeeren(Warenkorb warenkorb){
@@ -135,7 +136,7 @@ public class EShop {
         return neuerKunde;}
     }
 
-    public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb){
+    public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException{
         Rechnung rechnung = new Rechnung(kunde, warenkorb);
         String r =  rechnung.toString();
         kaufenUndWarenkorbLeeren(warenkorb, kunde);

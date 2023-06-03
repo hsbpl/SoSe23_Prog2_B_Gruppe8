@@ -7,8 +7,8 @@ public class Mitarbeiter extends User {
 
 
 
-    public Mitarbeiter(String userName, String passwort, String nachname, String vorname, int id) {
-        super (userName,  passwort, nachname, vorname, id);
+    public Mitarbeiter(String userName, String passwort, String nachname, String vorname) {
+        super (userName,  passwort, nachname, vorname, "MI");
 
     }
 
