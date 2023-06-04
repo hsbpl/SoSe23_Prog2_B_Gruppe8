@@ -4,17 +4,56 @@ import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
+public class FilePersistenceManager implements PersistenceManager{
 
-public class FilePersistenceManager {
+   private BufferedReader reader = null;
+   private PrintWriter writer = null;
+
+    public static List<Kunde> loadCustomers() {return loadKunde();}
+    public static List<Mitarbeiter> loadEmployees() {return loadMitarbeiter();}
+
+    public void openForReading(String datei) throws FileNotFoundException{
+       reader = new BufferedReader(new FileReader(datei));
+   }
+   public void openForWriting(String datei) throws IOException{
+       writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
+   }
+
+    public boolean close() {
+        if (writer != null)
+            writer.close();
+
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                // TODO Auto-generierter catch block
+                e.printStackTrace();
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    //Der obere Codeabschnitt zeigt die Methode close, die verwendet wird um Printwriter und BufferReader zu schließen
     private static final String ARTICLE_FILE = "artikel.txt";
     private static final String EMPLOYEE_FILE = "employees.txt";
     private static final String CUSTOMER_FILE = "customers.txt";
-    private static final String TRANSACTION_FILE = "transactions.txt";
+    private static final String DATA_FILE = "data.txt";
+
 
     public static void saveData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
         saveArticles(artikelList);
@@ -119,11 +158,24 @@ public class FilePersistenceManager {
         return kundeList;
     }
 
+    private String liesZeile() throws IOException{
+        if (reader != null)
+            return reader.readLine();
+        else
+            return "";
+    }
+
+    private void schreibeZeile(String daten) {
+        if (writer != null)
+            writer.println(daten);
+    }
+}
+
 
 
 
     //TODO: Methoden für Mitarbeiter, Kunden, Ein- und Auslagerung muss ich noch Implementieren
-}
+
 
 
 

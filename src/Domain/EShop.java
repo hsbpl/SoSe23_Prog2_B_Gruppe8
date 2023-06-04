@@ -2,6 +2,8 @@ package Domain;
 
 import Exceptions.*;
 import ValueObjekt.*;
+
+import java.io.File;
 import java.util.*;
 import Persistence.FilePersistenceManager;
 import ValueObjekt.Artikel;
@@ -10,6 +12,10 @@ import ValueObjekt.Kunde;
 
 public class EShop {
 
+    List<Artikel> artikelList = FilePersistenceManager.loadArticles();
+    List<Mitarbeiter> mitarbeiterList = FilePersistenceManager.loadEmployees();
+    List<Kunde> kundeList = FilePersistenceManager.loadCustomers();
+    //Die methoden werden verwendet um die gespeicherten ArtikelListe usw. aus den Dateien zu laden. So werden die Daten beim Start des eShops automatisch geladen.
     Artikelverwaltung av;
     Kundenverwaltung kv;
     Mitarbeiterverwaltung mv;
@@ -32,7 +38,7 @@ public class EShop {
     public void loadData() {
         FilePersistenceManager.loadData(av.getArtikelListe(), mv.getListMitarbeiter(), kv.getKundenListe());
     }
-
+       //Die Methoden saveData() und loadData() werden verwendet, um die Daten zu speichern bzw. zu laden. Sie rufen die entsprechenden Methoden in der FilePersistenceManager-Klasse auf, um die Daten in den Dateien zu persistieren.
 
 
 
