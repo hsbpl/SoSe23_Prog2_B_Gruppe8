@@ -27,8 +27,10 @@ public class Main {
         System.out.println("Zur Kundenregistrierung        `2`");
         System.out.println("Zum Mitarbeiterlogin        `3`");
 
-        int input = scan.nextInt();
-        try{startEingabenVerarbeiten(input);
+
+        try{
+            int input = scan.nextInt();
+            startEingabenVerarbeiten(input);
         }
          catch (InputMismatchException e) {
 
