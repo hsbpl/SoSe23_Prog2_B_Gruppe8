@@ -18,16 +18,16 @@ public class Artikelverwaltung { // fertig
 
     //liste in den Constructor
     public Artikelverwaltung() {
-        artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl));
+        artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl, energydrink));
         ereignisse = new  ArrayList<>();
     }
 
-    Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2, true);
-    Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99, true);
-    Artikel chips = new Artikel("Chips", 39003, 100, 1.79, true);
-    Artikel wasser = new Artikel("Wasser", 38900, 400, 0.49, true);
-    Artikel mehl = new Artikel("Mehl", 29290, 0, 0.39, false);
-
+    Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2);
+    Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99);
+    Artikel chips = new Artikel("Chips", 39003, 100, 1.79);
+    Artikel wasser = new Artikel("Wasser", 38900, 400, 0.49);
+    Artikel mehl = new Artikel("Mehl", 29290, 20, 0.39);
+    Massengutartikel energydrink = new Massengutartikel("Energy", 56899, 300, 1.0, 6);
 
 
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{

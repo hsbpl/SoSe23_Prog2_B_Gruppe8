@@ -26,7 +26,7 @@ public class Warenkorb {
             Artikel artikel = entry.getKey();
             Integer menge = entry.getValue();
             String aktuellerArtikel = artikel.getBezeichnung();
-            double einzelPreis = artikel.getPreis();
+            double einzelPreis = artikel.getEinzelpreis();
             int aktuelleMenge = menge;
 
             String artikelDaten = aktuelleMenge + "x  " + aktuellerArtikel + "          Einzelpreis: " + einzelPreis + "€";

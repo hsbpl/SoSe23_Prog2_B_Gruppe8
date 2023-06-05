@@ -15,7 +15,6 @@ public class User {
         this.idNummer= generateId(idNummer);
     }
 
-    //TODO schauen ob das hier funktioniert!
     private static String generateId(String usertype) {
         String prefix = usertype;
         String timestamp = String.valueOf(System.currentTimeMillis());
@@ -37,7 +36,7 @@ public class User {
 
 
     public String toString() {
-        return "Username: "+ userName + "\n" + "Name: " + vorname+" " + nachname;
+        return "Username: "+ userName + "\n" + "Name: " + vorname+" " + nachname + " ID: "+ getidNummer();
     }
 }
 

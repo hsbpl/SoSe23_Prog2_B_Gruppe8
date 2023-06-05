@@ -33,16 +33,21 @@ public class Kundenverwaltung {
 
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
-    //TODO Funktioert das ?
-    public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
+    //TODO Funktioert das ? und evtl in kleinere Methoden teilen, damit man besser rankommt?
 
+    public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
 
         Artikel gefundenerArtikel = warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
                 .orElse(null);
 
-        if (gefundenerArtikel != null) {
+        if (gefundenerArtikel != null)
+        {
+            if(gefundenerArtikel instanceof Massengutartikel) {
+                int verkäuflich = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge();
+                menge = menge * verkäuflich;
+            }
             if (menge > gefundenerArtikel.getBestand()) {
                 throw new UngueltigeMengeException();
             } else {

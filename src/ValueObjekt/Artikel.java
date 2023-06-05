@@ -8,19 +8,20 @@ public class Artikel implements Serializable {
     protected String bezeichnung; //TODO nachdem enum verwendet wird String entfernen, habe ihn nur zum ausprobieren wieder reingesetzt
     protected int artikelNummer;
     protected int bestand;
-    protected double preis;
-    protected boolean verfuegbar;
+    protected double einzelpreis;
 
 
-    public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis, boolean verfuegbar) {
+
+    public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis) {
         this.bezeichnung = bezeichnung;
         this.artikelNummer = artikelNummer;
         this.bestand = bestand;
-        this.preis = preis;
-        this.verfuegbar = verfuegbar;
+        this.einzelpreis = preis;
+
 
     }
 
+    //TODO Eine klasse kann keine 2 Konstruktoren habe der untere gehört eig enfernt
     public Artikel(int artikelnummer, String bestand, int preis) {
     }
 
@@ -39,8 +40,8 @@ public class Artikel implements Serializable {
         this.bezeichnung = bezeichnung;
     }
 
-    public double getPreis() {
-        return preis;
+    public double getEinzelpreis() {
+        return einzelpreis;
     }
 
 
@@ -60,7 +61,7 @@ public class Artikel implements Serializable {
 
 
     public String toString() {
-        return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + preis + " Bestand: " +bestand;
+        return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + einzelpreis + " Bestand: " +bestand;
     }
 
 }

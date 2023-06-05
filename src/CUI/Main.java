@@ -159,12 +159,14 @@ public class Main {
     private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
 
         switch (eingabe) {
-            case 1: //TODO Wenn der Bestand überschritten Wird >UngültigeMengeException
+            case 1: //Bei Massengutartikel scheint es nicht ganz zu funktionieren
                 try {
                     System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
                     String gewaehlterArtikel = scan.next();
+
                     System.out.println("Menge des gewählten Artikels");
                     int menge = scan.nextInt();
+
                     eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
                     System.out.println("Ihr Warenkorb: ");
                     System.out.println(eshop.artikelImWarenkorb(w));
@@ -220,11 +222,14 @@ public class Main {
                 startMenue();
                 break;
             default:
-                System.out.println(
+               System.out.println(
                         "*********************************************************************************\n" +
                                 "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4' oder '0'. \n" +
                                 "*********************************************************************************\n");
+
                 eshopMenue(k, w);
+
+
                 break;
         }
     }
@@ -288,9 +293,7 @@ public class Main {
                     int bestand = scan.nextInt();
                     System.out.println("Preis: ");
                     double preis = scan.nextDouble();
-                    System.out.println("Verfügbar: ");
-                    boolean verfügbarkeit = true;
-                    eshop.artHinzufügen(new Artikel(bezeichnung, artikelnummer, bestand, preis, verfügbarkeit), m);
+                    eshop.artHinzufügen(new Artikel(bezeichnung, artikelnummer, bestand, preis), m);
                     artbeitsMenue(m);
                 } catch (ArtikelExistiertBereitsException e) {
                     System.out.println("*********************************************************************************\n" +
