@@ -1,5 +1,7 @@
 package Domain;
 
+import Persistence.FilePersistenceManager;
+import Persistence.PersistenceManager;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.User;
@@ -9,9 +11,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 public class Mitarbeiterverwaltung {
+    private PersistenceManager pm = new FilePersistenceManager();
+
     private List<Mitarbeiter> listMitarbeiter;
 
+    public void liesDaten(String datei) throws IOException {
+        //ToDo:
+    }
+    public void schreibeDaten(String datei) throws IOException{
+        //ToDo:
+    }
     public Mitarbeiterverwaltung() {
         this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1")));
     }

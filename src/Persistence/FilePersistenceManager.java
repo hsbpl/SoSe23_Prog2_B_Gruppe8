@@ -19,8 +19,8 @@ public class FilePersistenceManager implements PersistenceManager{
    private BufferedReader reader = null;
    private PrintWriter writer = null;
 
-    public static List<Kunde> loadCustomers() {return loadKunde();}
-    public static List<Mitarbeiter> loadEmployees() {return loadMitarbeiter();}
+    public List<Kunde> loadCustomers() {return loadKunde();}
+    public List<Mitarbeiter> loadEmployees() {return loadMitarbeiter();}
 
     public void openForReading(String datei) throws FileNotFoundException{
        reader = new BufferedReader(new FileReader(datei));
@@ -49,13 +49,13 @@ public class FilePersistenceManager implements PersistenceManager{
 
 
     //Der obere Codeabschnitt zeigt die Methode close, die verwendet wird um Printwriter und BufferReader zu schließen
-    private static final String ARTICLE_FILE = "artikel.txt";
-    private static final String EMPLOYEE_FILE = "employees.txt";
-    private static final String CUSTOMER_FILE = "customers.txt";
+    private static final String ARTICLE_FILE = "ESHOP_ARTIKEL.txt";
+    private static final String EMPLOYEE_FILE = "ESHOP_MITARBEITER.txt";
+    private static final String CUSTOMER_FILE = "ESHOP_KUNDEN.txt";
     private static final String DATA_FILE = "data.txt";
 
 
-    public static void saveData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
+    public void saveData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
         saveArticles(artikelList);
         saveMitarbeiter(mitarbeiterList);
         saveKunde(kundeList);
@@ -63,13 +63,13 @@ public class FilePersistenceManager implements PersistenceManager{
 
 
 
-    public static void loadData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
+    public void loadData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
         artikelList.addAll(loadArticles());
         mitarbeiterList.addAll(loadMitarbeiter());
         kundeList.addAll(loadKunde());
     }
 
-    public static void saveArticles(List<Artikel> artikel) {
+    public void saveArticles(List<Artikel> artikel) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ARTICLE_FILE))) {
             for (Artikel article : artikel) {
                 writer.println(article.toString());
@@ -79,7 +79,7 @@ public class FilePersistenceManager implements PersistenceManager{
         }
     }
 
-    public static List<Artikel> loadArticles() {
+    public List<Artikel> loadArticles() {
         List<Artikel> artikelList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ARTICLE_FILE))) {
             String line;
@@ -96,7 +96,7 @@ public class FilePersistenceManager implements PersistenceManager{
         }
         return artikelList;
     }
-    public static void saveMitarbeiter(List<Mitarbeiter> mitarbeiterList){
+    public void saveMitarbeiter(List<Mitarbeiter> mitarbeiterList){
         try (PrintWriter writer = new PrintWriter(new FileWriter(EMPLOYEE_FILE))){
             for (Mitarbeiter mitarbeiter : mitarbeiterList){
                 writer.println(mitarbeiter.getidNummer() + "," + mitarbeiter.getUserName() + "," + mitarbeiter.getPasswort() + "," + mitarbeiter.getNachname() + "," + mitarbeiter.getVorname());
@@ -106,7 +106,7 @@ public class FilePersistenceManager implements PersistenceManager{
         }
     }
 
-    public static List<Mitarbeiter> loadMitarbeiter(){
+    public List<Mitarbeiter> loadMitarbeiter(){
         List<Mitarbeiter> mitarbeiterList = new ArrayList<>();
         try(BufferedReader reader = new BufferedReader(new FileReader(EMPLOYEE_FILE))) {
             String line;
@@ -128,7 +128,7 @@ public class FilePersistenceManager implements PersistenceManager{
 
     }
 
-    public static void saveKunde(List<Kunde> kundeList){
+    public void saveKunde(List<Kunde> kundeList){
         try (PrintWriter writer = new PrintWriter(new FileWriter(CUSTOMER_FILE))){
             for (Kunde kunde : kundeList){
                 writer.println(kunde.getUserName() + "," + kunde.getPasswort() + "," + kunde.getNachname() + "," + kunde.getVorname() + "," + kunde.getidNummer() + "," + kunde.getKundenAdresse());
@@ -137,7 +137,7 @@ public class FilePersistenceManager implements PersistenceManager{
             e.printStackTrace();
         }
     }
-    public static List<Kunde> loadKunde(){
+    public List<Kunde> loadKunde(){
         List<Kunde> kundeList = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(CUSTOMER_FILE))){
             String line;

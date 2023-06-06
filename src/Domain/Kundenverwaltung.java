@@ -3,19 +3,30 @@ package Domain;
 import Exceptions.ArtikelExistiertNichtException;
 import Exceptions.UngueltigeMengeException;
 import Exceptions.WarenkorbIstLeerException;
+import Persistence.FilePersistenceManager;
+import Persistence.PersistenceManager;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
 
+import java.io.IOException;
 import java.util.*;
 
 
 public class Kundenverwaltung {
+    private PersistenceManager pm = new FilePersistenceManager();
 
     private HashMap<String, Kunde> kundenliste;
     private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
 
     //Beispielkunde
     Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",  "Am Berg");
+
+    public void liesDaten(String datei) throws IOException {
+        //ToDo:
+    }
+    public void schreibeDaten(String datei) throws IOException{
+        //ToDo:
+    }
     public Kundenverwaltung() {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
         kundenUndDazugehörigeWarenkörbe.put(k1, null);

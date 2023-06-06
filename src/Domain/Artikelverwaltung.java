@@ -3,14 +3,18 @@ package Domain;
 import Exceptions.ArtikelExistiertBereitsException;
 import Exceptions.ArtikelExistiertNichtException;
 import Exceptions.UngueltigeMengeException;
+import Persistence.FilePersistenceManager;
+import Persistence.PersistenceManager;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
 
 
+import java.io.IOException;
 import java.util.*;
 
 
 public class Artikelverwaltung { // fertig
+    private PersistenceManager pm = new FilePersistenceManager();
 
 
     private List<Ereignis> ereignisse;
@@ -18,6 +22,12 @@ public class Artikelverwaltung { // fertig
     private List<Artikel> artikelListe;
 
     //liste in den Constructor
+    public void liesDaten(String datei) throws IOException {
+        //ToDo:
+    }
+    public void schreibeDaten(String datei) throws IOException{
+        //ToDo:
+    }
     public Artikelverwaltung() {
         artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl, energydrink));
         ereignisse = new  ArrayList<>();

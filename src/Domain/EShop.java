@@ -12,15 +12,21 @@ import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Kunde;
 
 public class EShop {
+    private String datei = "";
 
-    Artikelverwaltung av;
-    Kundenverwaltung kv;
-    Mitarbeiterverwaltung mv;
+    private Artikelverwaltung av;
+    private Kundenverwaltung kv;
+    private  Mitarbeiterverwaltung mv;
 
-    public EShop(){
-        this.av = new Artikelverwaltung();
+    public EShop(String datei) throws IOException {
+        this.datei = datei;
+        av = new Artikelverwaltung();
+        av.liesDaten(datei + "_ARTIKEL.txt");
         this.mv = new Mitarbeiterverwaltung();
+        mv.liesDaten(datei + "_MITARBEITER.txt");
         this.kv = new Kundenverwaltung();
+        kv.liesDaten(datei + "_KUNDEN.txt");
+
     }
 
     public List<Artikel> getAlleArtikel() {
@@ -31,7 +37,17 @@ public class EShop {
     }
     public List<Kunde> getAlleKunden(){return kv.getKundenListe();}
 
+    public void schreibeArtikel() throws IOException{
+        av.schreibeDaten(datei + "_ARTIKEL.txt");
+    }
 
+    public void schreibeMitarbeiter() throws IOException{
+        mv.schreibeDaten(datei + "_MITARBEITER.txt");
+    }
+
+    public void schreibeKunde() throws IOException{
+        kv.schreibeDaten(datei + "_KUNDEN.txt");
+    }
 
     public List<Ereignis> getAlleEreignisse(){
         return av.getEreignisse();

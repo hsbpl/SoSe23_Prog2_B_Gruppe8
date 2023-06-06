@@ -8,18 +8,23 @@ import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Warenkorb;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
 public class Main {
     static Scanner scan = new Scanner(System.in);
-    static EShop eshop = new EShop();
+
+    private EShop eshop;
 
 
 
-
-    private static void startMenue() {
+    public Main(String datei) throws IOException {
+        eshop = new EShop(datei);
+    }
+    private void startMenue() {
 
 
         System.out.println("Was möchten Sie tun: ");
@@ -39,12 +44,12 @@ public class Main {
                             "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2' oder '3' ein.\n" +
                             "*********************************************************************************\n");
             scan.nextLine();
-            startMenue();
+            //startMenue();
         }
 
     }
 
-    private static void startEingabenVerarbeiten(int choice) {
+    private void startEingabenVerarbeiten(int choice) {
 
         switch (choice) {
             case 1:
@@ -126,7 +131,7 @@ public class Main {
     }
 
 
-    private static void eshopMenue(Kunde k, Warenkorb w) {
+    private void eshopMenue(Kunde k, Warenkorb w) {
         System.out.println(eshop.artikelListen());
         System.out.println("---------------------");
         System.out.println("Was möchten Sie tun?" + "\n");
@@ -156,7 +161,7 @@ public class Main {
 
     }
 
-    private static void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
+    private void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
 
         switch (eingabe) {
             case 1: //Bei Massengutartikel scheint es nicht ganz zu funktionieren
@@ -235,7 +240,7 @@ public class Main {
     }
 
 
-    public static void artbeitsMenue(Mitarbeiter m) {
+    public void artbeitsMenue(Mitarbeiter m) {
 
         System.out.println("         \n  Artikel ausgeben:       '1'");
         System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
@@ -265,7 +270,7 @@ public class Main {
     }
 
 
-    private static void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) {
+    private void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) {
 
 
         switch (eingabe) {
@@ -404,16 +409,26 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Main cui;
+
+        try {
+            cui = new Main("ESHOP");
+            cui.startMenue();
+
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
         //Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
         //eshop.neuenWarenkorbErstellen(k1);
 
         //Vor dem Start des Menüs die Daten laden
-        eshop.loadData();
+      //  eshop.loadData();
 
-        startMenue();
 
         //Nach dem Beenden des Menüs werden die Daten gespeichert
-        eshop.saveData();
+      //  eshop.saveData();
 
 
     }
