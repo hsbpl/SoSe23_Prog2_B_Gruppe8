@@ -12,6 +12,7 @@ import java.util.*;
 
 public class Artikelverwaltung { // fertig
 
+
     private List<Ereignis> ereignisse;
 
     private List<Artikel> artikelListe;
@@ -28,6 +29,7 @@ public class Artikelverwaltung { // fertig
     Artikel wasser = new Artikel("Wasser", 38900, 400, 0.49);
     Artikel mehl = new Artikel("Mehl", 29290, 20, 0.39);
     Massengutartikel energydrink = new Massengutartikel("Energy", 56899, 300, 1.0, 6);
+
 
 
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
