@@ -260,6 +260,8 @@ public class Main {
             scan.nextLine();
             artbeitsMenue(m);
         }
+
+
     }
 
 
@@ -297,15 +299,27 @@ public class Main {
                     artbeitsMenue(m);
                 } catch (ArtikelExistiertBereitsException e) {
                     System.out.println("*********************************************************************************\n" +
-                            "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal\n" +
+                            "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
+                } catch (InputMismatchException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Ungültige Eingabe!\n" +
+                                    "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
+                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n"+
+                                    "Bitte versuchen Sie es nochmal.\n" +
+
+                                    "*********************************************************************************\n");
+                    scan.nextLine();
+                    artbeitsMenue(m);
                 }
+
 
                 break;
 
             case 5:
-                try {
+              try {
                     System.out.println("Artikelname:");
                     String artikelname = scan.next();
                     System.out.println("Zu erhöhende Menge: ");
@@ -315,10 +329,13 @@ public class Main {
                     artbeitsMenue(m);
                 } catch (ArtikelExistiertNichtException e) {
                     System.out.println("*********************************************************************************\n" +
-                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal\n" +
+                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
+
+
                     artbeitsMenue(m);
                 }
+
                 break;
 
             case 6:
@@ -332,12 +349,12 @@ public class Main {
                     artbeitsMenue(m);
                 } catch (ArtikelExistiertNichtException e) {
                     System.out.println("*********************************************************************************\n" +
-                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal\n" +
+                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
                 } catch (UngueltigeMengeException u) {
                     System.out.println("*********************************************************************************\n" +
-                            "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal\n" +
+                            "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
                 }
@@ -379,11 +396,14 @@ public class Main {
                                 "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4', '5', '6', '7' oder '0'. \n" +
                                 "*********************************************************************************\n");
                 artbeitsMenue(m);
+
+
             break;
         }
     }
 
     public static void main(String[] args) {
+
         //Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
         //eshop.neuenWarenkorbErstellen(k1);
 

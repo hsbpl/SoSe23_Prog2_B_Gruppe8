@@ -31,13 +31,28 @@ public class Artikelverwaltung { // fertig
 
 
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
+
+        for(Artikel a : getArtikelListe()){
+            if(a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == a.getArtikelNummer()){
+                throw new ArtikelExistiertBereitsException();
+            } else {
+                artikelListe.add(artikel);
+                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
+                ereignisse.add(e);}
+            }
+        }
+
+
+/*
         if(getArtikelListe().contains(artikel)){
             throw new ArtikelExistiertBereitsException();
         } else{
         artikelListe.add(artikel);
         Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
         ereignisse.add(e);}
-    }
+
+ */
+
 
     public String artikelSortierenNachBezeichnung() {
 
@@ -59,18 +74,22 @@ public class Artikelverwaltung { // fertig
         return s;
     }
 
-    public void bestandErhoehen(String artikelBezeichnung, int anzahl, User u) throws ArtikelExistiertNichtException{
+
+    public void bestandErhoehen(String artikelBezeichnung, int anzahl, User u)throws ArtikelExistiertNichtException{
 
         for (Artikel artikel : artikelListe) {
 
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
-                artikel.ArtikelbestandErhoehen(anzahl);
-                Ereignis e = new Ereignis( anzahl, artikel, u, Enum.EINLAGERUNG);
+                int aktuellerBestand = artikel.getBestand();
+                int neuerBestand = aktuellerBestand + anzahl;
+                artikel.setBestand(neuerBestand);
+                Ereignis e = new Ereignis( neuerBestand, artikel, u, Enum.EINLAGERUNG);
                 ereignisse.add(e);
 
             } else {
                 throw new ArtikelExistiertNichtException();
             }
+
         }
 
     }
@@ -78,18 +97,21 @@ public class Artikelverwaltung { // fertig
     public void bestandVerringern(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException {   // kopieren oder pushen
 
         for (Artikel artikel : artikelListe) {
-            if (artikel.getBezeichnung().equals(artikelname)) {
-                if (artikel.getBestand() < menge){
-                    throw new UngueltigeMengeException();
-                }else {
-                    artikel.ArtikelbestandVerringern(menge);
-                    Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
-                    ereignisse.add(e);}
-            }else {
+
+            if (!(artikel.getBezeichnung() ==artikelname)) {
                 throw new ArtikelExistiertNichtException();
+            } else {
+                if (artikel.getBestand() < menge) {
+                    throw new UngueltigeMengeException();
+                } else {
+                    int aktuellerBestand = artikel.getBestand();
+                    int neuerBestand = aktuellerBestand - menge;
+                    Ereignis e = new Ereignis(neuerBestand, artikel, u, Enum.AUSLAGERUNG);
+                    ereignisse.add(e);
                 }
             }
 
+        }
     }
 
     public String artikelAusgeben() {

@@ -45,16 +45,6 @@ public class Artikel implements Serializable {
     }
 
 
-
-
-    //TODO diese Methoden müssten in der Artikelverwaltung realisiert werden
-    public void ArtikelbestandErhoehen(int zahl){
-        bestand = bestand + zahl;
-    }
-    public void ArtikelbestandVerringern( int zahl){
-        bestand = bestand - zahl;
-    }
-
     public int  getArtikelNummer() {
         return artikelNummer;
     }

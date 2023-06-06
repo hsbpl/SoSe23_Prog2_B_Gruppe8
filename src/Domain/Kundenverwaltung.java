@@ -33,8 +33,6 @@ public class Kundenverwaltung {
 
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
-    //TODO Funktioert das ? und evtl in kleinere Methoden teilen, damit man besser rankommt?
-
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
 
         Artikel gefundenerArtikel = warenbestand.stream()
@@ -91,11 +89,17 @@ public class Kundenverwaltung {
 
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) {
-        Kunde k = null;
-        if (!kundenUndDazugehörigeWarenkörbe.containsKey(neu)) {
-            k = neu;
+
+        Kunde registrierungErfolgreich= kundenUndDazugehörigeWarenkörbe.keySet().stream()
+                .filter(a -> a.getUserName() ==neu.getUserName())
+                .findFirst()
+                .orElse(null);
+
+        if(registrierungErfolgreich != null){
+            kundenUndDazugehörigeWarenkörbe.put(neu, null);
+
         }
-        return k;
+        return registrierungErfolgreich;
     }
 
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */

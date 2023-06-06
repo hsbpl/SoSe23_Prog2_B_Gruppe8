@@ -1,5 +1,6 @@
 package Domain;
 
+import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.User;
 
@@ -32,12 +33,16 @@ public class Mitarbeiterverwaltung {
 
     //  Methode fügt einen neuen Mitarbeiter zur Mitarbeiterliste hinzu
     public Mitarbeiter mRegister(Mitarbeiter neu){
-        if (listMitarbeiter.contains(neu)) {
-            return null;
-        } else {
+        Mitarbeiter registrierungErfolgreich= listMitarbeiter.stream()
+                .filter(a -> a.getUserName() ==neu.getUserName())
+                .findFirst()
+                .orElse(null);
+
+        if(registrierungErfolgreich != null){
             listMitarbeiter.add(neu);
-            return neu;
+
         }
+        return registrierungErfolgreich;
     }
 
     public String registrierteMitarbeiter(){
