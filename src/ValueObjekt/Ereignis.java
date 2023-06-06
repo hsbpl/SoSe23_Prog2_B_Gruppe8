@@ -22,27 +22,14 @@ public class Ereignis {
     public void setArtikel(Artikel artikel) {
         this.artikel = artikel;
     }
-    public int getAnzahl() {
-        return anzahl;
-    }
-    public void setAnzahl(int anzahl) {
-        this.anzahl = anzahl;
-    }
 
     public Artikel getArtikel() {
         return artikel;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+public Date getDatum(){
+        return datum;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-
-
 
 
     //LocalDateTime ändern auch in RechnungsObjekt

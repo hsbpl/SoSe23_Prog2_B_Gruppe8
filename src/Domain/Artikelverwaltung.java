@@ -65,6 +65,16 @@ public class Artikelverwaltung { // fertig
 
     }
 
+    //TODO in die Main setzen und achsuen ob es klappt
+    public  String ereignisseSortiertNachDatum(){
+        Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum));
+        String s="";
+        for (Ereignis ereignis: ereignisse){
+            s+= ereignis.toString()+"\n";
+        }
+        return s;
+    }
+
     public String artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));
         String s ="";

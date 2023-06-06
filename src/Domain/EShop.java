@@ -106,6 +106,8 @@ public class EShop {
         return av.artikelSortierenNachArtikelnummer();
     }
 
+    public String ereignisseNachDatum(){return av.ereignisseSortiertNachDatum();}
+
     public void artikelAusDemSortimentEntfernen(int artikelnummer) throws ArtikelExistiertNichtException{
         av.artikelLoeschen(artikelnummer);
     }
