@@ -18,7 +18,6 @@ public class Artikel implements Serializable {
         this.bestand = bestand;
         this.einzelpreis = preis;
 
-
     }
     public Artikel(int artikelnummer, String bestand, int preis) {
     }

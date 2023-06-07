@@ -31,6 +31,8 @@ public class Artikelverwaltung { // fertig
     public Artikelverwaltung() {
         artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl, energydrink));
         ereignisse = new  ArrayList<>();
+
+
     }
 
     Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2);
@@ -97,23 +99,20 @@ public class Artikelverwaltung { // fertig
     }
 
 
-    public void bestandErhoehen(String artikelBezeichnung, int anzahl, User u)throws ArtikelExistiertNichtException{
+    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u)throws ArtikelExistiertNichtException{
 
         for (Artikel artikel : artikelListe) {
-
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 int aktuellerBestand = artikel.getBestand();
                 int neuerBestand = aktuellerBestand + anzahl;
                 artikel.setBestand(neuerBestand);
                 Ereignis e = new Ereignis( neuerBestand, artikel, u, Enum.EINLAGERUNG);
                 ereignisse.add(e);
-
-            } else {
-                throw new ArtikelExistiertNichtException();
+                return true;
             }
-
         }
 
+        return  false;
     }
 
     public void bestandVerringern(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException {   // kopieren oder pushen

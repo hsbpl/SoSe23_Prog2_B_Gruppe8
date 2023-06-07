@@ -20,6 +20,8 @@ public class EShop {
 
     public EShop(String datei) throws IOException {
         this.datei = datei;
+
+        //hier pm anlegen
         av = new Artikelverwaltung();
         av.liesDaten(datei + "_ARTIKEL.txt");
         this.mv = new Mitarbeiterverwaltung();
@@ -88,7 +90,8 @@ public class EShop {
 
     //todo bestand erhöhen und verringern beides funktioniert noch nicht richtig mit exceptions
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{
-        av.bestandErhoehen(artikelname, menge, u);
+        if(!av.bestandErhoehen(artikelname, menge, u))
+            throw new ArtikelExistiertNichtException();
     }
 
     public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException {

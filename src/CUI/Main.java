@@ -248,6 +248,7 @@ public class Main {
         System.out.println("         \n  Neuen Artikel anlegen: '4'");
         System.out.println("         \n  Bestand erhöhen: '5'");
         System.out.println("         \n  Bestand verringern:   '6'");
+        //-Ereignislsite
         System.out.println("         \n  Neuen Mitarbeiter anlegen:   '7'");
         System.out.println("         \n  ---------------------------");
         System.out.println("       \n  Beenden:                '0'");
