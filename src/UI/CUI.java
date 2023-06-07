@@ -1,5 +1,5 @@
 
-package CUI;
+package UI;
 
 import Domain.*;
 import Exceptions.*;
@@ -8,20 +8,19 @@ import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Warenkorb;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-public class Main {
+public class CUI {
     static Scanner scan = new Scanner(System.in);
 
     private EShop eshop;
 
 
 
-    public Main(String datei) throws IOException {
+    public CUI(String datei) throws IOException {
         eshop = new EShop(datei);
     }
     private void startMenue() {
@@ -414,10 +413,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Main cui;
+        CUI cui;
 
         try {
-            cui = new Main("ESHOP");
+            cui = new CUI("ESHOP");
             cui.startMenue();
 
 
