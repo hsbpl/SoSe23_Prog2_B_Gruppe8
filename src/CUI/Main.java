@@ -248,8 +248,8 @@ public class Main {
         System.out.println("         \n  Neuen Artikel anlegen: '4'");
         System.out.println("         \n  Bestand erhöhen: '5'");
         System.out.println("         \n  Bestand verringern:   '6'");
-        //-Ereignislsite
-        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '7'");
+        System.out.println("         \n  Ereignisliste ausgeben:   '7'");
+        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '8'");
         System.out.println("         \n  ---------------------------");
         System.out.println("       \n  Beenden:                '0'");
 
@@ -358,16 +358,20 @@ public class Main {
                             "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
-                } catch (UngueltigeMengeException u) {
+                } /*catch (UngueltigeMengeException u) {
                     System.out.println("*********************************************************************************\n" +
                             "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
                 }
-                ;
+
+                ;*/
                 break;
 
             case 7:
+                System.out.println(eshop.ereignisseNachDatum());
+                break;
+            case 8:
                 try {
                     System.out.println("Unsername:");
                     String username = scan.next();

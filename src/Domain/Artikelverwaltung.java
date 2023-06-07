@@ -99,14 +99,14 @@ public class Artikelverwaltung { // fertig
     }
 
 
-    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u)throws ArtikelExistiertNichtException{
+    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u){
 
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
                 int aktuellerBestand = artikel.getBestand();
                 int neuerBestand = aktuellerBestand + anzahl;
                 artikel.setBestand(neuerBestand);
-                Ereignis e = new Ereignis( neuerBestand, artikel, u, Enum.EINLAGERUNG);
+                Ereignis e = new Ereignis(anzahl, artikel, u, Enum.EINLAGERUNG);
                 ereignisse.add(e);
                 return true;
             }
@@ -115,24 +115,25 @@ public class Artikelverwaltung { // fertig
         return  false;
     }
 
-    public void bestandVerringern(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException {   // kopieren oder pushen
+    public void genügendBestand(Artikel a, int menge)throws UngueltigeMengeException {
+        if (a.getBestand() < menge) {
+            throw new UngueltigeMengeException();
+        }
+    }
+
+    public boolean bestandVerringern(String artikelname, int menge, User u) {
 
         for (Artikel artikel : artikelListe) {
-
-            if (!(artikel.getBezeichnung() ==artikelname)) {
-                throw new ArtikelExistiertNichtException();
-            } else {
-                if (artikel.getBestand() < menge) {
-                    throw new UngueltigeMengeException();
-                } else {
+            if(artikel.getBezeichnung().equals(artikelname)){
                     int aktuellerBestand = artikel.getBestand();
                     int neuerBestand = aktuellerBestand - menge;
-                    Ereignis e = new Ereignis(neuerBestand, artikel, u, Enum.AUSLAGERUNG);
+                    artikel.setBestand(neuerBestand);
+                    Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
                     ereignisse.add(e);
+                    return true;
                 }
             }
-
-        }
+        return false;
     }
 
     public String artikelAusgeben() {

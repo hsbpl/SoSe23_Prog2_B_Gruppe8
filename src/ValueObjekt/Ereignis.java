@@ -9,7 +9,7 @@ public class Ereignis {
     private Artikel artikel;
     private User user;
     private Enum ereignistyp;
-    //enum ereignistyp{Auslagerung, Einlagerung};
+
 
 
     public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp) {
@@ -35,9 +35,9 @@ public Date getDatum(){
     //LocalDateTime ändern auch in RechnungsObjekt
     public String toString(){
         return  datum.toString() + "\n"+
-                anzahl +" durchgeführt über " +
-                user + "Neuer Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand()
-                + " "+ ereignistyp.toString() + "\n";
+                anzahl +" durchgeführt über " + ereignistyp.toString() +" ;"+
+                user + "Aktueller Bestand: " + artikel.getBezeichnung()+ " " +artikel.getBestand()
+                + "\n";
     }
 }
 

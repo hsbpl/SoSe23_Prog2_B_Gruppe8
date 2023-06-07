@@ -88,14 +88,16 @@ public class EShop {
         av.artikelHinzufuegen(a, mitarbeiter);
     }
 
-    //todo bestand erhöhen und verringern beides funktioniert noch nicht richtig mit exceptions
+
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{
         if(!av.bestandErhoehen(artikelname, menge, u))
             throw new ArtikelExistiertNichtException();
     }
 
-    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException {
-        av.bestandVerringern(artikelname, menge, u);
+    //TODO jetzt funtioniert es hier nicht....
+    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException{
+       if(!av.bestandVerringern(artikelname, menge, u));
+        throw new ArtikelExistiertNichtException();
     }
 
     public String artikelAlphabetischAusgeben(){
