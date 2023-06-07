@@ -28,6 +28,7 @@ public class EShop {
         kv.liesDaten(datei + "_KUNDEN.txt");
 
     }
+    //TODO das mit der ereignisliste klären
 
     public List<Artikel> getAlleArtikel() {
         return av.getArtikelListe();
@@ -85,6 +86,7 @@ public class EShop {
         av.artikelHinzufuegen(a, mitarbeiter);
     }
 
+    //todo bestand erhöhen und verringern beides funktioniert noch nicht richtig mit exceptions
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{
         av.bestandErhoehen(artikelname, menge, u);
     }
@@ -106,7 +108,6 @@ public class EShop {
     public void artikelAusDemSortimentEntfernen(int artikelnummer) throws ArtikelExistiertNichtException{
         av.artikelLoeschen(artikelnummer);
     }
-    //TODO ArtikelExistiertnicht--> nochmal schauen  , UngültigeMenge
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
 
        kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);

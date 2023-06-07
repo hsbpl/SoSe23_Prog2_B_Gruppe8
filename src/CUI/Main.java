@@ -44,7 +44,7 @@ public class Main {
                             "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2' oder '3' ein.\n" +
                             "*********************************************************************************\n");
             scan.nextLine();
-            //startMenue();
+            startMenue();
         }
 
     }

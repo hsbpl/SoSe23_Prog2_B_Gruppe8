@@ -5,7 +5,7 @@ package ValueObjekt;
 import java.io.Serializable;
 
 public class Artikel implements Serializable {
-    protected String bezeichnung; //TODO nachdem enum verwendet wird String entfernen, habe ihn nur zum ausprobieren wieder reingesetzt
+    protected String bezeichnung;
     protected int artikelNummer;
     protected int bestand;
     protected double einzelpreis;
@@ -20,11 +20,8 @@ public class Artikel implements Serializable {
 
 
     }
-
-    //TODO Eine klasse kann keine 2 Konstruktoren habe der untere gehört eig enfernt
     public Artikel(int artikelnummer, String bestand, int preis) {
     }
-
 
     public int getBestand() {
         return bestand;
