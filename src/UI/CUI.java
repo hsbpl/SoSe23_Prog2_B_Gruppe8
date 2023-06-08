@@ -163,14 +163,12 @@ public class CUI {
     private void eshopEingabenVerarbeiten(int eingabe, Kunde k, Warenkorb w) {
 
         switch (eingabe) {
-            case 1: //Bei Massengutartikel scheint es nicht ganz zu funktionieren
+            case 1:
                 try {
                     System.out.println("Tippen Sie den Namen des gewählten Artikels ein: ");
                     String gewaehlterArtikel = scan.next();
-
                     System.out.println("Menge des gewählten Artikels");
                     int menge = scan.nextInt();
-
                     eshop.inDenWarenkorbLegen(gewaehlterArtikel, menge, w);
                     System.out.println("Ihr Warenkorb: ");
                     System.out.println(eshop.artikelImWarenkorb(w));
@@ -245,10 +243,11 @@ public class CUI {
         System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
         System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
         System.out.println("         \n  Neuen Artikel anlegen: '4'");
-        System.out.println("         \n  Bestand erhöhen: '5'");
-        System.out.println("         \n  Bestand verringern:   '6'");
-        System.out.println("         \n  Ereignisliste ausgeben:   '7'");
-        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '8'");
+        System.out.println("         \n  Artikel aus dem Sortiment löschen '5'");
+        System.out.println("         \n  Bestand erhöhen: '6'");
+        System.out.println("         \n  Bestand verringern:   '7'");
+        System.out.println("         \n  Ereignisliste ausgeben:   '8'");
+        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '9'");
         System.out.println("         \n  ---------------------------");
         System.out.println("       \n  Beenden:                '0'");
 
@@ -323,7 +322,9 @@ public class CUI {
 
                 break;
 
-            case 5:
+                case 5:
+                    //TODO Artikellöschen einsetzten, die exception ausprobieren
+            case 6:
               try {
                     System.out.println("Artikelname:");
                     String artikelname = scan.next();
@@ -343,7 +344,7 @@ public class CUI {
 
                 break;
 
-            case 6:
+            case 7:
                 try {
                     System.out.println("Artikelname:");
                     String artikelbez = scan.next();
@@ -357,20 +358,19 @@ public class CUI {
                             "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
-                } /*catch (UngueltigeMengeException u) {
+                } catch (UngueltigeMengeException u) {
                     System.out.println("*********************************************************************************\n" +
                             "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
                 }
 
-                ;*/
                 break;
 
-            case 7:
+            case 8:
                 System.out.println(eshop.ereignisseNachDatum());
                 break;
-            case 8:
+            case 9:
                 try {
                     System.out.println("Unsername:");
                     String username = scan.next();

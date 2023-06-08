@@ -90,14 +90,14 @@ public class EShop {
 
 
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{
-        if(!av.bestandErhoehen(artikelname, menge, u))
-            throw new ArtikelExistiertNichtException();
+        if(!av.bestandErhoehen(artikelname, menge, u)){
+            throw new ArtikelExistiertNichtException();}
     }
 
     //TODO jetzt funtioniert es hier nicht....
-    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException{
-       if(!av.bestandVerringern(artikelname, menge, u));
-        throw new ArtikelExistiertNichtException();
+    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException{
+       if(!av.bestandVerringern(artikelname, menge, u)){
+        throw new ArtikelExistiertNichtException();}
     }
 
     public String artikelAlphabetischAusgeben(){
@@ -111,7 +111,9 @@ public class EShop {
     public String ereignisseNachDatum(){return av.ereignisseSortiertNachDatum();}
 
     public void artikelAusDemSortimentEntfernen(int artikelnummer) throws ArtikelExistiertNichtException{
-        av.artikelLoeschen(artikelnummer);
+       if( av.artikelLoeschen(artikelnummer)){
+           throw new ArtikelExistiertNichtException();
+       };
     }
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
 

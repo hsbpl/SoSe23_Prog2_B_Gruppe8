@@ -115,22 +115,22 @@ public class Artikelverwaltung { // fertig
         return  false;
     }
 
-    public void genügendBestand(Artikel a, int menge)throws UngueltigeMengeException {
-        if (a.getBestand() < menge) {
-            throw new UngueltigeMengeException();
-        }
-    }
 
-    public boolean bestandVerringern(String artikelname, int menge, User u) {
+
+    public boolean bestandVerringern(String artikelname, int menge, User u) throws UngueltigeMengeException{
 
         for (Artikel artikel : artikelListe) {
             if(artikel.getBezeichnung().equals(artikelname)){
+                if (artikel.getBestand() < menge) {
+                    throw new UngueltigeMengeException();
+                } else {
                     int aktuellerBestand = artikel.getBestand();
                     int neuerBestand = aktuellerBestand - menge;
                     artikel.setBestand(neuerBestand);
                     Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
                     ereignisse.add(e);
                     return true;
+                }
                 }
             }
         return false;
@@ -170,17 +170,16 @@ public class Artikelverwaltung { // fertig
         }
     }
 
-    public void artikelLoeschen(int artikelnummer) throws ArtikelExistiertNichtException{
-        Artikel artikelToRemove = null;
+    public boolean artikelLoeschen(int artikelnummer){
+        Artikel artikelToRemove;
         for (Artikel artikel : artikelListe) {
             if (artikel.getArtikelNummer() == artikelnummer) {
                 artikelToRemove = artikel;
-                break;
-            } else {
-                throw new ArtikelExistiertNichtException();
+                artikelListe.remove(artikelToRemove);
+                return true;
             }
         }
-        artikelListe.remove(artikelToRemove);
+        return false;
     }
 
 }

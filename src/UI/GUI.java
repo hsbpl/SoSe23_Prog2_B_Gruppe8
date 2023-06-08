@@ -12,7 +12,7 @@ public class GUI extends JFrame {
 
     public GUI() throws IOException {
         super("Roha & Sanjana's Eshop");
-        eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+      //  eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
         hauptfenster();
     }
 
