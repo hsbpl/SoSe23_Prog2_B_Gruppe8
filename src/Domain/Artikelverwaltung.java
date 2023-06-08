@@ -23,8 +23,12 @@ public class Artikelverwaltung { // fertig
 
     //liste in den Constructor
     public void liesDaten(String datei) throws IOException {
-        //ToDo:
+
+
     }
+
+
+
     public void schreibeDaten(String datei) throws IOException{
         //ToDo:
     }
