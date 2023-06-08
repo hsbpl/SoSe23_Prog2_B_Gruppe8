@@ -243,11 +243,10 @@ public class CUI {
         System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
         System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
         System.out.println("         \n  Neuen Artikel anlegen: '4'");
-        System.out.println("         \n  Artikel aus dem Sortiment löschen '5'");
-        System.out.println("         \n  Bestand erhöhen: '6'");
-        System.out.println("         \n  Bestand verringern:   '7'");
-        System.out.println("         \n  Ereignisliste ausgeben:   '8'");
-        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '9'");
+        System.out.println("         \n  Bestand erhöhen: '5'");
+        System.out.println("         \n  Bestand verringern:   '6'");
+        System.out.println("         \n  Ereignisliste ausgeben:   '7'");
+        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '8'");
         System.out.println("         \n  ---------------------------");
         System.out.println("       \n  Beenden:                '0'");
 
@@ -319,12 +318,9 @@ public class CUI {
                     artbeitsMenue(m);
                 }
 
-
                 break;
 
-                case 5:
-                    //TODO Artikellöschen einsetzten, die exception ausprobieren
-            case 6:
+            case 5:
               try {
                     System.out.println("Artikelname:");
                     String artikelname = scan.next();
@@ -344,7 +340,7 @@ public class CUI {
 
                 break;
 
-            case 7:
+            case 6:
                 try {
                     System.out.println("Artikelname:");
                     String artikelbez = scan.next();
@@ -364,13 +360,12 @@ public class CUI {
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
                 }
-
                 break;
 
-            case 8:
+            case 7:
                 System.out.println(eshop.ereignisseNachDatum());
                 break;
-            case 9:
+            case 8:
                 try {
                     System.out.println("Unsername:");
                     String username = scan.next();
