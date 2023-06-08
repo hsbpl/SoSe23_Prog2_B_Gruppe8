@@ -10,12 +10,14 @@ public class Ereignis {
     private User user;
     private Enum ereignistyp;
 
+    private int aktualisierterBestand;
 
-    public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp) {
+    public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp, int aktualisierterBestand) {
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
         this.ereignistyp = ereignistyp;
+        this.aktualisierterBestand = aktualisierterBestand;
 
     }
 
@@ -27,7 +29,7 @@ public Date getDatum(){
         return  datum.toString() + "\n"+
                 anzahl +" durchgeführt über " + ereignistyp.toString() +"; "+
                 user + "Aktueller Bestand: " + artikel.getBezeichnung()+ " \n"+
-                "Aktuellster Stand: " + artikel.toString()
+                "Aktuellster Stand: " + aktualisierterBestand
                 + "\n";
     }
 }

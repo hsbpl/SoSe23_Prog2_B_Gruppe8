@@ -82,7 +82,7 @@ public class Kundenverwaltung {
                             int zuReduzierendeMenge = menge;
                             int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
                             bestandsartikel.setBestand(aktuellerBestand);
-                            Ereignis e = new Ereignis(menge, artikel, kunde, Enum.KAUF);
+                            Ereignis e = new Ereignis(menge, artikel, kunde, Enum.KAUF, aktuellerBestand);
                             ereignisliste.add(e);
                         });
             });

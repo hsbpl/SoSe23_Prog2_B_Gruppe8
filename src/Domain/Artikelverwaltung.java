@@ -43,7 +43,9 @@ public class Artikelverwaltung { // fertig
     Massengutartikel energydrink = new Massengutartikel("Energy", 56899, 300, 1.0, 6);
 
 
-
+//TODO wenn man einen Massengutartikel hinzufügt muss man zurzeit angeben wie viele zusammen gekauft werden müssen.
+    //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
+    //TODO Methoden überladen ?
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
 
         for(Artikel a : getArtikelListe()){
@@ -51,7 +53,7 @@ public class Artikelverwaltung { // fertig
                 throw new ArtikelExistiertBereitsException();
             } else {
                 artikelListe.add(artikel);
-                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
+                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
                 ereignisse.add(e);}
             }
         }
@@ -106,7 +108,7 @@ public class Artikelverwaltung { // fertig
                 int aktuellerBestand = artikel.getBestand();
                 int neuerBestand = aktuellerBestand + anzahl;
                 artikel.setBestand(neuerBestand);
-                Ereignis e = new Ereignis(anzahl, artikel, u, Enum.EINLAGERUNG);
+                Ereignis e = new Ereignis(anzahl, artikel, u, Enum.EINLAGERUNG, neuerBestand);
                 ereignisse.add(e);
                 return true;
             }
@@ -127,7 +129,7 @@ public class Artikelverwaltung { // fertig
                     int aktuellerBestand = artikel.getBestand();
                     int neuerBestand = aktuellerBestand - menge;
                     artikel.setBestand(neuerBestand);
-                    Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG);
+                    Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG, neuerBestand);
                     ereignisse.add(e);
                     return true;
                 }
