@@ -1,6 +1,24 @@
-"Coca Cola 1L", 17890, 40, 2, true
-"Käsekuchen", 19002, 12, 4.99, true
-"Chips", 39003, 100, 1.79, true
-"Wasser", 38900, 400, 0.49, true
-"Mehl", 29290, 20, 0.39, true
-"Energy", 56899, 300, 1.0, 6, true
+Coca Cola 1L
+17890
+40
+2.0
+Käsekuchen
+19002
+12
+4.99
+Chips
+39003
+125
+1.79
+Wasser
+38900
+400
+0.49
+Mehl
+29290
+20
+0.39
+Energy
+56899
+300
+1.0

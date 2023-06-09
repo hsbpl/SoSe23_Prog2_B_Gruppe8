@@ -217,6 +217,8 @@ public class CUI {
                             "Ihr Warenkorb ist leer.\n" +
                             "*********************************************************************************\n");
                     eshopMenue(k, w);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
                 break;
 
@@ -247,6 +249,8 @@ public class CUI {
         System.out.println("         \n  Bestand verringern:   '6'");
         System.out.println("         \n  Ereignisliste ausgeben:   '7'");
         System.out.println("         \n  Neuen Mitarbeiter anlegen:   '8'");
+        System.out.println("         \n  Daten sichern:   '9'");
+
         System.out.println("         \n  ---------------------------");
         System.out.println("       \n  Beenden:                '0'");
 
@@ -262,13 +266,15 @@ public class CUI {
                             "*********************************************************************************\n");
             scan.nextLine();
             artbeitsMenue(m);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
 
     }
 
 
-    private void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) {
+    private void arbeitsEingabenVerarbeiten(int eingabe, Mitarbeiter m) throws IOException {
 
 
         switch (eingabe) {
@@ -388,6 +394,9 @@ public class CUI {
                     artbeitsMenue(m);
 
                 }
+                break;
+            case 9:
+                eshop.schreibeArtikel();
                 break;
 
             case 0:

@@ -147,10 +147,11 @@ public class EShop {
         return neuerKunde;}
     }
 
-    public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException{
+    public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
         Rechnung rechnung = new Rechnung(kunde, warenkorb);
         String r =  rechnung.toString();
         kaufenUndWarenkorbLeeren(warenkorb, kunde);
+        schreibeArtikel();
         return r;
     }
 

@@ -22,28 +22,30 @@ public class Artikelverwaltung { // fertig
     private List<Artikel> artikelListe;
 
     //liste in den Constructor
-    public void liesDaten(String datei) throws IOException {
-        //ToDo:
-    }
-    public void schreibeDaten(String datei) throws IOException{
-        //ToDo:
-    }
+
+
+
     public Artikelverwaltung() {
-        artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl, energydrink));
         ereignisse = new  ArrayList<>();
+    }
 
+    public void liesDaten(String datei) throws IOException {
+        try {
+            artikelListe = pm.leseArtikelListe(datei);
+        } catch (ArtikelExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    Artikel cola = new Artikel("Coca Cola 1L", 17890, 40, 2);
-    Artikel kuchen = new Artikel("Käsekuchen", 19002, 12, 4.99);
-    Artikel chips = new Artikel("Chips", 39003, 100, 1.79);
-    Artikel wasser = new Artikel("Wasser", 38900, 400, 0.49);
-    Artikel mehl = new Artikel("Mehl", 29290, 20, 0.39);
-    Massengutartikel energydrink = new Massengutartikel("Energy", 56899, 300, 1.0, 6);
+    public void schreibeDaten(String datei) throws IOException{
+        pm.schreibeArtikelListe(artikelListe, datei);
+    }
 
 
-//TODO wenn man einen Massengutartikel hinzufügt muss man zurzeit angeben wie viele zusammen gekauft werden müssen.
+
+
+    //TODO wenn man einen Massengutartikel hinzufügt muss man zurzeit angeben wie viele zusammen gekauft werden müssen.
     //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
     //TODO Methoden überladen ?
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{

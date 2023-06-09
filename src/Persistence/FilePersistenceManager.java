@@ -1,8 +1,8 @@
 package Persistence;
 
-import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
-import ValueObjekt.Mitarbeiter;
+import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.UserExistiertBereitsException;
+import ValueObjekt.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -19,144 +20,170 @@ public class FilePersistenceManager implements PersistenceManager{
    private BufferedReader reader = null;
    private PrintWriter writer = null;
 
-    public List<Kunde> loadCustomers() {return loadKunde();}
-    public List<Mitarbeiter> loadEmployees() {return loadMitarbeiter();}
 
-    public void openForReading(String datei) throws FileNotFoundException{
-       reader = new BufferedReader(new FileReader(datei));
-   }
-   public void openForWriting(String datei) throws IOException{
-       writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
-   }
+    public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException{
+        reader = new BufferedReader(new FileReader(datei));
 
-    public boolean close() {
-        if (writer != null)
-            writer.close();
+        List<Artikel> artikelBestand = new ArrayList<>();
+        Artikel einArtikel;
+        int count = 0;
 
-        if (reader != null) {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                // TODO Auto-generierter catch block
-                e.printStackTrace();
+        do {
+            einArtikel = ladeArtikel();
+            System.out.println(einArtikel);
+            if (einArtikel !=null){
+                if (artikelBestand.contains(einArtikel)){
+                    throw new ArtikelExistiertBereitsException();
+                }
 
-                return false;
+                artikelBestand.add(einArtikel);
+                count += 1;
+                System.out.println(count);
             }
+        }while (einArtikel !=null);
+        return artikelBestand;
+    }
+
+    public HashMap<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
+        reader = new BufferedReader(new FileReader(datei));
+
+        HashMap<String, Kunde> kundenBestand = new HashMap<>();
+        Kunde einKunde;
+        int count = 0;
+
+        do {
+            einKunde = ladeKunde();
+            if (einKunde !=null){
+                if (kundenBestand.containsValue(einKunde)){
+                    throw new UserExistiertBereitsException();
+                }
+                kundenBestand.put(String.valueOf(count), einKunde);
+                count += 1;
+            }
+        }while (einKunde !=null);
+        return kundenBestand;
+    }
+
+    public List<Mitarbeiter> leseMitarbeiterList(String datei) throws IOException, UserExistiertBereitsException{
+        reader = new BufferedReader(new FileReader(datei));
+
+        List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
+        Mitarbeiter einMitarbeiter;
+
+        do {
+            einMitarbeiter = ladeMitarbeiter();
+            if (einMitarbeiter !=null){
+                if (mitarbeiterBestand.contains(einMitarbeiter)){
+                    throw new UserExistiertBereitsException();
+                }
+                mitarbeiterBestand.add(einMitarbeiter);
+            }
+        }while (einMitarbeiter !=null);
+        return mitarbeiterBestand;
+    }
+
+    public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
+
+        for(Artikel a : liste)
+            speichereArtikel(a);
+
+        writer.close();
+    }
+
+    public void schreibeKundeListe(List<Kunde> liste, String datei) throws IOException {
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
+
+        for(Kunde k : liste)
+            speichereKunde(k);
+
+        writer.close();
+    }
+
+    public void schreibeMitarbeiterListe(List<Mitarbeiter> liste, String datei) throws IOException {
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
+
+        for(Mitarbeiter m : liste)
+            speichereMitarbeiter(m);
+
+        writer.close();
+    }
+
+
+    //private Method
+    private Artikel ladeArtikel() throws IOException{
+        //Bezeichnung einlesen
+        String bezeichnung = liesZeile();
+        if (bezeichnung == null){
+            //es sind keine Daten mehr vorhanden
+            return null;
         }
+
+        String artnr_string = liesZeile();
+        int artikelnummer = Integer.parseInt(artnr_string);
+
+        String bestand_string = liesZeile();
+        int bestand = Integer.parseInt(bestand_string);
+
+        String epreis_string = liesZeile();
+        double epreis = Double.parseDouble(epreis_string);
+
+        return new Artikel(bezeichnung, artikelnummer, bestand, epreis);
+    }
+
+    private boolean speichereArtikel(Artikel a) throws IOException{
+        schreibeZeile(a.getBezeichnung());
+        schreibeZeile(String.valueOf(a.getArtikelNummer()));
+        schreibeZeile(String.valueOf(a.getBestand()));
+        schreibeZeile(String.valueOf(a.getEinzelpreis()));
 
         return true;
     }
 
-
-    //Der obere Codeabschnitt zeigt die Methode close, die verwendet wird um Printwriter und BufferReader zu schließen
-    private static final String ARTICLE_FILE = "ESHOP_ARTIKEL.txt";
-    private static final String EMPLOYEE_FILE = "ESHOP_MITARBEITER.txt";
-    private static final String CUSTOMER_FILE = "ESHOP_KUNDEN.txt";
-    private static final String DATA_FILE = "data.txt";
-
-
-    public void saveData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
-        saveArticles(artikelList);
-        saveMitarbeiter(mitarbeiterList);
-        saveKunde(kundeList);
-    }
-
-
-
-    public void loadData(List<Artikel> artikelList, List<Mitarbeiter> mitarbeiterList, List<Kunde> kundeList){
-        artikelList.addAll(loadArticles());
-        mitarbeiterList.addAll(loadMitarbeiter());
-        kundeList.addAll(loadKunde());
-    }
-
-    public void saveArticles(List<Artikel> artikel) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(ARTICLE_FILE))) {
-            for (Artikel article : artikel) {
-                writer.println(article.toString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private Kunde ladeKunde() throws IOException{
+        //Bezeichnung einlesen
+        String username = liesZeile();
+        if (username == null){
+            //keine Daten mehr vorhanden
+            return null;
         }
+        String passwort = liesZeile();
+        String nachname = liesZeile() ;
+        String vorname = liesZeile();
+        String adresse = liesZeile();
+
+       return new Kunde(username, passwort, nachname, vorname, adresse);
     }
 
-    public List<Artikel> loadArticles() {
-        List<Artikel> artikelList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARTICLE_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                int artikelnummer = Integer.parseInt(parts[0]);
-                String bestand = parts[1];
-                int preis = Integer.parseInt(parts[2]);
-                Artikel artikel = new Artikel(artikelnummer, bestand, preis);
-                artikelList.add(artikel);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return artikelList;
-    }
-    public void saveMitarbeiter(List<Mitarbeiter> mitarbeiterList){
-        try (PrintWriter writer = new PrintWriter(new FileWriter(EMPLOYEE_FILE))){
-            for (Mitarbeiter mitarbeiter : mitarbeiterList){
-                writer.println(mitarbeiter.getidNummer() + "," + mitarbeiter.getUserName() + "," + mitarbeiter.getPasswort() + "," + mitarbeiter.getNachname() + "," + mitarbeiter.getVorname());
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    private boolean speichereKunde(Kunde k) throws IOException{
+        schreibeZeile(k.getUserName());
+        schreibeZeile(k.getPasswort());
+        schreibeZeile(k.getNachname());
+        schreibeZeile(k.getVorname());
+        schreibeZeile(k.getKundenAdresse());
+
+        return true;
     }
 
-    public List<Mitarbeiter> loadMitarbeiter(){
-        List<Mitarbeiter> mitarbeiterList = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(EMPLOYEE_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                String idNummer = parts[0];
-                //TODO hier dasselbe wie bei Mitarbeiter
-                String userName = parts[1];
-                String passwort = parts[2];
-                String nachname = parts[3];
-                String vorname = parts[4];
-                Mitarbeiter mitarbeiter = new Mitarbeiter( userName, passwort, nachname, vorname);
-                mitarbeiterList.add(mitarbeiter);
-            }
-        }catch (IOException e){
-            e.printStackTrace();
+    private Mitarbeiter ladeMitarbeiter() throws IOException{
+        String username = liesZeile();
+        if (username == null){
+            //keine Daten mehr vorhanden
+            return null;
         }
-        return mitarbeiterList;
-
+        String passwort = liesZeile();
+        String nachname = liesZeile() ;
+        String vorname = liesZeile();
+        return new Mitarbeiter(username, passwort, nachname, vorname);
+    }
+    private boolean speichereMitarbeiter(Mitarbeiter m) throws IOException{
+        schreibeZeile(m.getUserName());
+        schreibeZeile(m.getPasswort());
+        schreibeZeile(m.getNachname());
+        schreibeZeile(m.getVorname());
+        return true;
     }
 
-    public void saveKunde(List<Kunde> kundeList){
-        try (PrintWriter writer = new PrintWriter(new FileWriter(CUSTOMER_FILE))){
-            for (Kunde kunde : kundeList){
-                writer.println(kunde.getUserName() + "," + kunde.getPasswort() + "," + kunde.getNachname() + "," + kunde.getVorname() + "," + kunde.getidNummer() + "," + kunde.getKundenAdresse());
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    public List<Kunde> loadKunde(){
-        List<Kunde> kundeList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(CUSTOMER_FILE))){
-            String line;
-            while ((line = reader.readLine()) !=null){
-                String[] parts = line.split(",");
-                String UserName = parts[0];
-                String passwort = parts[1];
-                String nachname = parts[2];
-                String vorname = parts[3];
-                String idNr = parts[4]; //TODO habe Id automatisch generieren lassen, ist jetzt ein String. müssten schauen wie das hier gespeichert werden muss. Habe auch deshalb die Id unten rausgenommen.
-                String kundeAdresse = parts[5];
-                Kunde kunde = new Kunde(UserName, passwort, nachname, vorname, kundeAdresse);
-                kundeList.add(kunde);
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return kundeList;
-    }
 
     private String liesZeile() throws IOException{
         if (reader != null)
@@ -170,12 +197,3 @@ public class FilePersistenceManager implements PersistenceManager{
             writer.println(daten);
     }
 }
-
-
-
-
-    //TODO: Methoden für Mitarbeiter, Kunden, Ein- und Auslagerung muss ich noch Implementieren
-
-
-
-
