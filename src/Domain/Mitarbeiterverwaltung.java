@@ -1,5 +1,7 @@
 package Domain;
 
+import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.UserExistiertBereitsException;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
 import ValueObjekt.Kunde;
@@ -19,10 +21,16 @@ public class Mitarbeiterverwaltung {
     private List<Mitarbeiter> listMitarbeiter;
 
     public void liesDaten(String datei) throws IOException {
-        //ToDo:
+        try {
+            listMitarbeiter = pm.leseMitarbeiterList(datei);
+        } catch (UserExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        }
+
     }
     public void schreibeDaten(String datei) throws IOException{
-        //ToDo:
+        pm.schreibeMitarbeiterListe(listMitarbeiter, datei);
+
     }
     public Mitarbeiterverwaltung() {
         this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1")));

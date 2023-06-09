@@ -2,6 +2,7 @@ package Domain;
 
 import Exceptions.ArtikelExistiertNichtException;
 import Exceptions.UngueltigeMengeException;
+import Exceptions.UserExistiertBereitsException;
 import Exceptions.WarenkorbIstLeerException;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
@@ -22,10 +23,17 @@ public class Kundenverwaltung {
     Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",  "Am Berg");
 
     public void liesDaten(String datei) throws IOException {
-        //ToDo:
+        try {
+            kundenliste = pm.leseKundenListe(datei);
+
+        } catch (UserExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        }
+
     }
     public void schreibeDaten(String datei) throws IOException{
-        //ToDo:
+        List<Kunde> kListe = new ArrayList<>(kundenliste.values());
+        pm.schreibeKundeListe(kListe, datei);
     }
     public Kundenverwaltung() {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();

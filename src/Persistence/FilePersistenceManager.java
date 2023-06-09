@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -39,19 +40,21 @@ public class FilePersistenceManager implements PersistenceManager{
         return artikelBestand;
     }
 
-    public List<Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
+    public HashMap<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        List<Kunde> kundenBestand = new ArrayList<>();
+        HashMap<String, Kunde> kundenBestand = new HashMap<>();
         Kunde einKunde;
+        int count = 0;
 
         do {
             einKunde = ladeKunde();
             if (einKunde !=null){
-                if (kundenBestand.contains(einKunde)){
+                if (kundenBestand.containsValue(einKunde)){
                     throw new UserExistiertBereitsException();
                 }
-                kundenBestand.add(einKunde);
+                kundenBestand.put(String.valueOf(count), einKunde);
+                count += 1;
             }
         }while (einKunde !=null);
         return kundenBestand;

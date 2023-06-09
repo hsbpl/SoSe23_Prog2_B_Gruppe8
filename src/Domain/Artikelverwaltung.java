@@ -23,15 +23,19 @@ public class Artikelverwaltung { // fertig
 
     //liste in den Constructor
     public void liesDaten(String datei) throws IOException {
-
+        try {
+            artikelListe = pm.leseArtikelListe(datei);
+        } catch (ArtikelExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        }
 
     }
-
-
 
     public void schreibeDaten(String datei) throws IOException{
-        //ToDo:
+        pm.schreibeArtikelListe(artikelListe, datei);
     }
+
+
     public Artikelverwaltung() {
         artikelListe = new ArrayList<>(Arrays.asList(cola,kuchen,chips, wasser, mehl, energydrink));
         ereignisse = new  ArrayList<>();
