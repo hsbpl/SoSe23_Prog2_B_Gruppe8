@@ -131,12 +131,12 @@ public class GUI extends JFrame { // durch die Extension wird die GUI zur childc
     private void neuenArtikelAnlegen(){
         JPanel anlegen = new JPanel();
         anlegen.setVisible(true);
-        anlegen.add(new JLabel("Artikel anlegen"));
+        anlegen.add(new JLabel("Artikel anlegen"));}}
 //TODO setLayout() //ausrichtung des Inhalts setzten
 
 
 
-        JTextField usernameTextfield= new JTextField(30);
+        /*JTextField usernameTextfield= new JTextField(30);
         usernameTextfield.add(new JLabel("Artikelbezeichnung: "));
         JTextField passwotTextfield = new JTextField(30);
         passwotTextfield.add(new JLabel("Artikelnummer: "));
@@ -146,11 +146,11 @@ public class GUI extends JFrame { // durch die Extension wird die GUI zur childc
         passwotTextfield.add(new JLabel("Preis: "));
         JTextField usernameTextfield= new JTextField(30);
 
-    }
+    }*/
 
 
     //TODO Kunden aus der Hashmap als Array wiedergeben
-
+/*
     private void hinzufügenMitarbeiterliste(){
         add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
     }
@@ -161,3 +161,5 @@ private void hinzufügenArtikelListeStart(){
         new GUI(); // GUI wird erstellt
     }
 }
+
+ */

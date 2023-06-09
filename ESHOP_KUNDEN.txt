@@ -1,1 +1,5 @@
-"k1", "abc", "Mann", "Thomas",  "Am Berg"
+k1
+abc
+Mann
+Thomas
+Am Berg

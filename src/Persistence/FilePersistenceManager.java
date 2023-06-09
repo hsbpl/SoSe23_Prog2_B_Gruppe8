@@ -26,15 +26,19 @@ public class FilePersistenceManager implements PersistenceManager{
 
         List<Artikel> artikelBestand = new ArrayList<>();
         Artikel einArtikel;
+        int count = 0;
 
         do {
             einArtikel = ladeArtikel();
+            System.out.println(einArtikel);
             if (einArtikel !=null){
                 if (artikelBestand.contains(einArtikel)){
                     throw new ArtikelExistiertBereitsException();
                 }
 
                 artikelBestand.add(einArtikel);
+                count += 1;
+                System.out.println(count);
             }
         }while (einArtikel !=null);
         return artikelBestand;
