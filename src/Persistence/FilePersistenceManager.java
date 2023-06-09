@@ -26,19 +26,15 @@ public class FilePersistenceManager implements PersistenceManager{
 
         List<Artikel> artikelBestand = new ArrayList<>();
         Artikel einArtikel;
-        int count = 0;
 
         do {
             einArtikel = ladeArtikel();
-            System.out.println(einArtikel);
             if (einArtikel !=null){
                 if (artikelBestand.contains(einArtikel)){
                     throw new ArtikelExistiertBereitsException();
                 }
 
                 artikelBestand.add(einArtikel);
-                count += 1;
-                System.out.println(count);
             }
         }while (einArtikel !=null);
         return artikelBestand;
@@ -81,6 +77,22 @@ public class FilePersistenceManager implements PersistenceManager{
         }while (einMitarbeiter !=null);
         return mitarbeiterBestand;
     }
+    public List<Ereignis> leseEreignisList(String datei) throws IOException, UserExistiertBereitsException{
+        reader = new BufferedReader(new FileReader(datei));
+
+        List<Ereignis> ereignisBestand = new ArrayList<>();
+        Ereignis einEreignis;
+        do {
+            einEreignis = ladeEreignis();
+            if (einEreignis !=null){
+                if (ereignisBestand.contains(einEreignis)){
+                    throw new UserExistiertBereitsException();
+                }
+                ereignisBestand.add(einEreignis);
+            }
+        }while (einEreignis !=null);
+        return ereignisBestand;
+    }
 
     public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
@@ -108,6 +120,21 @@ public class FilePersistenceManager implements PersistenceManager{
 
         writer.close();
     }
+
+    @Override
+    public List<Ereignis> leseEreignislist(String datei) throws IOException, ArtikelExistiertBereitsException {
+        return null;
+    }
+
+    public void schreibeEreignisListe(List<Ereignis> liste, String datei) throws IOException {
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
+
+        for (Ereignis e : liste)
+            speichereEreignis(e);
+        writer.close();
+    }
+
+
 
 
     //private Method
@@ -183,6 +210,28 @@ public class FilePersistenceManager implements PersistenceManager{
         schreibeZeile(m.getVorname());
         return true;
     }
+    private Ereignis ladeEreignis() throws IOException{
+        String anzahl = liesZeile();
+        if (anzahl == null){
+            //keine Daten mehr vorhanden
+            return null;
+        }
+        String artikel = liesZeile();
+        String user = liesZeile();
+        String ereignistyp = liesZeile();
+        String aktualisierterBestand = liesZeile();
+        return new Ereignis(anzahl, artikel, user, ereignistyp, aktualisierterBestand);
+    }
+    private boolean speichereEreignis(Ereignis e) throws IOException{
+        schreibeZeile(e.getAnzahl());
+        schreibeZeile(e.getArtikel());
+        schreibeZeile(e.getUser());
+        schreibeZeile(e.getEreignistyp());
+        schreibeZeile(e.getAktualisierterBestand());
+        return true;
+    }
+
+
 
 
     private String liesZeile() throws IOException{

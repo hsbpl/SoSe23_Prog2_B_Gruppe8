@@ -17,6 +17,7 @@ public class EShop {
     private Artikelverwaltung av;
     private Kundenverwaltung kv;
     private  Mitarbeiterverwaltung mv;
+    private EreignisVerwaltung ev;
 
     public EShop(String datei) throws IOException {
         this.datei = datei;
@@ -28,6 +29,9 @@ public class EShop {
         mv.liesDaten(datei + "_MITARBEITER.txt");
         this.kv = new Kundenverwaltung();
         kv.liesDaten(datei + "_KUNDEN.txt");
+        ev = new EreignisVerwaltung();
+        ev.liesDaten(datei + "_EREIGNIS.txt");
+        this.ev = new EreignisVerwaltung();
 
     }
     //TODO das mit der ereignisliste klären
@@ -39,6 +43,7 @@ public class EShop {
         return mv.getListMitarbeiter();
     }
     public List<Kunde> getAlleKunden(){return kv.getKundenListe();}
+    public List<Ereignis> getAlleEreignisse(){return ev.getEreignisListe;}
 
     public void schreibeArtikel() throws IOException{
         av.schreibeDaten(datei + "_ARTIKEL.txt");
@@ -51,10 +56,10 @@ public class EShop {
     public void schreibeKunde() throws IOException{
         kv.schreibeDaten(datei + "_KUNDEN.txt");
     }
-
-    public List<Ereignis> getAlleEreignisse(){
-        return av.getEreignisse();
+    public void schreibeEreignis() throws IOException{
+        ev.schreibeDaten(datei + "_EREIGNIS.txt");
     }
+
     public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
         return kv.getGespeicherteWarenkörbeUndKunden();
     }
