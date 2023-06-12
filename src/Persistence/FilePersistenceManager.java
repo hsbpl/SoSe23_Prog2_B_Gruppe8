@@ -1,8 +1,14 @@
 package Persistence;
 
+import Domain.Artikelverwaltung;
+import Domain.Kundenverwaltung;
+import Domain.Mitarbeiterverwaltung;
 import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.EreignisExistiertBereitsException;
 import Exceptions.UserExistiertBereitsException;
+import Exceptions.UserExistiertNichtException;
 import ValueObjekt.*;
+import ValueObjekt.Enum;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,8 +23,14 @@ import java.util.List;
 
 public class FilePersistenceManager implements PersistenceManager{
 
-   private BufferedReader reader = null;
+    private BufferedReader reader = null;
    private PrintWriter writer = null;
+
+   private Artikelverwaltung av = new Artikelverwaltung();
+   private Mitarbeiterverwaltung mv = new Mitarbeiterverwaltung();
+   private Kundenverwaltung kv = new Kundenverwaltung();
+   private Ereignis e_klasse;
+
 
 
     public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException{
@@ -77,21 +89,22 @@ public class FilePersistenceManager implements PersistenceManager{
         }while (einMitarbeiter !=null);
         return mitarbeiterBestand;
     }
-    public List<Ereignis> leseEreignisList(String datei) throws IOException, UserExistiertBereitsException{
+    public List<Ereignis> leseEreignisList(String datei) throws IOException, EreignisExistiertBereitsException {
         reader = new BufferedReader(new FileReader(datei));
 
-        List<Ereignis> ereignisBestand = new ArrayList<>();
+        List<Ereignis> ereignisliste = new ArrayList<>();
         Ereignis einEreignis;
+
         do {
             einEreignis = ladeEreignis();
             if (einEreignis !=null){
-                if (ereignisBestand.contains(einEreignis)){
-                    throw new UserExistiertBereitsException();
+                if (ereignisliste.contains(einEreignis)){
+                    throw new EreignisExistiertBereitsException();
                 }
-                ereignisBestand.add(einEreignis);
+                ereignisliste.add(einEreignis);
             }
         }while (einEreignis !=null);
-        return ereignisBestand;
+        return ereignisliste;
     }
 
     public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
@@ -119,11 +132,6 @@ public class FilePersistenceManager implements PersistenceManager{
             speichereMitarbeiter(m);
 
         writer.close();
-    }
-
-    @Override
-    public List<Ereignis> leseEreignislist(String datei) throws IOException, ArtikelExistiertBereitsException {
-        return null;
     }
 
     public void schreibeEreignisListe(List<Ereignis> liste, String datei) throws IOException {
@@ -210,24 +218,38 @@ public class FilePersistenceManager implements PersistenceManager{
         schreibeZeile(m.getVorname());
         return true;
     }
-    private Ereignis ladeEreignis() throws IOException{
-        String anzahl = liesZeile();
-        if (anzahl == null){
-            //keine Daten mehr vorhanden
-            return null;
-        }
-        String artikel = liesZeile();
-        String user = liesZeile();
-        String ereignistyp = liesZeile();
-        String aktualisierterBestand = liesZeile();
-        return new Ereignis(anzahl, artikel, user, ereignistyp, aktualisierterBestand);
+    private Ereignis ladeEreignis() throws IOException {
+        String anzahl_string = liesZeile();
+        int anzahl = Integer.parseInt(anzahl_string);
+
+        String artikelnr = liesZeile();
+        Artikel artikel = av.getArtikelByNumber(Integer.parseInt(artikelnr));
+
+        String username = liesZeile();
+        User user = null;
+        String ereignistyp_string = null;
+
+            if (username.startsWith("m")) {
+                user = mv.getMitarbeiterByUsername(username);
+            } else if (username.startsWith("k")) {
+                user = kv.getKundeByUsername(username);
+            } else {
+                return null;
+            }
+
+        ereignistyp_string = liesZeile();
+        Enum ereignistyp = Enum.valueOf(ereignistyp_string);
+
+        String aktualisierterBestand_string = liesZeile();
+        int aktualisierterBestand = Integer.parseInt(aktualisierterBestand_string);
+        return new Ereignis(anzahl, null, user, ereignistyp, aktualisierterBestand);
     }
     private boolean speichereEreignis(Ereignis e) throws IOException{
-        schreibeZeile(e.getAnzahl());
-        schreibeZeile(e.getArtikel());
-        schreibeZeile(e.getUser());
-        schreibeZeile(e.getEreignistyp());
-        schreibeZeile(e.getAktualisierterBestand());
+        schreibeZeile(String.valueOf(e.getAnzahl()));
+        schreibeZeile(String.valueOf(e.getArtikel().getArtikelNummer()));
+        schreibeZeile(String.valueOf(e.getUser().getUserName()));
+        schreibeZeile(String.valueOf(e.getEreignistyp()));
+        schreibeZeile(String.valueOf(e.getAktualisierterBestand()));
         return true;
     }
 

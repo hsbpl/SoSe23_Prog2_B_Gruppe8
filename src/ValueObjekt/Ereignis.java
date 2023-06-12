@@ -18,12 +18,17 @@ public class Ereignis {
         this.user = user;
         this.ereignistyp = ereignistyp;
         this.aktualisierterBestand = aktualisierterBestand;
-
     }
+    public int getAnzahl(){return anzahl;}
+    public Artikel getArtikel(){return artikel;}
+    public User getUser(){return user;}
+    public Enum getEreignistyp(){return ereignistyp;}
+    public int getAktualisierterBestand(){return aktualisierterBestand;}
 
-public Date getDatum(){
+    public Date getDatum(){
         return datum;
     }
+
     //TODO Bestand wird immer Aktuallisiert, statt das er den alten Bestand anzeigt, überlegen ob das abgeändert werden müsste)
     public String toString(){
         return  datum.toString() + "\n"+

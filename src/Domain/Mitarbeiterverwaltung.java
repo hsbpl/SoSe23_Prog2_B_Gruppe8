@@ -4,6 +4,7 @@ import Exceptions.ArtikelExistiertBereitsException;
 import Exceptions.UserExistiertBereitsException;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
+import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.User;
@@ -33,7 +34,7 @@ public class Mitarbeiterverwaltung {
 
     }
     public Mitarbeiterverwaltung() {
-        this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1")));
+        //this.listMitarbeiter = new ArrayList<>(Arrays.asList(new Mitarbeiter("m1", "123", "Mitarbeiter", "m1")));
     }
 
     public List<Mitarbeiter> getListMitarbeiter() {
@@ -71,6 +72,15 @@ public class Mitarbeiterverwaltung {
             liste += n.toString() +"\n";
         }
         return  liste;
+    }
+    public Mitarbeiter getMitarbeiterByUsername(String username){
+        for (Mitarbeiter mitarbeiter : listMitarbeiter){
+            if (mitarbeiter.getUserName().equals(username)) {
+                return mitarbeiter;
+            }
+        }
+
+        return null;
     }
 }
 
