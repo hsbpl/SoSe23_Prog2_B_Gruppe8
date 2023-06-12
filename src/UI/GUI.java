@@ -6,10 +6,12 @@ import ValueObjekt.Warenkorb;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class GUI extends JFrame { // durch die Extension wird die GUI zur childclass von JFrame
+public class GUI extends JFrame implements ActionListener { // durch die Extension wird die GUI zur childclass von JFrame
 
     /**
      * JLabel : zum display von Text,image, (auch beides)
@@ -20,9 +22,13 @@ public class GUI extends JFrame { // durch die Extension wird die GUI zur childc
      */
     private EShop eshop;
 
+    //TODO ist es in ordnung das hier zu platzieren
+    JButton mitarbeiterbereich = new JButton("Mitarbeiterberich"); //Buttons für Northpanel um in andere Bereiche zu kommen
+    JButton kundenbereich = new JButton("Kundenbereich");
+
     public GUI() throws IOException {
         super("Roha & Sanjana's Eshop");
-       //eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+        eshop = new EShop();//TODO vlt mit einem weiteren Konstruktor lösen
 
 
 
@@ -32,18 +38,52 @@ public class GUI extends JFrame { // durch die Extension wird die GUI zur childc
         this.setLocation(0, 500);
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
-        this.setLayout(new BorderLayout(5,5)); //aufteilung in borderlayout, die Zahlen sind für den Abstand da
+        //aufteilung in borderlayout, die Zahlen sind für den Abstand da
         // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
-
-        add(hinzufügenLoginBereichStart(), BorderLayout.WEST);
-
-       hinzufügenArtikelListeStart(); //TODO vesuchen sobald der ehop reingesetzt wurde
         /*
         falls man Icon oben rechts hinzufügen möchen
         ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
         this.setIconImage(image.getImage());
          */
+        add(startpage());
+
     }
+
+
+    //TODO action event reinlesen so wie ich es mir dachte scheint es nicht ganz zu funktionieren
+
+    @Override  //Damit beim Klicken der Buttons auch etwas passiert muss das hier umgesetzt werden
+    public void actionPerformed(ActionEvent actionEvent) {
+        if(actionEvent.getSource() == mitarbeiterbereich){
+            try {
+                MitarbeiterBereich m = new MitarbeiterBereich();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
+
+    private Component startpage(){
+        JPanel start = new JPanel(); //neues Jpanel
+        start.setVisible(true);//Jpanel ist sichtbar
+        start.setSize(300, 300);
+        start.setLayout(new BorderLayout(5,5));
+
+
+        start.add(hinzufügenLoginBereichStart(), BorderLayout.WEST); //Logins im Westen hinzugefügt
+
+        start.add(mitarbeiterbereich,BorderLayout.NORTH);
+        mitarbeiterbereich.addActionListener(this); //damit beim Drücken des Buttons auch was geschieht
+        start.add(kundenbereich,BorderLayout.NORTH);
+        kundenbereich.addActionListener(this);
+
+        hinzufügenArtikelListeStart(); //Artikelliste wird im center angezeigt
+
+        return start;
+    }
+
+
 
     private Component hinzufügenLoginBereichStart(){
         JPanel westpanel = new JPanel(); //neues Jpanel
@@ -86,36 +126,6 @@ public class GUI extends JFrame { // durch die Extension wird die GUI zur childc
     }
 
 
-    //TODO soll angezeigt werden wenn der user auf die Registrieungsoption klickt
-    private Component kundenregistrierungPopup(){
-        JPanel registerfenster = new JPanel();
-        registerfenster.setVisible(true);
-        registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
-        registerfenster.add(new JLabel("Kundenregistrierung"));
-
-        JTextField usernameTextfield= new JTextField(30);
-        usernameTextfield.add(new JLabel("Username: "));
-        JTextField passwotTextfield = new JTextField(30);
-        passwotTextfield.add(new JLabel("Passwort: "));
-        JTextField nachnameTextfield= new JTextField(30);
-        nachnameTextfield.add(new JLabel("Nachname: "));
-        JTextField vornameTextfield = new JTextField(30);
-        vornameTextfield.add(new JLabel("Vorname: "));
-        JTextField adressenTextfield= new JTextField(30);
-        adressenTextfield.add(new JLabel("Adresse: "));
-
-        JButton registerButton = new JButton("Registrieren");
-
-        registerfenster.add(usernameTextfield);
-        registerfenster.add(passwotTextfield);
-        registerfenster.add(nachnameTextfield);
-        registerfenster.add(vornameTextfield);
-        registerfenster.add(usernameTextfield);
-        registerfenster.add(adressenTextfield);
-        registerfenster.add(registerButton);
-
-        return registerfenster;
-    }
     private Component mitarbeiterLogin(){
         JPanel loginfenster = new JPanel();
         loginfenster.setVisible(true);
@@ -136,145 +146,33 @@ public class GUI extends JFrame { // durch die Extension wird die GUI zur childc
         return loginfenster;
     }
 
+   /* public Component bereichauswahl(){
+        JPanel bereichsauswahl = new JPanel();
+        bereichsauswahl.setVisible(true);
+        bereichsauswahl.setLayout(new BoxLayout(bereichsauswahl, BoxLayout.X_AXIS));
 
-    //Extrafenster wenn der Mitarbeiter eingeloggt / registriert ist
-    private void mitarbeiiterbereich(){
-        JFrame mitarbeiterFenster = new JFrame();
 
-        mitarbeiterFenster.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
-        mitarbeiterFenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        mitarbeiterFenster.setSize(640, 480); // größe des Frames //TODO welche größe passt am besten
-        mitarbeiterFenster.setLocation(0, 500);
-        mitarbeiterFenster.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        mitarbeiterFenster.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
-        mitarbeiterFenster.setLayout(new BorderLayout(5,5)); //aufteilung in borderlayout, die Zahlen sind für den Abstand da
-        // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
-        //todo komponenten anordnen
 
+        JButton mitarbeiterbereich = new JButton("Mitarbeiterberich");
+        JButton kundenbereich = new JButton("Kundenbereich");
+
+
+        bereichsauswahl.add(mitarbeiterbereich);
+        bereichsauswahl.add(kundenbereich);
+
+        return bereichsauswahl;
     }
 
-    // Feld zum Anlegen neuer Artikel
-    private void neuenArtikelAnlegen(){
-        JPanel anlegen = new JPanel();
-        anlegen.setVisible(true);
-        anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
-        anlegen.add(new JLabel("Artikel anlegen"));
-//TODO Textfeld verzerrung verhindern
-
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
-
-        JTextField artikelnummerTextfield = new JTextField(30);
-        artikelnummerTextfield.add(new JLabel("Artikelnummer: "));
-
-        JTextField bestandTextfield = new JTextField(30);
-        bestandTextfield.add(new JLabel("Bestand: "));
-
-        JTextField preisTextfield= new JTextField(30);
-        preisTextfield.add(new JLabel("Preis in €: "));
-
-        JButton anlegenButton = new JButton("Anlegen");
-
-        anlegen.add(bezeichnungsTextfield);
-        anlegen.add(artikelnummerTextfield);
-        anlegen.add(bestandTextfield);
-        anlegen.add(preisTextfield);
-        anlegen.add(anlegenButton);
-    }
-
-    // Feld zum Anlegen neuer MassengutArtikel
-    private void neuenMassengutartikelAnlegen(){
-        JPanel anlegen = new JPanel();
-        anlegen.setVisible(true);
-        anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
-        anlegen.add(new JLabel("Artikel anlegen"));
-
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
-
-        JTextField artikelnummerTextfield = new JTextField(30);
-        artikelnummerTextfield.add(new JLabel("Artikelnummer: "));
-
-        JTextField bestandTextfield = new JTextField(30);
-        bestandTextfield.add(new JLabel("Bestand: "));
-
-        JTextField preisTextfield= new JTextField(30);
-        preisTextfield.add(new JLabel("Preis in €: "));
-
-        JTextField verkäuflicheMengefield= new JTextField(30);
-        verkäuflicheMengefield.add(new JLabel("Minimale Kaufmenge: "));
-
-        JButton anlegenButton = new JButton("Neuen artikel anlegen");
-
-        anlegen.add(bezeichnungsTextfield);
-        anlegen.add(artikelnummerTextfield);
-        anlegen.add(bestandTextfield);
-        anlegen.add(preisTextfield);
-        anlegen.add(anlegenButton);
-        anlegen.add(verkäuflicheMengefield);
-    }
-
-public void bestandErhöhen(){
-    JPanel erhöhen = new JPanel();
-    erhöhen.setVisible(true);
-    erhöhen.setLayout(new BoxLayout(erhöhen, BoxLayout.Y_AXIS));
-    erhöhen.add(new JLabel("Artikelbestand erhöhen"));
-
-    JTextField bezeichnungsTextfield= new JTextField(30);
-    bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
-
-    JTextField erhöhungTextfield = new JTextField(30);
-    erhöhungTextfield.add(new JLabel("Zu erhöhende Menge: "));
-
-    JButton anlegenButton = new JButton("Bestand aktualisieren");
-
-    erhöhen.add(bezeichnungsTextfield);
-    erhöhen.add(erhöhungTextfield);
-    erhöhen.add(anlegenButton);
-
-}
-
-    public void bestandVerringern(){
-        JPanel erhöhen = new JPanel();
-        erhöhen.setVisible(true);
-        erhöhen.setLayout(new BoxLayout(erhöhen, BoxLayout.Y_AXIS));
-        erhöhen.add(new JLabel("Artikel anlegen"));
-
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
-
-        JTextField veringerungsTextfield = new JTextField(30);
-        veringerungsTextfield.add(new JLabel("Zu verringernde Menge: "));
-
-        JButton anlegenButton = new JButton("Bestand aktualisieren");
-
-        erhöhen.add(bezeichnungsTextfield);
-        erhöhen.add(veringerungsTextfield);
-        erhöhen.add(anlegenButton);
-    }
+    */
 
 
 
-
-    //TODO Kunden aus der Hashmap als Array wiedergeben
-
-    private void hinzufügenKundenliste(){
-        Kunde[] kunden = new Kunde[eshop.getAlleGespeichertenWarenkörbe().size()];
-        int position = 0;
-        for (Kunde k : eshop.getAlleGespeichertenWarenkörbe().keySet()){
-            kunden[position++] = k;
-        }
-
-        add(new JList<>(kunden), BorderLayout.CENTER);
-
-    }
-    private void hinzufügenMitarbeiterliste(){
-        add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
-    }
 private void hinzufügenArtikelListeStart(){
     add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
 }
    public static void main(String[] args) throws IOException {
         new GUI(); // GUI wird erstellt
     }
+
+
 }

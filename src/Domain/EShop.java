@@ -34,6 +34,10 @@ public class EShop {
         this.ev = new EreignisVerwaltung();
 
     }
+
+
+
+
     //TODO das mit der ereignisliste klären
 
     public List<Artikel> getAlleArtikel() {
