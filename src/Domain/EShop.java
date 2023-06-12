@@ -32,6 +32,10 @@ public class EShop {
         this.kv.liesDaten(datei + "_KUNDEN.txt");
 
     }
+
+
+
+
     //TODO das mit der ereignisliste klären
 
     public List<Artikel> getAlleArtikel() {
