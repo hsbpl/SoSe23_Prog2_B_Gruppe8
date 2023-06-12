@@ -28,7 +28,8 @@ public class GUI extends JFrame implements ActionListener { // durch die Extensi
 
     public GUI() throws IOException {
         super("Roha & Sanjana's Eshop");
-        eshop = new EShop();//TODO vlt mit einem weiteren Konstruktor lösen
+        String datei = "ESHOP";
+        eshop = new EShop(datei);//TODO vlt mit einem weiteren Konstruktor lösen
 
 
 

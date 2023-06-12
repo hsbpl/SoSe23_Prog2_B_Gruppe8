@@ -16,27 +16,21 @@ public class EShop {
 
     private String datei = "";
 
-    private Artikelverwaltung av = new Artikelverwaltung();
-    private Kundenverwaltung kv = new Kundenverwaltung();
-    private  Mitarbeiterverwaltung mv = new Mitarbeiterverwaltung();
-
+    private Artikelverwaltung av;
+    private Kundenverwaltung kv;
+    private  Mitarbeiterverwaltung mv;
     public EShop(String datei) throws IOException {
         this.datei = datei;
+        av = new Artikelverwaltung();
+        mv = new Mitarbeiterverwaltung();
+        kv = new Kundenverwaltung();
 
-        //hier pm anlegen
-        this.av.liesDaten(datei + "_ARTIKEL.txt");
-        //this.av.liesDatenEreignisse(datei + "_EREIGNIS.txt");
-
-        this.mv.liesDaten(datei + "_MITARBEITER.txt");
-
-        this.kv.liesDaten(datei + "_KUNDEN.txt");
+        av.liesDaten(datei + "_ARTIKEL.txt");
+        mv.liesDaten(datei + "_MITARBEITER.txt");
+        kv.liesDaten(datei + "_KUNDEN.txt");
+        av.liesDatenEreignisse(datei + "_EREIGNIS.txt");
 
     }
-
-
-
-
-    //TODO das mit der ereignisliste klären
 
     public List<Artikel> getAlleArtikel() {
         return av.getArtikelListe();

@@ -9,15 +9,16 @@ import ValueObjekt.Enum;
 
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.text.ParseException;
 import java.util.*;
 
 
-public class Artikelverwaltung { // fertig
+public class Artikelverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private List<Ereignis> ereignisse;
+    private List<Ereignis> ereignisse = new ArrayList<>();
 
-    private List<Artikel> artikelListe;
+    private List<Artikel> artikelListe = new ArrayList<>();
 
     //liste in den Constructor
 
@@ -68,6 +69,7 @@ public class Artikelverwaltung { // fertig
                 throw new ArtikelExistiertBereitsException();
             } else {
                 artikelListe.add(artikel);
+
                 Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
                 ereignisse.add(e);
 

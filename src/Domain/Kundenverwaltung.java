@@ -11,6 +11,7 @@ import ValueObjekt.Enum;
 
 import java.io.IOException;
 import java.net.StandardSocketOptions;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -19,11 +20,7 @@ public class Kundenverwaltung {
 
     private HashMap<String, Kunde> kundenliste;
     private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
-    private Kunde kunde;
     private Artikelverwaltung av = new Artikelverwaltung();
-
-    //Beispielkunde
-    //Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",  "Am Berg");
 
     public void liesDaten(String datei) throws IOException {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();

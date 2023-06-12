@@ -19,7 +19,7 @@ import java.util.List;
 public class Mitarbeiterverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private List<Mitarbeiter> listMitarbeiter;
+    private List<Mitarbeiter> listMitarbeiter = new ArrayList<>();
 
     public void liesDaten(String datei) throws IOException {
         try {

@@ -20,7 +20,8 @@ public class MitarbeiterBereich extends JFrame {
     JButton artikelAnlegenButton = new JButton("Neuen Einzelartikel anlegen");
     public MitarbeiterBereich() throws IOException {
         super("Roha & Sanjana's Eshop");
-        EShop eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+        String datei = "ESHOP";
+        EShop eshop = new EShop(datei);//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
 
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
@@ -45,7 +46,7 @@ public class MitarbeiterBereich extends JFrame {
 
 
     //Extrafenster wenn der Mitarbeiter eingeloggt / registriert ist
-    private void mitarbeiiterbereich(){
+    private void mitarbeiiterbereich() throws IOException {
         JFrame mitarbeiterFenster = new JFrame();
 
         mitarbeiterFenster.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
@@ -226,7 +227,9 @@ public class MitarbeiterBereich extends JFrame {
     private void hinzufügenMitarbeiterliste(EShop eshop){
         add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
     }
-    private void hinzufügenArtikelListeStart(){
+    private void hinzufügenArtikelListeStart() throws IOException {
+        String datei = "ESHOP";
+        EShop eshop = new EShop(datei);
         add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
     }
 }

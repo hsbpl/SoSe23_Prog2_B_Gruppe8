@@ -1,5 +1,6 @@
 package ValueObjekt;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Ereignis {
@@ -12,12 +13,14 @@ public class Ereignis {
 
     private int aktualisierterBestand;
 
+
     public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp, int aktualisierterBestand) {
         this.anzahl = anzahl;
         this.artikel = artikel;
         this.user = user;
         this.ereignistyp = ereignistyp;
         this.aktualisierterBestand = aktualisierterBestand;
+
     }
     public int getAnzahl(){return anzahl;}
     public Artikel getArtikel(){return artikel;}
