@@ -128,6 +128,7 @@ public class EShop {
     }
 
     public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde) throws WarenkorbIstLeerException{
+        System.out.println(getAlleEreignisse());
         kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel(),kunde, getAlleEreignisse());
     }
     public void warenkorbLeeren(Warenkorb warenkorb){

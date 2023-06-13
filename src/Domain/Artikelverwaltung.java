@@ -16,9 +16,9 @@ import java.util.*;
 public class Artikelverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private List<Ereignis> ereignisse = new ArrayList<>();
+    private static List<Ereignis> ereignisse = new ArrayList<>();
 
-    private List<Artikel> artikelListe = new ArrayList<>();
+    private static List<Artikel> artikelListe = new ArrayList<>();
 
     //liste in den Constructor
 
@@ -52,8 +52,7 @@ public class Artikelverwaltung {
     }
 
     public void schreibeDatenEreignisse(String datei) throws IOException{
-        System.out.println(ereignisse);
-        //pm.schreibeEreignisListe(ereignisse, datei);
+        System.out.println("EY " +ereignisse);
         pm.schreibeEreignisListe(ereignisse, datei);
     }
 
@@ -63,17 +62,14 @@ public class Artikelverwaltung {
     //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
     //TODO Methoden überladen ?
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
+        if(istArtikelVorhanden(artikel,getArtikelListe(),artikel.getBezeichnung())) {
+            throw new ArtikelExistiertBereitsException();
+        } else {
+            artikelListe.add(artikel);
+            System.out.println("Wie oft wird das hier gemacht?");
+            Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+            ereignisse.add(e);
 
-        for (Artikel a : getArtikelListe()) {
-            if (a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == a.getArtikelNummer()) {
-                throw new ArtikelExistiertBereitsException();
-            } else {
-                artikelListe.add(artikel);
-
-                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
-                ereignisse.add(e);
-
-            }
         }
     }
 
@@ -86,7 +82,16 @@ public class Artikelverwaltung {
         ereignisse.add(e);}
 
  */
-
+    public static boolean istArtikelVorhanden(Artikel artikel, ArrayList<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
+        for (Artikel a : liste) {
+            if (a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == artikel.getArtikelNummer()) {
+                throw new ArtikelExistiertBereitsException();
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String artikelSortierenNachBezeichnung() {
 

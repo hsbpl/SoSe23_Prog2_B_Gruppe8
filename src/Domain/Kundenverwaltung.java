@@ -11,6 +11,7 @@ import ValueObjekt.Enum;
 
 import java.io.IOException;
 import java.net.StandardSocketOptions;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -18,9 +19,12 @@ import java.util.*;
 public class Kundenverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private HashMap<String, Kunde> kundenliste;
+    private static HashMap<String, Kunde> kundenliste = new HashMap<>();
     private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
+    private Kunde kunde;
+    private static List<Kunde> kListe = new ArrayList<>();
     private Artikelverwaltung av = new Artikelverwaltung();
+
 
     public void liesDaten(String datei) throws IOException {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
@@ -36,7 +40,7 @@ public class Kundenverwaltung {
 
     }
     public void schreibeDaten(String datei) throws IOException{
-        List<Kunde> kListe = new ArrayList<>(kundenliste.values());
+        kListe = getKundenListe();
         pm.schreibeKundeListe(kListe, datei);
     }
     public Kundenverwaltung() {
@@ -94,7 +98,9 @@ public class Kundenverwaltung {
                             int zuReduzierendeMenge = menge;
                             int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
                             bestandsartikel.setBestand(aktuellerBestand);
+                            System.out.println("odufjuasgnjdflkgndsfljhndf lkgkdfs");
                             Ereignis e = new Ereignis(menge, artikel, kunde, Enum.KAUF, aktuellerBestand);
+
                             System.out.println(e.getArtikel().getBezeichnung()+e.getAnzahl());
                             av.setEreignisListe(e);
                         });
@@ -119,9 +125,9 @@ public class Kundenverwaltung {
                 .findFirst()
                 .orElse(null);
 
+        kundenliste.put(null, neu);
         if(registrierungErfolgreich != null){
             kundenUndDazugehörigeWarenkörbe.put(neu, null);
-
         }
         return registrierungErfolgreich;
     }
