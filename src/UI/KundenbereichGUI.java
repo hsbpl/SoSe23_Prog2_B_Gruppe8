@@ -1,16 +1,14 @@
 package UI;
 
-import Domain.EShop;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class Kundenbereich extends JFrame{
+public class KundenbereichGUI extends JFrame{
 
     JButton zurückButton = new JButton("Ausloggen");
-    public Kundenbereich(){
+    public KundenbereichGUI(){
         super("Roha & Sanjana's Eshop");
-        EShop eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+        //EShop eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
 
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
@@ -83,6 +81,6 @@ public class Kundenbereich extends JFrame{
     }
 
     private void hinzufügenArtikelListeStart(){
-        add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+       // add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
     }
 }

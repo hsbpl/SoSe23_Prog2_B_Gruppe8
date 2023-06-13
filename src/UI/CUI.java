@@ -3,10 +3,7 @@ package UI;
 
 import Domain.*;
 import Exceptions.*;
-import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
-import ValueObjekt.Mitarbeiter;
-import ValueObjekt.Warenkorb;
+import ValueObjekt.*;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -206,7 +203,7 @@ public class CUI {
 
             case 4:
                 try
-                {//TODO Ausprobieren
+                {
                 System.out.println("---------------------");
                 System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
                 //System.out.println(eshop.ereignisListeAusgeben());
@@ -244,12 +241,14 @@ public class CUI {
         System.out.println("         \n  Artikel ausgeben:       '1'");
         System.out.println("         \n  Artikel alphabetisch geordnet ausgeben:       '2'");
         System.out.println("         \n  Artikel nach Artikelnummer geordnet ausgeben:       '3'");
-        System.out.println("         \n  Neuen Artikel anlegen: '4'");
-        System.out.println("         \n  Bestand erhöhen: '5'");
-        System.out.println("         \n  Bestand verringern:   '6'");
-        System.out.println("         \n  Ereignisliste ausgeben:   '7'");
-        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '8'");
-        System.out.println("         \n  Daten sichern:   '9'");
+        System.out.println("         \n  Neuen Einzelartikel anlegen: '4'");
+        System.out.println("         \n  Neuen Massengutartikel anlegen: '5'");
+
+        System.out.println("         \n  Bestand erhöhen: '6'");
+        System.out.println("         \n  Bestand verringern:   '7'");
+        System.out.println("         \n  Ereignisliste ausgeben:   '8'");
+        System.out.println("         \n  Neuen Mitarbeiter anlegen:   '9'");
+        System.out.println("         \n  Daten sichern:   '10'");
 
         System.out.println("         \n  ---------------------------");
         System.out.println("       \n  Beenden:                '0'");
@@ -327,6 +326,39 @@ public class CUI {
                 break;
 
             case 5:
+                try {
+                    System.out.println("Artikelname: ");
+                    String bezeichnung = scan.next();
+                    System.out.println("Artikelnummer: ");
+                    int artikelnummer = scan.nextInt();
+                    System.out.println("Bestand: ");
+                    int bestand = scan.nextInt();
+                    System.out.println("Preis: ");
+                    double preis = scan.nextDouble();
+                    System.out.println("Minimale Einkaufsmenge: ");
+                    int zumKaufVerfügbar = scan.nextInt();
+                    eshop.artHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), m);
+                    artbeitsMenue(m);
+                } catch (ArtikelExistiertBereitsException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+                    artbeitsMenue(m);
+                } catch (InputMismatchException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Ungültige Eingabe!\n" +
+                                    "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
+                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n"+
+                                    "Bitte versuchen Sie es nochmal.\n" +
+
+                                    "*********************************************************************************\n");
+                    scan.nextLine();
+                    artbeitsMenue(m);
+                }
+
+                break;
+            case 6:
               try {
                     System.out.println("Artikelname:");
                     String artikelname = scan.next();
@@ -346,7 +378,7 @@ public class CUI {
 
                 break;
 
-            case 6:
+            case 7:
                 try {
                     System.out.println("Artikelname:");
                     String artikelbez = scan.next();
@@ -368,10 +400,10 @@ public class CUI {
                 }
                 break;
 
-            case 7:
+            case 8:
                 System.out.println(eshop.ereignisseNachDatum());
                 break;
-            case 8:
+            case 9:
                 try {
                     System.out.println("Unsername:");
                     String username = scan.next();
@@ -395,7 +427,7 @@ public class CUI {
 
                 }
                 break;
-            case 9:
+            case 10:
                 eshop.schreibeArtikel();
                 break;
 
