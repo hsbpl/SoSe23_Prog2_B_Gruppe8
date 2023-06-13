@@ -89,6 +89,10 @@ public class EShop {
     public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
         av.artikelHinzufuegen(a, mitarbeiter);
     }
+    public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
+        av.massengutArtikelHinzufuegen(a, mitarbeiter);
+    }
+
 
 
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{

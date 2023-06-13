@@ -6,14 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class Kundenbereich extends JFrame{
+public class KundenbereichGUI extends JFrame{
 
     JButton zurückButton = new JButton("Ausloggen");
-    public Kundenbereich() throws IOException {
+    public KundenbereichGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
         String datei = "ESHOP";
-
-        EShop eshop = new EShop(datei);//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+        EShop eshop;//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+        eshop = new EShop(datei);
 
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
@@ -33,7 +33,7 @@ public class Kundenbereich extends JFrame{
     }
 
 
-    public void kundenbereich() throws IOException {
+    public void kundenbereich(){
 
         JFrame kundenFenster = new JFrame();
 
@@ -85,9 +85,7 @@ public class Kundenbereich extends JFrame{
         return registerfenster;
     }
 
-    private void hinzufügenArtikelListeStart() throws IOException {
-        String datei = "ESHOP";
-        EShop eshop = new EShop(datei);
-        add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+    private void hinzufügenArtikelListeStart(){
+        // add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
     }
 }

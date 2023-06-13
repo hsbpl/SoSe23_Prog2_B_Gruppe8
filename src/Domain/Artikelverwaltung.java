@@ -62,7 +62,7 @@ public class Artikelverwaltung {
     //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
     //TODO Methoden überladen ?
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
-        if(istArtikelVorhanden(artikel,getArtikelListe(),artikel.getBezeichnung())) {
+        if (istArtikelVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
             throw new ArtikelExistiertBereitsException();
         } else {
             artikelListe.add(artikel);
@@ -72,16 +72,18 @@ public class Artikelverwaltung {
 
         }
     }
+    public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
+        for(Artikel a : getArtikelListe()){
+            if(a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == a.getArtikelNummer()){
+                throw new ArtikelExistiertBereitsException();
+            } else {
+                artikelListe.add(artikel);
+                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+                ereignisse.add(e);}
+        }
+    }
 
-/*
-        if(getArtikelListe().contains(artikel)){
-            throw new ArtikelExistiertBereitsException();
-        } else{
-        artikelListe.add(artikel);
-        Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
-        ereignisse.add(e);}
 
- */
     public static boolean istArtikelVorhanden(Artikel artikel, ArrayList<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
         for (Artikel a : liste) {
             if (a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == artikel.getArtikelNummer()) {

@@ -5,10 +5,11 @@ import ValueObjekt.Kunde;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class MitarbeiterBereich extends JFrame {
+public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
 
     JButton zurückButton= new JButton("Ausloggen");
@@ -18,7 +19,7 @@ public class MitarbeiterBereich extends JFrame {
     JButton massengutArtikelAnlegenButton = new JButton("Neuen Massengutartikel anlegen");
 
     JButton artikelAnlegenButton = new JButton("Neuen Einzelartikel anlegen");
-    public MitarbeiterBereich() throws IOException {
+    public MitarbeiterBereichGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
         String datei = "ESHOP";
         EShop eshop = new EShop(datei);//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
@@ -39,14 +40,11 @@ public class MitarbeiterBereich extends JFrame {
 
         mitarbeiiterbereich();
 
-
-
-
     }
 
 
     //Extrafenster wenn der Mitarbeiter eingeloggt / registriert ist
-    private void mitarbeiiterbereich() throws IOException {
+    private void mitarbeiiterbereich(){
         JFrame mitarbeiterFenster = new JFrame();
 
         mitarbeiterFenster.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
@@ -227,9 +225,12 @@ public class MitarbeiterBereich extends JFrame {
     private void hinzufügenMitarbeiterliste(EShop eshop){
         add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
     }
-    private void hinzufügenArtikelListeStart() throws IOException {
-        String datei = "ESHOP";
-        EShop eshop = new EShop(datei);
-        add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+    private void hinzufügenArtikelListeStart(){
+        //   add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+
     }
 }
