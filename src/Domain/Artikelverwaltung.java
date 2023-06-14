@@ -62,29 +62,28 @@ public class Artikelverwaltung {
     //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
     //TODO Methoden überladen ?
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
-        if (istArtikelVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
-            throw new ArtikelExistiertBereitsException();
-        } else {
+        if (istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
             artikelListe.add(artikel);
+            System.out.println(artikelListe);
             System.out.println("Wie oft wird das hier gemacht?");
             Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
             ereignisse.add(e);
-
+        } else {
+            throw new ArtikelExistiertBereitsException();
         }
     }
     public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
-        for(Artikel a : getArtikelListe()){
-            if(a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == a.getArtikelNummer()){
-                throw new ArtikelExistiertBereitsException();
-            } else {
-                artikelListe.add(artikel);
-                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
-                ereignisse.add(e);}
+        if(istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
+            artikelListe.add(artikel);
+            Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+            ereignisse.add(e);
+        } else {
+            throw new ArtikelExistiertBereitsException();
         }
     }
 
 
-    public static boolean istArtikelVorhanden(Artikel artikel, ArrayList<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
+    public static boolean istArtikelNichtVorhanden(Artikel artikel, ArrayList<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
         for (Artikel a : liste) {
             if (a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == artikel.getArtikelNummer()) {
                 throw new ArtikelExistiertBereitsException();
