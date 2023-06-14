@@ -16,35 +16,35 @@ import java.io.IOException;
 public class StartGUI extends JFrame implements ActionListener {
 
     private EShop eshop;
-
+    int textfieldSize = 50;
 
 //Kundenlogin Teile
-    JTextField passwortTextfield = new JTextField(50); // Passworteingabe Kundenlogin
+    JTextField passwortTextfield = new JTextField(textfieldSize); // Passworteingabe Kundenlogin
 
-    JTextField usernameTextfield= new JTextField(50); //UsernameTextfed Kundenlogin
+    JTextField usernameTextfield= new JTextField(textfieldSize); //UsernameTextfed Kundenlogin
     JButton loginButton = new JButton("Einloggen"); //button erstellt
 
     //Option zur Kundenregistrieung Button
     JButton registrierungsButton= new JButton("Als neuer Kunde registrieren"); //Button erstellt der später seperat Reg öffnen soll
 
     //Mitarbeiterlogin Teile
-    JTextField usernameTextfieldMitarbeiter = new JTextField(50);
+    JTextField usernameTextfieldMitarbeiter = new JTextField(textfieldSize);
 
-    JTextField passwortTextfieldMitarbeiter = new JTextField(50);
+    JTextField passwortTextfieldMitarbeiter = new JTextField(textfieldSize);
 
     JButton loginButtonMitarbeiter = new JButton("Einloggen");
 
 
 //Kundenregistrierungsteile
-    JTextField usernameTextfieldRegistrierung= new JTextField(50);
+    JTextField usernameTextfieldRegistrierung= new JTextField(textfieldSize);
 
-    JTextField passwotTextfieldRegistrierung = new JTextField(50);
+    JTextField passwotTextfieldRegistrierung = new JTextField(textfieldSize);
 
-    JTextField nachnameTextfield= new JTextField(50);
+    JTextField nachnameTextfield= new JTextField(textfieldSize);
 
-    JTextField vornameTextfield = new JTextField(50);
+    JTextField vornameTextfield = new JTextField(textfieldSize);
 
-    JTextField adressenTextfield= new JTextField(50);
+    JTextField adressenTextfield= new JTextField(textfieldSize);
 
     JButton neuenKundenAnlegenButton = new JButton("Registrieren");
 

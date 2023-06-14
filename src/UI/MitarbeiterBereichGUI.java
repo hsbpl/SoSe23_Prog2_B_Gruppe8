@@ -12,31 +12,42 @@ import java.io.IOException;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
-
+    //todo bei textfield datentypen die keine string sind parsen
+    private EShop eshop;
+    int textfieldSize = 30;
     Mitarbeiter eingeloggterMitarbeiter;
     JButton zurückButton= new JButton("Ausloggen");
     JButton kundenliste = new JButton("Liste aller Kunden ausgeben");
     JButton mitarbeiterliste= new JButton("Liste aller Mitarbeiter ausgeben lassen");
-
     JButton ereignisliste = new JButton("Ereignisliste ausgeben");
     JButton massengutArtikelAnlegenButton = new JButton("Neuen Massengutartikel anlegen");
-
     JButton artikelAnlegenButton = new JButton("Neuen Einzelartikel anlegen");
-
-
-    JTextField usernameTextfield= new JTextField(30);
-
-    JTextField passwotTextfield = new JTextField(30);
-
-    JTextField nachnameTextfield= new JTextField(30);
-
-    JTextField vornameTextfield = new JTextField(30);
-
+    JTextField usernameTextfield= new JTextField(textfieldSize);
+    JTextField passwotTextfield = new JTextField(textfieldSize);
+    JTextField nachnameTextfield= new JTextField(textfieldSize);
+    JTextField vornameTextfield = new JTextField(textfieldSize);
     JButton registerButton = new JButton("Registrieren");
+    JButton bestandVerringernButton = new JButton("Bestand aktualisieren");
+    JTextField bezeichnungsTextfieldVerringerung = new JTextField(textfieldSize);
+    JTextField veringerungsTextfield = new JTextField(textfieldSize);
+    JButton anlegenButtonErhöhen = new JButton("Bestand aktualisieren");
+    JTextField bezeichnungsTextfieldErhöhung = new JTextField(textfieldSize);
+    JTextField erhöhungTextfield = new JTextField(textfieldSize);
+    JTextField bezeichnungsTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    JTextField artikelnummerTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    JTextField bestandTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    JTextField preisTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    JTextField verkäuflicheMengefield= new JTextField(textfieldSize);
+    JTextField bezeichnungsTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
+    JTextField artikelnummerTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
+    JTextField bestandTextfieldMassengutartikeAnlegen = new JTextField(textfieldSize);
+    JTextField preisTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
+    JButton anlegenButtonEinzelartikel = new JButton("Neuen artikel anlegen");
+    JButton anlegenButtonMassengutArtikel = new JButton("Neuen artikel anlegen");
 
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
         String datei = "ESHOP";
-        EShop eshop = new EShop(datei);
+        eshop = new EShop(datei);
         this.eingeloggterMitarbeiter = eingeloggterMitarbeiter;
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
@@ -51,7 +62,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
         this.setIconImage(image.getImage());
          */
-
+        //todo layout festlegung
         mitarbeiiterbereich();
 
     }
@@ -84,7 +95,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
 
-    private Component registerPopup(){
+    private Component registerPopup(Component component){
         JFrame popup = new JFrame();
         popup.setVisible(true);
         popup.setSize(300, 500);
@@ -92,7 +103,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
         popup.setTitle("Mitarbeiter Registrierung");
 
-        popup.add(registrierung());
+        popup.add(component);
 
         return popup;
     }
@@ -102,7 +113,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         registerfenster.setVisible(true);
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
 
-
+        usernameTextfield.setMaximumSize(usernameTextfield.getPreferredSize());
+        passwotTextfield.setMaximumSize(passwotTextfield.getPreferredSize());
+        nachnameTextfield.setMaximumSize(nachnameTextfield.getPreferredSize());
+       vornameTextfield.setMaximumSize(vornameTextfield.getPreferredSize());
 
         registerfenster.add(new JLabel("Username: "));
         registerfenster.add(usernameTextfield);
@@ -124,27 +138,21 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         anlegen.setVisible(true);
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
         anlegen.add(new JLabel("Artikel anlegen"));
-//TODO Textfeld verzerrung verhindern
 
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
+        bezeichnungsTextfieldEinzelartikelAnlegen.setMaximumSize(bezeichnungsTextfieldEinzelartikelAnlegen.getPreferredSize());
+        artikelnummerTextfieldEinzelartikelAnlegen.setMaximumSize(artikelnummerTextfieldEinzelartikelAnlegen.getPreferredSize());
+        bestandTextfieldEinzelartikelAnlegen.setMaximumSize(bestandTextfieldEinzelartikelAnlegen.getPreferredSize());
+        preisTextfieldEinzelartikelAnlegen.setMaximumSize(preisTextfieldEinzelartikelAnlegen.getPreferredSize());
 
-        JTextField artikelnummerTextfield = new JTextField(30);
-        artikelnummerTextfield.add(new JLabel("Artikelnummer: "));
-
-        JTextField bestandTextfield = new JTextField(30);
-        bestandTextfield.add(new JLabel("Bestand: "));
-
-        JTextField preisTextfield= new JTextField(30);
-        preisTextfield.add(new JLabel("Preis in €: "));
-
-        JButton anlegenButton = new JButton("Anlegen");
-
-        anlegen.add(bezeichnungsTextfield);
-        anlegen.add(artikelnummerTextfield);
-        anlegen.add(bestandTextfield);
-        anlegen.add(preisTextfield);
-        anlegen.add(anlegenButton);
+        anlegen.add(new JLabel("Artikelbezeichnung: "));
+        anlegen.add(bezeichnungsTextfieldEinzelartikelAnlegen);
+        anlegen.add(new JLabel("Artikelnummer: "));
+        anlegen.add(artikelnummerTextfieldEinzelartikelAnlegen);
+        anlegen.add(new JLabel("Bestand: "));
+        anlegen.add(bestandTextfieldEinzelartikelAnlegen);
+        anlegen.add(new JLabel("Preis in €: "));
+        anlegen.add(preisTextfieldEinzelartikelAnlegen);
+        anlegen.add(anlegenButtonEinzelartikel);
 
         return anlegen;
     }
@@ -156,29 +164,23 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
         anlegen.add(new JLabel("Artikel anlegen"));
 
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
+        bezeichnungsTextfieldMassengutartikelAnlegen.setMaximumSize(bezeichnungsTextfieldMassengutartikelAnlegen.getPreferredSize());
+        artikelnummerTextfieldMassengutartikelAnlegen.setMaximumSize(artikelnummerTextfieldMassengutartikelAnlegen.getPreferredSize());
+        bestandTextfieldMassengutartikeAnlegen.setMaximumSize(bestandTextfieldMassengutartikeAnlegen.getPreferredSize());
+        preisTextfieldMassengutartikelAnlegen.setMaximumSize(preisTextfieldMassengutartikelAnlegen.getPreferredSize());
 
-        JTextField artikelnummerTextfield = new JTextField(30);
-        artikelnummerTextfield.add(new JLabel("Artikelnummer: "));
-
-        JTextField bestandTextfield = new JTextField(30);
-        bestandTextfield.add(new JLabel("Bestand: "));
-
-        JTextField preisTextfield= new JTextField(30);
-        preisTextfield.add(new JLabel("Preis in €: "));
-
-        JTextField verkäuflicheMengefield= new JTextField(30);
-        verkäuflicheMengefield.add(new JLabel("Minimale Kaufmenge: "));
-
-        JButton anlegenButton = new JButton("Neuen artikel anlegen");
-
-        anlegen.add(bezeichnungsTextfield);
-        anlegen.add(artikelnummerTextfield);
-        anlegen.add(bestandTextfield);
-        anlegen.add(preisTextfield);
-        anlegen.add(anlegenButton);
+        anlegen.add(new JLabel("Artikelbezeichnung: "));
+        anlegen.add(bezeichnungsTextfieldMassengutartikelAnlegen);
+        anlegen.add(new JLabel("Artikelnummer: "));
+        anlegen.add(artikelnummerTextfieldMassengutartikelAnlegen);
+        anlegen.add(new JLabel("Bestand: "));
+        anlegen.add(bestandTextfieldMassengutartikeAnlegen);
+        anlegen.add(new JLabel("Preis in €: "));
+        anlegen.add(preisTextfieldMassengutartikelAnlegen);
+        anlegen.add(new JLabel("Minimale Einkaufsmenge: "));
         anlegen.add(verkäuflicheMengefield);
+
+        anlegen.add(anlegenButtonMassengutArtikel);
 
         return anlegen;
     }
@@ -189,17 +191,15 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         erhöhen.setLayout(new BoxLayout(erhöhen, BoxLayout.Y_AXIS));
         erhöhen.add(new JLabel("Artikelbestand erhöhen"));
 
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
+        bezeichnungsTextfieldErhöhung.setMaximumSize(bezeichnungsTextfieldErhöhung.getPreferredSize());
+        erhöhungTextfield.setMaximumSize(erhöhungTextfield.getPreferredSize());
 
-        JTextField erhöhungTextfield = new JTextField(30);
-        erhöhungTextfield.add(new JLabel("Zu erhöhende Menge: "));
 
-        JButton anlegenButton = new JButton("Bestand aktualisieren");
-
-        erhöhen.add(bezeichnungsTextfield);
+        erhöhen.add(new JLabel("Artikelbezeichnung: "));
+        erhöhen.add(bezeichnungsTextfieldErhöhung);
+        erhöhen.add(new JLabel("Zu erhöhende Menge: "));
         erhöhen.add(erhöhungTextfield);
-        erhöhen.add(anlegenButton);
+        erhöhen.add(anlegenButtonErhöhen);
 
         return erhöhen;
     }
@@ -210,24 +210,18 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         veringern.setLayout(new BoxLayout(veringern, BoxLayout.Y_AXIS));
         veringern.add(new JLabel("Artikel anlegen"));
 
-        JTextField bezeichnungsTextfield= new JTextField(30);
-        bezeichnungsTextfield.add(new JLabel("Artikelbezeichnung: "));
 
-        JTextField veringerungsTextfield = new JTextField(30);
-        veringerungsTextfield.add(new JLabel("Zu verringernde Menge: "));
+        bezeichnungsTextfieldVerringerung.setMaximumSize(bezeichnungsTextfieldVerringerung.getPreferredSize());
+        veringerungsTextfield.setMaximumSize(veringerungsTextfield.getPreferredSize());
 
-        JButton anlegenButton = new JButton("Bestand aktualisieren");
-
-        veringern.add(bezeichnungsTextfield);
+        veringern.add(new JLabel("Artikelbezeichnung: "));
+        veringern.add(bezeichnungsTextfieldVerringerung);
+        veringern.add(new JLabel("Zu verringernde Menge: "));
         veringern.add(veringerungsTextfield);
-        veringern.add(anlegenButton);
+        veringern.add(bestandVerringernButton);
 
         return veringern;
     }
-
-
-
-
 
 
     private void hinzufügenKundenliste(EShop eshop){
@@ -240,18 +234,84 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         add(new JList<>(kunden), BorderLayout.CENTER);
 
     }
+    private void hinzufügenArtikelListeStart(){
+       add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+    }
     private void hinzufügenMitarbeiterliste(EShop eshop){
         add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
     }
-    private void hinzufügenArtikelListeStart(){
-        //   add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
-    }
 
-    private enum operation{
-        AUSLOGGEN, BESTANDSERHÖHUNG, BESTANDSVERRINGERUNG, ARTIKELANLEGEN, MASSENGUTARTIKELANLEGEN, KUNDENLISTEAUSGEBEN, MITARBEITERLISTEAUSGEBEN, EREIGNISAUSGEBEN
+
+    private enum operation{ //todo eventhandling
+        AUSLOGGEN,
+        BESTANDSERHÖHUNG,
+        BESTANDSVERRINGERUNG,
+        ARTIKELANLEGEN,
+        MASSENGUTARTIKELANLEGEN,
+        KUNDENLISTEAUSGEBEN,
+        MITARBEITERLISTEAUSGEBEN,
+        EREIGNISAUSGEBEN,
     }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
+        operation operation = null;
+
+        if(actionEvent.getSource() == zurückButton){
+            operation = operation.AUSLOGGEN;
+
+        } else if(actionEvent.getSource() ==bestandVerringernButton){
+            operation = operation.BESTANDSVERRINGERUNG;
+
+        }else if (actionEvent.getSource() == anlegenButtonErhöhen){
+            operation = MitarbeiterBereichGUI.operation.BESTANDSERHÖHUNG;
+
+        } else if(actionEvent.getSource() == anlegenButtonEinzelartikel){
+            operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN;
+
+        } else if(actionEvent.getSource() == massengutArtikelAnlegenButton){
+            operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN;
+        }else if(actionEvent.getSource() == kundenliste){
+
+            operation = MitarbeiterBereichGUI.operation.KUNDENLISTEAUSGEBEN;
+        }else if(actionEvent.getSource() == mitarbeiterliste){
+
+            operation = operation.MITARBEITERLISTEAUSGEBEN;
+        }else  if(actionEvent.getSource() == ereignisliste){
+
+            operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
+        }
+
+
+
+        switch (operation){
+            case AUSLOGGEN:
+
+                break;
+            case BESTANDSVERRINGERUNG:
+
+                break;
+            case BESTANDSERHÖHUNG:
+
+                break;
+            case ARTIKELANLEGEN:
+
+                break;
+            case MASSENGUTARTIKELANLEGEN:
+
+                break;
+            case KUNDENLISTEAUSGEBEN:
+
+                break;
+            case MITARBEITERLISTEAUSGEBEN:
+
+                break;
+            case EREIGNISAUSGEBEN:
+
+                break;
+            default:
+                //TODO fehlerbehebung - wnn operation null ist zb oder  textfelder leer sind
+                break;
+        }
     }
 }

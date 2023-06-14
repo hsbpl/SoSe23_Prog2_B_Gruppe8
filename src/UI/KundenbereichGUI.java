@@ -10,8 +10,10 @@ import java.io.IOException;
 
 public class KundenbereichGUI extends JFrame{
 
-    Kunde eingeloggterKunde;
+    private EShop eShop;
+    private Kunde eingeloggterKunde;
 
+    int textfielsize;
     Warenkorb warenKorbDesKunden;
     JButton zurückButton = new JButton("Ausloggen");
     public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden) throws IOException { //todo hier und mitarbeiterbereich wird der kunde nach dem Login übergeben
@@ -19,8 +21,7 @@ public class KundenbereichGUI extends JFrame{
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
         String datei = "ESHOP";
-        EShop eshop;
-        eshop = new EShop(datei);
+       eShop = new EShop(datei);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
