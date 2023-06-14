@@ -1,6 +1,11 @@
 package UI;
 
 import Domain.EShop;
+import Exceptions.LoginFehlgeschlagenException;
+import Exceptions.UserExistiertBereitsException;
+import ValueObjekt.Kunde;
+import ValueObjekt.Mitarbeiter;
+import ValueObjekt.Warenkorb;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,32 +15,51 @@ import java.io.IOException;
 
 public class StartGUI extends JFrame implements ActionListener {
 
-    /**
-     * JLabel : zum display von Text,image, (auch beides)
-     *Jpanel : dient als Container um andere Komponenten zu halten
-     *
-     *BoxLayout: verwendet NOSW und center
-     *
-     */
     private EShop eshop;
 
-    //TODO ist es in ordnung das hier zu platzieren
-    JButton mitarbeiterbereich = new JButton("Mitarbeiterberich"); //Buttons für Northpanel um in andere Bereiche zu kommen
-    JButton kundenbereich = new JButton("Kundenbereich");
+
+//Kundenlogin Teile
+    JTextField passwortTextfield = new JTextField(50); // Passworteingabe Kundenlogin
+
+    JTextField usernameTextfield= new JTextField(50); //UsernameTextfed Kundenlogin
+    JButton loginButton = new JButton("Einloggen"); //button erstellt
+
+    //Option zur Kundenregistrieung Button
+    JButton registrierungsButton= new JButton("Als neuer Kunde registrieren"); //Button erstellt der später seperat Reg öffnen soll
+
+    //Mitarbeiterlogin Teile
+    JTextField usernameTextfieldMitarbeiter = new JTextField(50);
+
+    JTextField passwortTextfieldMitarbeiter = new JTextField(50);
+
+    JButton loginButtonMitarbeiter = new JButton("Einloggen");
+
+
+//Kundenregistrierungsteile
+    JTextField usernameTextfieldRegistrierung= new JTextField(50);
+
+    JTextField passwotTextfieldRegistrierung = new JTextField(50);
+
+    JTextField nachnameTextfield= new JTextField(50);
+
+    JTextField vornameTextfield = new JTextField(50);
+
+    JTextField adressenTextfield= new JTextField(50);
+
+    JButton neuenKundenAnlegenButton = new JButton("Registrieren");
+
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
         String datei = "ESHOP";
-        eshop = new EShop(datei);//TODO vlt mit einem weiteren Konstruktor lösen
+        eshop = new EShop(datei);
 
-
-
-        this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        this.setSize(640, 480); // größe des Frames //TODO welche größe passt am besten
         this.setLocation(0, 500);
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
+
         //aufteilung in borderlayout, die Zahlen sind für den Abstand da
         // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
         /*
@@ -48,18 +72,114 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-    //TODO action event reinlesen so wie ich es mir dachte scheint es nicht ganz zu funktionieren
 
+private enum Loginverfahren{
+        KUNDEN_LOGIN,
+    KUNDEN_REGISTRIERUNG_POPUP,
+         MITARBEITER_LOGIN,
+        NEUES_KUNDENKONTO_ANLEGEN
+
+}
     @Override  //Damit beim Klicken der Buttons auch etwas passiert muss das hier umgesetzt werden
     public void actionPerformed(ActionEvent actionEvent) {
-        if(actionEvent.getSource() == mitarbeiterbereich){
-            try {
-                MitarbeiterBereichGUI m = new MitarbeiterBereichGUI();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
+        Loginverfahren loginverfahren = null;
+
+
+        if(actionEvent.getSource() == loginButton){
+            loginverfahren = Loginverfahren.KUNDEN_LOGIN;
+
+        } else if (actionEvent.getSource() == loginButtonMitarbeiter){
+            loginverfahren = Loginverfahren.MITARBEITER_LOGIN;
+
+        } else if (actionEvent.getSource() == registrierungsButton){
+            loginverfahren = Loginverfahren.KUNDEN_REGISTRIERUNG_POPUP;
+        } else if (actionEvent.getSource() == neuenKundenAnlegenButton){
+            loginverfahren = Loginverfahren.NEUES_KUNDENKONTO_ANLEGEN;
         }
+
+        switch (loginverfahren){
+            case KUNDEN_LOGIN:
+                try {
+                    String username = usernameTextfield.getText();
+                    String passwort = passwortTextfield.getText();
+                    Kunde aktuellerKunde = eshop.kundenLogin(username, passwort);
+                    System.out.println(aktuellerKunde);
+                    Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
+
+                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde,warenkorb);
+                    this.dispose();
+                    System.out.println( "Erfolgreich Eingeloggt: "+ aktuellerKunde);
+
+                } catch (LoginFehlgeschlagenException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
+                                    "*********************************************************************************\n");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            break;
+
+            case KUNDEN_REGISTRIERUNG_POPUP:
+
+                    registerPopup();
+
+            break;
+
+            case MITARBEITER_LOGIN:
+                try {
+                    String username = usernameTextfieldMitarbeiter.getText();
+                    String passwort = passwortTextfieldMitarbeiter.getText();
+                    Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
+
+                    MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
+                    //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
+
+                    System.out.println("Erfolgreich Eingeloggt: "+mitarbeiter);
+                } catch (LoginFehlgeschlagenException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
+                                    "*********************************************************************************\n");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+             break;
+            case NEUES_KUNDENKONTO_ANLEGEN: //TODO hier funktioniert die registrierung nicht
+                try {
+                    String username = usernameTextfieldRegistrierung.getText();
+                    String passwort = passwotTextfieldRegistrierung.getText();
+                    String nachname = nachnameTextfield.getText();
+                    String vorname = vornameTextfield.getText();
+                    String adresse = adressenTextfield.getText();
+                    Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
+                    eshop.kundenRegistrieren(kunde);
+                    Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
+
+                    KundenbereichGUI k = new KundenbereichGUI(kunde, w);
+                    this.dispose();
+                    System.out.println(kunde);
+                }catch (UserExistiertBereitsException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            default:
+                 //TODO fehlerbehebung
+                break;
+        }
+
+
     }
 
     private Component startpage(){
@@ -71,12 +191,18 @@ public class StartGUI extends JFrame implements ActionListener {
 
         start.add(hinzufügenLoginBereichStart(), BorderLayout.WEST); //Logins im Westen hinzugefügt
 
-        start.add(mitarbeiterbereich,BorderLayout.NORTH);
-        mitarbeiterbereich.addActionListener(this); //damit beim Drücken des Buttons auch was geschieht
-        start.add(kundenbereich,BorderLayout.NORTH);
-        kundenbereich.addActionListener(this);
 
-        hinzufügenArtikelListeStart(); //Artikelliste wird im center angezeigt
+        JPanel northpanel = new JPanel();
+        northpanel.setVisible(true);//Jpanel ist sichtbar
+        northpanel.setSize(400, 400);
+        northpanel.setLayout(new FlowLayout());
+
+        JLabel wilkommen = new JLabel("Wilkommen!\nBitte loggen Sie sich zu allererst ein!");
+        northpanel.add(wilkommen);
+
+        start.add(northpanel, BorderLayout.NORTH);
+
+        start.add(hinzufügenArtikelListeStart(),BorderLayout.CENTER);
 
         return start;
     }
@@ -86,16 +212,33 @@ public class StartGUI extends JFrame implements ActionListener {
     private Component hinzufügenLoginBereichStart(){
         JPanel westpanel = new JPanel(); //neues Jpanel
         westpanel.setVisible(true);//Jpanel ist sichtbar
-        westpanel.setSize(300, 300);
+       // westpanel.setSize(300, 300);
         westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
-        westpanel.add(kundeLogin()); //Kundenloginbereich wird hinzugefügt
-        westpanel.add(mitarbeiterLogin()); //Mitarbeiterloginbereichwird hinzugefügt
 
-        JButton registrierungsButton= new JButton("Als neuer Kunde registrieren"); //Button erstellt der später seperat Reg öffnen soll
+        westpanel.add(Box.createVerticalStrut(40));
+        westpanel.add(kundeLogin()); //Kundenloginbereich wird hinzugefügt
+        westpanel.add(Box.createVerticalStrut(40));
+        westpanel.add(mitarbeiterLogin()); //Mitarbeiterloginbereichwird hinzugefügt
+        westpanel.add(Box.createVerticalStrut(40));
+
+        registrierungsButton.addActionListener(this);
         westpanel.add(registrierungsButton); // button wird dem westpanel hinzugefügt
 
         return westpanel;
 
+    }
+
+    private Component registerPopup(){
+        JFrame popup = new JFrame();
+        popup.setVisible(true);
+        popup.setSize(300, 500);
+        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
+        popup.setTitle("Kunden Registrierung");
+
+        popup.add(kundenregistrierung());
+
+        return popup;
     }
 
     private Component kundeLogin(){
@@ -103,22 +246,21 @@ public class StartGUI extends JFrame implements ActionListener {
         loginfenster.setVisible(true);//Jpanel ist sichtbar
         loginfenster.setSize(300, 300);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
-        //loginfenster.setBounds(); müsste man verwenden, wenn man keinen Layoutmanager verwendet. ausrichtung des panesl
 
 
         loginfenster.add(new JLabel("Kundenlogin")); // dem Loginbereich ein Label zur Bezeichnung hinugefügt
 
-        JTextField usernameTextfield= new JTextField(30); //neues Textfeld erstellt, die nummer innen stellt die größe des textfeldes ein
         usernameTextfield.add(new JLabel("Username: ")); // Textfeld ein Label hinzugefügt
-        //usernameTextfield.setMaximumSize(usernameTextfield.getPreferredSize()); //todo die Textfelder sollen ihre größe aufgrund des BoxLaxouts nicht verändern
+        passwortTextfield.add(new JLabel("Passwort: "));
+        usernameTextfield.setMaximumSize(usernameTextfieldMitarbeiter.getPreferredSize());
+        passwortTextfield.setMaximumSize(passwortTextfieldMitarbeiter.getPreferredSize());
 
-        JTextField passwotTextfield = new JTextField(30);
-        passwotTextfield.add(new JLabel("Passwort: "));
+        loginButton.addActionListener(this);
 
-        JButton loginButton = new JButton("Einloggen"); //button erstellt
-
+        loginfenster.add(new JLabel("Username: "));
         loginfenster.add(usernameTextfield); //dem loginfenster werden die einzelnen komponenten hinzugefügt
-        loginfenster.add(passwotTextfield);
+        loginfenster.add(new JLabel("Passwort: "));
+        loginfenster.add(passwortTextfield);
         loginfenster.add(loginButton);
         return loginfenster;
     }
@@ -130,43 +272,66 @@ public class StartGUI extends JFrame implements ActionListener {
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
         loginfenster.add(new JLabel("Mitarbeiterlogin"));
 
-        JTextField usernameTextfield= new JTextField(30);
-        usernameTextfield.add(new JLabel("Username: "));
-        JTextField passwotTextfield = new JTextField(30);
-        passwotTextfield.add(new JLabel("Passwort: "));
 
-        JButton loginButton = new JButton("Einloggen");
 
-        loginfenster.add(usernameTextfield); //dem loginfenster werden die einzelnen komponenten hinzugefügt
-        loginfenster.add(passwotTextfield);
-        loginfenster.add(loginButton);
+        usernameTextfieldMitarbeiter.add(new JLabel("Username: "));
+        passwortTextfieldMitarbeiter.add(new JLabel("Passwort: "));
+        usernameTextfieldMitarbeiter.setMaximumSize(usernameTextfieldMitarbeiter.getPreferredSize());
+        passwortTextfieldMitarbeiter.setMaximumSize(passwortTextfieldMitarbeiter.getPreferredSize());
+
+        loginButtonMitarbeiter.addActionListener(this);
+
+        loginfenster.add(new JLabel("Username: "));
+        loginfenster.add(usernameTextfieldMitarbeiter); //dem loginfenster werden die einzelnen komponenten hinzugefügt
+
+        loginfenster.add(new JLabel("Passwort: "));
+        loginfenster.add(passwortTextfieldMitarbeiter);
+
+        loginfenster.add(loginButtonMitarbeiter);
 
         return loginfenster;
     }
 
-   /* public Component bereichauswahl(){
-        JPanel bereichsauswahl = new JPanel();
-        bereichsauswahl.setVisible(true);
-        bereichsauswahl.setLayout(new BoxLayout(bereichsauswahl, BoxLayout.X_AXIS));
+    private Component kundenregistrierung(){
+        JPanel registerfenster = new JPanel();
+        registerfenster.setVisible(true);
+        registerfenster.setSize(300, 500);
+        registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
+       usernameTextfieldRegistrierung.setMaximumSize(usernameTextfieldRegistrierung.getPreferredSize());
+       passwotTextfieldRegistrierung.setMaximumSize(passwotTextfieldRegistrierung.getPreferredSize());
+       nachnameTextfield.setMaximumSize(nachnameTextfield.getPreferredSize());
+       vornameTextfield.setMaximumSize(vornameTextfield.getPreferredSize());
+       adressenTextfield.setMaximumSize(adressenTextfield.getPreferredSize());
 
+       neuenKundenAnlegenButton.addActionListener(this);
 
+        registerfenster.add(new JLabel("Username: "));
+        registerfenster.add(usernameTextfieldRegistrierung);
 
-        JButton mitarbeiterbereich = new JButton("Mitarbeiterberich");
-        JButton kundenbereich = new JButton("Kundenbereich");
+        registerfenster.add(new JLabel("Passwort: "));
+        registerfenster.add(passwotTextfieldRegistrierung);
 
+        registerfenster.add(new JLabel("Nachname: "));
+        registerfenster.add(nachnameTextfield);
 
-        bereichsauswahl.add(mitarbeiterbereich);
-        bereichsauswahl.add(kundenbereich);
+        registerfenster.add(new JLabel("Vorname: "));
+        registerfenster.add(vornameTextfield);;
 
-        return bereichsauswahl;
+        registerfenster.add(new JLabel("Adresse: "));
+        registerfenster.add(adressenTextfield);
+
+        registerfenster.add(neuenKundenAnlegenButton);
+
+        return registerfenster;
     }
 
-    */
+
+    private Component hinzufügenArtikelListeStart(){
+        JList<String> artikelListe= new JList(eshop.getAlleArtikel().toArray());
 
 
+        return artikelListe;
 
-    private void hinzufügenArtikelListeStart(){
-        add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
     }
 
 }

@@ -2,6 +2,7 @@ package UI;
 
 import Domain.EShop;
 import ValueObjekt.Kunde;
+import ValueObjekt.Mitarbeiter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,24 +13,37 @@ import java.io.IOException;
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
 
+    Mitarbeiter eingeloggterMitarbeiter;
     JButton zurückButton= new JButton("Ausloggen");
     JButton kundenliste = new JButton("Liste aller Kunden ausgeben");
     JButton mitarbeiterliste= new JButton("Liste aller Mitarbeiter ausgeben lassen");
 
+    JButton ereignisliste = new JButton("Ereignisliste ausgeben");
     JButton massengutArtikelAnlegenButton = new JButton("Neuen Massengutartikel anlegen");
 
     JButton artikelAnlegenButton = new JButton("Neuen Einzelartikel anlegen");
-    public MitarbeiterBereichGUI() throws IOException {
-        super("Roha & Sanjana's Eshop");
-        String datei = "ESHOP";
-        EShop eshop = new EShop(datei);//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
 
+
+    JTextField usernameTextfield= new JTextField(30);
+
+    JTextField passwotTextfield = new JTextField(30);
+
+    JTextField nachnameTextfield= new JTextField(30);
+
+    JTextField vornameTextfield = new JTextField(30);
+
+    JButton registerButton = new JButton("Registrieren");
+
+    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
+        String datei = "ESHOP";
+        EShop eshop = new EShop(datei);
+        this.eingeloggterMitarbeiter = eingeloggterMitarbeiter;
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        this.setSize(640, 480); // größe des Frames //TODO welche größe passt am besten
-        this.setLocation(0, 500);
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         //aufteilung in borderlayout, die Zahlen sind für den Abstand da
         // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
         /*
@@ -49,15 +63,13 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         mitarbeiterFenster.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         mitarbeiterFenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        mitarbeiterFenster.setSize(640, 480); // größe des Frames //TODO welche größe passt am besten
         mitarbeiterFenster.setLocation(0, 500);
         mitarbeiterFenster.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         mitarbeiterFenster.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         mitarbeiterFenster.setLayout(new BorderLayout(5,5)); //aufteilung in borderlayout, die Zahlen sind für den Abstand da
-        // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
+      //todo  // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
 
         mitarbeiterFenster.add(zurückButton, BorderLayout.NORTH);
-
         mitarbeiterFenster.add(bestandErhöhen(), BorderLayout.WEST);  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
         mitarbeiterFenster.add(bestandVerringern(),BorderLayout.WEST);
         mitarbeiterFenster.add(artikelAnlegenButton, BorderLayout.WEST);
@@ -72,29 +84,35 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
 
+    private Component registerPopup(){
+        JFrame popup = new JFrame();
+        popup.setVisible(true);
+        popup.setSize(300, 500);
+        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
+        popup.setTitle("Mitarbeiter Registrierung");
+
+        popup.add(registrierung());
+
+        return popup;
+    }
+
     private Component registrierung(){
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
-        registerfenster.add(new JLabel("Kundenregistrierung"));
-
-        JTextField usernameTextfield= new JTextField(30);
-        usernameTextfield.add(new JLabel("Username: "));
-        JTextField passwotTextfield = new JTextField(30);
-        passwotTextfield.add(new JLabel("Passwort: "));
-        JTextField nachnameTextfield= new JTextField(30);
-        nachnameTextfield.add(new JLabel("Nachname: "));
-        JTextField vornameTextfield = new JTextField(30);
-        vornameTextfield.add(new JLabel("Vorname: "));
 
 
-        JButton registerButton = new JButton("Registrieren");
 
+        registerfenster.add(new JLabel("Username: "));
         registerfenster.add(usernameTextfield);
+        registerfenster.add(new JLabel("Passwort: "));
         registerfenster.add(passwotTextfield);
+        registerfenster.add(new JLabel("Nachname: "));
         registerfenster.add(nachnameTextfield);
+         registerfenster.add(new JLabel("Vorname: "));
         registerfenster.add(vornameTextfield);
-        registerfenster.add(usernameTextfield);
+
         registerfenster.add(registerButton);
 
         return registerfenster;
@@ -229,6 +247,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         //   add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
     }
 
+    private enum operation{
+        AUSLOGGEN, BESTANDSERHÖHUNG, BESTANDSVERRINGERUNG, ARTIKELANLEGEN, MASSENGUTARTIKELANLEGEN, KUNDENLISTEAUSGEBEN, MITARBEITERLISTEAUSGEBEN, EREIGNISAUSGEBEN
+    }
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
