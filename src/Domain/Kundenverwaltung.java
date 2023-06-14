@@ -10,21 +10,29 @@ import ValueObjekt.*;
 import ValueObjekt.Enum;
 
 import java.io.IOException;
+import java.net.StandardSocketOptions;
+import java.sql.SQLOutput;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
 public class Kundenverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private HashMap<String, Kunde> kundenliste;
+    private static HashMap<String, Kunde> kundenliste = new HashMap<>();
     private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
+    private Kunde kunde;
+    private static List<Kunde> kListe = new ArrayList<>();
+    private Artikelverwaltung av = new Artikelverwaltung();
 
-    //Beispielkunde
-    Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas",  "Am Berg");
 
     public void liesDaten(String datei) throws IOException {
+        this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
         try {
             kundenliste = pm.leseKundenListe(datei);
+            for (Kunde kunde: kundenliste.values()) {
+                kundenUndDazugehörigeWarenkörbe.put(kunde, null);
+            }
 
         } catch (UserExistiertBereitsException e) {
             throw new RuntimeException(e);
@@ -32,12 +40,12 @@ public class Kundenverwaltung {
 
     }
     public void schreibeDaten(String datei) throws IOException{
-        List<Kunde> kListe = new ArrayList<>(kundenliste.values());
+        kListe = getKundenListe();
         pm.schreibeKundeListe(kListe, datei);
     }
     public Kundenverwaltung() {
-        this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
-        kundenUndDazugehörigeWarenkörbe.put(k1, null);
+        //this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
+        //kundenUndDazugehörigeWarenkörbe.put(k1, null);
 
         this.kundenliste = new HashMap<>();
     }
@@ -90,8 +98,11 @@ public class Kundenverwaltung {
                             int zuReduzierendeMenge = menge;
                             int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
                             bestandsartikel.setBestand(aktuellerBestand);
+                            System.out.println("odufjuasgnjdflkgndsfljhndf lkgkdfs");
                             Ereignis e = new Ereignis(menge, artikel, kunde, Enum.KAUF, aktuellerBestand);
-                            ereignisliste.add(e);
+
+                            System.out.println(e.getArtikel().getBezeichnung()+e.getAnzahl());
+                            av.setEreignisListe(e);
                         });
             });
         }
@@ -114,9 +125,9 @@ public class Kundenverwaltung {
                 .findFirst()
                 .orElse(null);
 
+        kundenliste.put(null, neu);
         if(registrierungErfolgreich != null){
             kundenUndDazugehörigeWarenkörbe.put(neu, null);
-
         }
         return registrierungErfolgreich;
     }
@@ -134,6 +145,17 @@ public class Kundenverwaltung {
         Warenkorb w = new Warenkorb();
         kundenUndDazugehörigeWarenkörbe.put(k, w);
         return kundenUndDazugehörigeWarenkörbe.get(k);
+    }
+
+    public Kunde getKundeByUsername(String username){
+       List<Kunde> kList =getKundenListe();
+        for (Kunde kunde : kList){
+            if (kunde.getUserName().equals(username)) {
+                return kunde;
+            }
+        }
+
+        return null;
     }
 
 

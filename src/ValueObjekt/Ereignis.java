@@ -1,5 +1,6 @@
 package ValueObjekt;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Ereignis {
@@ -12,6 +13,7 @@ public class Ereignis {
 
     private int aktualisierterBestand;
 
+
     public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp, int aktualisierterBestand) {
         this.anzahl = anzahl;
         this.artikel = artikel;
@@ -20,10 +22,16 @@ public class Ereignis {
         this.aktualisierterBestand = aktualisierterBestand;
 
     }
+    public int getAnzahl(){return anzahl;}
+    public Artikel getArtikel(){return artikel;}
+    public User getUser(){return user;}
+    public Enum getEreignistyp(){return ereignistyp;}
+    public int getAktualisierterBestand(){return aktualisierterBestand;}
 
-public Date getDatum(){
+    public Date getDatum(){
         return datum;
     }
+
     //TODO Bestand wird immer Aktuallisiert, statt das er den alten Bestand anzeigt, überlegen ob das abgeändert werden müsste)
     public String toString(){
         return  datum.toString() + "\n"+

@@ -25,7 +25,8 @@ public class StartGUI extends JFrame implements ActionListener {
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
-        eshop = new EShop();//TODO vlt mit einem weiteren Konstruktor lösen
+        String datei = "ESHOP";
+        eshop = new EShop(datei);//TODO vlt mit einem weiteren Konstruktor lösen
 
 
 

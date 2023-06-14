@@ -2,7 +2,9 @@ package Persistence;
 
 
 import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.EreignisExistiertBereitsException;
 import Exceptions.UserExistiertBereitsException;
+import Exceptions.UserExistiertNichtException;
 import ValueObjekt.Artikel;
 import ValueObjekt.Ereignis;
 import ValueObjekt.Kunde;
@@ -10,6 +12,7 @@ import ValueObjekt.Mitarbeiter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +30,8 @@ public interface PersistenceManager {
     public void schreibeMitarbeiterListe(List<Mitarbeiter> liste, String datei) throws IOException;
 
 
-    public List<Ereignis> leseEreignislist(String datei) throws IOException, ArtikelExistiertBereitsException;
-    public void schreibeEreignisListe(List<Ereignis> liste, String datei) throws IOException;}
+    public List<Ereignis> leseEreignisList(String datei) throws IOException, EreignisExistiertBereitsException;
+    public void schreibeEreignisListe(List<Ereignis> liste, String datei) throws IOException;
+}
 
 

@@ -429,6 +429,9 @@ public class CUI {
                 break;
             case 10:
                 eshop.schreibeArtikel();
+                eshop.schreibeEreignis();
+                eshop.schreibeKunde();
+                eshop.schreibeMitarbeiter();
                 break;
 
             case 0:

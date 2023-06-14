@@ -1,8 +1,6 @@
 package Domain;
 
-import Exceptions.ArtikelExistiertBereitsException;
-import Exceptions.ArtikelExistiertNichtException;
-import Exceptions.UngueltigeMengeException;
+import Exceptions.*;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
 import ValueObjekt.*;
@@ -10,26 +8,27 @@ import ValueObjekt.Enum;
 
 
 import java.io.IOException;
+import java.sql.SQLOutput;
+import java.text.ParseException;
 import java.util.*;
 
 
-public class Artikelverwaltung { // fertig
+public class Artikelverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
+    private static List<Ereignis> ereignisse = new ArrayList<>();
 
-    private List<Ereignis> ereignisse;
-
-    private List<Artikel> artikelListe;
+    private static List<Artikel> artikelListe = new ArrayList<>();
 
     //liste in den Constructor
 
 
 
     public Artikelverwaltung() {
-        ereignisse = new  ArrayList<>();
     }
 
     public void liesDaten(String datei) throws IOException {
+        System.out.println("Beispiel");
         try {
             artikelListe = pm.leseArtikelListe(datei);
         } catch (ArtikelExistiertBereitsException e) {
@@ -38,48 +37,62 @@ public class Artikelverwaltung { // fertig
 
     }
 
+    public void liesDatenEreignisse(String datei) throws IOException {
+        try {
+            ereignisse = pm.leseEreignisList(datei);
+        } catch ( EreignisExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
     public void schreibeDaten(String datei) throws IOException{
         pm.schreibeArtikelListe(artikelListe, datei);
     }
 
+    public void schreibeDatenEreignisse(String datei) throws IOException{
+        System.out.println("EY " +ereignisse);
+        pm.schreibeEreignisListe(ereignisse, datei);
+    }
 
 
 
+    //TODO wenn man einen Massengutartikel hinzufügt muss man zurzeit angeben wie viele zusammen gekauft werden müssen.
+    //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
+    //TODO Methoden überladen ?
+    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
+        if (istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
+            artikelListe.add(artikel);
+            System.out.println(artikelListe);
+            System.out.println("Wie oft wird das hier gemacht?");
+            Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+            ereignisse.add(e);
+        } else {
+            throw new ArtikelExistiertBereitsException();
+        }
+    }
     public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
-
-        for(Artikel a : getArtikelListe()){
-            if(a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == a.getArtikelNummer()){
-                throw new ArtikelExistiertBereitsException();
-            } else {
-                artikelListe.add(artikel);
-                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
-                ereignisse.add(e);}
+        if(istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
+            artikelListe.add(artikel);
+            Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+            ereignisse.add(e);
+        } else {
+            throw new ArtikelExistiertBereitsException();
         }
     }
 
-    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
 
-        for(Artikel a : getArtikelListe()){
-            if(a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == a.getArtikelNummer()){
+    public static boolean istArtikelNichtVorhanden(Artikel artikel, ArrayList<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
+        for (Artikel a : liste) {
+            if (a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == artikel.getArtikelNummer()) {
                 throw new ArtikelExistiertBereitsException();
             } else {
-                artikelListe.add(artikel);
-                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
-                ereignisse.add(e);}
+                return true;
             }
         }
-
-
-/*
-        if(getArtikelListe().contains(artikel)){
-            throw new ArtikelExistiertBereitsException();
-        } else{
-        artikelListe.add(artikel);
-        Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN);
-        ereignisse.add(e);}
-
- */
-
+        return false;
+    }
 
     public String artikelSortierenNachBezeichnung() {
 
@@ -169,8 +182,18 @@ public class Artikelverwaltung { // fertig
         return s;
     }
 
-    public ArrayList<Artikel> getArtikelListe() {
+    public ArrayList<Artikel> getArtikelListe()
+    {
+        System.out.println(artikelListe);
         return (ArrayList<Artikel>) artikelListe;
+    }
+
+    public ArrayList<Ereignis> getEreignisListe() {
+        return (ArrayList<Ereignis>) ereignisse;
+    }
+
+    public void setEreignisListe(Ereignis ereignis) {
+        ereignisse.add(ereignis);
     }
 
     public void artikelBearbeiten(Artikel artikel) {
@@ -193,6 +216,16 @@ public class Artikelverwaltung { // fertig
             }
         }
         return false;
+    }
+
+    public Artikel getArtikelByNumber(int artikelnummer){
+        for (Artikel artikel : artikelListe){
+            if (artikel.getArtikelNummer() == artikelnummer) {
+                return artikel;
+            }
+        }
+
+        return null;
     }
 
 }

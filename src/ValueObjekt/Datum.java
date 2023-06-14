@@ -1,7 +1,6 @@
 package ValueObjekt;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Datum {
 
@@ -14,5 +13,9 @@ public class Datum {
     @Override
     public String toString(){
         return "Datum: " + datum;
+    }
+
+    public SimpleDateFormat getDatum(){
+        return datum;
     }
 }

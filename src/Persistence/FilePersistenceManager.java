@@ -1,8 +1,14 @@
 package Persistence;
 
+import Domain.Artikelverwaltung;
+import Domain.Kundenverwaltung;
+import Domain.Mitarbeiterverwaltung;
 import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.EreignisExistiertBereitsException;
 import Exceptions.UserExistiertBereitsException;
+import Exceptions.UserExistiertNichtException;
 import ValueObjekt.*;
+import ValueObjekt.Enum;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,6 +16,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.*;
+import java.sql.Array;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +27,25 @@ import java.util.List;
 
 public class FilePersistenceManager implements PersistenceManager{
 
-   private BufferedReader reader = null;
-   private PrintWriter writer = null;
+    private BufferedReader reader = null;
+    private PrintWriter writer = null;
+
+    private static List<Artikel> artikelBestand = new ArrayList<>();
+
+    private static List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
+    private static HashMap<String, Kunde> kundenBestand = new HashMap<>();
+    private static List<Ereignis> ereignisliste = new ArrayList<>();
+
+    public FilePersistenceManager() {
+
+    }
+
 
 
     public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        List<Artikel> artikelBestand = new ArrayList<>();
+        //List<Artikel> artikelBestand = new ArrayList<>();
         Artikel einArtikel;
 
         do {
@@ -43,10 +64,10 @@ public class FilePersistenceManager implements PersistenceManager{
     public HashMap<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        HashMap<String, Kunde> kundenBestand = new HashMap<>();
+        //HashMap<String, Kunde> kundenBestand = new HashMap<>();
         Kunde einKunde;
         int count = 0;
-
+        System.out.println("HI");
         do {
             einKunde = ladeKunde();
             if (einKunde !=null){
@@ -57,13 +78,14 @@ public class FilePersistenceManager implements PersistenceManager{
                 count += 1;
             }
         }while (einKunde !=null);
+        System.out.println("gzug");
         return kundenBestand;
     }
 
     public List<Mitarbeiter> leseMitarbeiterList(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
+        //List<Mitarbeiter> mitarbeiterBestand = null;
         Mitarbeiter einMitarbeiter;
 
         do {
@@ -77,21 +99,21 @@ public class FilePersistenceManager implements PersistenceManager{
         }while (einMitarbeiter !=null);
         return mitarbeiterBestand;
     }
-    public List<Ereignis> leseEreignisList(String datei) throws IOException, UserExistiertBereitsException{
+    public List<Ereignis> leseEreignisList(String datei) throws IOException, EreignisExistiertBereitsException {
         reader = new BufferedReader(new FileReader(datei));
 
-        List<Ereignis> ereignisBestand = new ArrayList<>();
         Ereignis einEreignis;
+
         do {
             einEreignis = ladeEreignis();
             if (einEreignis !=null){
-                if (ereignisBestand.contains(einEreignis)){
-                    throw new UserExistiertBereitsException();
+                if (ereignisliste.contains(einEreignis)){
+                    throw new EreignisExistiertBereitsException();
                 }
-                ereignisBestand.add(einEreignis);
+                ereignisliste.add(einEreignis);
             }
         }while (einEreignis !=null);
-        return ereignisBestand;
+        return ereignisliste;
     }
 
     public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
@@ -119,11 +141,6 @@ public class FilePersistenceManager implements PersistenceManager{
             speichereMitarbeiter(m);
 
         writer.close();
-    }
-
-    @Override
-    public List<Ereignis> leseEreignislist(String datei) throws IOException, ArtikelExistiertBereitsException {
-        return null;
     }
 
     public void schreibeEreignisListe(List<Ereignis> liste, String datei) throws IOException {
@@ -179,7 +196,7 @@ public class FilePersistenceManager implements PersistenceManager{
         String vorname = liesZeile();
         String adresse = liesZeile();
 
-       return new Kunde(username, passwort, nachname, vorname, adresse);
+        return new Kunde(username, passwort, nachname, vorname, adresse);
     }
 
     private boolean speichereKunde(Kunde k) throws IOException{
@@ -210,27 +227,87 @@ public class FilePersistenceManager implements PersistenceManager{
         schreibeZeile(m.getVorname());
         return true;
     }
-    private Ereignis ladeEreignis() throws IOException{
-        String anzahl = liesZeile();
-        if (anzahl == null){
+    private Ereignis ladeEreignis() throws IOException {
+        String anzahl_string = liesZeile();
+        System.out.println("Anzahl "+anzahl_string);
+        if (anzahl_string == null){
             //keine Daten mehr vorhanden
             return null;
         }
-        String artikel = liesZeile();
-        String user = liesZeile();
-        String ereignistyp = liesZeile();
-        String aktualisierterBestand = liesZeile();
+        int anzahl = Integer.parseInt(anzahl_string);
+
+        String artikelnr = liesZeile();
+        System.out.println("Artikelnr "+artikelnr);
+        Artikel artikel = getArtikelByNumber(Integer.parseInt(artikelnr));
+        System.out.println("Artikel "+artikel);
+        String username = liesZeile();
+        User user = null;
+        String ereignistyp_string = null;
+        System.out.println(gitMitarbeiterbestand());
+
+        if (username.startsWith("m")) {
+            user = getMitarbeiterByUsername(username);
+        } else if (username.startsWith("k")) {
+            user = getKundeByUsername(username);
+        } else {
+            return null;
+        }
+
+        ereignistyp_string = liesZeile();
+        Enum ereignistyp = Enum.valueOf(ereignistyp_string);
+        System.out.println("Ereignistyp " +ereignistyp);
+
+        String aktualisierterBestand_string = liesZeile();
+        System.out.println("Aktualisierter Bestand "+aktualisierterBestand_string);
+        int aktualisierterBestand = Integer.parseInt(aktualisierterBestand_string);
+        System.out.println("DONE!");
+
         return new Ereignis(anzahl, artikel, user, ereignistyp, aktualisierterBestand);
     }
     private boolean speichereEreignis(Ereignis e) throws IOException{
-        schreibeZeile(e.getAnzahl());
-        schreibeZeile(e.getArtikel());
-        schreibeZeile(e.getUser());
-        schreibeZeile(e.getEreignistyp());
-        schreibeZeile(e.getAktualisierterBestand());
+        schreibeZeile(String.valueOf(e.getAnzahl()));
+        schreibeZeile(String.valueOf(e.getArtikel().getArtikelNummer()));
+        schreibeZeile(String.valueOf(e.getUser().getUserName()));
+        schreibeZeile(String.valueOf(e.getEreignistyp()));
+        schreibeZeile(String.valueOf(e.getAktualisierterBestand()));
         return true;
     }
 
+    public Artikel getArtikelByNumber(int artikelnummer){
+        System.out.println(artikelBestand);
+        for (Artikel artikel : artikelBestand){
+            if (artikel.getArtikelNummer() == artikelnummer) {
+                return artikel;
+            }
+        }
+
+        return null;
+    }
+
+    public Kunde getKundeByUsername(String username){
+        List<Kunde> kList = new ArrayList<>(kundenBestand.values());
+        for (Kunde kunde : kList){
+            if (kunde.getUserName().equals(username)) {
+                return kunde;
+            }
+        }
+
+        return null;
+    }
+
+    public Mitarbeiter getMitarbeiterByUsername(String username){
+        for (Mitarbeiter mitarbeiter : mitarbeiterBestand){
+            if (mitarbeiter.getUserName().equals(username)) {
+                return mitarbeiter;
+            }
+        }
+
+        return null;
+    }
+
+    public List<Mitarbeiter> gitMitarbeiterbestand(){
+        return mitarbeiterBestand;
+    }
 
 
 

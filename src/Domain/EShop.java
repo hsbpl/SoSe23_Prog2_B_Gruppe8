@@ -1,6 +1,7 @@
 package Domain;
 
 import Exceptions.*;
+import Persistence.PersistenceManager;
 import ValueObjekt.*;
 
 import java.io.File;
@@ -12,33 +13,24 @@ import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Kunde;
 
 public class EShop {
+
     private String datei = "";
 
     private Artikelverwaltung av;
     private Kundenverwaltung kv;
     private  Mitarbeiterverwaltung mv;
-    private EreignisVerwaltung ev;
-
     public EShop(String datei) throws IOException {
         this.datei = datei;
-
-        //hier pm anlegen
         av = new Artikelverwaltung();
+        mv = new Mitarbeiterverwaltung();
+        kv = new Kundenverwaltung();
+
         av.liesDaten(datei + "_ARTIKEL.txt");
-        this.mv = new Mitarbeiterverwaltung();
         mv.liesDaten(datei + "_MITARBEITER.txt");
-        this.kv = new Kundenverwaltung();
         kv.liesDaten(datei + "_KUNDEN.txt");
-        ev = new EreignisVerwaltung();
-        ev.liesDaten(datei + "_EREIGNIS.txt");
-        this.ev = new EreignisVerwaltung();
+        av.liesDatenEreignisse(datei + "_EREIGNIS.txt");
 
     }
-
-
-
-
-    //TODO das mit der ereignisliste klären
 
     public List<Artikel> getAlleArtikel() {
         return av.getArtikelListe();
@@ -47,10 +39,11 @@ public class EShop {
         return mv.getListMitarbeiter();
     }
     public List<Kunde> getAlleKunden(){return kv.getKundenListe();}
-    public List<Ereignis> getAlleEreignisse(){return ev.getEreignisListe;}
+    public List<Ereignis> getAlleEreignisse(){return av.getEreignisListe();}
 
     public void schreibeArtikel() throws IOException{
         av.schreibeDaten(datei + "_ARTIKEL.txt");
+        schreibeEreignis();
     }
 
     public void schreibeMitarbeiter() throws IOException{
@@ -61,7 +54,7 @@ public class EShop {
         kv.schreibeDaten(datei + "_KUNDEN.txt");
     }
     public void schreibeEreignis() throws IOException{
-        ev.schreibeDaten(datei + "_EREIGNIS.txt");
+        av.schreibeDatenEreignisse(datei + "_EREIGNIS.txt");
     }
 
     public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
@@ -139,6 +132,7 @@ public class EShop {
     }
 
     public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde) throws WarenkorbIstLeerException{
+        System.out.println(getAlleEreignisse());
         kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel(),kunde, getAlleEreignisse());
     }
     public void warenkorbLeeren(Warenkorb warenkorb){

@@ -21,7 +21,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     JButton artikelAnlegenButton = new JButton("Neuen Einzelartikel anlegen");
     public MitarbeiterBereichGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
-        //EShop eshop = new EShop();//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
+        String datei = "ESHOP";
+        EShop eshop = new EShop(datei);//TODO nachdem die persistence festgelegt hat was noch in den Konstruktor kommt hier korrigieren
 
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
@@ -225,7 +226,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
     }
     private void hinzufügenArtikelListeStart(){
-     //   add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+        //   add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
     }
 
     @Override
