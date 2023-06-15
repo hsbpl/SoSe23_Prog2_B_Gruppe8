@@ -1,6 +1,8 @@
 package UI;
 
 import Domain.EShop;
+import Exceptions.ArtikelExistiertNichtException;
+import Exceptions.UngueltigeMengeException;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 
@@ -48,52 +50,95 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
         String datei = "ESHOP";
         eshop = new EShop(datei);
+
         this.eingeloggterMitarbeiter = eingeloggterMitarbeiter;
+
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        //aufteilung in borderlayout, die Zahlen sind für den Abstand da
-        // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
-        /*
-        falls man Icon oben rechts hinzufügen möchen
-        ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
-        this.setIconImage(image.getImage());
-         */
         //todo layout festlegung
-        mitarbeiiterbereich();
+        mitarbeiterbereich();
 
     }
 
 
     //Extrafenster wenn der Mitarbeiter eingeloggt / registriert ist
-    private void mitarbeiiterbereich(){
-        JFrame mitarbeiterFenster = new JFrame();
-
-        mitarbeiterFenster.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
-        mitarbeiterFenster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        mitarbeiterFenster.setLocation(0, 500);
-        mitarbeiterFenster.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
+    private void mitarbeiterbereich(){
+        JPanel mitarbeiterFenster = new JPanel();
         mitarbeiterFenster.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         mitarbeiterFenster.setLayout(new BorderLayout(5,5)); //aufteilung in borderlayout, die Zahlen sind für den Abstand da
       //todo  // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
 
-        mitarbeiterFenster.add(zurückButton, BorderLayout.NORTH);
-        mitarbeiterFenster.add(bestandErhöhen(), BorderLayout.WEST);  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
-        mitarbeiterFenster.add(bestandVerringern(),BorderLayout.WEST);
-        mitarbeiterFenster.add(artikelAnlegenButton, BorderLayout.WEST);
-        mitarbeiterFenster.add(massengutArtikelAnlegenButton,BorderLayout.WEST);
+        mitarbeiterFenster.add(westpanel(),BorderLayout.WEST);
+        mitarbeiterFenster.add(northpanel(),BorderLayout.NORTH );
+        mitarbeiterFenster.add(midpanel(),BorderLayout.CENTER);
+        mitarbeiterFenster.add(eastpanel(), BorderLayout.EAST);
 
-        mitarbeiterFenster.add(mitarbeiterliste, BorderLayout.EAST);
-        mitarbeiterFenster.add(kundenliste, BorderLayout.EAST);
-
-        hinzufügenArtikelListeStart();
 
         add(mitarbeiterFenster);
     }
 
+private Component northpanel(){
+    JPanel northpanel = new JPanel();
+    northpanel.setVisible(true);//Jpanel ist sichtbar
+    northpanel.setLayout(new FlowLayout()); // sorgt dafür das alles auf der Y-Achse liegt
+    northpanel.setPreferredSize(new Dimension(300, 100));
+
+    zurückButton.addActionListener(this);
+    northpanel.add(zurückButton);
+
+    return northpanel;
+
+}
+
+private Component westpanel(){
+    JPanel westpanel = new JPanel();
+    westpanel.setVisible(true);//Jpanel ist sichtbar
+    westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
+    westpanel.setPreferredSize(new Dimension(300, 100));
+
+    westpanel.add(Box.createVerticalStrut(40));
+    westpanel.add(bestandErhöhen());  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
+    westpanel.add(Box.createVerticalStrut(40));
+    westpanel.add(bestandVerringern());
+
+
+    artikelAnlegenButton.addActionListener(this);
+    massengutArtikelAnlegenButton.addActionListener(this);
+
+    westpanel.add(Box.createVerticalStrut(40));
+    westpanel.add(artikelAnlegenButton);
+    westpanel.add(Box.createVerticalStrut(40));
+    westpanel.add(massengutArtikelAnlegenButton);
+
+    return westpanel;
+}
+
+private Component eastpanel(){
+    JPanel eastpanel = new JPanel();
+    eastpanel.setVisible(true);//Jpanel ist sichtbar
+    eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
+    eastpanel.setPreferredSize(new Dimension(300, 100));
+
+    //TODO listenausgabe
+    hinzufügenKundenliste();
+    hinzufügenMitarbeiterliste();
+
+    return eastpanel;
+}
+
+private Component midpanel(){
+    JPanel midpanel = new JPanel();
+    midpanel.setVisible(true);//Jpanel ist sichtbar
+    midpanel.setLayout(new FlowLayout()); // sorgt dafür das alles auf der Y-Achse liegt
+   // midpanel.setPreferredSize(new Dimension(300, 100));
+
+    midpanel.add(hinzufügenArtikelListeStart());
+    return midpanel;
+}
 
     private Component registerPopup(Component component){
         JFrame popup = new JFrame();
@@ -189,7 +234,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         JPanel erhöhen = new JPanel();
         erhöhen.setVisible(true);
         erhöhen.setLayout(new BoxLayout(erhöhen, BoxLayout.Y_AXIS));
+
+
         erhöhen.add(new JLabel("Artikelbestand erhöhen"));
+        erhöhen.add(Box.createVerticalStrut(20));
 
         bezeichnungsTextfieldErhöhung.setMaximumSize(bezeichnungsTextfieldErhöhung.getPreferredSize());
         erhöhungTextfield.setMaximumSize(erhöhungTextfield.getPreferredSize());
@@ -208,8 +256,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         JPanel veringern = new JPanel();
         veringern.setVisible(true);
         veringern.setLayout(new BoxLayout(veringern, BoxLayout.Y_AXIS));
-        veringern.add(new JLabel("Artikel anlegen"));
 
+
+        veringern.add(new JLabel("Artikelbestand veringern"));
+        veringern.add(Box.createVerticalStrut(20));
 
         bezeichnungsTextfieldVerringerung.setMaximumSize(bezeichnungsTextfieldVerringerung.getPreferredSize());
         veringerungsTextfield.setMaximumSize(veringerungsTextfield.getPreferredSize());
@@ -223,8 +273,19 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return veringern;
     }
 
+    //todo combolist zur leisten ausgabe
 
-    private void hinzufügenKundenliste(EShop eshop){
+    /*private Component listenCombobox(){
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>();
+        JComboBox <JList> auswahl = new JComboBox<>();
+
+    }
+
+     */
+
+    //todo die listen machen probleme
+
+    private void hinzufügenKundenliste(){ //abändern
         Kunde[] kunden = new Kunde[eshop.getAlleGespeichertenWarenkörbe().size()];
         int position = 0;
         for (Kunde k : eshop.getAlleGespeichertenWarenkörbe().keySet()){
@@ -234,11 +295,15 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         add(new JList<>(kunden), BorderLayout.CENTER);
 
     }
-    private void hinzufügenArtikelListeStart(){
-       add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+    private Component hinzufügenArtikelListeStart(){
+
+        JList<String> artikelListe= new JList(eshop.getAlleArtikel().toArray());
+        return artikelListe;
+
     }
-    private void hinzufügenMitarbeiterliste(EShop eshop){
-        add(new JList(eshop.getAlleMitarbeiter().toArray()), BorderLayout.CENTER);
+    private Component hinzufügenMitarbeiterliste(){
+        JList<String> mitarbeiterliste = new JList(eshop.getAlleMitarbeiter().toArray());
+        return mitarbeiterliste;
     }
 
 
@@ -286,14 +351,50 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         switch (operation){
             case AUSLOGGEN:
+                try {
+                    StartGUI s = new StartGUI();
+                    this.dispose();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
                 break;
             case BESTANDSVERRINGERUNG:
+                try {
 
+                    String artikelbez = bezeichnungsTextfieldVerringerung.getText();
+                    int menge = Integer.parseInt(veringerungsTextfield.getText());
+                    eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
+                    System.out.println(eshop.ereignisListeAusgeben());
+
+                } catch (ArtikelExistiertNichtException e) {
+                    System.err.println("*********************************************************************************\n" +
+                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+
+                } catch (UngueltigeMengeException u) {
+                    System.err.println("*********************************************************************************\n" +
+                            "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+
+                }
                 break;
+
             case BESTANDSERHÖHUNG:
+                try {
+
+                    String artikelname = bezeichnungsTextfieldErhöhung.getText();
+                    int menge = Integer.parseInt(erhöhungTextfield.getText());
+                    eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
+                    System.out.println(eshop.ereignisListeAusgeben());
+                } catch (ArtikelExistiertNichtException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+                }
 
                 break;
+
             case ARTIKELANLEGEN:
 
                 break;

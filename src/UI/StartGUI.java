@@ -15,6 +15,19 @@ import java.io.IOException;
 
 public class StartGUI extends JFrame implements ActionListener {
 
+    //TODO wenn man die Popups schließt soll nicht das hintere fenster geschlossen werden
+
+    /**
+     *
+     *
+     *         falls man Icon oben rechts hinzufügen möchen
+     *         ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
+     *         this.setIconImage(image.getImage());
+     *
+     *
+     *
+     */
+
     private EShop eshop;
     int textfieldSize = 50;
 
@@ -60,13 +73,6 @@ public class StartGUI extends JFrame implements ActionListener {
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
 
-        //aufteilung in borderlayout, die Zahlen sind für den Abstand da
-        // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
-        /*
-        falls man Icon oben rechts hinzufügen möchen
-        ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
-        this.setIconImage(image.getImage());
-         */
         add(startpage());
 
     }
@@ -88,10 +94,8 @@ private enum Loginverfahren{
 
         if(actionEvent.getSource() == loginButton){
             loginverfahren = Loginverfahren.KUNDEN_LOGIN;
-
         } else if (actionEvent.getSource() == loginButtonMitarbeiter){
             loginverfahren = Loginverfahren.MITARBEITER_LOGIN;
-
         } else if (actionEvent.getSource() == registrierungsButton){
             loginverfahren = Loginverfahren.KUNDEN_REGISTRIERUNG_POPUP;
         } else if (actionEvent.getSource() == neuenKundenAnlegenButton){
@@ -135,6 +139,7 @@ private enum Loginverfahren{
                     Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
 
                     MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
+                    this.dispose();
                     //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
 
                     System.out.println("Erfolgreich Eingeloggt: "+mitarbeiter);
@@ -196,7 +201,10 @@ private enum Loginverfahren{
         northpanel.setVisible(true);//Jpanel ist sichtbar
         northpanel.setSize(400, 400);
         northpanel.setLayout(new FlowLayout());
+        northpanel.setPreferredSize(new Dimension( 200,100));
 
+
+        northpanel.add(Box.createVerticalStrut(100)); //sorgt für einen Abstand vor dem nächsten component
         JLabel wilkommen = new JLabel("Wilkommen!\nBitte loggen Sie sich zu allererst ein!");
         northpanel.add(wilkommen);
 
@@ -212,8 +220,8 @@ private enum Loginverfahren{
     private Component hinzufügenLoginBereichStart(){
         JPanel westpanel = new JPanel(); //neues Jpanel
         westpanel.setVisible(true);//Jpanel ist sichtbar
-       // westpanel.setSize(300, 300);
         westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
+        westpanel.setPreferredSize(new Dimension(300, 100)); //sorgt für eine feste größe des westpanels
 
         westpanel.add(Box.createVerticalStrut(40));
         westpanel.add(kundeLogin()); //Kundenloginbereich wird hinzugefügt
@@ -325,6 +333,7 @@ private enum Loginverfahren{
         return registerfenster;
     }
 
+    //todo die listen machen probleme
 
     private Component hinzufügenArtikelListeStart(){
         JList<String> artikelListe= new JList(eshop.getAlleArtikel().toArray());
