@@ -413,8 +413,6 @@ public class CUI {
                     String nachname = scan.next();
                     System.out.println("Vorname:");
                     String vorname = scan.next();
-                    System.out.println("Mitarbeiternummer:");
-                    int id = scan.nextInt();
                     Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
                     System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
                     artbeitsMenue(m);

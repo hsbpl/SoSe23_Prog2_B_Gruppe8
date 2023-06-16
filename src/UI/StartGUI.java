@@ -79,113 +79,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
 
 
-private enum Loginverfahren{
-        KUNDEN_LOGIN,
-    KUNDEN_REGISTRIERUNG_POPUP,
-         MITARBEITER_LOGIN,
-        NEUES_KUNDENKONTO_ANLEGEN
 
-}
-    @Override  //Damit beim Klicken der Buttons auch etwas passiert muss das hier umgesetzt werden
-    public void actionPerformed(ActionEvent actionEvent) {
-
-        Loginverfahren loginverfahren = null;
-
-
-        if(actionEvent.getSource() == loginButton){
-            loginverfahren = Loginverfahren.KUNDEN_LOGIN;
-        } else if (actionEvent.getSource() == loginButtonMitarbeiter){
-            loginverfahren = Loginverfahren.MITARBEITER_LOGIN;
-        } else if (actionEvent.getSource() == registrierungsButton){
-            loginverfahren = Loginverfahren.KUNDEN_REGISTRIERUNG_POPUP;
-        } else if (actionEvent.getSource() == neuenKundenAnlegenButton){
-            loginverfahren = Loginverfahren.NEUES_KUNDENKONTO_ANLEGEN;
-        }
-
-        switch (loginverfahren){
-            case KUNDEN_LOGIN:
-                try {
-                    String username = usernameTextfield.getText();
-                    String passwort = passwortTextfield.getText();
-                    Kunde aktuellerKunde = eshop.kundenLogin(username, passwort);
-                    System.out.println(aktuellerKunde);
-                    Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
-
-                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde,warenkorb);
-                    this.dispose();
-                    System.out.println( "Erfolgreich Eingeloggt: "+ aktuellerKunde);
-
-                } catch (LoginFehlgeschlagenException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
-                                    "*********************************************************************************\n");
-
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            break;
-
-            case KUNDEN_REGISTRIERUNG_POPUP:
-
-                    registerPopup();
-
-            break;
-
-            case MITARBEITER_LOGIN:
-                try {
-                    String username = usernameTextfieldMitarbeiter.getText();
-                    String passwort = passwortTextfieldMitarbeiter.getText();
-                    Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
-
-                    MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
-                    this.dispose();
-                    //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
-
-                    System.out.println("Erfolgreich Eingeloggt: "+mitarbeiter);
-                } catch (LoginFehlgeschlagenException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
-                                    "*********************************************************************************\n");
-
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-             break;
-            case NEUES_KUNDENKONTO_ANLEGEN: //TODO hier funktioniert die registrierung nicht
-                try {
-                    String username = usernameTextfieldRegistrierung.getText();
-                    String passwort = passwotTextfieldRegistrierung.getText();
-                    String nachname = nachnameTextfield.getText();
-                    String vorname = vornameTextfield.getText();
-                    String adresse = adressenTextfield.getText();
-                    Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
-                    eshop.kundenRegistrieren(kunde);
-                    Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
-
-                    KundenbereichGUI k = new KundenbereichGUI(kunde, w);
-                    this.dispose();
-                    System.out.println(kunde);
-                }catch (UserExistiertBereitsException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
-                                    "*********************************************************************************\n");
-
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-
-            default:
-                 //TODO fehlerbehebung
-                break;
-        }
-
-
-    }
 
     private Component startpage(){
         JPanel start = new JPanel(); //neues Jpanel
@@ -240,10 +134,11 @@ private enum Loginverfahren{
         JFrame popup = new JFrame();
         popup.setVisible(true);
         popup.setSize(300, 500);
+        popup.setLocationRelativeTo(null);//popup erscheint in der mitte
         popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
         popup.setTitle("Kunden Registrierung");
-
+        popup.add(Box.createVerticalStrut(60));
         popup.add(kundenregistrierung());
 
         return popup;
@@ -340,6 +235,114 @@ private enum Loginverfahren{
 
 
         return artikelListe;
+
+    }
+
+    private enum Loginverfahren{
+        KUNDEN_LOGIN,
+        KUNDEN_REGISTRIERUNG_POPUP,
+        MITARBEITER_LOGIN,
+        NEUES_KUNDENKONTO_ANLEGEN
+
+    }
+    @Override  //Damit beim Klicken der Buttons auch etwas passiert muss das hier umgesetzt werden
+    public void actionPerformed(ActionEvent actionEvent) {
+
+        Loginverfahren loginverfahren = null;
+
+
+        if(actionEvent.getSource() == loginButton){
+            loginverfahren = Loginverfahren.KUNDEN_LOGIN;
+        } else if (actionEvent.getSource() == loginButtonMitarbeiter){
+            loginverfahren = Loginverfahren.MITARBEITER_LOGIN;
+        } else if (actionEvent.getSource() == registrierungsButton){
+            loginverfahren = Loginverfahren.KUNDEN_REGISTRIERUNG_POPUP;
+        } else if (actionEvent.getSource() == neuenKundenAnlegenButton){
+            loginverfahren = Loginverfahren.NEUES_KUNDENKONTO_ANLEGEN;
+        }
+
+        switch (loginverfahren){
+            case KUNDEN_LOGIN:
+                try {
+                    String username = usernameTextfield.getText();
+                    String passwort = passwortTextfield.getText();
+                    Kunde aktuellerKunde = eshop.kundenLogin(username, passwort);
+                    System.out.println(aktuellerKunde);
+                    Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
+
+                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde,warenkorb);
+                    this.dispose();
+                    System.out.println( "Erfolgreich Eingeloggt: "+ aktuellerKunde);
+
+                } catch (LoginFehlgeschlagenException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
+                                    "*********************************************************************************\n");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
+            case KUNDEN_REGISTRIERUNG_POPUP:
+
+                registerPopup();
+
+                break;
+
+            case MITARBEITER_LOGIN:
+                try {
+                    String username = usernameTextfieldMitarbeiter.getText();
+                    String passwort = passwortTextfieldMitarbeiter.getText();
+                    Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
+
+                    MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
+                    this.dispose();
+                    //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
+
+                    System.out.println("Erfolgreich Eingeloggt: "+mitarbeiter);
+                } catch (LoginFehlgeschlagenException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
+                                    "*********************************************************************************\n");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                break;
+            case NEUES_KUNDENKONTO_ANLEGEN: //TODO hier funktioniert die registrierung nicht
+                try {
+                    String username = usernameTextfieldRegistrierung.getText();
+                    String passwort = passwotTextfieldRegistrierung.getText();
+                    String nachname = nachnameTextfield.getText();
+                    String vorname = vornameTextfield.getText();
+                    String adresse = adressenTextfield.getText();
+                    Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
+                    eshop.kundenRegistrieren(kunde);
+                    Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
+
+                    KundenbereichGUI k = new KundenbereichGUI(kunde, w);
+                    this.dispose();
+                    System.out.println(kunde);
+                }catch (UserExistiertBereitsException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            default:
+                //TODO fehlerbehebung
+                break;
+        }
+
 
     }
 
