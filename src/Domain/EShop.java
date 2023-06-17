@@ -67,6 +67,7 @@ public class EShop {
 
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException{
         Mitarbeiter neuerMitarbeiter = mv.mRegister(neu);
+        System.out.println(neuerMitarbeiter);
         if(neuerMitarbeiter == null){
             throw new UserExistiertBereitsException();
         }
@@ -148,9 +149,11 @@ public class EShop {
 
     public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException {
         Kunde neuerKunde = kv.register(neu);
+        System.out.println("dshuifuhasdfhuadsfbha");
         if(neuerKunde == null){
             throw new UserExistiertBereitsException();
         }else{
+            System.out.println("es hat geklappt");
         return neuerKunde;}
     }
 

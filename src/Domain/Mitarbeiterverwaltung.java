@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 public class Mitarbeiterverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private List<Mitarbeiter> listMitarbeiter = new ArrayList<>();
+    private static List<Mitarbeiter> listMitarbeiter = new ArrayList<>();
 
     public void liesDaten(String datei) throws IOException {
         try {
@@ -54,14 +54,18 @@ public class Mitarbeiterverwaltung {
 
     //  Methode fügt einen neuen Mitarbeiter zur Mitarbeiterliste hinzu
     public Mitarbeiter mRegister(Mitarbeiter neu){
+
         Mitarbeiter registrierungErfolgreich= listMitarbeiter.stream()
-                .filter(a -> a.getUserName() ==neu.getUserName())
+                .filter(a -> a.getUserName().equalsIgnoreCase(neu.getUserName()))
                 .findFirst()
                 .orElse(null);
 
-        if(registrierungErfolgreich != null){
+        if(registrierungErfolgreich == null){
             listMitarbeiter.add(neu);
-
+            System.out.println("Registrierung erfolgreich");
+            registrierungErfolgreich = neu;
+        } else {
+            return null;
         }
         return registrierungErfolgreich;
     }

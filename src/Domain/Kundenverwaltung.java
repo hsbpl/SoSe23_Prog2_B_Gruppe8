@@ -121,13 +121,16 @@ public class Kundenverwaltung {
     public Kunde register(Kunde neu) {
 
         Kunde registrierungErfolgreich= kundenUndDazugehörigeWarenkörbe.keySet().stream()
-                .filter(a -> a.getUserName() ==neu.getUserName())
+                .filter(a -> a.getUserName().equalsIgnoreCase(neu.getUserName()))
                 .findFirst()
                 .orElse(null);
 
-        kundenliste.put(null, neu);
-        if(registrierungErfolgreich != null){
+        if(registrierungErfolgreich == null){
+            kundenliste.put(null, neu);
             kundenUndDazugehörigeWarenkörbe.put(neu, null);
+            registrierungErfolgreich = neu;
+        } else {
+            return null;
         }
         return registrierungErfolgreich;
     }
