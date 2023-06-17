@@ -406,6 +406,7 @@ public class CUI {
 
             case 8:
                 System.out.println(eshop.ereignisseNachDatum());
+                artbeitsMenue(m);
                 break;
             case 9:
                 try {

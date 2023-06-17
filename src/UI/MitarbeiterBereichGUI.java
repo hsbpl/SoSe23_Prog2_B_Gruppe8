@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
@@ -94,7 +95,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         northpanel.setLayout(new FlowLayout()); // sorgt dafür das alles auf der Y-Achse liegt
         northpanel.setPreferredSize(new Dimension(300, 100));
 
+        zurückButton.addActionListener(this);
+        northpanel.add(zurückButton,BorderLayout.EAST);
 
+        registerButton.addActionListener(this);
+        northpanel.add(registerButton, BorderLayout.EAST);
+//TODO HIER HAST DU DIE BUTTON IN DEN OSTEN OBEN GELEGT SCHAU OB ES GELUNNGEN IST
         return northpanel;
 
     }
@@ -126,17 +132,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         JPanel eastpanel = new JPanel();
         eastpanel.setVisible(true);//Jpanel ist sichtbar
         eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
-        //eastpanel.setPreferredSize(new Dimension(300, 100));
-
-        //TODO listenausgabe
-        hinzufügenKundenliste();
-        hinzufügenMitarbeiterliste();
-
-        zurückButton.addActionListener(this);
-        eastpanel.add(zurückButton);
-
-        registerButton.addActionListener(this);
-        eastpanel.add(registerButton);
 
         eastpanel.add(listenCombobox());
 
@@ -146,23 +141,41 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private Component midpanel() {
         JPanel midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
-        midpanel.setLayout(new FlowLayout()); // sorgt dafür das alles auf der Y-Achse liegt
-        // midpanel.setPreferredSize(new Dimension(300, 100));
+        midpanel.setLayout(new FlowLayout());
+        //midpanel.setPreferredSize(new Dimension(500, 700));
 
-        midpanel.add(hinzufügenArtikelListeStart());
+        JScrollPane scrollPane = new JScrollPane(artikelListe()); //liste wird dem scrollpane hinzugefügt
+        scrollPane.setPreferredSize(new Dimension(700, 500));
+        midpanel.add(scrollPane);
+
         return midpanel;
     }
 
     private Component popup(Component component, String usage) {
-        JFrame popup = new JFrame();
+        JDialog popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
         popup.setLocationRelativeTo(null);//popup erscheint in der mitte
-        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
         popup.setTitle(usage);
 
         popup.add(component);
+
+        return popup;
+    }
+
+    private Component listpopup(JList jList, String usage) {
+        JDialog popup = new JDialog();
+        popup.setVisible(true);
+        popup.setSize(500, 500);
+        popup.setLocationRelativeTo(null);//popup erscheint in der mitte
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        popup.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
+        popup.setTitle(usage);
+
+        JScrollPane scrollPane = new JScrollPane(jList); //liste wird dem scrollpane hinzugefügt
+        popup.add(scrollPane);
 
         return popup;
     }
@@ -314,29 +327,39 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     //todo die listen machen probleme, evtl listen disposen beim öfnen eines neuen fensters vorm öffnen
 
-    private void hinzufügenKundenliste() { //abändern
-        Kunde[] kunden = new Kunde[eshop.getAlleGespeichertenWarenkörbe().size()];
+    private JList<String> kundenliste() { //abändern
+
+        ArrayList <Kunde> kunden = new ArrayList<>();
         int position = 0;
         for (Kunde k : eshop.getAlleGespeichertenWarenkörbe().keySet()) {
-            kunden[position++] = k;
+            kunden.add(k);
         }
 
-        add(new JList<>(kunden), BorderLayout.CENTER);
+        JList<String> liste = new JList(kunden.toArray());
+        return liste;
 
     }
 
-    private Component hinzufügenArtikelListeStart() {
+    private JList<String> artikelListe() {
 
         JList<String> artikelListe = new JList(eshop.getAlleArtikel().toArray());
+
         return artikelListe;
 
     }
 
-    private Component hinzufügenMitarbeiterliste() {
+    //todo dopplung der listen stoppen
+    private JList<String> mitarbeiterliste() {
         JList<String> mitarbeiterliste = new JList(eshop.getAlleMitarbeiter().toArray());
         return mitarbeiterliste;
     }
 
+    private JList<String> erignisliste() {
+
+        eshop.ereignisseNachDatum();
+        JList<String> ereignisse = new JList(eshop.getAlleEreignisse().toArray());
+        return ereignisse;
+    }
 
     private enum operation { //todo eventhandling
         AUSLOGGEN,
@@ -351,9 +374,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         KUNDENLISTEAUSGEBEN,
         MITARBEITERLISTEAUSGEBEN,
         EREIGNISAUSGEBEN,
-
         MITARBEITER_REGISTRIEREN_POPUP,
-
         REGISTRIERING_ABSCHLIESSEN,
 
 
@@ -378,20 +399,25 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN;
+
         } else if (actionEvent.getSource() == massengutArtikelAnlegenPopup) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_POPUP;
+
         } else if (actionEvent.getSource() == anlegenMassengutArtikelAbschliessen) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN;
+
         } else if (actionEvent.getSource() == registerButton) {
             operation = MitarbeiterBereichGUI.operation.MITARBEITER_REGISTRIEREN_POPUP;
+
         } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
             operation = MitarbeiterBereichGUI.operation.REGISTRIERING_ABSCHLIESSEN;
-        } else if (listenauswahl.getSelectedItem() == "Registrierte Mitarbeiter") {
 
+        } else if (listenauswahl.getSelectedItem() == "Registrierte Mitarbeiter") {
             operation = MitarbeiterBereichGUI.operation.MITARBEITERLISTEAUSGEBEN;
 
         } else if (listenauswahl.getSelectedItem() == "Registrierte Kunden") {
             operation = MitarbeiterBereichGUI.operation.KUNDENLISTEAUSGEBEN;
+
         } else if (listenauswahl.getSelectedItem() == "Ereignisse") {
             operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
         }
@@ -503,16 +529,17 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                 break;
             case KUNDENLISTEAUSGEBEN:
-//todo listen hier implementen
-                System.out.println("Kundenliste gewählt");
+
+                listpopup(kundenliste(),"Registrierte Kunden");
 
                 break;
             case MITARBEITERLISTEAUSGEBEN:
-                System.out.println("Mitarbeiterliste gewählt");
+
+                listpopup(mitarbeiterliste(),"Registrierte Mitarbeiter");;
 
                 break;
             case EREIGNISAUSGEBEN:
-                System.out.println("Ereignisse gewählt");
+                listpopup(erignisliste(), "Ereignisse nach Datum geordnet");
                 break;
 
             case MITARBEITER_REGISTRIEREN_POPUP:

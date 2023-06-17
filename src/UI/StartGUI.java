@@ -15,19 +15,6 @@ import java.io.IOException;
 
 public class StartGUI extends JFrame implements ActionListener {
 
-    //TODO wenn man die Popups schließt soll nicht das hintere fenster geschlossen werden
-
-    /**
-     *
-     *
-     *         falls man Icon oben rechts hinzufügen möchen
-     *         ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
-     *         this.setIconImage(image.getImage());
-     *
-     *
-     *
-     */
-
     private EShop eshop;
     int textfieldSize = 50;
 
@@ -47,6 +34,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
     JButton loginButtonMitarbeiter = new JButton("Einloggen");
 
+    JList<String> artikelListe;
 
 //Kundenregistrierungsteile
     JTextField usernameTextfieldRegistrierung= new JTextField(textfieldSize);
@@ -104,7 +92,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
         start.add(northpanel, BorderLayout.NORTH);
 
-        start.add(hinzufügenArtikelListeStart(),BorderLayout.CENTER);
+        start.add(artikelListe(),BorderLayout.CENTER);
 
         return start;
     }
@@ -131,11 +119,11 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
     private Component registerPopup(){
-        JFrame popup = new JFrame();
+        JDialog popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
         popup.setLocationRelativeTo(null);//popup erscheint in der mitte
-        popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
         popup.setTitle("Kunden Registrierung");
         popup.add(Box.createVerticalStrut(60));
@@ -174,7 +162,6 @@ public class StartGUI extends JFrame implements ActionListener {
         loginfenster.setVisible(true);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
         loginfenster.add(new JLabel("Mitarbeiterlogin"));
-
 
 
         usernameTextfieldMitarbeiter.add(new JLabel("Username: "));
@@ -230,13 +217,14 @@ public class StartGUI extends JFrame implements ActionListener {
 
     //todo die listen machen probleme
 
-    private Component hinzufügenArtikelListeStart(){
-        JList<String> artikelListe= new JList(eshop.getAlleArtikel().toArray());
+    private JList<String> artikelListe(){
 
+            artikelListe = new JList(eshop.getAlleArtikel().toArray());
 
         return artikelListe;
-
     }
+
+
 
     private enum Loginverfahren{
         KUNDEN_LOGIN,
@@ -298,10 +286,12 @@ public class StartGUI extends JFrame implements ActionListener {
                     Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
 
                     MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
+                    //remove(hinzufügenArtikelListeStart());
                     this.dispose();
-                    //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
 
+                    //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
                     System.out.println("Erfolgreich Eingeloggt: "+mitarbeiter);
+
                 } catch (LoginFehlgeschlagenException e) {
                     System.err.println(
                             "*********************************************************************************\n" +
@@ -325,6 +315,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
 
                     KundenbereichGUI k = new KundenbereichGUI(kunde, w);
+//todo fenster bei registrierung automatisch schließen lassem
                     this.dispose();
                     System.out.println(kunde);
                 }catch (UserExistiertBereitsException e) {
