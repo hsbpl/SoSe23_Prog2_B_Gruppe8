@@ -1,6 +1,7 @@
 package UI;
 
 import Domain.EShop;
+import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Warenkorb;
 
@@ -8,45 +9,61 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class KundenbereichGUI extends JFrame{
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Map;
 
+public class KundenbereichGUI extends JFrame {
     private EShop eShop;
     private Kunde eingeloggterKunde;
+    private Warenkorb warenKorbDesKunden;
 
-    int textfielsize;
-    Warenkorb warenKorbDesKunden;
-    JButton zurückButton = new JButton("Ausloggen");
-    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden) throws IOException { //todo hier und mitarbeiterbereich wird der kunde nach dem Login übergeben
-        super("Roha & Sanjana's Eshop");
+    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden) throws IOException {
+        super("Kundenbereich");
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
         String datei = "ESHOP";
-       eShop = new EShop(datei);
+        eShop = new EShop(datei);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //aufteilung in borderlayout, die Zahlen sind für den Abstand da
-        // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
-        /*
-        falls man Icon oben rechts hinzufügen möchen
-        ImageIcon image = new ImageIcon("speicherort"); //erstelle ein image
-        this.setIconImage(image.getImage());
-         */
 
-        ;
-    }
+        // Erstellen der GUI-Komponenten
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel titleLabel = new JLabel("Willkommen, " + eingeloggterKunde.getVorname() + "!");
+        JButton logoutButton = new JButton("Ausloggen");
+        DefaultListModel<String> artikelListModel = new DefaultListModel<>();
+        JList<String> artikelList = new JList<>(artikelListModel);
+        JScrollPane artikelScrollPane = new JScrollPane(artikelList);
 
+        // Konfigurieren der GUI-Komponenten
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Logik zum Ausloggen des Kunden hier einfügen
+                dispose(); // Schließt das Kundenbereich-Fenster
+            }
+        });
+        // Hinzufügen der Artikel im Warenkorb zur Liste
+        for (Map.Entry<Artikel, Integer> entry : warenKorbDesKunden.getWarenkorb().entrySet()) {
+            Artikel artikel = entry.getKey();
+            int menge = entry.getValue();
+            artikelListModel.addElement(artikel.getBezeichnung() + " (Menge: " + menge + ")");
+        }
 
-    public void kundenbereich(){
-
-    }
-
-
-
-
-    private void hinzufügenArtikelListeStart(){
-        // add(new JList(eshop.getAlleArtikel().toArray()), BorderLayout.CENTER);
+        // Zusammenstellen der GUI
+        infoPanel.add(titleLabel);
+        infoPanel.add(logoutButton);
+        mainPanel.add(infoPanel, BorderLayout.NORTH);
+        mainPanel.add(artikelScrollPane, BorderLayout.CENTER);
+        this.add(mainPanel);
     }
 }
+
