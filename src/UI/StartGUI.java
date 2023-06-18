@@ -28,7 +28,6 @@ public class StartGUI extends JFrame implements ActionListener {
     private JTextField usernameTextfieldMitarbeiter = new JTextField(textfieldSize);
     private JTextField passwortTextfieldMitarbeiter = new JTextField(textfieldSize);
     private JButton loginButtonMitarbeiter = new JButton("Einloggen");
-    private JList<String> artikelListe;
     //Kundenregistrierungsteile
     private JTextField usernameTextfieldRegistrierung = new JTextField(textfieldSize);
     private JTextField passwotTextfieldRegistrierung = new JTextField(textfieldSize);
@@ -60,10 +59,16 @@ public class StartGUI extends JFrame implements ActionListener {
         start.setSize(300, 300);
         start.setLayout(new BorderLayout(5, 5));
 
+        start.add(westpanel(), BorderLayout.WEST); //Logins im Westen hinzugefügt
+        start.add(northpanel(), BorderLayout.NORTH);
+        //start.add(midpanel(), BorderLayout.CENTER);
+        start.add(artikelListe(), BorderLayout.CENTER); //todo wird im midpanel nicht angezeigt
+        start.add(eastpanel(), BorderLayout.EAST);
 
-        start.add(hinzufügenLoginBereichStart(), BorderLayout.WEST); //Logins im Westen hinzugefügt
+        return start;
+    }
 
-
+    private JPanel northpanel(){
         JPanel northpanel = new JPanel();
         northpanel.setVisible(true);//Jpanel ist sichtbar
         northpanel.setSize(400, 400);
@@ -75,15 +80,11 @@ public class StartGUI extends JFrame implements ActionListener {
         JLabel wilkommen = new JLabel("Wilkommen!\nBitte loggen Sie sich zu allererst ein!");
         northpanel.add(wilkommen);
 
-        start.add(northpanel, BorderLayout.NORTH);
-//todo in mid east south... panel methoden umorganisieren so wie im Mitarbeiterbereich
-        start.add(artikelListe(), BorderLayout.CENTER);
-
-        return start;
+        return northpanel;
     }
 
 
-    private Component hinzufügenLoginBereichStart() {
+    private JPanel westpanel() {
         JPanel westpanel = new JPanel(); //neues Jpanel
         westpanel.setVisible(true);//Jpanel ist sichtbar
         westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
@@ -102,20 +103,32 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-    private Component midpanel() {
+    private JPanel midpanel() {
         JPanel midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new FlowLayout());
-        //midpanel.setPreferredSize(new Dimension(500, 700));
+        //midpanel.setPreferredSize(new Dimension(700, 700));
 
-        JScrollPane scrollPane = new JScrollPane(artikelListe()); //liste wird dem scrollpane hinzugefügt
+        JScrollPane scrollPane = new JScrollPane(); //liste wird dem scrollpane hinzugefügt
+        scrollPane.add(artikelListe());
         scrollPane.setPreferredSize(new Dimension(700, 500));
         midpanel.add(scrollPane);
+
 
         return midpanel;
     }
 
-    private Component registerPopup() {
+    private JPanel eastpanel(){
+        JPanel eastpanel = new JPanel();
+        eastpanel.setVisible(true);//Jpanel ist sichtbar
+        eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS));
+
+        return eastpanel;
+    }
+
+
+
+    private JDialog registerPopup() {
         popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
@@ -217,7 +230,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
     private JList<String> artikelListe() {
 
-        artikelListe = new JList(eshop.getAlleArtikel().toArray());
+        JList<String> artikelListe = new JList(eshop.getAlleArtikel().toArray());
 
         return artikelListe;
     }

@@ -135,7 +135,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return eastpanel;
     }
 
-    private Component midpanel() {
+    private JPanel midpanel() {
         JPanel midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new FlowLayout());
@@ -205,7 +205,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
     // Feld zum Anlegen neuer Artikel
-    private Component neuenArtikelAnlegen() {
+    private JPanel neuenArtikelAnlegen() {
         JPanel anlegen = new JPanel();
         anlegen.setVisible(true);
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
@@ -263,7 +263,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return anlegen;
     }
 
-    public Component bestandErhöhen() {
+    public JPanel bestandErhöhen() {
         JPanel erhöhen = new JPanel();
         erhöhen.setVisible(true);
         erhöhen.setLayout(new BoxLayout(erhöhen, BoxLayout.Y_AXIS));
@@ -287,7 +287,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return erhöhen;
     }
 
-    public Component bestandVerringern() {
+    public JPanel bestandVerringern() {
         JPanel veringern = new JPanel();
         veringern.setVisible(true);
         veringern.setLayout(new BoxLayout(veringern, BoxLayout.Y_AXIS));
@@ -312,7 +312,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
 
-    private Component listenCombobox() {
+    private JComboBox<String> listenCombobox() {
         String[] listen = {"Auszugebende Liste Auswählen", "Registrierte Mitarbeiter", "Registrierte Kunden", "Ereignisse"};
         listenauswahl = new JComboBox<>(listen);
         listenauswahl.addActionListener(this);
