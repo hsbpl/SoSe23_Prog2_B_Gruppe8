@@ -151,8 +151,8 @@ public class Artikelverwaltung {
                     ereignisse.add(e);
                     return true;
                 }
-                }
             }
+        }
         return false;
     }
 

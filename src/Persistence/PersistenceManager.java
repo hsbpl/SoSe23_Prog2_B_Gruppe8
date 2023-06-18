@@ -32,6 +32,9 @@ public interface PersistenceManager {
 
     public List<Ereignis> leseEreignisList(String datei) throws IOException, EreignisExistiertBereitsException;
     public void schreibeEreignisListe(List<Ereignis> liste, String datei) throws IOException;
-}
+
+    public List<Artikel> leseMassengutListe(String datei) throws IOException, EreignisExistiertBereitsException;
+    public void schreibeMassengutListe(List<Artikel> liste, String datei) throws IOException;
+    }
 
 

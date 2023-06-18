@@ -1,12 +1,8 @@
 package Persistence;
 
-import Domain.Artikelverwaltung;
-import Domain.Kundenverwaltung;
-import Domain.Mitarbeiterverwaltung;
 import Exceptions.ArtikelExistiertBereitsException;
 import Exceptions.EreignisExistiertBereitsException;
 import Exceptions.UserExistiertBereitsException;
-import Exceptions.UserExistiertNichtException;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
 
@@ -16,10 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.*;
-import java.sql.Array;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,10 +24,10 @@ public class FilePersistenceManager implements PersistenceManager{
     private PrintWriter writer = null;
 
     private static List<Artikel> artikelBestand = new ArrayList<>();
-
     private static List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
     private static HashMap<String, Kunde> kundenBestand = new HashMap<>();
     private static List<Ereignis> ereignisliste = new ArrayList<>();
+    private static List<Massengutartikel>massengutBestand = new ArrayList<>();
 
     public FilePersistenceManager() {
 
@@ -45,7 +38,6 @@ public class FilePersistenceManager implements PersistenceManager{
     public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        //List<Artikel> artikelBestand = new ArrayList<>();
         Artikel einArtikel;
 
         do {
@@ -55,7 +47,11 @@ public class FilePersistenceManager implements PersistenceManager{
                     throw new ArtikelExistiertBereitsException();
                 }
 
-                artikelBestand.add(einArtikel);
+                if(einArtikel instanceof Massengutartikel){
+                    artikelBestand.add((Massengutartikel) einArtikel);
+                } else {
+                    artikelBestand.add(einArtikel);
+                }
             }
         }while (einArtikel !=null);
         return artikelBestand;
@@ -115,13 +111,42 @@ public class FilePersistenceManager implements PersistenceManager{
         }while (einEreignis !=null);
         return ereignisliste;
     }
+    public List<Artikel> leseMassengutListe(String datei) throws IOException, EreignisExistiertBereitsException{
+        reader = new BufferedReader(new FileReader(datei));
+
+        Artikel einArtikel;
+        do {
+            einArtikel = ladeArtikel();
+            if (einArtikel !=null){
+                if (artikelBestand.contains(einArtikel)) {
+                    throw new EreignisExistiertBereitsException();
+                }
+                artikelBestand.add(einArtikel);
+            }
+        }while(einArtikel !=null);
+        return artikelBestand;
+    }
 
     public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
-        for(Artikel a : liste)
-            speichereArtikel(a);
+        for(Artikel a : liste){
+            if(a instanceof Massengutartikel) {
+                Massengutartikel mg = (Massengutartikel) a;
+                speichereArtikel(mg, "Massengutartikel");
+            } else {
+                speichereArtikel(a,"Einzelartikel");
+            }
+        }
 
+        writer.close();
+    }
+
+    public void schreibeMassengutListe(List<Artikel> liste, String datei) throws IOException{
+        writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
+
+        for (Artikel mg : liste)
+            speichereMassengutartikel((Massengutartikel) mg);
         writer.close();
     }
 
@@ -151,9 +176,6 @@ public class FilePersistenceManager implements PersistenceManager{
         writer.close();
     }
 
-
-
-
     //private Method
     private Artikel ladeArtikel() throws IOException{
         //Bezeichnung einlesen
@@ -172,16 +194,61 @@ public class FilePersistenceManager implements PersistenceManager{
         String epreis_string = liesZeile();
         double epreis = Double.parseDouble(epreis_string);
 
-        return new Artikel(bezeichnung, artikelnummer, bestand, epreis);
+        String mindestErwerbMenge_S = liesZeile();
+        int mindestErwerbMenge = Integer.parseInt(mindestErwerbMenge_S);
+
+        String artikeltyp = liesZeile();
+
+        if(artikeltyp.equalsIgnoreCase("Massengutartikel")) {
+            return new Massengutartikel(bezeichnung, artikelnummer, bestand, epreis, mindestErwerbMenge);
+        } else {
+            return new Artikel(bezeichnung, artikelnummer, bestand, epreis);
+        }
     }
 
-    private boolean speichereArtikel(Artikel a) throws IOException{
+    private boolean speichereArtikel(Artikel a, String artikeltyp) throws IOException{
         schreibeZeile(a.getBezeichnung());
         schreibeZeile(String.valueOf(a.getArtikelNummer()));
         schreibeZeile(String.valueOf(a.getBestand()));
         schreibeZeile(String.valueOf(a.getEinzelpreis()));
+        if (artikeltyp.equals("Massengutartikel")) {
+            schreibeZeile(String.valueOf(((Massengutartikel) a).getErwerbwareMenge()));
+            schreibeZeile(String.valueOf(artikeltyp));
+        } else {
+            schreibeZeile(String.valueOf(1));
+            schreibeZeile(String.valueOf(artikeltyp));
+        }
+        return true;
+    }
+    private Massengutartikel ladeMassengutArtikel() throws IOException{
+        String bezeichnung = liesZeile();
+        if (bezeichnung == null){
+            return null;
+        }
+        String artikelnummer_string = liesZeile();
+        int artikelnummer = Integer.parseInt(artikelnummer_string);
+
+        String bestand_string = liesZeile();
+        int bestand = Integer.parseInt(bestand_string);
+
+        String einzelpreis_string = liesZeile();
+        double einzelpreis = Double.parseDouble(einzelpreis_string);
+
+        String erwerbwaremenge_string = liesZeile();
+        int erwerbwaremenge = Integer.parseInt(erwerbwaremenge_string);
+
+        return new Massengutartikel(bezeichnung, artikelnummer, bestand, einzelpreis, erwerbwaremenge);
+    }
+
+    private boolean speichereMassengutartikel(Massengutartikel mg) throws IOException{
+        schreibeZeile(mg.getBezeichnung());
+        schreibeZeile(String.valueOf(mg.getArtikelNummer()));
+        schreibeZeile(String.valueOf(mg.getBestand()));
+        schreibeZeile(String.valueOf(mg.getEinzelpreis()));
+        schreibeZeile(String.valueOf(mg.getErwerbwareMenge()));
 
         return true;
+
     }
 
     private Kunde ladeKunde() throws IOException{
@@ -281,6 +348,15 @@ public class FilePersistenceManager implements PersistenceManager{
             }
         }
 
+        return null;
+    }
+    public Massengutartikel getMassengutByNumber(int artikelnummer){
+        System.out.println(massengutBestand);
+        for (Artikel artikel : massengutBestand){
+            if (artikel.getArtikelNummer() == artikelnummer){
+                return (Massengutartikel) artikel;
+            }
+        }
         return null;
     }
 
