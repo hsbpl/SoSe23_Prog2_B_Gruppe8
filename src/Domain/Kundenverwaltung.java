@@ -20,7 +20,7 @@ public class Kundenverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
     private static HashMap<String, Kunde> kundenliste = new HashMap<>();
-    private HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
+    private static HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
     private Kunde kunde;
     private static List<Kunde> kListe = new ArrayList<>();
     private Artikelverwaltung av = new Artikelverwaltung();
@@ -61,7 +61,7 @@ public class Kundenverwaltung {
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
-
+        int aktuelle_menge = menge;
         Artikel gefundenerArtikel = warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
@@ -71,11 +71,23 @@ public class Kundenverwaltung {
         {
             if(gefundenerArtikel instanceof Massengutartikel) {
                 int verkäuflich = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge();
-                menge = menge * verkäuflich;
+                if(!(menge > verkäuflich)) {
+                    throw new UngueltigeMengeException();
+                }
             }
             if (menge > gefundenerArtikel.getBestand()) {
                 throw new UngueltigeMengeException();
             } else {
+                if (warenkorb.getWarenkorb().containsKey(gefundenerArtikel)) {
+                    int finalMenge = menge;
+                    menge = warenkorb.getWarenkorb().compute(gefundenerArtikel, (artikel1, aktuelleMenge) -> {
+                        if (aktuelleMenge != null) {
+                            return aktuelleMenge + finalMenge;
+                        } else {
+                            return finalMenge;
+                        }
+                    });
+                }
                 warenkorb.getWarenkorb().put(gefundenerArtikel, menge);
             }
         } else {
@@ -151,7 +163,7 @@ public class Kundenverwaltung {
     }
 
     public Kunde getKundeByUsername(String username){
-       List<Kunde> kList =getKundenListe();
+        List<Kunde> kList =getKundenListe();
         for (Kunde kunde : kList){
             if (kunde.getUserName().equals(username)) {
                 return kunde;
@@ -169,7 +181,3 @@ public class Kundenverwaltung {
 
 
 }
-
-
-
-

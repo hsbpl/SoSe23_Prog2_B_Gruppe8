@@ -27,7 +27,7 @@ public class FilePersistenceManager implements PersistenceManager{
     private static List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
     private static HashMap<String, Kunde> kundenBestand = new HashMap<>();
     private static List<Ereignis> ereignisliste = new ArrayList<>();
-    private static List<Artikel>massengutBestand = new ArrayList<>();
+    private static List<Massengutartikel>massengutBestand = new ArrayList<>();
 
     public FilePersistenceManager() {
 
@@ -38,7 +38,6 @@ public class FilePersistenceManager implements PersistenceManager{
     public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        //List<Artikel> artikelBestand = new ArrayList<>();
         Artikel einArtikel;
 
         do {
@@ -48,7 +47,11 @@ public class FilePersistenceManager implements PersistenceManager{
                     throw new ArtikelExistiertBereitsException();
                 }
 
-                artikelBestand.add(einArtikel);
+                if(einArtikel instanceof Massengutartikel){
+                    artikelBestand.add((Massengutartikel) einArtikel);
+                } else {
+                    artikelBestand.add(einArtikel);
+                }
             }
         }while (einArtikel !=null);
         return artikelBestand;
@@ -111,24 +114,30 @@ public class FilePersistenceManager implements PersistenceManager{
     public List<Artikel> leseMassengutListe(String datei) throws IOException, EreignisExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        Artikel  einArtikel;
+        Artikel einArtikel;
         do {
             einArtikel = ladeArtikel();
             if (einArtikel !=null){
-                if (massengutBestand.contains(einArtikel)) {
+                if (artikelBestand.contains(einArtikel)) {
                     throw new EreignisExistiertBereitsException();
                 }
-                massengutBestand.add(einArtikel);
+                artikelBestand.add(einArtikel);
             }
         }while(einArtikel !=null);
-        return massengutBestand;
+        return artikelBestand;
     }
 
     public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
-        for(Artikel a : liste)
-            speichereArtikel(a);
+        for(Artikel a : liste){
+            if(a instanceof Massengutartikel) {
+                Massengutartikel mg = (Massengutartikel) a;
+                speichereArtikel(mg, "Massengutartikel");
+            } else {
+                speichereArtikel(a,"Einzelartikel");
+            }
+        }
 
         writer.close();
     }
@@ -137,7 +146,7 @@ public class FilePersistenceManager implements PersistenceManager{
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
         for (Artikel mg : liste)
-            speichereArtikel(mg);
+            speichereMassengutartikel((Massengutartikel) mg);
         writer.close();
     }
 
@@ -185,15 +194,30 @@ public class FilePersistenceManager implements PersistenceManager{
         String epreis_string = liesZeile();
         double epreis = Double.parseDouble(epreis_string);
 
-        return new Artikel(bezeichnung, artikelnummer, bestand, epreis);
+        String mindestErwerbMenge_S = liesZeile();
+        int mindestErwerbMenge = Integer.parseInt(mindestErwerbMenge_S);
+
+        String artikeltyp = liesZeile();
+
+        if(artikeltyp.equalsIgnoreCase("Massengutartikel")) {
+            return new Massengutartikel(bezeichnung, artikelnummer, bestand, epreis, mindestErwerbMenge);
+        } else {
+            return new Artikel(bezeichnung, artikelnummer, bestand, epreis);
+        }
     }
 
-    private boolean speichereArtikel(Artikel a) throws IOException{
+    private boolean speichereArtikel(Artikel a, String artikeltyp) throws IOException{
         schreibeZeile(a.getBezeichnung());
         schreibeZeile(String.valueOf(a.getArtikelNummer()));
         schreibeZeile(String.valueOf(a.getBestand()));
         schreibeZeile(String.valueOf(a.getEinzelpreis()));
-
+        if (artikeltyp.equals("Massengutartikel")) {
+            schreibeZeile(String.valueOf(((Massengutartikel) a).getErwerbwareMenge()));
+            schreibeZeile(String.valueOf(artikeltyp));
+        } else {
+            schreibeZeile(String.valueOf(1));
+            schreibeZeile(String.valueOf(artikeltyp));
+        }
         return true;
     }
     private Massengutartikel ladeMassengutArtikel() throws IOException{

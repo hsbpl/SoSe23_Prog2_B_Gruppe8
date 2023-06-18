@@ -33,7 +33,7 @@ public class CUI {
             int input = scan.nextInt();
             startEingabenVerarbeiten(input);
         }
-         catch (InputMismatchException e) {
+        catch (InputMismatchException e) {
 
             System.out.println(
                     "*********************************************************************************\n" +
@@ -146,8 +146,8 @@ public class CUI {
 
         try {
 
-               int input= scan.nextInt();
-                eshopEingabenVerarbeiten(input, k, w);
+            int input= scan.nextInt();
+            eshopEingabenVerarbeiten(input, k, w);
         }
         catch (InputMismatchException e) {
             System.out.println(
@@ -208,11 +208,11 @@ public class CUI {
             case 4:
                 try
                 {
-                System.out.println("---------------------");
-                System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
-                //System.out.println(eshop.ereignisListeAusgeben());
-                System.out.println("---------------------");
-                startMenue();}
+                    System.out.println("---------------------");
+                    System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
+                    //System.out.println(eshop.ereignisListeAusgeben());
+                    System.out.println("---------------------");
+                    startMenue();}
                 catch (WarenkorbIstLeerException e){
                     System.out.println("*********************************************************************************\n" +
                             "Ihr Warenkorb ist leer.\n" +
@@ -227,7 +227,7 @@ public class CUI {
                 startMenue();
                 break;
             default:
-               System.out.println(
+                System.out.println(
                         "*********************************************************************************\n" +
                                 "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4' oder '0'. \n" +
                                 "*********************************************************************************\n");
@@ -341,6 +341,9 @@ public class CUI {
                     double preis = scan.nextDouble();
                     System.out.println("Minimale Einkaufsmenge: ");
                     int zumKaufVerfügbar = scan.nextInt();
+                    if(zumKaufVerfügbar <= 1) {
+                        throw new InputMismatchException();
+                    }
                     eshop.artHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), m);
                     artbeitsMenue(m);
                 } catch (ArtikelExistiertBereitsException e) {
@@ -363,7 +366,7 @@ public class CUI {
 
                 break;
             case 6:
-              try {
+                try {
                     System.out.println("Artikelname:");
                     String artikelname = scan.next();
                     System.out.println("Zu erhöhende Menge: ");
@@ -449,7 +452,7 @@ public class CUI {
                 artbeitsMenue(m);
 
 
-            break;
+                break;
         }
     }
 
@@ -470,11 +473,11 @@ public class CUI {
         //eshop.neuenWarenkorbErstellen(k1);
 
         //Vor dem Start des Menüs die Daten laden
-      //  eshop.loadData();
+        //  eshop.loadData();
 
 
         //Nach dem Beenden des Menüs werden die Daten gespeichert
-      //  eshop.saveData();
+        //  eshop.saveData();
 
 
     }

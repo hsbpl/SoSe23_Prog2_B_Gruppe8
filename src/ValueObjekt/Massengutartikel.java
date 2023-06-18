@@ -19,7 +19,7 @@ public class Massengutartikel extends Artikel{
 
 
     public String string(){
-       return super.toString() + " Pakungspreis: " + erwerbwareMenge*einzelpreis+"€";
+        return super.toString() + " Pakungspreis: " + erwerbwareMenge*einzelpreis+"€";
     }
 }
 
