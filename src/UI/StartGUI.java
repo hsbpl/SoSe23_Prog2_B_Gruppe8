@@ -1,6 +1,7 @@
 package UI;
 
 import Domain.EShop;
+import Exceptions.LeeresTextfieldException;
 import Exceptions.LoginFehlgeschlagenException;
 import Exceptions.UserExistiertBereitsException;
 import ValueObjekt.Kunde;
@@ -48,6 +49,7 @@ public class StartGUI extends JFrame implements ActionListener {
     JTextField adressenTextfield= new JTextField(textfieldSize);
 
     JButton neuenKundenAnlegenButton = new JButton("Registrieren");
+    JDialog popup;
 
 
     public StartGUI() throws IOException {
@@ -119,7 +121,7 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
     private Component registerPopup(){
-        JDialog popup = new JDialog();
+        popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
         popup.setLocationRelativeTo(null);//popup erscheint in der mitte
@@ -132,7 +134,7 @@ public class StartGUI extends JFrame implements ActionListener {
         return popup;
     }
 
-    private Component kundeLogin(){
+    private JPanel kundeLogin(){
         JPanel loginfenster = new JPanel(); //neues Jpanel
         loginfenster.setVisible(true);//Jpanel ist sichtbar
         loginfenster.setSize(300, 300);
@@ -157,7 +159,7 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-    private Component mitarbeiterLogin(){
+    private JPanel mitarbeiterLogin(){
         JPanel loginfenster = new JPanel();
         loginfenster.setVisible(true);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
@@ -182,7 +184,7 @@ public class StartGUI extends JFrame implements ActionListener {
         return loginfenster;
     }
 
-    private Component kundenregistrierung(){
+    private JPanel kundenregistrierung(){
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
         registerfenster.setSize(300, 500);
@@ -303,21 +305,26 @@ public class StartGUI extends JFrame implements ActionListener {
                 }
 
                 break;
-            case NEUES_KUNDENKONTO_ANLEGEN: //TODO hier funktioniert die registrierung nicht
+            case NEUES_KUNDENKONTO_ANLEGEN:
+
+
                 try {
                     String username = usernameTextfieldRegistrierung.getText();
                     String passwort = passwotTextfieldRegistrierung.getText();
                     String nachname = nachnameTextfield.getText();
                     String vorname = vornameTextfield.getText();
                     String adresse = adressenTextfield.getText();
+
                     Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
                     eshop.kundenRegistrieren(kunde);
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
 
                     KundenbereichGUI k = new KundenbereichGUI(kunde, w);
-//todo fenster bei registrierung automatisch schließen lassem
+
                     this.dispose();
+                    popup.dispose();
                     System.out.println(kunde);
+                    //}
                 }catch (UserExistiertBereitsException e) {
                     System.err.println(
                             "*********************************************************************************\n" +
@@ -326,6 +333,11 @@ public class StartGUI extends JFrame implements ActionListener {
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
+                }catch (LeeresTextfieldException e){
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Bitte füllen Sie alle Textfelder aus.\n" +
+                                    "*********************************************************************************\n");
                 }
 
 

@@ -65,7 +65,7 @@ public class EShop {
       return   kv.neuerWarenkorb(k);
     }
 
-    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException{
+    public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException, LeeresTextfieldException{
         Mitarbeiter neuerMitarbeiter = mv.mRegister(neu);
         System.out.println(neuerMitarbeiter);
         if(neuerMitarbeiter == null){
@@ -101,7 +101,7 @@ public class EShop {
             throw new ArtikelExistiertNichtException();}
     }
 
-    //TODO jetzt funtioniert es hier nicht....
+
     public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException{
        if(!av.bestandVerringern(artikelname, menge, u)){
         throw new ArtikelExistiertNichtException();}
@@ -147,7 +147,7 @@ public class EShop {
             return erfolgreicherLogin;}
     }
 
-    public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException {
+    public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException, LeeresTextfieldException {
         Kunde neuerKunde = kv.register(neu);
         System.out.println("dshuifuhasdfhuadsfbha");
         if(neuerKunde == null){

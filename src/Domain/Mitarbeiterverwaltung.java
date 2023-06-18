@@ -1,6 +1,7 @@
 package Domain;
 
 import Exceptions.ArtikelExistiertBereitsException;
+import Exceptions.LeeresTextfieldException;
 import Exceptions.UserExistiertBereitsException;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
@@ -53,7 +54,12 @@ public class Mitarbeiterverwaltung {
     }
 
     //  Methode fügt einen neuen Mitarbeiter zur Mitarbeiterliste hinzu
-    public Mitarbeiter mRegister(Mitarbeiter neu){
+    public Mitarbeiter mRegister(Mitarbeiter neu) throws LeeresTextfieldException {
+
+        if(neu.getUserName().isEmpty() || neu.getPasswort().isEmpty() || neu.getVorname().isEmpty() ||
+                neu.getNachname().isEmpty()){
+            throw new LeeresTextfieldException();
+        }else{
 
         Mitarbeiter registrierungErfolgreich= listMitarbeiter.stream()
                 .filter(a -> a.getUserName().equalsIgnoreCase(neu.getUserName()))
@@ -67,7 +73,7 @@ public class Mitarbeiterverwaltung {
         } else {
             return null;
         }
-        return registrierungErfolgreich;
+        return registrierungErfolgreich;}
     }
 
     public String registrierteMitarbeiter(){

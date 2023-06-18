@@ -56,11 +56,6 @@ public class Artikelverwaltung {
         pm.schreibeEreignisListe(ereignisse, datei);
     }
 
-
-
-    //TODO wenn man einen Massengutartikel hinzufügt muss man zurzeit angeben wie viele zusammen gekauft werden müssen.
-    //TODO bei der erstellung eines Massengutartikels müsste also ein Parameter mehr vom Mitarbeiter übergeben werden
-    //TODO Methoden überladen ?
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
         if (istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
             artikelListe.add(artikel);
@@ -105,7 +100,6 @@ public class Artikelverwaltung {
 
     }
 
-    //TODO in die Main setzen und achsuen ob es klappt
     public  String ereignisseSortiertNachDatum(){
         Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum));
         String s="";

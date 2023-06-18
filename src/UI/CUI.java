@@ -94,7 +94,14 @@ public class CUI {
                                     "*********************************************************************************\n");
                     startMenue();
 
-                } catch (IOException e) {
+                }catch (LeeresTextfieldException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Textfelder leer.\n" +
+                                    "*********************************************************************************\n");
+                    startMenue();
+                }
+                catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 break;
@@ -425,6 +432,13 @@ public class CUI {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
+                                    "*********************************************************************************\n");
+                    artbeitsMenue(m);
+
+                }catch (LeeresTextfieldException e) {
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Leeres Textfield.\n" +
                                     "*********************************************************************************\n");
                     artbeitsMenue(m);
 

@@ -1,10 +1,7 @@
 package UI;
 
 import Domain.EShop;
-import Exceptions.ArtikelExistiertBereitsException;
-import Exceptions.ArtikelExistiertNichtException;
-import Exceptions.UngueltigeMengeException;
-import Exceptions.UserExistiertBereitsException;
+import Exceptions.*;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Massengutartikel;
@@ -20,7 +17,7 @@ import java.util.InputMismatchException;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
-    //todo bei textfield datentypen die keine string sind parsen
+
     private EShop eshop;
     int textfieldSize = 50;
     int digitInputTextfieldsize = 10;
@@ -55,6 +52,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     JComboBox<String> listenauswahl;
 
+    JDialog popup;
+
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
         String datei = "ESHOP";
         eshop = new EShop(datei);
@@ -67,7 +66,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        //todo layout festlegung
         mitarbeiterbereich();
 
     }
@@ -152,7 +150,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
     private Component popup(Component component, String usage) {
-        JDialog popup = new JDialog();
+        popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
         popup.setLocationRelativeTo(null);//popup erscheint in der mitte
@@ -398,7 +396,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_POPUP;
 
         } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
-            operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN;
+            operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_ABSCHLIESSEN;
 
         } else if (actionEvent.getSource() == massengutArtikelAnlegenPopup) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_POPUP;
@@ -475,19 +473,25 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                 break;
             case ARTIKELANLEGEN_ABSCHLIESSEN:
-                try {
+                try { //todo nach pullen in artikelverwaltung Leerestexfield E für bezwichnung
                     String bezeichnung = bestandTextfieldEinzelartikelAnlegen.getText();
                     int artikelnummer = Integer.parseInt(artikelnummerTextfieldEinzelartikelAnlegen.getText());
-                    int bestand = Integer.parseInt(bezeichnungsTextfieldEinzelartikelAnlegen.getText());
+                    int bestand = Integer.parseInt(bestandTextfieldEinzelartikelAnlegen.getText());
                     double preis = Double.parseDouble(preisTextfieldEinzelartikelAnlegen.getText());
                     eshop.artHinzufügen(new Artikel(bezeichnung, artikelnummer, bestand, preis), eingeloggterMitarbeiter);
-                } catch (ArtikelExistiertBereitsException e) {
-                    System.out.println("*********************************************************************************\n" +
+                    popup.dispose();
+                }catch (NumberFormatException e) {
+                    System.err.println("*********************************************************************************\n" +
+                            "Ungültige Eingabe in einem der Zahlenfelder. Bitte achten Sie bei den Zahlen darauf mit ein “.“ zu verwenden. \n" +
+                            "*********************************************************************************\n");
+                }catch
+                 (ArtikelExistiertBereitsException e) {
+                    System.err.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
 
                 } catch (InputMismatchException e) {
-                    System.out.println(
+                    System.err.println(
                             "*********************************************************************************\n" +
                                     "Ungültige Eingabe!\n" +
                                     "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
@@ -496,7 +500,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                                     "*********************************************************************************\n");
                 }
-
                 break;
             case MASSENGUTARTIKELANLEGEN_POPUP:
                 popup(neuenMassengutartikelAnlegen(), "Neuen Massengutartikel anlegen");
@@ -504,13 +507,19 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
             case MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN:
 
-                try {
+                try {//todo nach pullen in artikelverwaltung Leerestexfield E für bezwichnung
                     String bezeichnung = bestandTextfieldMassengutartikeAnlegen.getText();
                     int artikelnummer = Integer.parseInt(artikelnummerTextfieldMassengutartikelAnlegen.getText());
                     int bestand = Integer.parseInt(bestandTextfieldMassengutartikeAnlegen.getText());
                     double preis = Double.parseDouble(preisTextfieldMassengutartikelAnlegen.getText());
-                    int zumKaufVerfügbar = Integer.parseInt(preisTextfieldMassengutartikelAnlegen.getText());
+                    int zumKaufVerfügbar = Integer.parseInt(verkäuflicheMengefield.getText());
+
                     eshop.artHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), eingeloggterMitarbeiter);
+                    popup.dispose();
+                }catch (NumberFormatException e) {
+                    System.err.println("*********************************************************************************\n" +
+                            "Ungültige Eingabe in einem der Zahlenfelder. Bitte achten Sie bei den Zahlen darauf mit ein “.“ zu verwenden. \n" +
+                            "*********************************************************************************\n");
                 } catch (ArtikelExistiertBereitsException e) {
                     System.out.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
@@ -553,15 +562,22 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     String pw = passwotTextfield.getText();
                     String nachname = nachnameTextfield.getText();
                     String vorname = vornameTextfield.getText();
+
                     Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
                     System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
-                    //todo popup bei erfolgreicher registrierung
+
+                    popup.dispose();
                 } catch (UserExistiertBereitsException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                                     "*********************************************************************************\n");
 
+                } catch (LeeresTextfieldException e){
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Bitte füllen Sie alle Textfelder aus.\n" +
+                                    "*********************************************************************************\n");
                 }
                 break;
             default:

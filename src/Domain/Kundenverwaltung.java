@@ -1,9 +1,6 @@
 package Domain;
 
-import Exceptions.ArtikelExistiertNichtException;
-import Exceptions.UngueltigeMengeException;
-import Exceptions.UserExistiertBereitsException;
-import Exceptions.WarenkorbIstLeerException;
+import Exceptions.*;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
 import ValueObjekt.*;
@@ -118,7 +115,13 @@ public class Kundenverwaltung {
 
 
     /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
-    public Kunde register(Kunde neu) {
+    public Kunde register(Kunde neu) throws LeeresTextfieldException{
+
+        if(neu.getUserName().isEmpty() || neu.getPasswort().isEmpty() || neu.getVorname().isEmpty() ||
+                neu.getNachname().isEmpty() ||
+                neu.getKundenAdresse().isEmpty()){
+            throw new LeeresTextfieldException();
+        }else{
 
         Kunde registrierungErfolgreich= kundenUndDazugehörigeWarenkörbe.keySet().stream()
                 .filter(a -> a.getUserName().equalsIgnoreCase(neu.getUserName()))
@@ -132,7 +135,7 @@ public class Kundenverwaltung {
         } else {
             return null;
         }
-        return registrierungErfolgreich;
+        return registrierungErfolgreich;}
     }
 
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
