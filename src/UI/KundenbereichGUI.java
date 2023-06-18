@@ -7,10 +7,6 @@ import ValueObjekt.Warenkorb;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -35,35 +31,52 @@ public class KundenbereichGUI extends JFrame {
 
         // Erstellen der GUI-Komponenten
         JPanel mainPanel = new JPanel(new BorderLayout());
-        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel infoPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel titleLabel = new JLabel("Willkommen, " + eingeloggterKunde.getVorname() + "!");
         JButton logoutButton = new JButton("Ausloggen");
+        JButton artikelHinzufuegenButton = new JButton("Artikel hinzufügen");
+        JButton artikelEntfernenButton = new JButton("Artikel entfernen");
+        JButton warenkorbButton = new JButton("Warenkorb anzeigen");
+        JButton warenkorbLeerenButton = new JButton("Warenkorb leeren");
         DefaultListModel<String> artikelListModel = new DefaultListModel<>();
         JList<String> artikelList = new JList<>(artikelListModel);
         JScrollPane artikelScrollPane = new JScrollPane(artikelList);
 
-        // Konfigurieren der GUI-Komponenten
+// Konfigurieren der GUI-Komponenten
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Logik zum Ausloggen des Kunden hier einfügen
-                dispose(); // Schließt das Kundenbereich-Fenster
+                int option = JOptionPane.showConfirmDialog(null, "Möchten Sie sich wirklich ausloggen?", "Ausloggen", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    // Logik zum Ausloggen des Kunden hier einfügen
+                    dispose(); // Schließt das Kundenbereich-Fenster
+                }
             }
         });
-        // Hinzufügen der Artikel im Warenkorb zur Liste
-        for (Map.Entry<Artikel, Integer> entry : warenKorbDesKunden.getWarenkorb().entrySet()) {
-            Artikel artikel = entry.getKey();
-            int menge = entry.getValue();
-            artikelListModel.addElement(artikel.getBezeichnung() + " (Menge: " + menge + ")");
-        }
 
-        // Zusammenstellen der GUI
+// Anpassen der Info-Panel-Eigenschaften
+        infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
+
+// Hinzufügen der GUI-Komponenten zum Info-Panel
         infoPanel.add(titleLabel);
-        infoPanel.add(logoutButton);
+
+// Zusammenstellen der GUI
+        buttonPanel.add(logoutButton);
+        buttonPanel.add(artikelHinzufuegenButton);
+        buttonPanel.add(artikelEntfernenButton);
+        buttonPanel.add(warenkorbButton);
+        buttonPanel.add(warenkorbLeerenButton);
+
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
         this.add(mainPanel);
     }
 }
+
+
+
 
