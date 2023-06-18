@@ -332,6 +332,13 @@ public class CUI {
                                     "*********************************************************************************\n");
                     scan.nextLine();
                     artbeitsMenue(m);
+                } catch (LeeresTextfieldException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Leeres Textfeld\n" +
+                                    "*********************************************************************************\n");
+                    scan.nextLine();
+                    artbeitsMenue(m);
                 }
 
                 break;
@@ -369,6 +376,13 @@ public class CUI {
                                     "*********************************************************************************\n");
                     scan.nextLine();
                     artbeitsMenue(m);
+                }catch (LeeresTextfieldException e){
+                    System.out.println(
+                            "*********************************************************************************\n" +
+                                    "Leeres Textfeld\n" +
+                                    "*********************************************************************************\n");
+                    scan.nextLine();
+                    artbeitsMenue(m);
                 }
 
                 break;
@@ -384,6 +398,13 @@ public class CUI {
                 } catch (ArtikelExistiertNichtException e) {
                     System.out.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+
+
+                    artbeitsMenue(m);
+                } catch (LeeresTextfieldException e){
+                    System.out.println("*********************************************************************************\n" +
+                            "Bezeichnungstextfeld ist leer.\n" +
                             "*********************************************************************************\n");
 
 
@@ -409,6 +430,11 @@ public class CUI {
                 } catch (UngueltigeMengeException u) {
                     System.out.println("*********************************************************************************\n" +
                             "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+                    artbeitsMenue(m);
+                } catch (LeeresTextfieldException e){
+                    System.out.println("*********************************************************************************\n" +
+                            "Leeres Textfeld.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
                 }

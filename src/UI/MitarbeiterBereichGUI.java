@@ -19,40 +19,39 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
 
     private EShop eshop;
-    int textfieldSize = 50;
-    int digitInputTextfieldsize = 10;
+    private int textfieldSize = 50;
+    private int digitInputTextfieldsize = 10;
 
-    Mitarbeiter eingeloggterMitarbeiter;
-    JButton zurückButton = new JButton("Ausloggen");
-    JButton massengutArtikelAnlegenPopup = new JButton(" Massengutartikel anlegen ");
-    JButton artikelAnlegenPopup = new JButton("  Einzelartikel anlegen   ");
-    JButton mitarbeiterkontoAnlegen = new JButton("Registrieren");
-    JTextField usernameTextfield = new JTextField(textfieldSize);
-    JTextField passwotTextfield = new JTextField(textfieldSize);
-    JTextField nachnameTextfield = new JTextField(textfieldSize);
-    JTextField vornameTextfield = new JTextField(textfieldSize);
-    JButton registerButton = new JButton("Mitarbeiter Registrieren");
-    JButton bestandVerringernButton = new JButton("Aktualisieren");
-    JTextField bezeichnungsTextfieldVerringerung = new JTextField(textfieldSize);
-    JTextField veringerungsTextfield = new JTextField(digitInputTextfieldsize);
-    JButton anlegenButtonErhöhen = new JButton("Aktualisieren");
-    JTextField bezeichnungsTextfieldErhöhung = new JTextField(textfieldSize);
-    JTextField erhöhungTextfield = new JTextField(digitInputTextfieldsize);
-    JTextField bezeichnungsTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
-    JTextField artikelnummerTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
-    JTextField bestandTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
-    JTextField preisTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
-    JTextField verkäuflicheMengefield = new JTextField(textfieldSize);
-    JTextField bezeichnungsTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
-    JTextField artikelnummerTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
-    JTextField bestandTextfieldMassengutartikeAnlegen = new JTextField(textfieldSize);
-    JTextField preisTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
-    JButton anlegenEinzelartikelAbschließen = new JButton("Neuen artikel anlegen");
-    JButton anlegenMassengutArtikelAbschliessen = new JButton("Neuen artikel anlegen");
-
-    JComboBox<String> listenauswahl;
-
-    JDialog popup;
+    private Mitarbeiter eingeloggterMitarbeiter;
+    private JButton zurückButton = new JButton("Ausloggen");
+    private JButton massengutArtikelAnlegenPopup = new JButton(" Massengutartikel anlegen ");
+    private JButton artikelAnlegenPopup = new JButton("  Einzelartikel anlegen   ");
+    private JButton mitarbeiterkontoAnlegen = new JButton("Registrieren");
+    private JTextField usernameTextfield = new JTextField(textfieldSize);
+    private JTextField passwotTextfield = new JTextField(textfieldSize);
+    private JTextField nachnameTextfield = new JTextField(textfieldSize);
+    private JTextField vornameTextfield = new JTextField(textfieldSize);
+    private JButton registerButton = new JButton("Mitarbeiter Registrieren");
+    private JButton bestandVerringernButton = new JButton("Aktualisieren");
+    private JTextField bezeichnungsTextfieldVerringerung = new JTextField(textfieldSize);
+    private JTextField veringerungsTextfield = new JTextField(digitInputTextfieldsize);
+    private JButton anlegenButtonErhöhen = new JButton("Aktualisieren");
+    private JTextField bezeichnungsTextfieldErhöhung = new JTextField(textfieldSize);
+    private JTextField erhöhungTextfield = new JTextField(digitInputTextfieldsize);
+    private JTextField bezeichnungsTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    private JTextField artikelnummerTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    private JTextField bestandTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    private JTextField preisTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
+    private JTextField verkäuflicheMengefield = new JTextField(textfieldSize);
+    private JTextField bezeichnungsTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
+    private JTextField artikelnummerTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
+    private JTextField bestandTextfieldMassengutartikeAnlegen = new JTextField(textfieldSize);
+    private JTextField preisTextfieldMassengutartikelAnlegen = new JTextField(textfieldSize);
+    private JButton anlegenEinzelartikelAbschließen = new JButton("Neuen artikel anlegen");
+    private JButton anlegenMassengutArtikelAbschliessen = new JButton("Neuen artikel anlegen");
+    private JComboBox<String> listenauswahl;
+    private JDialog popup;
+    private JDialog listpopup;
 
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
         String datei = "ESHOP";
@@ -76,7 +75,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         JPanel mitarbeiterFenster = new JPanel();
         mitarbeiterFenster.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         mitarbeiterFenster.setLayout(new BorderLayout(5, 5)); //aufteilung in borderlayout, die Zahlen sind für den Abstand da
-        //todo  // mit setPrefferedSize(new Dimension(100, 100   )); kann man die Größe der einzelnen NSWOC anpasssen
+
 
         mitarbeiterFenster.add(westpanel(), BorderLayout.WEST);
         mitarbeiterFenster.add(northpanel(), BorderLayout.NORTH);
@@ -94,7 +93,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         northpanel.setPreferredSize(new Dimension(300, 100));
 
         zurückButton.addActionListener(this);
-        northpanel.add(zurückButton,BorderLayout.EAST);
+        northpanel.add(zurückButton, BorderLayout.EAST);
 
         registerButton.addActionListener(this);
         northpanel.add(registerButton, BorderLayout.EAST);
@@ -164,18 +163,18 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
     private Component listpopup(JList jList, String usage) {
-        JDialog popup = new JDialog();
-        popup.setVisible(true);
-        popup.setSize(500, 500);
-        popup.setLocationRelativeTo(null);//popup erscheint in der mitte
-        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        popup.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        popup.setTitle(usage);
+        listpopup = new JDialog();
+        listpopup.setVisible(true);
+        listpopup.setSize(500, 500);
+        listpopup.setLocationRelativeTo(null);//popup erscheint in der mitte
+        listpopup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        listpopup.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
+        listpopup.setTitle(usage);
 
         JScrollPane scrollPane = new JScrollPane(jList); //liste wird dem scrollpane hinzugefügt
-        popup.add(scrollPane);
+        listpopup.add(scrollPane);
 
-        return popup;
+        return listpopup;
     }
 
     private Component registrierung() {
@@ -312,7 +311,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return veringern;
     }
 
-    //todo combolist zur listen ausgabe
 
     private Component listenCombobox() {
         String[] listen = {"Auszugebende Liste Auswählen", "Registrierte Mitarbeiter", "Registrierte Kunden", "Ereignisse"};
@@ -327,7 +325,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     private JList<String> kundenliste() { //abändern
 
-        ArrayList <Kunde> kunden = new ArrayList<>();
+        ArrayList<Kunde> kunden = new ArrayList<>();
         int position = 0;
         for (Kunde k : eshop.getAlleGespeichertenWarenkörbe().keySet()) {
             kunden.add(k);
@@ -359,7 +357,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return ereignisse;
     }
 
-    private enum operation { //todo eventhandling
+    private enum operation {
         AUSLOGGEN,
         BESTANDSERHÖHUNG,
         BESTANDSVERRINGERUNG,
@@ -437,7 +435,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     String artikelbez = bezeichnungsTextfieldVerringerung.getText();
                     int menge = Integer.parseInt(veringerungsTextfield.getText());
                     eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
-                    System.out.println(eshop.ereignisListeAusgeben());
 
                 } catch (ArtikelExistiertNichtException e) {
                     System.err.println("*********************************************************************************\n" +
@@ -449,6 +446,15 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                             "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
 
+                } catch (LeeresTextfieldException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Bezeichnungstextfeld ist leer.\n" +
+                            "*********************************************************************************\n");
+
+                } catch (NumberFormatException e) {
+                    System.out.println("*********************************************************************************\n" +
+                            "Nummerneingabe falsch.\n" +
+                            "*********************************************************************************\n");
                 }
                 break;
 
@@ -458,10 +464,17 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     String artikelname = bezeichnungsTextfieldErhöhung.getText();
                     int menge = Integer.parseInt(erhöhungTextfield.getText());
                     eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
-                    System.out.println(eshop.ereignisListeAusgeben());
                 } catch (ArtikelExistiertNichtException e) {
-                    System.out.println("*********************************************************************************\n" +
+                    System.err.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
+                            "*********************************************************************************\n");
+                } catch (LeeresTextfieldException e) {
+                    System.err.println("*********************************************************************************\n" +
+                            "Bezeichnungstextfeld ist leer.\n" +
+                            "*********************************************************************************\n");
+                } catch (NumberFormatException e) {
+                    System.err.println("*********************************************************************************\n" +
+                            "Nummerneingabe falsch.\n" +
                             "*********************************************************************************\n");
                 }
 
@@ -473,19 +486,19 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                 break;
             case ARTIKELANLEGEN_ABSCHLIESSEN:
-                try { //todo nach pullen in artikelverwaltung Leerestexfield E für bezwichnung
-                    String bezeichnung = bestandTextfieldEinzelartikelAnlegen.getText();
+                try {
+                    String bezeichnung = bezeichnungsTextfieldEinzelartikelAnlegen.getText();
                     int artikelnummer = Integer.parseInt(artikelnummerTextfieldEinzelartikelAnlegen.getText());
                     int bestand = Integer.parseInt(bestandTextfieldEinzelartikelAnlegen.getText());
                     double preis = Double.parseDouble(preisTextfieldEinzelartikelAnlegen.getText());
                     eshop.artHinzufügen(new Artikel(bezeichnung, artikelnummer, bestand, preis), eingeloggterMitarbeiter);
                     popup.dispose();
-                }catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.err.println("*********************************************************************************\n" +
                             "Ungültige Eingabe in einem der Zahlenfelder. Bitte achten Sie bei den Zahlen darauf mit ein “.“ zu verwenden. \n" +
                             "*********************************************************************************\n");
-                }catch
-                 (ArtikelExistiertBereitsException e) {
+                } catch
+                (ArtikelExistiertBereitsException e) {
                     System.err.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
@@ -499,6 +512,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                                     "Bitte versuchen Sie es nochmal.\n" +
 
                                     "*********************************************************************************\n");
+                } catch (LeeresTextfieldException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "Bitte füllen Sie alle Textfelder aus.\n" +
+                                    "*********************************************************************************\n");
+
                 }
                 break;
             case MASSENGUTARTIKELANLEGEN_POPUP:
@@ -507,26 +526,26 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
             case MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN:
 
-                try {//todo nach pullen in artikelverwaltung Leerestexfield E für bezwichnung
-                    String bezeichnung = bestandTextfieldMassengutartikeAnlegen.getText();
+                try {
+                    String bezeichnung = bezeichnungsTextfieldMassengutartikelAnlegen.getText();
                     int artikelnummer = Integer.parseInt(artikelnummerTextfieldMassengutartikelAnlegen.getText());
                     int bestand = Integer.parseInt(bestandTextfieldMassengutartikeAnlegen.getText());
                     double preis = Double.parseDouble(preisTextfieldMassengutartikelAnlegen.getText());
                     int zumKaufVerfügbar = Integer.parseInt(verkäuflicheMengefield.getText());
 
-                    eshop.artHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), eingeloggterMitarbeiter);
+                    eshop.massengutArtikelHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), eingeloggterMitarbeiter);
                     popup.dispose();
-                }catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.err.println("*********************************************************************************\n" +
                             "Ungültige Eingabe in einem der Zahlenfelder. Bitte achten Sie bei den Zahlen darauf mit ein “.“ zu verwenden. \n" +
                             "*********************************************************************************\n");
                 } catch (ArtikelExistiertBereitsException e) {
-                    System.out.println("*********************************************************************************\n" +
+                    System.err.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
 
                 } catch (InputMismatchException e) {
-                    System.out.println(
+                    System.err.println(
                             "*********************************************************************************\n" +
                                     "Ungültige Eingabe!\n" +
                                     "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
@@ -534,17 +553,21 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                                     "Bitte versuchen Sie es nochmal.\n" +
 
                                     "*********************************************************************************\n");
+                } catch (LeeresTextfieldException e) {
+                    System.err.println(
+                            "*********************************************************************************\n" +
+                                    "\"Bitte füllen Sie alle Textfelder aus.\\n\"" +
+                                    "*********************************************************************************\n");
                 }
 
                 break;
             case KUNDENLISTEAUSGEBEN:
-
-                listpopup(kundenliste(),"Registrierte Kunden");
+                listpopup(kundenliste(), "Registrierte Kunden");
 
                 break;
             case MITARBEITERLISTEAUSGEBEN:
-
-                listpopup(mitarbeiterliste(),"Registrierte Mitarbeiter");;
+                listpopup(mitarbeiterliste(), "Registrierte Mitarbeiter");
+                ;
 
                 break;
             case EREIGNISAUSGEBEN:
@@ -573,7 +596,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                                     "*********************************************************************************\n");
 
-                } catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.err.println(
                             "*********************************************************************************\n" +
                                     "Bitte füllen Sie alle Textfelder aus.\n" +

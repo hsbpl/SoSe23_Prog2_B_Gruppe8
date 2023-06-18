@@ -87,22 +87,22 @@ public class EShop {
     }
 
 
-    public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
+    public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException,LeeresTextfieldException {
         av.artikelHinzufuegen(a, mitarbeiter);
     }
-    public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
+    public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
         av.massengutArtikelHinzufuegen(a, mitarbeiter);
     }
 
 
 
-    public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException{
+    public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, LeeresTextfieldException{
         if(!av.bestandErhoehen(artikelname, menge, u)){
             throw new ArtikelExistiertNichtException();}
     }
 
 
-    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException{
+    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException, LeeresTextfieldException{
        if(!av.bestandVerringern(artikelname, menge, u)){
         throw new ArtikelExistiertNichtException();}
     }

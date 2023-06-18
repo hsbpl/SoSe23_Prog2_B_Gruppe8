@@ -56,7 +56,10 @@ public class Artikelverwaltung {
         pm.schreibeEreignisListe(ereignisse, datei);
     }
 
-    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException {
+    public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
+        if (artikel.getBezeichnung().isEmpty()){
+            throw new LeeresTextfieldException();
+        }else{
         if (istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
             artikelListe.add(artikel);
             System.out.println(artikelListe);
@@ -65,16 +68,20 @@ public class Artikelverwaltung {
             ereignisse.add(e);
         } else {
             throw new ArtikelExistiertBereitsException();
-        }
+        }}
     }
-    public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException{
+    public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException{
+
+        if (artikel.getBezeichnung().isEmpty()){
+            throw new LeeresTextfieldException();
+        }else{
         if(istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
             artikelListe.add(artikel);
             Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
             ereignisse.add(e);
         } else {
             throw new ArtikelExistiertBereitsException();
-        }
+        }}
     }
 
 
@@ -119,7 +126,11 @@ public class Artikelverwaltung {
     }
 
 
-    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u){
+    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u)throws LeeresTextfieldException{
+
+        if(artikelBezeichnung.isEmpty()){
+            throw new LeeresTextfieldException();
+        }else{
 
         for (Artikel artikel : artikelListe) {
             if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
@@ -132,12 +143,16 @@ public class Artikelverwaltung {
             }
         }
 
-        return  false;
+        return  false;}
     }
 
 
 
-    public boolean bestandVerringern(String artikelname, int menge, User u) throws UngueltigeMengeException{
+    public boolean bestandVerringern(String artikelname, int menge, User u) throws UngueltigeMengeException, LeeresTextfieldException{
+
+        if(artikelname.isEmpty()){
+            throw new LeeresTextfieldException();
+        }else{
 
         for (Artikel artikel : artikelListe) {
             if(artikel.getBezeichnung().equals(artikelname)){
@@ -153,7 +168,7 @@ public class Artikelverwaltung {
                 }
             }
         }
-        return false;
+        return false;}
     }
 
     public String artikelAusgeben() {

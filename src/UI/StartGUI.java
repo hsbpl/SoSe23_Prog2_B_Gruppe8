@@ -19,37 +19,24 @@ public class StartGUI extends JFrame implements ActionListener {
     private EShop eshop;
     int textfieldSize = 50;
 
-//Kundenlogin Teile
-    JTextField passwortTextfield = new JTextField(textfieldSize); // Passworteingabe Kundenlogin
-
-    JTextField usernameTextfield= new JTextField(textfieldSize); //UsernameTextfed Kundenlogin
-    JButton loginButton = new JButton("Einloggen"); //button erstellt
-
-    //Option zur Kundenregistrieung Button
-    JButton registrierungsButton= new JButton("Als neuer Kunde registrieren"); //Button erstellt der später seperat Reg öffnen soll
-
+    //Kundenlogin Teile
+    private JTextField passwortTextfield = new JTextField(textfieldSize); // Passworteingabe Kundenlogin
+    private JTextField usernameTextfield = new JTextField(textfieldSize); //UsernameTextfed Kundenlogin
+    private JButton loginButton = new JButton("Einloggen"); //button erstellt
+    private JButton registrierungsButton = new JButton("Als neuer Kunde registrieren"); //Button erstellt der später seperat Reg öffnen soll
     //Mitarbeiterlogin Teile
-    JTextField usernameTextfieldMitarbeiter = new JTextField(textfieldSize);
-
-    JTextField passwortTextfieldMitarbeiter = new JTextField(textfieldSize);
-
-    JButton loginButtonMitarbeiter = new JButton("Einloggen");
-
-    JList<String> artikelListe;
-
-//Kundenregistrierungsteile
-    JTextField usernameTextfieldRegistrierung= new JTextField(textfieldSize);
-
-    JTextField passwotTextfieldRegistrierung = new JTextField(textfieldSize);
-
-    JTextField nachnameTextfield= new JTextField(textfieldSize);
-
-    JTextField vornameTextfield = new JTextField(textfieldSize);
-
-    JTextField adressenTextfield= new JTextField(textfieldSize);
-
-    JButton neuenKundenAnlegenButton = new JButton("Registrieren");
-    JDialog popup;
+    private JTextField usernameTextfieldMitarbeiter = new JTextField(textfieldSize);
+    private JTextField passwortTextfieldMitarbeiter = new JTextField(textfieldSize);
+    private JButton loginButtonMitarbeiter = new JButton("Einloggen");
+    private JList<String> artikelListe;
+    //Kundenregistrierungsteile
+    private JTextField usernameTextfieldRegistrierung = new JTextField(textfieldSize);
+    private JTextField passwotTextfieldRegistrierung = new JTextField(textfieldSize);
+    private JTextField nachnameTextfield = new JTextField(textfieldSize);
+    private JTextField vornameTextfield = new JTextField(textfieldSize);
+    private JTextField adressenTextfield = new JTextField(textfieldSize);
+    private JButton neuenKundenAnlegenButton = new JButton("Registrieren");
+    private JDialog popup;
 
 
     public StartGUI() throws IOException {
@@ -67,15 +54,11 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-
-
-
-
-    private Component startpage(){
+    private Component startpage() {
         JPanel start = new JPanel(); //neues Jpanel
         start.setVisible(true);//Jpanel ist sichtbar
         start.setSize(300, 300);
-        start.setLayout(new BorderLayout(5,5));
+        start.setLayout(new BorderLayout(5, 5));
 
 
         start.add(hinzufügenLoginBereichStart(), BorderLayout.WEST); //Logins im Westen hinzugefügt
@@ -85,7 +68,7 @@ public class StartGUI extends JFrame implements ActionListener {
         northpanel.setVisible(true);//Jpanel ist sichtbar
         northpanel.setSize(400, 400);
         northpanel.setLayout(new FlowLayout());
-        northpanel.setPreferredSize(new Dimension( 200,100));
+        northpanel.setPreferredSize(new Dimension(200, 100));
 
 
         northpanel.add(Box.createVerticalStrut(100)); //sorgt für einen Abstand vor dem nächsten component
@@ -93,15 +76,14 @@ public class StartGUI extends JFrame implements ActionListener {
         northpanel.add(wilkommen);
 
         start.add(northpanel, BorderLayout.NORTH);
-
-        start.add(artikelListe(),BorderLayout.CENTER);
+//todo in mid east south... panel methoden umorganisieren so wie im Mitarbeiterbereich
+        start.add(artikelListe(), BorderLayout.CENTER);
 
         return start;
     }
 
 
-
-    private Component hinzufügenLoginBereichStart(){
+    private Component hinzufügenLoginBereichStart() {
         JPanel westpanel = new JPanel(); //neues Jpanel
         westpanel.setVisible(true);//Jpanel ist sichtbar
         westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
@@ -120,7 +102,20 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-    private Component registerPopup(){
+    private Component midpanel() {
+        JPanel midpanel = new JPanel();
+        midpanel.setVisible(true);//Jpanel ist sichtbar
+        midpanel.setLayout(new FlowLayout());
+        //midpanel.setPreferredSize(new Dimension(500, 700));
+
+        JScrollPane scrollPane = new JScrollPane(artikelListe()); //liste wird dem scrollpane hinzugefügt
+        scrollPane.setPreferredSize(new Dimension(700, 500));
+        midpanel.add(scrollPane);
+
+        return midpanel;
+    }
+
+    private Component registerPopup() {
         popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
@@ -134,7 +129,7 @@ public class StartGUI extends JFrame implements ActionListener {
         return popup;
     }
 
-    private JPanel kundeLogin(){
+    private JPanel kundeLogin() {
         JPanel loginfenster = new JPanel(); //neues Jpanel
         loginfenster.setVisible(true);//Jpanel ist sichtbar
         loginfenster.setSize(300, 300);
@@ -159,7 +154,7 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-    private JPanel mitarbeiterLogin(){
+    private JPanel mitarbeiterLogin() {
         JPanel loginfenster = new JPanel();
         loginfenster.setVisible(true);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
@@ -184,18 +179,18 @@ public class StartGUI extends JFrame implements ActionListener {
         return loginfenster;
     }
 
-    private JPanel kundenregistrierung(){
+    private JPanel kundenregistrierung() {
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
         registerfenster.setSize(300, 500);
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
-       usernameTextfieldRegistrierung.setMaximumSize(usernameTextfieldRegistrierung.getPreferredSize());
-       passwotTextfieldRegistrierung.setMaximumSize(passwotTextfieldRegistrierung.getPreferredSize());
-       nachnameTextfield.setMaximumSize(nachnameTextfield.getPreferredSize());
-       vornameTextfield.setMaximumSize(vornameTextfield.getPreferredSize());
-       adressenTextfield.setMaximumSize(adressenTextfield.getPreferredSize());
+        usernameTextfieldRegistrierung.setMaximumSize(usernameTextfieldRegistrierung.getPreferredSize());
+        passwotTextfieldRegistrierung.setMaximumSize(passwotTextfieldRegistrierung.getPreferredSize());
+        nachnameTextfield.setMaximumSize(nachnameTextfield.getPreferredSize());
+        vornameTextfield.setMaximumSize(vornameTextfield.getPreferredSize());
+        adressenTextfield.setMaximumSize(adressenTextfield.getPreferredSize());
 
-       neuenKundenAnlegenButton.addActionListener(this);
+        neuenKundenAnlegenButton.addActionListener(this);
 
         registerfenster.add(new JLabel("Username: "));
         registerfenster.add(usernameTextfieldRegistrierung);
@@ -207,7 +202,8 @@ public class StartGUI extends JFrame implements ActionListener {
         registerfenster.add(nachnameTextfield);
 
         registerfenster.add(new JLabel("Vorname: "));
-        registerfenster.add(vornameTextfield);;
+        registerfenster.add(vornameTextfield);
+        ;
 
         registerfenster.add(new JLabel("Adresse: "));
         registerfenster.add(adressenTextfield);
@@ -219,39 +215,39 @@ public class StartGUI extends JFrame implements ActionListener {
 
     //todo die listen machen probleme
 
-    private JList<String> artikelListe(){
+    private JList<String> artikelListe() {
 
-            artikelListe = new JList(eshop.getAlleArtikel().toArray());
+        artikelListe = new JList(eshop.getAlleArtikel().toArray());
 
         return artikelListe;
     }
 
 
-
-    private enum Loginverfahren{
+    private enum Loginverfahren {
         KUNDEN_LOGIN,
         KUNDEN_REGISTRIERUNG_POPUP,
         MITARBEITER_LOGIN,
         NEUES_KUNDENKONTO_ANLEGEN
 
     }
+
     @Override  //Damit beim Klicken der Buttons auch etwas passiert muss das hier umgesetzt werden
     public void actionPerformed(ActionEvent actionEvent) {
 
         Loginverfahren loginverfahren = null;
 
 
-        if(actionEvent.getSource() == loginButton){
+        if (actionEvent.getSource() == loginButton) {
             loginverfahren = Loginverfahren.KUNDEN_LOGIN;
-        } else if (actionEvent.getSource() == loginButtonMitarbeiter){
+        } else if (actionEvent.getSource() == loginButtonMitarbeiter) {
             loginverfahren = Loginverfahren.MITARBEITER_LOGIN;
-        } else if (actionEvent.getSource() == registrierungsButton){
+        } else if (actionEvent.getSource() == registrierungsButton) {
             loginverfahren = Loginverfahren.KUNDEN_REGISTRIERUNG_POPUP;
-        } else if (actionEvent.getSource() == neuenKundenAnlegenButton){
+        } else if (actionEvent.getSource() == neuenKundenAnlegenButton) {
             loginverfahren = Loginverfahren.NEUES_KUNDENKONTO_ANLEGEN;
         }
 
-        switch (loginverfahren){
+        switch (loginverfahren) {
             case KUNDEN_LOGIN:
                 try {
                     String username = usernameTextfield.getText();
@@ -260,9 +256,9 @@ public class StartGUI extends JFrame implements ActionListener {
                     System.out.println(aktuellerKunde);
                     Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
 
-                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde,warenkorb);
+                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde, warenkorb);
                     this.dispose();
-                    System.out.println( "Erfolgreich Eingeloggt: "+ aktuellerKunde);
+                    System.out.println("Erfolgreich Eingeloggt: " + aktuellerKunde);
 
                 } catch (LoginFehlgeschlagenException e) {
                     System.err.println(
@@ -292,7 +288,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     this.dispose();
 
                     //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
-                    System.out.println("Erfolgreich Eingeloggt: "+mitarbeiter);
+                    System.out.println("Erfolgreich Eingeloggt: " + mitarbeiter);
 
                 } catch (LoginFehlgeschlagenException e) {
                     System.err.println(
@@ -325,7 +321,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     popup.dispose();
                     System.out.println(kunde);
                     //}
-                }catch (UserExistiertBereitsException e) {
+                } catch (UserExistiertBereitsException e) {
                     System.err.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
@@ -333,7 +329,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
-                }catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.err.println(
                             "*********************************************************************************\n" +
                                     "Bitte füllen Sie alle Textfelder aus.\n" +
