@@ -12,7 +12,7 @@ Käsekuchen
 Einzelartikel
 Chips
 39003
-97
+95
 1.79
 1
 Einzelartikel
@@ -84,7 +84,7 @@ Brille
 Einzelartikel
 Stuhl
 68899
-20
+17
 23.23
 2
 Massengutartikel

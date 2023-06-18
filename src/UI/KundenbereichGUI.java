@@ -50,16 +50,18 @@ public class KundenbereichGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showConfirmDialog(null, "Möchten Sie sich wirklich ausloggen?", "Ausloggen", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    // Logik zum Ausloggen des Kunden hier einfügen
-                    dispose(); // Schließt das Kundenbereich-Fenster
+                    try {
+                        StartGUI s = new StartGUI();
+                        dispose();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
 
-// Anpassen der Info-Panel-Eigenschaften
         infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
 
-// Hinzufügen der GUI-Komponenten zum Info-Panel
         infoPanel.add(titleLabel);
 
 // Zusammenstellen der GUI
