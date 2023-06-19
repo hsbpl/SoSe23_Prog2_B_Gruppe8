@@ -18,7 +18,7 @@ Chips
 Einzelartikel
 Wasser
 38900
-380
+368
 0.49
 6
 Massengutartikel
@@ -88,3 +88,9 @@ Stuhl
 23.23
 2
 Massengutartikel
+Seife
+47677
+200
+12.23
+1
+Einzelartikel
