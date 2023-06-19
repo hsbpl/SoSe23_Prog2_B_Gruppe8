@@ -53,6 +53,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JDialog popup;
     private JDialog listpopup;
 
+  ;
+
+
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
         String datei = "ESHOP";
         eshop = new EShop(datei);
@@ -176,6 +179,17 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         return listpopup;
     }
+
+    /*
+    private Component datensichernPopup(){
+        datensichern = new JOptionPane(); //todo option pane zum speichern von änderungen
+        datensichern.setVisible(true);
+        datensichern.add(new JLabel("Wollen sie die änderungen Speichern?"));
+
+        return datensichern;
+    }
+
+     */
 
     private Component registrierung() {
         JPanel registerfenster = new JPanel();

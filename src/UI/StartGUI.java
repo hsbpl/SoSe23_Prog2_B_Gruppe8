@@ -30,7 +30,7 @@ public class StartGUI extends JFrame implements ActionListener {
     private JButton loginButtonMitarbeiter = new JButton("Einloggen");
     //Kundenregistrierungsteile
     private JTextField usernameTextfieldRegistrierung = new JTextField(textfieldSize);
-    private JTextField passwotTextfieldRegistrierung = new JTextField(textfieldSize);
+    private JTextField passwortTextfieldRegistrierung = new JTextField(textfieldSize);
     private JTextField nachnameTextfield = new JTextField(textfieldSize);
     private JTextField vornameTextfield = new JTextField(textfieldSize);
     private JTextField adressenTextfield = new JTextField(textfieldSize);
@@ -57,12 +57,11 @@ public class StartGUI extends JFrame implements ActionListener {
         JPanel start = new JPanel(); //neues Jpanel
         start.setVisible(true);//Jpanel ist sichtbar
         start.setSize(300, 300);
-        start.setLayout(new BorderLayout(5, 5));
+        start.setLayout(new BorderLayout(5,5));
 
         start.add(westpanel(), BorderLayout.WEST); //Logins im Westen hinzugefügt
         start.add(northpanel(), BorderLayout.NORTH);
-        //start.add(midpanel(), BorderLayout.CENTER);
-        start.add(artikelListe(), BorderLayout.CENTER); //todo wird im midpanel nicht angezeigt
+        start.add(midpanel(), BorderLayout.CENTER);
         start.add(eastpanel(), BorderLayout.EAST);
 
         return start;
@@ -109,10 +108,14 @@ public class StartGUI extends JFrame implements ActionListener {
         midpanel.setLayout(new FlowLayout());
         //midpanel.setPreferredSize(new Dimension(700, 700));
 
-        JScrollPane scrollPane = new JScrollPane(); //liste wird dem scrollpane hinzugefügt
-        scrollPane.add(artikelListe());
-        scrollPane.setPreferredSize(new Dimension(700, 500));
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(artikelListe());
         midpanel.add(scrollPane);
+
+        midpanel.add(artikelListe()); //todo warum ist das so visible aber ohne diesen part nicht mehr?
+
+
+
 
 
         return midpanel;
@@ -198,7 +201,7 @@ public class StartGUI extends JFrame implements ActionListener {
         registerfenster.setSize(300, 500);
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
         usernameTextfieldRegistrierung.setMaximumSize(usernameTextfieldRegistrierung.getPreferredSize());
-        passwotTextfieldRegistrierung.setMaximumSize(passwotTextfieldRegistrierung.getPreferredSize());
+        passwortTextfieldRegistrierung.setMaximumSize(passwortTextfieldRegistrierung.getPreferredSize());
         nachnameTextfield.setMaximumSize(nachnameTextfield.getPreferredSize());
         vornameTextfield.setMaximumSize(vornameTextfield.getPreferredSize());
         adressenTextfield.setMaximumSize(adressenTextfield.getPreferredSize());
@@ -209,7 +212,7 @@ public class StartGUI extends JFrame implements ActionListener {
         registerfenster.add(usernameTextfieldRegistrierung);
 
         registerfenster.add(new JLabel("Passwort: "));
-        registerfenster.add(passwotTextfieldRegistrierung);
+        registerfenster.add(passwortTextfieldRegistrierung);
 
         registerfenster.add(new JLabel("Nachname: "));
         registerfenster.add(nachnameTextfield);
@@ -319,7 +322,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
                 try {
                     String username = usernameTextfieldRegistrierung.getText();
-                    String passwort = passwotTextfieldRegistrierung.getText();
+                    String passwort = passwortTextfieldRegistrierung.getText();
                     String nachname = nachnameTextfield.getText();
                     String vorname = vornameTextfield.getText();
                     String adresse = adressenTextfield.getText();
