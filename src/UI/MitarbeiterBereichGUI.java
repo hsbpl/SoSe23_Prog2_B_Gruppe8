@@ -432,6 +432,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
         }
 
+        //todo sortierte ausgabe der Artikel
 
         switch (operation) {
             case AUSLOGGEN:
@@ -505,8 +506,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     int artikelnummer = Integer.parseInt(artikelnummerTextfieldEinzelartikelAnlegen.getText());
                     int bestand = Integer.parseInt(bestandTextfieldEinzelartikelAnlegen.getText());
                     double preis = Double.parseDouble(preisTextfieldEinzelartikelAnlegen.getText());
-                    eshop.artHinzufügen(new Artikel(bezeichnung, artikelnummer, bestand, preis), eingeloggterMitarbeiter);
+                    Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, preis);
+                    eshop.artHinzufügen(a, eingeloggterMitarbeiter);
                     popup.dispose();
+                    System.out.println("Erstellt: "+a);
                 } catch (NumberFormatException e) {
                     System.err.println("*********************************************************************************\n" +
                             "Ungültige Eingabe in einem der Zahlenfelder. Bitte achten Sie bei den Zahlen darauf mit ein “.“ zu verwenden. \n" +

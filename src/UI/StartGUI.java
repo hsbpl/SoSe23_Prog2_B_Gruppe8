@@ -108,9 +108,11 @@ public class StartGUI extends JFrame implements ActionListener {
         midpanel.setLayout(new FlowLayout());
         //midpanel.setPreferredSize(new Dimension(700, 700));
 
+
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(artikelListe());
         midpanel.add(scrollPane);
+
 
         midpanel.add(artikelListe()); //todo warum ist das so visible aber ohne diesen part nicht mehr?
 

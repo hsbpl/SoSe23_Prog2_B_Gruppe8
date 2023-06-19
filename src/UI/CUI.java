@@ -487,7 +487,7 @@ public class CUI {
             default:
                 System.out.println(
                         "*********************************************************************************\n" +
-                                "Ungültige Eingabe! Bitte wählen Sie zwischen Option '1', '2', '3','4', '5', '6', '7' oder '0'. \n" +
+                                "Ungültige Eingabe!. \n" +
                                 "*********************************************************************************\n");
                 artbeitsMenue(m);
 

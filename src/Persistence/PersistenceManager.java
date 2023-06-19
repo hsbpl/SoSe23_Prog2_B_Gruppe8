@@ -4,19 +4,14 @@ package Persistence;
 import Exceptions.ArtikelExistiertBereitsException;
 import Exceptions.EreignisExistiertBereitsException;
 import Exceptions.UserExistiertBereitsException;
-import Exceptions.UserExistiertNichtException;
 import ValueObjekt.Artikel;
 import ValueObjekt.Ereignis;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 public interface PersistenceManager {
 
