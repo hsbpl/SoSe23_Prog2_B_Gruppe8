@@ -294,7 +294,7 @@ public class CUI {
                 break;
 
             case 2:
-                eshop.artikelAlphabetischAusgeben();
+                eshop.artikelAlphabetischAusgebenString();
                 System.out.println(eshop.artikelListen());
                 artbeitsMenue(m);
                 break;

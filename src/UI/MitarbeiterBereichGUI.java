@@ -50,8 +50,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JButton anlegenEinzelartikelAbschließen = new JButton("Neuen artikel anlegen");
     private JButton anlegenMassengutArtikelAbschliessen = new JButton("Neuen artikel anlegen");
     private JComboBox<String> listenauswahl;
+    private JComboBox <String> artikelausgabe;
     private JDialog popup;
     private JDialog listpopup;
+    JPanel midpanel;
+    JScrollPane scrollPaneArtikelliste;
 
   ;
 
@@ -139,14 +142,20 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
     private JPanel midpanel() {
-        JPanel midpanel = new JPanel();
+        midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new FlowLayout());
         //midpanel.setPreferredSize(new Dimension(500, 700));
 
-        JScrollPane scrollPane = new JScrollPane(artikelListe()); //liste wird dem scrollpane hinzugefügt
-        scrollPane.setPreferredSize(new Dimension(700, 500));
-        midpanel.add(scrollPane);
+        String[] listen = {"Ausgabenoption auswählen", "Alphabetische Ausgabe", "Nummerische Ausgabe"};
+        artikelausgabe = new JComboBox<>(listen);
+        artikelausgabe.addActionListener(this);
+
+        scrollPaneArtikelliste = new JScrollPane(artikelListe()); //liste wird dem scrollpane hinzugefügt
+        scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
+
+        midpanel.add(scrollPaneArtikelliste);
+        midpanel.add(artikelausgabe);
 
         return midpanel;
     }
@@ -350,6 +359,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     }
 
+    private JList<String> artikelListeAlphabetischausgeben(){
+        JList<String> artikelListe = new JList(eshop.artikelSortierenNachBezeichnung().toArray());
+        return artikelListe;
+    }
+
     private JList<String> artikelListe() {
 
         JList<String> artikelListe = new JList(eshop.getAlleArtikel().toArray());
@@ -380,6 +394,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN,
         ARTIKELANLEGEN_ABSCHLIESSEN,
+
+        ARTIKELLISTEAUGEBEN_ALPHABETISCH,
+
+        ARTIKELLISTEAUGEBEN_ARTIKElNUMMER,
 
         KUNDENLISTEAUSGEBEN,
         MITARBEITERLISTEAUSGEBEN,
@@ -430,6 +448,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         } else if (listenauswahl.getSelectedItem() == "Ereignisse") {
             operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
+        }else if(artikelausgabe.getSelectedItem() == "Alphabetische Ausgabe"){
+            operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ALPHABETISCH;
+        }else if(artikelausgabe.getSelectedItem() == "Nummerische Ausgabe"){
+            operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ARTIKElNUMMER;
         }
 
         //todo sortierte ausgabe der Artikel
@@ -620,6 +642,16 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                                     "*********************************************************************************\n");
                 }
                 break;
+            case ARTIKELLISTEAUGEBEN_ALPHABETISCH:
+                scrollPaneArtikelliste.remove(artikelListe()); // TODO es funktioniert aber erst wenn man cui wechselt
+                scrollPaneArtikelliste.add(artikelListeAlphabetischausgeben());
+                //popup(artikelListeAlphabetischausgeben(), "Listenprobe");
+                System.out.println("alphabetische gewählt");
+                break;
+            case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
+                System.out.println("nummerishc gewählt");
+                break;
+
             default:
                 //TODO fehlerbehebung - wnn operation null ist zb oder  textfelder leer sind
                 break;

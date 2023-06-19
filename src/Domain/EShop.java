@@ -1,13 +1,11 @@
 package Domain;
 
 import Exceptions.*;
-import Persistence.PersistenceManager;
 import ValueObjekt.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import Persistence.FilePersistenceManager;
+
 import ValueObjekt.Artikel;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Kunde;
@@ -107,8 +105,12 @@ public class EShop {
         throw new ArtikelExistiertNichtException();}
     }
 
-    public String artikelAlphabetischAusgeben(){
-        return av.artikelSortierenNachBezeichnung();
+    public String artikelAlphabetischAusgebenString(){
+        return av.artikelSortierenNachBezeichnungString();
+    }
+
+    public List<Artikel>  artikelSortierenNachBezeichnung(){
+       return av.artikelSortierenNachBezeichnung();
     }
 
     public String artikelNachArtikelnummerGeordnetAusgeben(){

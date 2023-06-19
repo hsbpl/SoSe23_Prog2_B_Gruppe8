@@ -97,16 +97,23 @@ public class Artikelverwaltung {
         return false;
     }
 
-    public String artikelSortierenNachBezeichnung() {
+    public List<Artikel> artikelSortierenNachBezeichnung() {
 
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getBezeichnung));
+
+        return artikelListe;
+
+    }
+    public String artikelSortierenNachBezeichnungString(){
+        List<Artikel> geordneteListe = artikelSortierenNachBezeichnung();
         String s ="";
-        for (Artikel artikel : artikelListe) {
+        for (Artikel artikel : geordneteListe) {
             s +=  artikel.toString() + "\n";
         }
         return s;
-
     }
+
+
 
     public  String ereignisseSortiertNachDatum(){
         Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum));
