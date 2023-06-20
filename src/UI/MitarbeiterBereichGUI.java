@@ -24,8 +24,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     private Mitarbeiter eingeloggterMitarbeiter;
     private JButton zurückButton = new JButton("Ausloggen");
-    private JButton massengutArtikelAnlegenPopup = new JButton(" Massengutartikel anlegen ");
-    private JButton artikelAnlegenPopup = new JButton("  Einzelartikel anlegen   ");
+    private JButton massengutArtikelAnlegenPopupButton = new JButton(" Massengutartikel anlegen ");
+    private JButton artikelAnlegenPopupButton = new JButton("  Einzelartikel anlegen   ");
     private JButton mitarbeiterkontoAnlegen = new JButton("Registrieren");
     private JTextField usernameTextfield = new JTextField(textfieldSize);
     private JTextField passwotTextfield = new JTextField(textfieldSize);
@@ -92,7 +92,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         add(mitarbeiterFenster);
     }
 
-    private Component northpanel() {
+    private JPanel northpanel() {
         JPanel northpanel = new JPanel();
         northpanel.setVisible(true);//Jpanel ist sichtbar
         northpanel.setLayout(new FlowLayout()); // sorgt dafür das alles auf der Y-Achse liegt
@@ -103,7 +103,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         registerButton.addActionListener(this);
         northpanel.add(registerButton, BorderLayout.EAST);
-//TODO HIER HAST DU DIE BUTTON IN DEN OSTEN OBEN GELEGT SCHAU OB ES GELUNNGEN IST
+
         return northpanel;
 
     }
@@ -120,13 +120,13 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         westpanel.add(bestandVerringern());
 
 
-        artikelAnlegenPopup.addActionListener(this);
-        massengutArtikelAnlegenPopup.addActionListener(this);
+        artikelAnlegenPopupButton.addActionListener(this);
+        massengutArtikelAnlegenPopupButton.addActionListener(this);
 
         westpanel.add(Box.createVerticalStrut(60));
-        westpanel.add(artikelAnlegenPopup);
+        westpanel.add(artikelAnlegenPopupButton);
         westpanel.add(Box.createVerticalStrut(20));
-        westpanel.add(massengutArtikelAnlegenPopup);
+        westpanel.add(massengutArtikelAnlegenPopupButton);
 
         return westpanel;
     }
@@ -145,7 +145,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new FlowLayout());
-        //midpanel.setPreferredSize(new Dimension(500, 700));
+
 
         String[] listen = {"Ausgabenoption auswählen", "Alphabetische Ausgabe", "Nummerische Ausgabe"};
         artikelausgabe = new JComboBox<>(listen);
@@ -188,24 +188,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         return listpopup;
     }
-
-    /*
-    private Component datensichernPopup(){
-        int datensichern = JOptionPane.showConfirmDialog(null, "Daten sichern?");
-        if(datensichern == 0){
-
-        }
-
-        datensichern = new JOptionPane(); //todo option pane zum speichern von änderungen
-        datensichern.setVisible(true);
-        datensichern.add(new JLabel("Wollen sie die änderungen Speichern?"));
-
-        return datensichern;
-    }
-
-     */
-
-
 
     private Component registrierung() {
         JPanel registerfenster = new JPanel();
@@ -344,7 +326,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
 
     private JComboBox<String> listenCombobox() {
-        String[] listen = {"Auszugebende Liste Auswählen", "Registrierte Mitarbeiter", "Registrierte Kunden", "Ereignisse"};
+        String[] listen = { "Registrierte Mitarbeiter ausgeben", "Registrierte Kunden ausgeben", "Ereignisse ausgeben"};
         listenauswahl = new JComboBox<>(listen);
         listenauswahl.addActionListener(this);
 
@@ -429,13 +411,13 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         } else if (actionEvent.getSource() == anlegenButtonErhöhen) {
             operation = MitarbeiterBereichGUI.operation.BESTANDSERHÖHUNG;
 
-        } else if (actionEvent.getSource() == artikelAnlegenPopup) {
+        } else if (actionEvent.getSource() == artikelAnlegenPopupButton) {
             operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_POPUP;
 
         } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
             operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_ABSCHLIESSEN;
 
-        } else if (actionEvent.getSource() == massengutArtikelAnlegenPopup) {
+        } else if (actionEvent.getSource() == massengutArtikelAnlegenPopupButton) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_POPUP;
 
         } else if (actionEvent.getSource() == anlegenMassengutArtikelAbschliessen) {

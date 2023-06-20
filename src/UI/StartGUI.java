@@ -37,7 +37,7 @@ public class StartGUI extends JFrame implements ActionListener {
     private JButton neuenKundenAnlegenButton = new JButton("Registrieren");
     private JDialog popup;
     JPanel midpanel;
-
+    JList artikelListe;
     JScrollPane scrollPane;
 
     public StartGUI() throws IOException {
@@ -46,19 +46,17 @@ public class StartGUI extends JFrame implements ActionListener {
         eshop = new EShop(datei);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        this.setLocation(0, 500);
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
 
-        add(startpage());
+        startpage();
 
     }
 
-    private Component startpage() {
+    private void startpage() {
         JPanel start = new JPanel(); //neues Jpanel
         start.setVisible(true);//Jpanel ist sichtbar
-        start.setSize(300, 300);
         start.setLayout(new BorderLayout(5,5));
 
         start.add(westpanel(), BorderLayout.WEST); //Logins im Westen hinzugefügt
@@ -66,13 +64,12 @@ public class StartGUI extends JFrame implements ActionListener {
         start.add(midpanel(), BorderLayout.CENTER);
         start.add(eastpanel(), BorderLayout.EAST);
 
-        return start;
+        add(start);
     }
 
     private JPanel northpanel(){
         JPanel northpanel = new JPanel();
         northpanel.setVisible(true);//Jpanel ist sichtbar
-        northpanel.setSize(400, 400);
         northpanel.setLayout(new FlowLayout());
         northpanel.setPreferredSize(new Dimension(200, 100));
 
@@ -104,29 +101,30 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
+
+    private JPanel eastpanel(){
+        JPanel eastpanel = new JPanel();
+        eastpanel.setVisible(true);
+        eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS));
+
+        return eastpanel;
+    }
+
     private JPanel midpanel() {
+
         midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
-        midpanel.setLayout(new FlowLayout());
-        //midpanel.setPreferredSize(new Dimension(700, 700));
+        midpanel.setLayout(new BoxLayout(midpanel, BoxLayout.Y_AXIS));
 
+       // scrollPane = new JScrollPane(artikelListe());
+        //scrollPane.setPreferredSize(new Dimension(700, 500));
 
-        scrollPane = new JScrollPane(artikelListe());
-        scrollPane.setPreferredSize(new Dimension(700, 500));
-        midpanel.add(scrollPane);
+        //midpanel.add(scrollPane);
 
 
         midpanel.add(artikelListe()); //todo warum ist das so visible aber ohne diesen part nicht mehr?
 
         return midpanel;
-    }
-
-    private JPanel eastpanel(){
-        JPanel eastpanel = new JPanel();
-        eastpanel.setVisible(true);//Jpanel ist sichtbar
-        eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS));
-
-        return eastpanel;
     }
 
 
@@ -233,11 +231,13 @@ public class StartGUI extends JFrame implements ActionListener {
 
     private JList artikelListe() {
 
-        JList artikelListe = new JList();
+        artikelListe = new JList();
         artikelListe.setListData(eshop.getAlleArtikel().toArray());
 
         return artikelListe;
     }
+
+
 
 
     private enum Loginverfahren {
@@ -301,7 +301,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
 
                     MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
-                    //remove(hinzufügenArtikelListeStart());
+
                     this.dispose();
 
                     //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
@@ -339,7 +339,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     this.dispose();
 
                     popup.dispose();
-                    System.out.println(kunde);
+                    System.err.println(kunde);
                     //}
                 } catch (UserExistiertBereitsException e) {
                     System.err.println(
