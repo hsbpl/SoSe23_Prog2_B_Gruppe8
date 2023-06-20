@@ -2,7 +2,7 @@ package UI;
 
 import java.io.IOException;
 
-public class GUI { //todo Scrollpane für artikelliste im start, Listendopplung verhindern,
+public class GUI { //Listendopplung verhindern,
 
     public GUI(){
     }

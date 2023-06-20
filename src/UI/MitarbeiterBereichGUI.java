@@ -334,7 +334,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
 
-    //todo die listen machen probleme, evtl listen disposen beim öfnen eines neuen fensters vorm öffnen
+
 
     private JList<String> kundenliste() { //abändern
 
@@ -392,7 +392,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         MITARBEITERLISTEAUSGEBEN,
         EREIGNISAUSGEBEN,
         MITARBEITER_REGISTRIEREN_POPUP,
-        REGISTRIERING_ABSCHLIESSEN,
+        REGISTRIERUNG_ABSCHLIESSEN,
+        DEFAULT_ARTIKELAUSGABE
 
 
     }
@@ -427,15 +428,15 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             operation = MitarbeiterBereichGUI.operation.MITARBEITER_REGISTRIEREN_POPUP;
 
         } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
-            operation = MitarbeiterBereichGUI.operation.REGISTRIERING_ABSCHLIESSEN;
+            operation = MitarbeiterBereichGUI.operation.REGISTRIERUNG_ABSCHLIESSEN;
 
-        } else if (listenauswahl.getSelectedItem() == "Registrierte Mitarbeiter") {
-            operation = MitarbeiterBereichGUI.operation.MITARBEITERLISTEAUSGEBEN;
+        } else if (listenauswahl.getSelectedItem() == "Registrierte Mitarbeiter ausgeben") {
+            operation = operation.MITARBEITERLISTEAUSGEBEN;
 
-        } else if (listenauswahl.getSelectedItem() == "Registrierte Kunden") {
+        } else if (listenauswahl.getSelectedItem() == "Registrierte Kunden ausgeben") {
             operation = MitarbeiterBereichGUI.operation.KUNDENLISTEAUSGEBEN;
 
-        } else if (listenauswahl.getSelectedItem() == "Ereignisse") {
+        } else if (listenauswahl.getSelectedItem() == "Ereignisse ausgeben") {
             operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
         }else if(artikelausgabe.getSelectedItem() == "Alphabetische Ausgabe"){
             operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ALPHABETISCH;
@@ -443,7 +444,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ARTIKElNUMMER;
         }
 
-        //todo sortierte ausgabe der Artikel
+
 
         switch (operation) {
             case AUSLOGGEN:
@@ -577,9 +578,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     double preis = Double.parseDouble(preisTextfieldMassengutartikelAnlegen.getText());
                     int zumKaufVerfügbar = Integer.parseInt(verkäuflicheMengefield.getText());
 
-                    eshop.massengutArtikelHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), eingeloggterMitarbeiter);
+                    Massengutartikel m = new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar);
+                    eshop.massengutArtikelHinzufügen(m, eingeloggterMitarbeiter);
                     eshop.schreibeArtikel();
                     eshop.schreibeEreignis();
+                    System.out.println("Erstellt: "+m);
                     popup.dispose();
                 } catch (NumberFormatException e) {
                     System.err.println("*********************************************************************************\n" +
@@ -615,7 +618,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 break;
             case MITARBEITERLISTEAUSGEBEN:
                 listpopup(mitarbeiterliste(), "Registrierte Mitarbeiter");
-                ;
 
                 break;
             case EREIGNISAUSGEBEN:
@@ -625,7 +627,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             case MITARBEITER_REGISTRIEREN_POPUP:
                 popup(registrierung(), "Neuen Mitarbeiter Registrieren");
                 break;
-            case REGISTRIERING_ABSCHLIESSEN:
+            case REGISTRIERUNG_ABSCHLIESSEN:
 
                 try {
 
@@ -635,8 +637,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     String vorname = vornameTextfield.getText();
 
                     Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
-                    System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
+                    eshop.mitarbeiterRegistrieren(neuerMitarbeiter);
 
+                    System.out.println("Registriert: "+neuerMitarbeiter);
                     eshop.schreibeMitarbeiter();
                     popup.dispose();
                 } catch (UserExistiertBereitsException e) {
@@ -662,11 +665,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
                 artikelListe.setListData(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
 
-
                 break;
 
             default:
-                //TODO fehlerbehebung - wnn operation null ist zb oder  textfelder leer sind
+
                 break;
         }
     }

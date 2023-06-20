@@ -51,7 +51,6 @@ public class Artikelverwaltung {
         pm.schreibeEreignisListe(ereignisse, datei);
     }
 
-    //todo Artikel die bereits existieren werden angelegt
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
         if (artikel.getBezeichnung().isEmpty()) {
             throw new LeeresTextfieldException();

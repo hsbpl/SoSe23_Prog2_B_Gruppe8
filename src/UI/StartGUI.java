@@ -47,10 +47,11 @@ public class StartGUI extends JFrame implements ActionListener {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
 
         startpage();
+
+        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
 
     }
 
@@ -116,13 +117,7 @@ public class StartGUI extends JFrame implements ActionListener {
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new BoxLayout(midpanel, BoxLayout.Y_AXIS));
 
-       // scrollPane = new JScrollPane(artikelListe());
-        //scrollPane.setPreferredSize(new Dimension(700, 500));
-
-        //midpanel.add(scrollPane);
-
-
-        midpanel.add(artikelListe()); //todo warum ist das so visible aber ohne diesen part nicht mehr?
+        midpanel.add(artikelListe());
 
         return midpanel;
     }
@@ -227,14 +222,16 @@ public class StartGUI extends JFrame implements ActionListener {
         return registerfenster;
     }
 
-    //todo die listen machen probleme
 
-    private JList artikelListe() {
 
-        artikelListe = new JList();
+    private JScrollPane artikelListe() {
+        artikelListe = new JList<>();
         artikelListe.setListData(eshop.getAlleArtikel().toArray());
 
-        return artikelListe;
+        JScrollPane scrollPane = new JScrollPane(artikelListe);
+        scrollPane.setPreferredSize(new Dimension(700, 500));
+
+        return scrollPane;
     }
 
 
@@ -358,7 +355,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
 
             default:
-                //TODO fehlerbehebung
+
                 break;
         }
 
