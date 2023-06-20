@@ -5,12 +5,13 @@ import java.util.Date;
 
 public class Ereignis {
     // Datum als Atribut
-    private Date datum = new Date();
+    private Date datum;
     private int anzahl;
     private Artikel artikel;
     private User user;
     private Enum ereignistyp;
 
+    private SimpleDateFormat format;
     private int aktualisierterBestand;
 
 
@@ -20,7 +21,8 @@ public class Ereignis {
         this.user = user;
         this.ereignistyp = ereignistyp;
         this.aktualisierterBestand = aktualisierterBestand;
-
+        this.datum = new Date();
+        this.format = new SimpleDateFormat("MMMM/dd/Y HH:mm");
     }
     public int getAnzahl(){return anzahl;}
     public Artikel getArtikel(){return artikel;}
@@ -34,7 +36,7 @@ public class Ereignis {
 
     //TODO Bestand wird immer Aktuallisiert, statt das er den alten Bestand anzeigt, überlegen ob das abgeändert werden müsste)
     public String toString(){
-        return  datum.toString() + "\n"+
+        return  format.format(datum) + "\n"+
                 anzahl +" durchgeführt über " + ereignistyp.toString() +"; "+
                 user + "Aktueller Bestand: " + artikel.getBezeichnung()+ " \n"+
                 "Aktuellster Stand: " + aktualisierterBestand

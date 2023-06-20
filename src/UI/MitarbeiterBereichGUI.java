@@ -147,7 +147,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         midpanel.setLayout(new FlowLayout());
 
 
-        String[] listen = {"Ausgabenoption auswählen", "Alphabetische Ausgabe", "Nummerische Ausgabe"};
+        String[] listen = { "Alphabetische Ausgabe", "Nummerische Ausgabe"};
         artikelausgabe = new JComboBox<>(listen);
         artikelausgabe.addActionListener(this);
 
@@ -438,6 +438,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         } else if (listenauswahl.getSelectedItem() == "Ereignisse ausgeben") {
             operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
+
         }else if(artikelausgabe.getSelectedItem() == "Alphabetische Ausgabe"){
             operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ALPHABETISCH;
         }else if(artikelausgabe.getSelectedItem() == "Nummerische Ausgabe"){
