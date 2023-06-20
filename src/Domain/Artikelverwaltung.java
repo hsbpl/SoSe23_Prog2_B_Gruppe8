@@ -5,11 +5,7 @@ import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
 import ValueObjekt.*;
 import ValueObjekt.Enum;
-
-
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.text.ParseException;
 import java.util.*;
 
 
@@ -246,14 +242,3 @@ public class Artikelverwaltung {
     }
 
 }
-
-
-/* Soll ich ArtikelLoeschen drin lassen? wäre an sich logisch es zu behalten für die main.
-        //die Methoden "artikelAnlegen","artikelBearbeiten" ermöglichen uns das Hinzufügen, Bearbeiten von Artikeln aus der Datenbank.
-
-
-//Die Methoden "sortieren nach Bezeichnung und sortieren nach Artikelnummer" sortieren die Artikel in der Datenbank je nach Bezeichnung und Artikelnummer.
-
-
-//"artikel Ausgeben" gibt alle artikel in der Datenbank aus.
-*/

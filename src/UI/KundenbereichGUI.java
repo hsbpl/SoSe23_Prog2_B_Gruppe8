@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.util.Map;
 
 
-
-
-
 public class KundenbereichGUI extends JFrame {
     private EShop eShop;
     private Kunde eingeloggterKunde;
@@ -88,7 +85,7 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
-// Laden aller Artikel aus dem EShop
+        // Laden aller Artikel aus dem EShop
         for (Artikel artikel : eShop.getAlleArtikel()) {
             artikelListModel.addElement(artikel.toString());
         }
@@ -118,11 +115,7 @@ public class KundenbereichGUI extends JFrame {
         artikelKaufenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Dialogbox zum Kauf eines Artikels anzeigen
-                // Hier können Sie die Logik zum Kauf eines Artikels implementieren
-                // zum Beispiel: Artikel auswählen, Menge festlegen, Bestellung abschließen usw.
-                // Nach dem Kauf können Sie den gekauften Artikel zum Warenkorb hinzufügen
-                // und die Anzeige aktualisieren.
+
             }
         });
 
@@ -142,6 +135,7 @@ public class KundenbereichGUI extends JFrame {
 
         // Hinzufügen des ActionListener für den "Warenkorb anzeigen"-Button
         warenkorbButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Dialogbox zum Anzeigen des Warenkorbs anzeigen

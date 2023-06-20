@@ -7,9 +7,6 @@ import ValueObjekt.*;
 import ValueObjekt.Enum;
 
 import java.io.IOException;
-import java.net.StandardSocketOptions;
-import java.sql.SQLOutput;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 

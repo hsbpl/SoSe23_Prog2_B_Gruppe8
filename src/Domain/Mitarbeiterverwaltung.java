@@ -1,20 +1,14 @@
 package Domain;
 
-import Exceptions.ArtikelExistiertBereitsException;
 import Exceptions.LeeresTextfieldException;
 import Exceptions.UserExistiertBereitsException;
 import Persistence.FilePersistenceManager;
 import Persistence.PersistenceManager;
-import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
-import ValueObjekt.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class Mitarbeiterverwaltung {
