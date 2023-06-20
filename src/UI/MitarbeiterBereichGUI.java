@@ -502,12 +502,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                             "*********************************************************************************\n");
 
                 } catch (LeeresTextfieldException e) {
-                    System.out.println("*********************************************************************************\n" +
+                    System.err.println("*********************************************************************************\n" +
                             "Bezeichnungstextfeld ist leer.\n" +
                             "*********************************************************************************\n");
 
                 } catch (NumberFormatException e) {
-                    System.out.println("*********************************************************************************\n" +
+                    System.err.println("*********************************************************************************\n" +
                             "Nummerneingabe falsch.\n" +
                             "*********************************************************************************\n");
                 } catch (IOException e) {
@@ -665,7 +665,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     eshop.schreibeMitarbeiter();
                     popup.dispose();
                 } catch (UserExistiertBereitsException e) {
-                    System.out.println(
+                    System.err.println(
                             "*********************************************************************************\n" +
                                     "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                                     "*********************************************************************************\n");
