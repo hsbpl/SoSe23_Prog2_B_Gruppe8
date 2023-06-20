@@ -55,6 +55,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JDialog listpopup;
     JPanel midpanel;
     JScrollPane scrollPaneArtikelliste;
+    //JOptionPane jOptionPane = new JOptionPane(null, "Daten sichern?","Title", JOptionPane.YES_NO_OPTION);
 
   ;
 
@@ -191,6 +192,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     /*
     private Component datensichernPopup(){
+        int datensichern = JOptionPane.showConfirmDialog(null, "Daten sichern?");
+        if(datensichern == 0){
+
+        }
+
         datensichern = new JOptionPane(); //todo option pane zum speichern von änderungen
         datensichern.setVisible(true);
         datensichern.add(new JLabel("Wollen sie die änderungen Speichern?"));
@@ -199,6 +205,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
      */
+
+
 
     private Component registrierung() {
         JPanel registerfenster = new JPanel();
@@ -262,6 +270,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
 
         anlegen.add(Box.createVerticalStrut(50));
+
 
         bezeichnungsTextfieldMassengutartikelAnlegen.setMaximumSize(bezeichnungsTextfieldMassengutartikelAnlegen.getPreferredSize());
         artikelnummerTextfieldMassengutartikelAnlegen.setMaximumSize(artikelnummerTextfieldMassengutartikelAnlegen.getPreferredSize());
@@ -361,6 +370,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     private JList<String> artikelListeAlphabetischausgeben(){
         JList<String> artikelListe = new JList(eshop.artikelSortierenNachBezeichnung().toArray());
+        return artikelListe;
+    }
+
+    private JList<String> artikelListeNummerischausgeben(){
+        JList<String> artikelListe = new JList(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
         return artikelListe;
     }
 
@@ -473,6 +487,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     int menge = Integer.parseInt(veringerungsTextfield.getText());
                     eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
 
+                    eshop.schreibeArtikel();
+                    eshop.schreibeEreignis();
+
+
                 } catch (ArtikelExistiertNichtException e) {
                     System.err.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
@@ -492,6 +510,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     System.out.println("*********************************************************************************\n" +
                             "Nummerneingabe falsch.\n" +
                             "*********************************************************************************\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
                 break;
 
@@ -501,6 +521,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     String artikelname = bezeichnungsTextfieldErhöhung.getText();
                     int menge = Integer.parseInt(erhöhungTextfield.getText());
                     eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
+
+                    eshop.schreibeArtikel();
+                    eshop.schreibeEreignis();
+
                 } catch (ArtikelExistiertNichtException e) {
                     System.err.println("*********************************************************************************\n" +
                             "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n" +
@@ -513,6 +537,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     System.err.println("*********************************************************************************\n" +
                             "Nummerneingabe falsch.\n" +
                             "*********************************************************************************\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
 
                 break;
@@ -530,6 +556,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     double preis = Double.parseDouble(preisTextfieldEinzelartikelAnlegen.getText());
                     Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, preis);
                     eshop.artHinzufügen(a, eingeloggterMitarbeiter);
+                    eshop.schreibeEreignis();
+                    eshop.schreibeArtikel();
                     popup.dispose();
                     System.out.println("Erstellt: "+a);
                 } catch (NumberFormatException e) {
@@ -557,6 +585,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                                     "Bitte füllen Sie alle Textfelder aus.\n" +
                                     "*********************************************************************************\n");
 
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
                 break;
             case MASSENGUTARTIKELANLEGEN_POPUP:
@@ -573,6 +603,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     int zumKaufVerfügbar = Integer.parseInt(verkäuflicheMengefield.getText());
 
                     eshop.massengutArtikelHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), eingeloggterMitarbeiter);
+                    eshop.schreibeArtikel();
+                    eshop.schreibeEreignis();
                     popup.dispose();
                 } catch (NumberFormatException e) {
                     System.err.println("*********************************************************************************\n" +
@@ -597,6 +629,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                             "*********************************************************************************\n" +
                                     "\"Bitte füllen Sie alle Textfelder aus.\\n\"" +
                                     "*********************************************************************************\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
 
                 break;
@@ -628,6 +662,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                     Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
                     System.out.println(eshop.mitarbeiterRegistrieren(neuerMitarbeiter));
 
+                    eshop.schreibeMitarbeiter();
                     popup.dispose();
                 } catch (UserExistiertBereitsException e) {
                     System.out.println(
@@ -640,16 +675,27 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                             "*********************************************************************************\n" +
                                     "Bitte füllen Sie alle Textfelder aus.\n" +
                                     "*********************************************************************************\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
                 break;
             case ARTIKELLISTEAUGEBEN_ALPHABETISCH:
-                scrollPaneArtikelliste.remove(artikelListe()); // TODO es funktioniert aber erst wenn man cui wechselt
+                scrollPaneArtikelliste.removeAll(); // TODO es funktioniert aber erst wenn man cui wechselt
                 scrollPaneArtikelliste.add(artikelListeAlphabetischausgeben());
+
+                //scrollPaneArtikelliste.revalidate(); // Refresh the panel to reflect the changes
+                //scrollPaneArtikelliste.repaint();
                 //popup(artikelListeAlphabetischausgeben(), "Listenprobe");
                 System.out.println("alphabetische gewählt");
                 break;
             case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
+                scrollPaneArtikelliste.removeAll(); // TODO es funktioniert aber erst wenn man cui wechselt
+                scrollPaneArtikelliste.add(artikelListeNummerischausgeben());
+                //scrollPaneArtikelliste.revalidate(); // Refresh the panel to reflect the changes
+                //scrollPaneArtikelliste.repaint();
+
                 System.out.println("nummerishc gewählt");
+
                 break;
 
             default:

@@ -333,6 +333,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     eshop.kundenRegistrieren(kunde);
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
 
+                    eshop.schreibeKunde();
                     KundenbereichGUI k = new KundenbereichGUI(kunde, w);
 
                     this.dispose();

@@ -113,7 +113,11 @@ public class EShop {
        return av.artikelSortierenNachBezeichnung();
     }
 
-    public String artikelNachArtikelnummerGeordnetAusgeben(){
+    public String artikelNachArtikelnummerGeordnetAusgebenString(){
+        return av.artikelSortierenNachArtikelnummerString();
+    }
+
+    public List<Artikel> artikelNachArtikelnummerGeordnetAusgeben(){
         return av.artikelSortierenNachArtikelnummer();
     }
 

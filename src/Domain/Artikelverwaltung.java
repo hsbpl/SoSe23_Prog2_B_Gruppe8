@@ -120,10 +120,15 @@ public class Artikelverwaltung {
         return s;
     }
 
-    public String artikelSortierenNachArtikelnummer() {
+    public List<Artikel> artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));
+
+        return artikelListe;
+    }
+
+    public String artikelSortierenNachArtikelnummerString(){
         String s ="";
-        for (Artikel artikel : artikelListe) {
+        for (Artikel artikel : artikelSortierenNachArtikelnummer()) {
             s +=  artikel.toString() + "\n";
         }
         return s;

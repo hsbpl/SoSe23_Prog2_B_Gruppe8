@@ -299,7 +299,7 @@ public class CUI {
                 break;
 
             case 3:
-                System.out.println(eshop.artikelNachArtikelnummerGeordnetAusgeben());
+                System.out.println(eshop.artikelNachArtikelnummerGeordnetAusgebenString());
                 artbeitsMenue(m);
                 break;
 
