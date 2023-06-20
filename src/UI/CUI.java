@@ -83,7 +83,6 @@ public class CUI {
                     String adr = scan.next();
                     Kunde kunde = new Kunde(uname, pasw, nachname, vorname,adr);
                     System.out.println(eshop.kundenRegistrieren(kunde));
-                    System.out.println("WCOOOL");
                     eshop.schreibeKunde();
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
                     eshopMenue(kunde, w);

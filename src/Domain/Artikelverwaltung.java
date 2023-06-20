@@ -23,7 +23,6 @@ public class Artikelverwaltung {
     //liste in den Constructor
 
 
-
     public Artikelverwaltung() {
     }
 
@@ -40,62 +39,63 @@ public class Artikelverwaltung {
     public void liesDatenEreignisse(String datei) throws IOException {
         try {
             ereignisse = pm.leseEreignisList(datei);
-        } catch ( EreignisExistiertBereitsException e) {
+        } catch (EreignisExistiertBereitsException e) {
             throw new RuntimeException(e);
         }
 
     }
 
 
-    public void schreibeDaten(String datei) throws IOException{
+    public void schreibeDaten(String datei) throws IOException {
         pm.schreibeArtikelListe(artikelListe, datei);
     }
 
-    public void schreibeDatenEreignisse(String datei) throws IOException{
-        System.out.println("EY " +ereignisse);
+    public void schreibeDatenEreignisse(String datei) throws IOException {
+        System.out.println("EY " + ereignisse);
         pm.schreibeEreignisListe(ereignisse, datei);
     }
 
     //todo Artikel die bereits existieren werden angelegt
     public void artikelHinzufuegen(Artikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
-        if (artikel.getBezeichnung().isEmpty()){
+        if (artikel.getBezeichnung().isEmpty()) {
             throw new LeeresTextfieldException();
-        }else{
-        if (istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
-            artikelListe.add(artikel);
-            System.out.println(artikelListe);
-            System.out.println("Wie oft wird das hier gemacht?");
-            Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
-            ereignisse.add(e);
         } else {
-            throw new ArtikelExistiertBereitsException();
-        }}
-    }
-    public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException{
-
-        if (artikel.getBezeichnung().isEmpty()){
-            throw new LeeresTextfieldException();
-        }else{
-        if(istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung())) {
-            artikelListe.add(artikel);
-            Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
-            ereignisse.add(e);
-        } else {
-            throw new ArtikelExistiertBereitsException();
-        }}
-    }
-
-
-    public static boolean istArtikelNichtVorhanden(Artikel artikel, ArrayList<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
-        for (Artikel a : liste) {
-            if (a.getBezeichnung() == artikel.getBezeichnung() || a.getArtikelNummer() == artikel.getArtikelNummer()) {
-                throw new ArtikelExistiertBereitsException();
+            if (!(istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung()))) {
+                artikelListe.add(artikel);
+                System.out.println(artikelListe);
+                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+                ereignisse.add(e);
             } else {
-                return true;
+                throw new ArtikelExistiertBereitsException();
             }
         }
-        return false;
     }
+
+    public void massengutArtikelHinzufuegen(Massengutartikel artikel, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
+
+        if (artikel.getBezeichnung().isEmpty()) {
+            throw new LeeresTextfieldException();
+        } else {
+            System.out.println(istArtikelNichtVorhanden(artikel, artikelListe, artikel.getBezeichnung()));
+            if (!(istArtikelNichtVorhanden(artikel, artikelListe, artikel.getBezeichnung()))) {
+                artikelListe.add(artikel);
+                Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
+                ereignisse.add(e);
+            } else {
+                throw new ArtikelExistiertBereitsException();
+            }
+        }
+    }
+
+
+    public static boolean istArtikelNichtVorhanden(Artikel artikel, List<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
+        System.out.println();
+
+        return liste.stream().anyMatch(a -> a.getArtikelNummer() == artikel.getArtikelNummer() ||
+                a.getBezeichnung().equalsIgnoreCase(artikel.getBezeichnung()));
+
+    }
+
 
     public List<Artikel> artikelSortierenNachBezeichnung() {
 
@@ -140,18 +140,18 @@ public class Artikelverwaltung {
             throw new LeeresTextfieldException();
         }else{
 
-        for (Artikel artikel : artikelListe) {
-            if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
-                int aktuellerBestand = artikel.getBestand();
-                int neuerBestand = aktuellerBestand + anzahl;
-                artikel.setBestand(neuerBestand);
-                Ereignis e = new Ereignis(anzahl, artikel, u, Enum.EINLAGERUNG, neuerBestand);
-                ereignisse.add(e);
-                return true;
+            for (Artikel artikel : artikelListe) {
+                if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
+                    int aktuellerBestand = artikel.getBestand();
+                    int neuerBestand = aktuellerBestand + anzahl;
+                    artikel.setBestand(neuerBestand);
+                    Ereignis e = new Ereignis(anzahl, artikel, u, Enum.EINLAGERUNG, neuerBestand);
+                    ereignisse.add(e);
+                    return true;
+                }
             }
-        }
 
-        return  false;}
+            return  false;}
     }
 
 
@@ -162,21 +162,21 @@ public class Artikelverwaltung {
             throw new LeeresTextfieldException();
         }else{
 
-        for (Artikel artikel : artikelListe) {
-            if(artikel.getBezeichnung().equals(artikelname)){
-                if (artikel.getBestand() < menge) {
-                    throw new UngueltigeMengeException();
-                } else {
-                    int aktuellerBestand = artikel.getBestand();
-                    int neuerBestand = aktuellerBestand - menge;
-                    artikel.setBestand(neuerBestand);
-                    Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG, neuerBestand);
-                    ereignisse.add(e);
-                    return true;
+            for (Artikel artikel : artikelListe) {
+                if(artikel.getBezeichnung().equals(artikelname)){
+                    if (artikel.getBestand() < menge) {
+                        throw new UngueltigeMengeException();
+                    } else {
+                        int aktuellerBestand = artikel.getBestand();
+                        int neuerBestand = aktuellerBestand - menge;
+                        artikel.setBestand(neuerBestand);
+                        Ereignis e = new Ereignis(menge, artikel, u, Enum.AUSLAGERUNG, neuerBestand);
+                        ereignisse.add(e);
+                        return true;
+                    }
                 }
             }
-        }
-        return false;}
+            return false;}
     }
 
     public String artikelAusgeben() {
@@ -246,7 +246,6 @@ public class Artikelverwaltung {
     }
 
 }
-
 
 
 /* Soll ich ArtikelLoeschen drin lassen? wäre an sich logisch es zu behalten für die main.
