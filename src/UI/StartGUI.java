@@ -36,7 +36,9 @@ public class StartGUI extends JFrame implements ActionListener {
     private JTextField adressenTextfield = new JTextField(textfieldSize);
     private JButton neuenKundenAnlegenButton = new JButton("Registrieren");
     private JDialog popup;
+    JPanel midpanel;
 
+    JScrollPane scrollPane;
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
@@ -103,22 +105,18 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
     private JPanel midpanel() {
-        JPanel midpanel = new JPanel();
+        midpanel = new JPanel();
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new FlowLayout());
         //midpanel.setPreferredSize(new Dimension(700, 700));
 
 
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setViewportView(artikelListe());
+        scrollPane = new JScrollPane(artikelListe());
+        scrollPane.setPreferredSize(new Dimension(700, 500));
         midpanel.add(scrollPane);
 
 
         midpanel.add(artikelListe()); //todo warum ist das so visible aber ohne diesen part nicht mehr?
-
-
-
-
 
         return midpanel;
     }
@@ -233,9 +231,10 @@ public class StartGUI extends JFrame implements ActionListener {
 
     //todo die listen machen probleme
 
-    private JList<String> artikelListe() {
+    private JList artikelListe() {
 
-        JList<String> artikelListe = new JList(eshop.getAlleArtikel().toArray());
+        JList artikelListe = new JList();
+        artikelListe.setListData(eshop.getAlleArtikel().toArray());
 
         return artikelListe;
     }
@@ -249,7 +248,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-    @Override  //Damit beim Klicken der Buttons auch etwas passiert muss das hier umgesetzt werden
+    @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
         Loginverfahren loginverfahren = null;
@@ -336,7 +335,9 @@ public class StartGUI extends JFrame implements ActionListener {
                     eshop.schreibeKunde();
                     KundenbereichGUI k = new KundenbereichGUI(kunde, w);
 
+
                     this.dispose();
+
                     popup.dispose();
                     System.out.println(kunde);
                     //}

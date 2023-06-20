@@ -55,9 +55,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JDialog listpopup;
     JPanel midpanel;
     JScrollPane scrollPaneArtikelliste;
-    //JOptionPane jOptionPane = new JOptionPane(null, "Daten sichern?","Title", JOptionPane.YES_NO_OPTION);
 
-  ;
+    JList artikelListe;
 
 
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
@@ -368,19 +367,13 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     }
 
-    private JList<String> artikelListeAlphabetischausgeben(){
-        JList<String> artikelListe = new JList(eshop.artikelSortierenNachBezeichnung().toArray());
-        return artikelListe;
-    }
-
-    private JList<String> artikelListeNummerischausgeben(){
-        JList<String> artikelListe = new JList(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
-        return artikelListe;
-    }
 
     private JList<String> artikelListe() {
 
-        JList<String> artikelListe = new JList(eshop.getAlleArtikel().toArray());
+
+        artikelListe = new JList();
+        artikelListe.setListData(eshop.getAlleArtikel().toArray());
+
 
         return artikelListe;
 
@@ -680,21 +673,13 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 }
                 break;
             case ARTIKELLISTEAUGEBEN_ALPHABETISCH:
-                scrollPaneArtikelliste.removeAll(); // TODO es funktioniert aber erst wenn man cui wechselt
-                scrollPaneArtikelliste.add(artikelListeAlphabetischausgeben());
 
-                //scrollPaneArtikelliste.revalidate(); // Refresh the panel to reflect the changes
-                //scrollPaneArtikelliste.repaint();
-                //popup(artikelListeAlphabetischausgeben(), "Listenprobe");
-                System.out.println("alphabetische gewählt");
+                artikelListe.setListData(eshop.artikelSortierenNachBezeichnung().toArray());
+
                 break;
             case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
-                scrollPaneArtikelliste.removeAll(); // TODO es funktioniert aber erst wenn man cui wechselt
-                scrollPaneArtikelliste.add(artikelListeNummerischausgeben());
-                //scrollPaneArtikelliste.revalidate(); // Refresh the panel to reflect the changes
-                //scrollPaneArtikelliste.repaint();
+                artikelListe.setListData(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
 
-                System.out.println("nummerishc gewählt");
 
                 break;
 
