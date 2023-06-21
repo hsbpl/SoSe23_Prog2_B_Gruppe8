@@ -55,6 +55,22 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
+    public StartGUI(EShop eShop){
+        super("Roha & Sanjana's Eshop");
+        String datei = "ESHOP";
+        eshop = eShop;
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
+        this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
+
+        startpage();
+
+        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+    }
+
+    //todo zweiter Konstruktor
+
     private void startpage() {
         JPanel start = new JPanel(); //neues Jpanel
         start.setVisible(true);//Jpanel ist sichtbar
@@ -270,7 +286,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     System.out.println(aktuellerKunde);
                     Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
 
-                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde, warenkorb);
+                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde, warenkorb, eshop);
                     this.dispose();
                     System.out.println("Erfolgreich Eingeloggt: " + aktuellerKunde);
 
@@ -297,7 +313,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     String passwort = passwortTextfieldMitarbeiter.getText();
                     Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
 
-                    MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter);
+                    MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, eshop);
 
                     this.dispose();
 
@@ -310,8 +326,6 @@ public class StartGUI extends JFrame implements ActionListener {
                                     "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
                                     "*********************************************************************************\n");
 
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
 
                 break;
@@ -330,7 +344,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
 
                     eshop.schreibeKunde();
-                    KundenbereichGUI k = new KundenbereichGUI(kunde, w);
+                    KundenbereichGUI k = new KundenbereichGUI(kunde, w, eshop);
 
 
                     this.dispose();

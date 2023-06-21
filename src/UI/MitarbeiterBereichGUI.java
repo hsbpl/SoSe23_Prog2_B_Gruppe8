@@ -59,9 +59,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     JList artikelListe;
 
 
-    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter) throws IOException {
-        String datei = "ESHOP";
-        eshop = new EShop(datei);
+    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShop eshop){
+        this.eshop = eshop;
 
         this.eingeloggterMitarbeiter = eingeloggterMitarbeiter;
 
@@ -336,7 +335,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
 
 
-    private JList<String> kundenliste() { //abändern
+    private JList<String> kundenliste() { //abändern?
 
         ArrayList<Kunde> kunden = new ArrayList<>();
         int position = 0;
@@ -350,6 +349,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     }
 
 
+
+    //TODO mit JTable statt List
+    //TODO Alphabetische Reihenfole wenn amn Artikel hinzugügt
     private JList<String> artikelListe() {
 
 
@@ -366,6 +368,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         JList<String> mitarbeiterliste = new JList(eshop.getAlleMitarbeiter().toArray());
         return mitarbeiterliste;
     }
+
 
     private JList<String> erignisliste() {
 
@@ -393,7 +396,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         EREIGNISAUSGEBEN,
         MITARBEITER_REGISTRIEREN_POPUP,
         REGISTRIERUNG_ABSCHLIESSEN,
-        DEFAULT_ARTIKELAUSGABE
 
 
     }
@@ -405,31 +407,22 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         if (actionEvent.getSource() == zurückButton) {
             operation = operation.AUSLOGGEN;
-
         } else if (actionEvent.getSource() == bestandVerringernButton) {
             operation = operation.BESTANDSVERRINGERUNG;
-
         } else if (actionEvent.getSource() == anlegenButtonErhöhen) {
             operation = MitarbeiterBereichGUI.operation.BESTANDSERHÖHUNG;
-
         } else if (actionEvent.getSource() == artikelAnlegenPopupButton) {
             operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_POPUP;
-
         } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
             operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_ABSCHLIESSEN;
-
         } else if (actionEvent.getSource() == massengutArtikelAnlegenPopupButton) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_POPUP;
-
         } else if (actionEvent.getSource() == anlegenMassengutArtikelAbschliessen) {
             operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN;
-
         } else if (actionEvent.getSource() == registerButton) {
             operation = MitarbeiterBereichGUI.operation.MITARBEITER_REGISTRIEREN_POPUP;
-
         } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
             operation = MitarbeiterBereichGUI.operation.REGISTRIERUNG_ABSCHLIESSEN;
-
         } else if (actionEvent.getSource() == listenauswahl) {
             String selectedListItem = listenauswahl.getSelectedItem().toString();
             if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
@@ -449,15 +442,13 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         }
 
 
-
+//TODO alle Exception hier einsetzten und statt sout Popup o. ä. INpuMismatchException hier rausnehmen
         switch (operation) {
             case AUSLOGGEN:
-                try {
-                    StartGUI s = new StartGUI();
+
+                    StartGUI s = new StartGUI(eshop);
                     this.dispose();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+
 
                 break;
             case BESTANDSVERRINGERUNG:
@@ -668,7 +659,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 break;
             case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
                 artikelListe.setListData(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
-
+            //todo Artikelliste Aktualisieren
                 break;
 
             default:

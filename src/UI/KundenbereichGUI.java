@@ -20,12 +20,12 @@ public class KundenbereichGUI extends JFrame {
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
 
-    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden) throws IOException {
+    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eShop) throws IOException {
         super("Kundenbereich");
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
-        String datei = "ESHOP";
-        eShop = new EShop(datei);
+        //String datei = "ESHOP";
+        this.eShop = eShop;
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
@@ -97,12 +97,10 @@ public class KundenbereichGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showConfirmDialog(null, "Möchten Sie sich wirklich ausloggen?", "Ausloggen", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    try {
-                        StartGUI s = new StartGUI();
+
+                        StartGUI s = new StartGUI(eShop);
                         dispose();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
+
                 }
             }
         });
@@ -178,13 +176,15 @@ public class KundenbereichGUI extends JFrame {
     private void kundenbereich() {
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         try {
             KundenbereichGUI kundenbereichGUI = new KundenbereichGUI(new Kunde("roha","1234", "ahmad", "roha", "Berlinerstraße"), new Warenkorb());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    */
 }
 
 

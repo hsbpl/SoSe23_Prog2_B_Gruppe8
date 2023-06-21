@@ -477,6 +477,7 @@ public class CUI {
                 eshop.schreibeEreignis();
                 eshop.schreibeKunde();
                 eshop.schreibeMitarbeiter();
+                //artbeitsMenue(m);
                 break;
 
             case 0:

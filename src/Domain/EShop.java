@@ -13,7 +13,6 @@ import ValueObjekt.Kunde;
 public class EShop {
 
     private String datei = "";
-
     private Artikelverwaltung av;
     private Kundenverwaltung kv;
     private  Mitarbeiterverwaltung mv;
@@ -75,8 +74,9 @@ public class EShop {
         Mitarbeiter erfolgreicherLogin =mv.mitarbeiterEinloggen(username, passwort);
         if(erfolgreicherLogin == null){
             throw new LoginFehlgeschlagenException();
-        } else{
-        return erfolgreicherLogin;}
+        }
+
+        return erfolgreicherLogin;
     }
 
     public String artikelListen(){

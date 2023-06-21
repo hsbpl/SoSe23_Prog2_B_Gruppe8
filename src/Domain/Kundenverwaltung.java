@@ -54,6 +54,8 @@ public class Kundenverwaltung {
 
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
+
+    //TODO Massengut schöner lösen
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
         int aktuelle_menge = menge;
         Artikel gefundenerArtikel = warenbestand.stream()
