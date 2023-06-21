@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -327,9 +329,12 @@ public class FilePersistenceManager implements PersistenceManager{
         String aktualisierterBestand_string = liesZeile();
         System.out.println("Aktualisierter Bestand "+aktualisierterBestand_string);
         int aktualisierterBestand = Integer.parseInt(aktualisierterBestand_string);
-        System.out.println("DONE!");
 
-        return new Ereignis(anzahl, artikel, user, ereignistyp, aktualisierterBestand);
+        String zeitstempel_string = liesZeile();
+        DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+        LocalDateTime zeitstempel = LocalDateTime.parse(zeitstempel_string, ISO_FORMATTER);
+
+        return new Ereignis(anzahl, artikel, user, ereignistyp, aktualisierterBestand, zeitstempel);
     }
     private boolean speichereEreignis(Ereignis e) throws IOException{
         schreibeZeile(String.valueOf(e.getAnzahl()));
@@ -337,6 +342,7 @@ public class FilePersistenceManager implements PersistenceManager{
         schreibeZeile(String.valueOf(e.getUser().getUserName()));
         schreibeZeile(String.valueOf(e.getEreignistyp()));
         schreibeZeile(String.valueOf(e.getAktualisierterBestand()));
+        schreibeZeile(String.valueOf(e.getDatum()));
         return true;
     }
 

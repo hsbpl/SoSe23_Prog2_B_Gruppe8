@@ -19,7 +19,8 @@ public class Ereignis {
 
     private int aktualisierterBestand;
 
-
+    // Initialer Konstruktor um beim Erstellen eines
+    // Ereignisses neben den wichtigen Eigenschaften, den aktuellen Zeitstempel zu generieren.
     public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp, int aktualisierterBestand) {
         this.anzahl = anzahl;
         this.artikel = artikel;
@@ -29,6 +30,7 @@ public class Ereignis {
         this.datum = LocalDateTime.now();
     }
 
+    // Überladener Konstruktor für das Lesen des Zeitstempels in der FilePersistence aus der Textdatei
     public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp, int aktualisierterBestand, LocalDateTime zeitstempel) {
         this.anzahl = anzahl;
         this.artikel = artikel;
