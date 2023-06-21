@@ -430,19 +430,22 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
             operation = MitarbeiterBereichGUI.operation.REGISTRIERUNG_ABSCHLIESSEN;
 
-        } else if (listenauswahl.getSelectedItem() == "Registrierte Mitarbeiter ausgeben") {
-            operation = operation.MITARBEITERLISTEAUSGEBEN;
-
-        } else if (listenauswahl.getSelectedItem() == "Registrierte Kunden ausgeben") {
-            operation = MitarbeiterBereichGUI.operation.KUNDENLISTEAUSGEBEN;
-
-        } else if (listenauswahl.getSelectedItem() == "Ereignisse ausgeben") {
-            operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
-
-        }else if(artikelausgabe.getSelectedItem() == "Alphabetische Ausgabe"){
-            operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ALPHABETISCH;
-        }else if(artikelausgabe.getSelectedItem() == "Nummerische Ausgabe"){
-            operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ARTIKElNUMMER;
+        } else if (actionEvent.getSource() == listenauswahl) {
+            String selectedListItem = listenauswahl.getSelectedItem().toString();
+            if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
+                operation = MitarbeiterBereichGUI.operation.MITARBEITERLISTEAUSGEBEN;
+            } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
+                operation = MitarbeiterBereichGUI.operation.KUNDENLISTEAUSGEBEN;
+            } else if (selectedListItem.equals("Ereignisse ausgeben")) {
+                operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
+            }
+        } else if (actionEvent.getSource() == artikelausgabe) {
+            String selectedArtikelItem = artikelausgabe.getSelectedItem().toString();
+            if (selectedArtikelItem.equals("Alphabetische Ausgabe")) {
+                operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ALPHABETISCH;
+            } else if (selectedArtikelItem.equals("Nummerische Ausgabe")) {
+                operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ARTIKElNUMMER;
+            }
         }
 
 
