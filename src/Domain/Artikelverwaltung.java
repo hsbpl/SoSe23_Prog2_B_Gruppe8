@@ -23,7 +23,6 @@ public class Artikelverwaltung {
     }
 
     public void liesDaten(String datei) throws IOException {
-        System.out.println("Beispiel");
         try {
             artikelListe = pm.leseArtikelListe(datei);
         } catch (ArtikelExistiertBereitsException e) {
@@ -47,7 +46,6 @@ public class Artikelverwaltung {
     }
 
     public void schreibeDatenEreignisse(String datei) throws IOException {
-        System.out.println("EY " + ereignisse);
         pm.schreibeEreignisListe(ereignisse, datei);
     }
 
@@ -57,7 +55,6 @@ public class Artikelverwaltung {
         } else {
             if (!(istArtikelNichtVorhanden(artikel, getArtikelListe(), artikel.getBezeichnung()))) {
                 artikelListe.add(artikel);
-                System.out.println(artikelListe);
                 Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
                 ereignisse.add(e);
             } else {
@@ -71,7 +68,6 @@ public class Artikelverwaltung {
         if (artikel.getBezeichnung().isEmpty()) {
             throw new LeeresTextfieldException();
         } else {
-            System.out.println(istArtikelNichtVorhanden(artikel, artikelListe, artikel.getBezeichnung()));
             if (!(istArtikelNichtVorhanden(artikel, artikelListe, artikel.getBezeichnung()))) {
                 artikelListe.add(artikel);
                 Ereignis e = new Ereignis(artikel.getBestand(), artikel, mitarbeiter, Enum.ANLEGEN, artikel.getBestand());
@@ -84,7 +80,6 @@ public class Artikelverwaltung {
 
 
     public static boolean istArtikelNichtVorhanden(Artikel artikel, List<Artikel> liste, String bezeichnung) throws ArtikelExistiertBereitsException {
-        System.out.println();
 
         return liste.stream().anyMatch(a -> a.getArtikelNummer() == artikel.getArtikelNummer() ||
                 a.getBezeichnung().equalsIgnoreCase(artikel.getBezeichnung()));
@@ -201,7 +196,6 @@ public class Artikelverwaltung {
 
     public ArrayList<Artikel> getArtikelListe()
     {
-        System.out.println(artikelListe);
         return (ArrayList<Artikel>) artikelListe;
     }
 

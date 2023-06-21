@@ -50,7 +50,7 @@ public class CUI {
         switch (choice) {
             case 1:
                 try {
-                    System.out.println("Unsername:");
+                    System.out.println("Username:");
                     String username = scan.next();
                     System.out.println("Passwort:");
                     String pw = scan.next();
@@ -71,7 +71,7 @@ public class CUI {
 
             case 2:
                 try {
-                    System.out.println("Unsername:");
+                    System.out.println("Username:");
                     String uname = scan.next();
                     System.out.println("Passwort:");
                     String pasw = scan.next();
@@ -107,7 +107,7 @@ public class CUI {
 
             case 3:
                 try {
-                    System.out.println("Unsername:");
+                    System.out.println("Username:");
                     String usname = scan.next();
                     System.out.println("Passwort:");
                     String paw = scan.next();
@@ -445,7 +445,7 @@ public class CUI {
                 break;
             case 9:
                 try {
-                    System.out.println("Unsername:");
+                    System.out.println("Username:");
                     String username = scan.next();
                     System.out.println("Passwort:");
                     String pw = scan.next();

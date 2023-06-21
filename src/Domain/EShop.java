@@ -65,7 +65,6 @@ public class EShop {
 
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException, LeeresTextfieldException{
         Mitarbeiter neuerMitarbeiter = mv.mRegister(neu);
-        System.out.println(neuerMitarbeiter);
         if(neuerMitarbeiter == null){
             throw new UserExistiertBereitsException();
         }
@@ -139,7 +138,6 @@ public class EShop {
     }
 
     public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde) throws WarenkorbIstLeerException{
-        System.out.println(getAlleEreignisse());
         kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel(),kunde, getAlleEreignisse());
     }
     public void warenkorbLeeren(Warenkorb warenkorb){
@@ -155,7 +153,6 @@ public class EShop {
 
     public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException, LeeresTextfieldException {
         Kunde neuerKunde = kv.register(neu);
-        System.out.println("dshuifuhasdfhuadsfbha");
         if(neuerKunde == null){
             throw new UserExistiertBereitsException();
         }else{

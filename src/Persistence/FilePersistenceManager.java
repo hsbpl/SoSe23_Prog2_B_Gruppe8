@@ -62,10 +62,8 @@ public class FilePersistenceManager implements PersistenceManager{
     public HashMap<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        //HashMap<String, Kunde> kundenBestand = new HashMap<>();
         Kunde einKunde;
         int count = 0;
-        System.out.println("HI");
         do {
             einKunde = ladeKunde();
             if (einKunde !=null){
@@ -76,14 +74,12 @@ public class FilePersistenceManager implements PersistenceManager{
                 count += 1;
             }
         }while (einKunde !=null);
-        System.out.println("gzug");
         return kundenBestand;
     }
 
     public List<Mitarbeiter> leseMitarbeiterList(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
-        //List<Mitarbeiter> mitarbeiterBestand = null;
         Mitarbeiter einMitarbeiter;
 
         do {
@@ -298,7 +294,6 @@ public class FilePersistenceManager implements PersistenceManager{
     }
     private Ereignis ladeEreignis() throws IOException {
         String anzahl_string = liesZeile();
-        System.out.println("Anzahl "+anzahl_string);
         if (anzahl_string == null){
             //keine Daten mehr vorhanden
             return null;
@@ -306,13 +301,10 @@ public class FilePersistenceManager implements PersistenceManager{
         int anzahl = Integer.parseInt(anzahl_string);
 
         String artikelnr = liesZeile();
-        System.out.println("Artikelnr "+artikelnr);
         Artikel artikel = getArtikelByNumber(Integer.parseInt(artikelnr));
-        System.out.println("Artikel "+artikel);
         String username = liesZeile();
         User user = null;
         String ereignistyp_string = null;
-        System.out.println(gitMitarbeiterbestand());
 
         if (username.startsWith("m")) {
             user = getMitarbeiterByUsername(username);
@@ -324,10 +316,8 @@ public class FilePersistenceManager implements PersistenceManager{
 
         ereignistyp_string = liesZeile();
         Enum ereignistyp = Enum.valueOf(ereignistyp_string);
-        System.out.println("Ereignistyp " +ereignistyp);
 
         String aktualisierterBestand_string = liesZeile();
-        System.out.println("Aktualisierter Bestand "+aktualisierterBestand_string);
         int aktualisierterBestand = Integer.parseInt(aktualisierterBestand_string);
 
         String zeitstempel_string = liesZeile();
@@ -347,7 +337,6 @@ public class FilePersistenceManager implements PersistenceManager{
     }
 
     public Artikel getArtikelByNumber(int artikelnummer){
-        System.out.println(artikelBestand);
         for (Artikel artikel : artikelBestand){
             if (artikel.getArtikelNummer() == artikelnummer) {
                 return artikel;
@@ -357,7 +346,6 @@ public class FilePersistenceManager implements PersistenceManager{
         return null;
     }
     public Massengutartikel getMassengutByNumber(int artikelnummer){
-        System.out.println(massengutBestand);
         for (Artikel artikel : massengutBestand){
             if (artikel.getArtikelNummer() == artikelnummer){
                 return (Massengutartikel) artikel;

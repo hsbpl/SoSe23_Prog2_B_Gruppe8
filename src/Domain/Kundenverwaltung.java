@@ -104,10 +104,8 @@ public class Kundenverwaltung {
                             int zuReduzierendeMenge = menge;
                             int aktuellerBestand = bestandsartikel.getBestand() - zuReduzierendeMenge;
                             bestandsartikel.setBestand(aktuellerBestand);
-                            System.out.println("odufjuasgnjdflkgndsfljhndf lkgkdfs");
                             Ereignis e = new Ereignis(menge, artikel, kunde, Enum.KAUF, aktuellerBestand);
 
-                            System.out.println(e.getArtikel().getBezeichnung()+e.getAnzahl());
                             av.setEreignisListe(e);
                         });
             });
