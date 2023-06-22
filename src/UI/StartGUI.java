@@ -36,9 +36,10 @@ public class StartGUI extends JFrame implements ActionListener {
     private JTextField adressenTextfield = new JTextField(textfieldSize);
     private JButton neuenKundenAnlegenButton = new JButton("Registrieren");
     private JDialog popup;
-    JPanel midpanel;
-    JList artikelListe;
-    JScrollPane scrollPane;
+    private JPanel midpanel;
+    private JTable tabelle;
+    private ArtikelModel model;
+    private JScrollPane tablePane;
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
@@ -69,7 +70,7 @@ public class StartGUI extends JFrame implements ActionListener {
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
     }
 
-    //todo zweiter Konstruktor
+
 
     private void startpage() {
         JPanel start = new JPanel(); //neues Jpanel
@@ -133,7 +134,7 @@ public class StartGUI extends JFrame implements ActionListener {
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new BoxLayout(midpanel, BoxLayout.Y_AXIS));
 
-        midpanel.add(artikelListe());
+        midpanel.add(artikellistTable());
 
         return midpanel;
     }
@@ -239,18 +240,14 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
+    private Component artikellistTable(){
+        tabelle = new JTable();
+        model =new ArtikelModel(eshop.getAlleArtikel());
+        tabelle.setModel(new ArtikelModel(eshop.getAlleArtikel()));
+        tablePane = new JScrollPane(tabelle);
 
-    private JScrollPane artikelListe() {
-        artikelListe = new JList<>();
-        artikelListe.setListData(eshop.getAlleArtikel().toArray());
-
-        JScrollPane scrollPane = new JScrollPane(artikelListe);
-        scrollPane.setPreferredSize(new Dimension(700, 500));
-
-        return scrollPane;
+        return tablePane;
     }
-
-
 
 
     private enum Loginverfahren {
@@ -260,6 +257,7 @@ public class StartGUI extends JFrame implements ActionListener {
         NEUES_KUNDENKONTO_ANLEGEN
 
     }
+//todo JoptionPane für die abgefangenen exceptions
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {

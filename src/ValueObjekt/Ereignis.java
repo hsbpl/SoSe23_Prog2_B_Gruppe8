@@ -49,7 +49,7 @@ public class Ereignis {
         return datum;
     }
 
-    //TODO Bestand wird immer Aktuallisiert, statt das er den alten Bestand anzeigt, überlegen ob das abgeändert werden müsste)
+
     public String toString(){
         return  getDatum().toString() + "\n"+
                 anzahl +" durchgeführt über " + ereignistyp.toString() +"; "+

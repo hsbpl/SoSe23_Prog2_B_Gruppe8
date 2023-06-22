@@ -8,6 +8,7 @@ import ValueObjekt.Massengutartikel;
 import ValueObjekt.Mitarbeiter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,10 +54,14 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JComboBox <String> artikelausgabe;
     private JDialog popup;
     private JDialog listpopup;
-    JPanel midpanel;
-    JScrollPane scrollPaneArtikelliste;
+    private JPanel midpanel;
+    private JScrollPane scrollPaneArtikelliste;
+    private JList artikelListe;
 
-    JList artikelListe;
+    private JTable tabelle;
+    private ArtikelModel model;
+    private JScrollPane tablePane;
+
 
 
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShop eshop){
@@ -67,10 +72,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         mitarbeiterbereich();
+        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
 
     }
 
@@ -150,7 +156,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         artikelausgabe = new JComboBox<>(listen);
         artikelausgabe.addActionListener(this);
 
-        scrollPaneArtikelliste = new JScrollPane(artikelListe()); //liste wird dem scrollpane hinzugefügt
+        scrollPaneArtikelliste = new JScrollPane(artikellistTable()); //liste wird dem scrollpane hinzugefügt
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
         midpanel.add(scrollPaneArtikelliste);
@@ -187,6 +193,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
         return listpopup;
     }
+
+
 
     private Component registrierung() {
         JPanel registerfenster = new JPanel();
@@ -348,22 +356,14 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
     }
 
+    private JScrollPane artikellistTable(){
+        tabelle = new JTable();
+        model =new ArtikelModel(eshop.getAlleArtikel());
+        tabelle.setModel(new ArtikelModel(eshop.getAlleArtikel()));
+        tablePane = new JScrollPane(tabelle);
 
-
-    //TODO mit JTable statt List
-    //TODO Alphabetische Reihenfole wenn amn Artikel hinzugügt
-    private JList<String> artikelListe() {
-
-
-        artikelListe = new JList();
-        artikelListe.setListData(eshop.getAlleArtikel().toArray());
-
-
-        return artikelListe;
-
+        return tablePane;
     }
-
-    //todo dopplung der listen stoppen
     private JList<String> mitarbeiterliste() {
         JList<String> mitarbeiterliste = new JList(eshop.getAlleMitarbeiter().toArray());
         return mitarbeiterliste;
@@ -654,12 +654,16 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 break;
             case ARTIKELLISTEAUGEBEN_ALPHABETISCH:
 
-                artikelListe.setListData(eshop.artikelSortierenNachBezeichnung().toArray());
+                model.setArtikelListe(eshop.artikelSortierenNachBezeichnung());
+
+               // artikelListe.setListData(eshop.artikelSortierenNachBezeichnung().toArray());
 
                 break;
             case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
-                artikelListe.setListData(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
-            //todo Artikelliste Aktualisieren
+                //TODO durch den table funktionieren diese beiden cases nicht lösung finden
+                model.setArtikelListe(eshop.artikelNachArtikelnummerGeordnetAusgeben());
+                //artikelListe.setListData(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
+            //todo Artikelliste Aktualisieren hinzufügen
                 break;
 
             default:

@@ -64,6 +64,19 @@ public class KundenbereichGUI extends JFrame {
         artikelList.addListSelectionListener(new ListSelectionListener() {
 
 
+            //TODO ich wollte dir nichts kaputt machen hier habe ich die Artikelliste als Jtable hingelegt kannst ihn statt der Liste verwenden
+            private JTable tabelle;
+            private ArtikelModel model;
+            private JScrollPane tablePane;
+            private Component artikellistTable(){
+                tabelle = new JTable();
+                model =new ArtikelModel(eShop.getAlleArtikel());
+                tabelle.setModel(new ArtikelModel(eShop.getAlleArtikel()));
+                tablePane = new JScrollPane(tabelle);
+
+                return tablePane;
+            }
+
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
