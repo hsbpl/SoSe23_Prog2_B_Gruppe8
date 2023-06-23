@@ -53,7 +53,7 @@ public class Ereignis {
     public String toString(){
         return  getDatum().toString() + "\n"+
                 anzahl +" durchgeführt über " + ereignistyp.toString() +"; "+
-                user + "Aktueller Bestand: " + artikel.getBezeichnung()+ " \n"+
+                user + "Artikel: " + artikel.getBezeichnung()+ " \n"+
                 "Aktuellster Stand: " + aktualisierterBestand
                 + "\n";
     }

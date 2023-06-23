@@ -38,7 +38,7 @@ public class StartGUI extends JFrame implements ActionListener {
     private JDialog popup;
     private JPanel midpanel;
     private JTable tabelle;
-    private ArtikelModel model;
+    private ArtikelTableModel model;
     private JScrollPane tablePane;
 
     public StartGUI() throws IOException {
@@ -242,136 +242,129 @@ public class StartGUI extends JFrame implements ActionListener {
 
     private Component artikellistTable(){
         tabelle = new JTable();
-        model =new ArtikelModel(eshop.getAlleArtikel());
-        tabelle.setModel(new ArtikelModel(eshop.getAlleArtikel()));
+        model =new ArtikelTableModel(eshop.getAlleArtikel());
+        tabelle.setModel(new ArtikelTableModel(eshop.getAlleArtikel()));
         tablePane = new JScrollPane(tabelle);
 
         return tablePane;
     }
 
 
-    private enum Loginverfahren {
-        KUNDEN_LOGIN,
-        KUNDEN_REGISTRIERUNG_POPUP,
-        MITARBEITER_LOGIN,
-        NEUES_KUNDENKONTO_ANLEGEN
-
-    }
-//todo JoptionPane für die abgefangenen exceptions
-
+    
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        Loginverfahren loginverfahren = null;
-
+        //Exception Optionpanetext
+        String kontoExistiertSchon = "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n";
+        String unOpwFalsch = "Username oder Passwort falsch. Bitte versuchen Sie es nochmal.\n";
+        String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
 
         if (actionEvent.getSource() == loginButton) {
-            loginverfahren = Loginverfahren.KUNDEN_LOGIN;
+            
+            kundenLoginEvent(unOpwFalsch);
+            
         } else if (actionEvent.getSource() == loginButtonMitarbeiter) {
-            loginverfahren = Loginverfahren.MITARBEITER_LOGIN;
+
+            mitarbeiterLoginEvent(unOpwFalsch);
+
         } else if (actionEvent.getSource() == registrierungsButton) {
-            loginverfahren = Loginverfahren.KUNDEN_REGISTRIERUNG_POPUP;
+
+            registerPopup();
+
         } else if (actionEvent.getSource() == neuenKundenAnlegenButton) {
-            loginverfahren = Loginverfahren.NEUES_KUNDENKONTO_ANLEGEN;
+            kundenRegistrierugEvent(kontoExistiertSchon, leeresTextfeld);
         }
 
-        switch (loginverfahren) {
-            case KUNDEN_LOGIN:
-                try {
-                    String username = usernameTextfield.getText();
-                    String passwort = passwortTextfield.getText();
-                    Kunde aktuellerKunde = eshop.kundenLogin(username, passwort);
-                    System.out.println(aktuellerKunde);
-                    Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
+    }
 
-                    KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde, warenkorb, eshop);
-                    this.dispose();
-                    System.out.println("Erfolgreich Eingeloggt: " + aktuellerKunde);
+    private void kundenRegistrierugEvent(String kontoExistiertSchon, String leeresTextfeld) {
+        try {
+            String username = usernameTextfieldRegistrierung.getText();
+            String passwort = passwortTextfieldRegistrierung.getText();
+            String nachname = nachnameTextfield.getText();
+            String vorname = vornameTextfield.getText();
+            String adresse = adressenTextfield.getText();
 
-                } catch (LoginFehlgeschlagenException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
-                                    "*********************************************************************************\n");
+            Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
+            eshop.kundenRegistrieren(kunde);
+            Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
 
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-
-            case KUNDEN_REGISTRIERUNG_POPUP:
-
-                registerPopup();
-
-                break;
-
-            case MITARBEITER_LOGIN:
-                try {
-                    String username = usernameTextfieldMitarbeiter.getText();
-                    String passwort = passwortTextfieldMitarbeiter.getText();
-                    Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
-
-                    MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, eshop);
-
-                    this.dispose();
-
-                    //TODO SCHÖNHEIT - Textfeld nach verwendung leeren
-                    System.out.println("Erfolgreich Eingeloggt: " + mitarbeiter);
-
-                } catch (LoginFehlgeschlagenException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Username oder Passwort falsch. Bitte versuchen Sie es nochmal\n" +
-                                    "*********************************************************************************\n");
-
-                }
-
-                break;
-            case NEUES_KUNDENKONTO_ANLEGEN:
+            eshop.schreibeKunde();
+            KundenbereichGUI k = new KundenbereichGUI(kunde, w, eshop);
 
 
-                try {
-                    String username = usernameTextfieldRegistrierung.getText();
-                    String passwort = passwortTextfieldRegistrierung.getText();
-                    String nachname = nachnameTextfield.getText();
-                    String vorname = vornameTextfield.getText();
-                    String adresse = adressenTextfield.getText();
+            this.dispose();
 
-                    Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
-                    eshop.kundenRegistrieren(kunde);
-                    Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
+            popup.dispose();
+            System.err.println("Erfolgreich eingeloggt: "+kunde);
+            //}
+        } catch (UserExistiertBereitsException e) {
+            popup.dispose();
+            JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
+            System.err.println("*********************************************************************************\n" +
+                    kontoExistiertSchon +
+                    "*********************************************************************************\n");
 
-                    eshop.schreibeKunde();
-                    KundenbereichGUI k = new KundenbereichGUI(kunde, w, eshop);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
 
-
-                    this.dispose();
-
-                    popup.dispose();
-                    System.err.println(kunde);
-                    //}
-                } catch (UserExistiertBereitsException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n" +
-                                    "*********************************************************************************\n");
-
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (LeeresTextfieldException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Bitte füllen Sie alle Textfelder aus.\n" +
-                                    "*********************************************************************************\n");
-                }
-
-
-            default:
-
-                break;
+        } catch (LeeresTextfieldException e) {
+            popup.dispose();
+            JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+            System.err.println("*********************************************************************************\n" +
+                    leeresTextfeld +
+                    "*********************************************************************************\n");
         }
+    }
+
+    private void mitarbeiterLoginEvent(String unOpwFalsch) {
+        try {
+            String username = usernameTextfieldMitarbeiter.getText();
+            String passwort = passwortTextfieldMitarbeiter.getText();
+            Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
+
+            MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, eshop);
+
+            this.dispose();
 
 
+            System.out.println("Erfolgreich Eingeloggt: " + mitarbeiter);
+
+        } catch (LoginFehlgeschlagenException e) {
+            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
+            usernameTextfieldMitarbeiter.setText("");
+            passwortTextfieldMitarbeiter.setText("");
+            System.err.println("*********************************************************************************\n" +
+                    unOpwFalsch +
+                    "*********************************************************************************\n");
+
+        }
+    }
+
+    private void kundenLoginEvent(String unOpwFalsch) {
+        try {
+            String username = usernameTextfield.getText();
+            String passwort = passwortTextfield.getText();
+            Kunde aktuellerKunde = eshop.kundenLogin(username, passwort);
+            System.out.println(aktuellerKunde);
+            Warenkorb warenkorb = eshop.neuenWarenkorbErstellen(aktuellerKunde);
+
+            KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde, warenkorb, eshop);
+            this.dispose();
+            System.out.println("Erfolgreich Eingeloggt: " + aktuellerKunde);
+
+        } catch (LoginFehlgeschlagenException e) {
+
+            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
+            usernameTextfield.setText("");
+            passwortTextfield.setText("");
+
+            System.err.println("*********************************************************************************\n" +
+                    unOpwFalsch +
+                    "*********************************************************************************\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

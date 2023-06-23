@@ -66,12 +66,12 @@ public class KundenbereichGUI extends JFrame {
 
             //TODO ich wollte dir nichts kaputt machen hier habe ich die Artikelliste als Jtable hingelegt kannst ihn statt der Liste verwenden
             private JTable tabelle;
-            private ArtikelModel model;
+            private ArtikelTableModel model;
             private JScrollPane tablePane;
             private Component artikellistTable(){
                 tabelle = new JTable();
-                model =new ArtikelModel(eShop.getAlleArtikel());
-                tabelle.setModel(new ArtikelModel(eShop.getAlleArtikel()));
+                model =new ArtikelTableModel(eShop.getAlleArtikel());
+                tabelle.setModel(new ArtikelTableModel(eShop.getAlleArtikel()));
                 tablePane = new JScrollPane(tabelle);
 
                 return tablePane;
