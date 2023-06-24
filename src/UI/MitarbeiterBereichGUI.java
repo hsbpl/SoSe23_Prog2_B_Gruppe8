@@ -56,8 +56,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JDialog listpopup;
     private JPanel midpanel;
     private JScrollPane scrollPaneArtikelliste;
-    private JList artikelListe;
-
     private JTable tabelle;
     private ArtikelTableModel model;
     private JScrollPane tablePane;
@@ -359,7 +357,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     private JScrollPane artikellistTable(){
         tabelle = new JTable();
         model =new ArtikelTableModel(eshop.getAlleArtikel());
-        tabelle.setModel(new ArtikelTableModel(eshop.getAlleArtikel()));
+        tabelle.setModel(model);
         tablePane = new JScrollPane(tabelle);
 
         return tablePane;
@@ -377,34 +375,18 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         return ereignisse;
     }
 
-    private enum operation {
-        AUSLOGGEN,
-        BESTANDSERHÖHUNG,
-        BESTANDSVERRINGERUNG,
-        ARTIKELANLEGEN_POPUP,
-        MASSENGUTARTIKELANLEGEN_POPUP,
 
-        MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN,
-        ARTIKELANLEGEN_ABSCHLIESSEN,
-
-        ARTIKELLISTEAUGEBEN_ALPHABETISCH,
-
-        ARTIKELLISTEAUGEBEN_ARTIKElNUMMER,
-
-        KUNDENLISTEAUSGEBEN,
-        MITARBEITERLISTEAUSGEBEN,
-        EREIGNISAUSGEBEN,
-        MITARBEITER_REGISTRIEREN_POPUP,
-        REGISTRIERUNG_ABSCHLIESSEN,
-
-
-    }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        operation operation = null;
+        //todo Artikelliste Aktualisieren hinzufügen
+        //todo suchleiste
+        //todo andere listen in tables umwandeln
+        //todo souts verlegen
+        //todo nach erhöhung/verringerung textfelder leeren
 
+        //Strings für Exceptions
         String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
         String numberFormat = "Bitte Nummer nicht richtig eingegeben.\n";
         String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
@@ -413,320 +395,262 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         String artikelExistiertNicht = "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n";
 
         if (actionEvent.getSource() == zurückButton) {
-            operation = operation.AUSLOGGEN;
+
+            StartGUI s = new StartGUI(eshop);
+            this.dispose();
+
         } else if (actionEvent.getSource() == bestandVerringernButton) {
-            operation = operation.BESTANDSVERRINGERUNG;
+            try {
+
+                String artikelbez = bezeichnungsTextfieldVerringerung.getText();
+                int menge = Integer.parseInt(veringerungsTextfield.getText());
+                eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
+
+                eshop.schreibeArtikel();
+                eshop.schreibeEreignis();
+
+
+            } catch (ArtikelExistiertNichtException e) {
+                JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
+
+                bezeichnungsTextfieldVerringerung.setText("");
+                veringerungsTextfield.setText("");
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiertNicht+
+                        "*********************************************************************************\n");
+
+            } catch (UngueltigeMengeException u) {
+
+                JOptionPane.showMessageDialog(null, mengeZuHoch, "Angegebene Menge nicht vorhanden", JOptionPane.INFORMATION_MESSAGE);
+
+                System.err.println("*********************************************************************************\n" +
+                        mengeZuHoch +
+                        "*********************************************************************************\n");
+
+            } catch (LeeresTextfieldException e) {
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
+                System.err.println("*********************************************************************************\n" +
+                        leeresTextfeld +
+                        "*********************************************************************************\n");
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+                System.err.println("*********************************************************************************\n" +
+                        numberFormat+
+                        "*********************************************************************************\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         } else if (actionEvent.getSource() == anlegenButtonErhöhen) {
-            operation = MitarbeiterBereichGUI.operation.BESTANDSERHÖHUNG;
+
+            try {
+
+                String artikelname = bezeichnungsTextfieldErhöhung.getText();
+                int menge = Integer.parseInt(erhöhungTextfield.getText());
+                eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
+
+                eshop.schreibeArtikel();
+                eshop.schreibeEreignis();
+
+            } catch (ArtikelExistiertNichtException e) {
+                JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
+
+                bezeichnungsTextfieldErhöhung.setText("");
+                erhöhungTextfield.setText("");
+
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiertNicht+
+                        "*********************************************************************************\n");
+            } catch (LeeresTextfieldException e) {
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
+                System.err.println("*********************************************************************************\n" +
+                        leeresTextfeld+
+                        "*********************************************************************************\n");
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+
+                System.err.println("*********************************************************************************\n" +
+                        numberFormat+
+                        "*********************************************************************************\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (actionEvent.getSource() == artikelAnlegenPopupButton) {
-            operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_POPUP;
+
+            popup(neuenArtikelAnlegen(), "Neuen Einzelartikel anlegen");
+
         } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
-            operation = MitarbeiterBereichGUI.operation.ARTIKELANLEGEN_ABSCHLIESSEN;
+
+            try {
+                String bezeichnung = bezeichnungsTextfieldEinzelartikelAnlegen.getText();
+                int artikelnummer = Integer.parseInt(artikelnummerTextfieldEinzelartikelAnlegen.getText());
+                int bestand = Integer.parseInt(bestandTextfieldEinzelartikelAnlegen.getText());
+                double preis = Double.parseDouble(preisTextfieldEinzelartikelAnlegen.getText());
+                Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, preis);
+                eshop.artHinzufügen(a, eingeloggterMitarbeiter);
+                eshop.schreibeEreignis();
+                eshop.schreibeArtikel();
+                popup.dispose();
+                System.out.println("Erstellt: "+a);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+                System.err.println("*********************************************************************************\n" +
+                        numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
+                        "*********************************************************************************\n");
+            } catch
+            (ArtikelExistiertBereitsException e) {
+                JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
+                bezeichnungsTextfieldEinzelartikelAnlegen.setText("");
+                artikelnummerTextfieldEinzelartikelAnlegen.setText("");
+                bestandTextfieldEinzelartikelAnlegen.setText("");
+                preisTextfieldEinzelartikelAnlegen.setText("");
+
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiert +
+                        "*********************************************************************************\n");
+
+            } catch (InputMismatchException e) {
+                System.err.println(
+                        "*********************************************************************************\n" +
+                                "Ungültige Eingabe!\n" +
+                                "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
+                                "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n" +
+                                "Bitte versuchen Sie es nochmal.\n" +
+
+                                "*********************************************************************************\n");
+            } catch (LeeresTextfieldException e) {
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+                System.err.println("*********************************************************************************\n" +
+                        leeresTextfeld +
+                        "*********************************************************************************\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (actionEvent.getSource() == massengutArtikelAnlegenPopupButton) {
-            operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_POPUP;
+            popup(neuenMassengutartikelAnlegen(), "Neuen Massengutartikel anlegen");
         } else if (actionEvent.getSource() == anlegenMassengutArtikelAbschliessen) {
-            operation = MitarbeiterBereichGUI.operation.MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN;
+            try {
+                String bezeichnung = bezeichnungsTextfieldMassengutartikelAnlegen.getText();
+                int artikelnummer = Integer.parseInt(artikelnummerTextfieldMassengutartikelAnlegen.getText());
+                int bestand = Integer.parseInt(bestandTextfieldMassengutartikeAnlegen.getText());
+                double preis = Double.parseDouble(preisTextfieldMassengutartikelAnlegen.getText());
+                int zumKaufVerfügbar = Integer.parseInt(verkäuflicheMengefield.getText());
+
+                Massengutartikel m = new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar);
+                eshop.massengutArtikelHinzufügen(m, eingeloggterMitarbeiter);
+                eshop.schreibeArtikel();
+                eshop.schreibeEreignis();
+                System.out.println("Erstellt: "+m);
+                popup.dispose();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+                System.err.println("*********************************************************************************\n" +
+                        numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
+                        "*********************************************************************************\n");
+            } catch (ArtikelExistiertBereitsException e) {
+                JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
+
+                bezeichnungsTextfieldMassengutartikelAnlegen.setText("");
+                artikelnummerTextfieldMassengutartikelAnlegen.setText("");
+                bestandTextfieldMassengutartikeAnlegen.setText("");
+                preisTextfieldMassengutartikelAnlegen.setText("");
+                verkäuflicheMengefield.setText("");
+
+
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiert +
+                        "*********************************************************************************\n");
+
+            } catch (InputMismatchException e) {
+                System.err.println(
+                        "*********************************************************************************\n" +
+                                "Ungültige Eingabe!\n" +
+                                "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
+                                "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n" +
+                                "Bitte versuchen Sie es nochmal.\n" +
+
+                                "*********************************************************************************\n");
+            } catch (LeeresTextfieldException e) {
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+                System.err.println("*********************************************************************************\n" +
+                        leeresTextfeld +
+                        "*********************************************************************************\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (actionEvent.getSource() == registerButton) {
-            operation = MitarbeiterBereichGUI.operation.MITARBEITER_REGISTRIEREN_POPUP;
+
+            popup(registrierung(), "Neuen Mitarbeiter Registrieren");
+
         } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
-            operation = MitarbeiterBereichGUI.operation.REGISTRIERUNG_ABSCHLIESSEN;
+            try {
+
+                String username = usernameTextfield.getText();
+                String pw = passwotTextfield.getText();
+                String nachname = nachnameTextfield.getText();
+                String vorname = vornameTextfield.getText();
+
+                Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
+                eshop.mitarbeiterRegistrieren(neuerMitarbeiter);
+
+                System.out.println("Registriert: "+neuerMitarbeiter);
+                eshop.schreibeMitarbeiter();
+                popup.dispose();
+            } catch (UserExistiertBereitsException e) {
+                popup.dispose();
+                JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
+                usernameTextfield.setText("");
+                passwotTextfield.setText("");
+                nachnameTextfield.setText("");
+                vornameTextfield.setText("");
+
+                System.err.println(
+                        "*********************************************************************************\n" +
+                                kontoExistiertSchon +
+                                "*********************************************************************************\n");
+
+            } catch (LeeresTextfieldException e) {
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
+                System.err.println(
+                        "*********************************************************************************\n" +
+                                leeresTextfeld +
+                                "*********************************************************************************\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (actionEvent.getSource() == listenauswahl) {
             String selectedListItem = listenauswahl.getSelectedItem().toString();
             if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
-                operation = MitarbeiterBereichGUI.operation.MITARBEITERLISTEAUSGEBEN;
+
+                listpopup(mitarbeiterliste(), "Registrierte Mitarbeiter");
             } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
-                operation = MitarbeiterBereichGUI.operation.KUNDENLISTEAUSGEBEN;
+
+                listpopup(kundenliste(), "Registrierte Kunden");
             } else if (selectedListItem.equals("Ereignisse ausgeben")) {
-                operation = MitarbeiterBereichGUI.operation.EREIGNISAUSGEBEN;
+
+
+                listpopup(erignisliste(), "Ereignisse nach Datum geordnet");
             }
         } else if (actionEvent.getSource() == artikelausgabe) {
+
             String selectedArtikelItem = artikelausgabe.getSelectedItem().toString();
             if (selectedArtikelItem.equals("Alphabetische Ausgabe")) {
-                operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ALPHABETISCH;
-            } else if (selectedArtikelItem.equals("Nummerische Ausgabe")) {
-                operation = MitarbeiterBereichGUI.operation.ARTIKELLISTEAUGEBEN_ARTIKElNUMMER;
-            }
-        }
-
-
-//TODO alle Exception hier einsetzten und statt sout Popup o. ä. INpuMismatchException hier rausnehmen
-        switch (operation) {
-            case AUSLOGGEN:
-
-                    StartGUI s = new StartGUI(eshop);
-                    this.dispose();
-
-
-                break;
-            case BESTANDSVERRINGERUNG:
-                try {
-
-                    String artikelbez = bezeichnungsTextfieldVerringerung.getText();
-                    int menge = Integer.parseInt(veringerungsTextfield.getText());
-                    eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
-
-                    eshop.schreibeArtikel();
-                    eshop.schreibeEreignis();
-
-
-                } catch (ArtikelExistiertNichtException e) {
-                    JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
-
-                    bezeichnungsTextfieldVerringerung.setText("");
-                    veringerungsTextfield.setText("");
-                    System.err.println("*********************************************************************************\n" +
-                            artikelExistiertNicht+
-                            "*********************************************************************************\n");
-
-                } catch (UngueltigeMengeException u) {
-
-                    JOptionPane.showMessageDialog(null, mengeZuHoch, "Angegebene Menge nicht vorhanden", JOptionPane.INFORMATION_MESSAGE);
-
-                    System.err.println("*********************************************************************************\n" +
-                            mengeZuHoch +
-                            "*********************************************************************************\n");
-
-                } catch (LeeresTextfieldException e) {
-                    JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
-
-                    System.err.println("*********************************************************************************\n" +
-                            leeresTextfeld +
-                            "*********************************************************************************\n");
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
-                    System.err.println("*********************************************************************************\n" +
-                            numberFormat+
-                            "*********************************************************************************\n");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-
-            case BESTANDSERHÖHUNG:
-                try {
-
-                    String artikelname = bezeichnungsTextfieldErhöhung.getText();
-                    int menge = Integer.parseInt(erhöhungTextfield.getText());
-                    eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
-
-                    eshop.schreibeArtikel();
-                    eshop.schreibeEreignis();
-
-                } catch (ArtikelExistiertNichtException e) {
-                    JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
-
-                    bezeichnungsTextfieldErhöhung.setText("");
-                    erhöhungTextfield.setText("");
-
-                    System.err.println("*********************************************************************************\n" +
-                            artikelExistiertNicht+
-                            "*********************************************************************************\n");
-                } catch (LeeresTextfieldException e) {
-                    JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
-
-                    System.err.println("*********************************************************************************\n" +
-                            leeresTextfeld+
-                            "*********************************************************************************\n");
-
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
-
-                    System.err.println("*********************************************************************************\n" +
-                            numberFormat+
-                            "*********************************************************************************\n");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                break;
-
-            case ARTIKELANLEGEN_POPUP:
-
-                popup(neuenArtikelAnlegen(), "Neuen Einzelartikel anlegen");
-
-                break;
-            case ARTIKELANLEGEN_ABSCHLIESSEN:
-                try {
-                    String bezeichnung = bezeichnungsTextfieldEinzelartikelAnlegen.getText();
-                    int artikelnummer = Integer.parseInt(artikelnummerTextfieldEinzelartikelAnlegen.getText());
-                    int bestand = Integer.parseInt(bestandTextfieldEinzelartikelAnlegen.getText());
-                    double preis = Double.parseDouble(preisTextfieldEinzelartikelAnlegen.getText());
-                    Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, preis);
-                    eshop.artHinzufügen(a, eingeloggterMitarbeiter);
-                    eshop.schreibeEreignis();
-                    eshop.schreibeArtikel();
-                    popup.dispose();
-                    System.out.println("Erstellt: "+a);
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
-                    System.err.println("*********************************************************************************\n" +
-                            numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
-                            "*********************************************************************************\n");
-                } catch
-                (ArtikelExistiertBereitsException e) {
-                    JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
-                    bezeichnungsTextfieldEinzelartikelAnlegen.setText("");
-                    artikelnummerTextfieldEinzelartikelAnlegen.setText("");
-                    bestandTextfieldEinzelartikelAnlegen.setText("");
-                    preisTextfieldEinzelartikelAnlegen.setText("");
-
-                    System.err.println("*********************************************************************************\n" +
-                            artikelExistiert +
-                            "*********************************************************************************\n");
-
-                } catch (InputMismatchException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Ungültige Eingabe!\n" +
-                                    "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
-                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n" +
-                                    "Bitte versuchen Sie es nochmal.\n" +
-
-                                    "*********************************************************************************\n");
-                } catch (LeeresTextfieldException e) {
-                    JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
-                    System.err.println("*********************************************************************************\n" +
-                            leeresTextfeld +
-                            "*********************************************************************************\n");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case MASSENGUTARTIKELANLEGEN_POPUP:
-                popup(neuenMassengutartikelAnlegen(), "Neuen Massengutartikel anlegen");
-                break;
-
-            case MASSENGUTARTIKELANLEGEN_ABSCHLIESSEN:
-
-                try {
-                    String bezeichnung = bezeichnungsTextfieldMassengutartikelAnlegen.getText();
-                    int artikelnummer = Integer.parseInt(artikelnummerTextfieldMassengutartikelAnlegen.getText());
-                    int bestand = Integer.parseInt(bestandTextfieldMassengutartikeAnlegen.getText());
-                    double preis = Double.parseDouble(preisTextfieldMassengutartikelAnlegen.getText());
-                    int zumKaufVerfügbar = Integer.parseInt(verkäuflicheMengefield.getText());
-
-                    Massengutartikel m = new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar);
-                    eshop.massengutArtikelHinzufügen(m, eingeloggterMitarbeiter);
-                    eshop.schreibeArtikel();
-                    eshop.schreibeEreignis();
-                    System.out.println("Erstellt: "+m);
-                    popup.dispose();
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
-                    System.err.println("*********************************************************************************\n" +
-                            numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
-                            "*********************************************************************************\n");
-                } catch (ArtikelExistiertBereitsException e) {
-                    JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
-
-                    bezeichnungsTextfieldMassengutartikelAnlegen.setText("");
-                    artikelnummerTextfieldMassengutartikelAnlegen.setText("");
-                    bestandTextfieldMassengutartikeAnlegen.setText("");
-                    preisTextfieldMassengutartikelAnlegen.setText("");
-                    verkäuflicheMengefield.setText("");
-
-
-                    System.err.println("*********************************************************************************\n" +
-                            artikelExistiert +
-                            "*********************************************************************************\n");
-
-                } catch (InputMismatchException e) {
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    "Ungültige Eingabe!\n" +
-                                    "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
-                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n" +
-                                    "Bitte versuchen Sie es nochmal.\n" +
-
-                                    "*********************************************************************************\n");
-                } catch (LeeresTextfieldException e) {
-                    JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
-                    System.err.println("*********************************************************************************\n" +
-                            leeresTextfeld +
-                            "*********************************************************************************\n");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-                break;
-            case KUNDENLISTEAUSGEBEN:
-                listpopup(kundenliste(), "Registrierte Kunden");
-
-                break;
-            case MITARBEITERLISTEAUSGEBEN:
-                listpopup(mitarbeiterliste(), "Registrierte Mitarbeiter");
-
-                break;
-            case EREIGNISAUSGEBEN:
-                listpopup(erignisliste(), "Ereignisse nach Datum geordnet");
-                break;
-
-            case MITARBEITER_REGISTRIEREN_POPUP:
-                popup(registrierung(), "Neuen Mitarbeiter Registrieren");
-                break;
-            case REGISTRIERUNG_ABSCHLIESSEN:
-
-                try {
-
-                    String username = usernameTextfield.getText();
-                    String pw = passwotTextfield.getText();
-                    String nachname = nachnameTextfield.getText();
-                    String vorname = vornameTextfield.getText();
-
-                    Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
-                    eshop.mitarbeiterRegistrieren(neuerMitarbeiter);
-
-                    System.out.println("Registriert: "+neuerMitarbeiter);
-                    eshop.schreibeMitarbeiter();
-                    popup.dispose();
-                } catch (UserExistiertBereitsException e) {
-                    popup.dispose();
-                    JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
-                    usernameTextfield.setText("");
-                    passwotTextfield.setText("");
-                    nachnameTextfield.setText("");
-                    vornameTextfield.setText("");
-
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    kontoExistiertSchon +
-                                    "*********************************************************************************\n");
-
-                } catch (LeeresTextfieldException e) {
-                    JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
-
-                    System.err.println(
-                            "*********************************************************************************\n" +
-                                    leeresTextfeld +
-                                    "*********************************************************************************\n");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case ARTIKELLISTEAUGEBEN_ALPHABETISCH:
 
                 List<Artikel> alphabetical = eshop.artikelSortierenNachBezeichnung();
 
                 model.setArtikelListe(alphabetical);
-                //model.fireTableDataChanged();
 
-               // artikelListe.setListData(eshop.artikelSortierenNachBezeichnung().toArray());
-
-                break;
-            case ARTIKELLISTEAUGEBEN_ARTIKElNUMMER:
-                //TODO durch den table funktionieren diese beiden cases nicht lösung finden
+            } else if (selectedArtikelItem.equals("Nummerische Ausgabe")) {
                 List<Artikel> nummerical = eshop.artikelNachArtikelnummerGeordnetAusgeben();
 
                 model.setArtikelListe(nummerical);
-                //model.fireTableDataChanged();
-
-                //artikelListe.setListData(eshop.artikelNachArtikelnummerGeordnetAusgeben().toArray());
-            //todo Artikelliste Aktualisieren hinzufügen
-                break;
-
-            default:
-
-                break;
+            }
         }
+
+
     }
 }

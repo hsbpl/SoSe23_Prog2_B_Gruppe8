@@ -105,14 +105,21 @@ public class Artikelverwaltung {
 
 
 
-    public  String ereignisseSortiertNachDatum(){
-        Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum));
+    public  List<Ereignis> ereignisseSortiertNachDatum(){
+        Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum).reversed());
+        return ereignisse;
+    }
+
+    public  String ereignisseSortiertNachDatumString(){
+
         String s="";
-        for (Ereignis ereignis: ereignisse){
+        for (Ereignis ereignis: ereignisseSortiertNachDatum()){
             s+= ereignis.toString()+"\n";
         }
         return s;
     }
+
+
 
     public List<Artikel> artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));

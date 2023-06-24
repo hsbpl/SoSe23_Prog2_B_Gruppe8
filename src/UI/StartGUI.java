@@ -241,9 +241,10 @@ public class StartGUI extends JFrame implements ActionListener {
 
 
     private Component artikellistTable(){
+        String[] bez= {"Bezeichnung", "Artikelnummer", "Bestand", "Preis"};
         tabelle = new JTable();
         model =new ArtikelTableModel(eshop.getAlleArtikel());
-        tabelle.setModel(new ArtikelTableModel(eshop.getAlleArtikel()));
+        tabelle.setModel(model);
         tablePane = new JScrollPane(tabelle);
 
         return tablePane;

@@ -21,10 +21,6 @@ public class ArtikelTableModel extends AbstractTableModel{
        artikelList.clear();
        artikelList.addAll(aktuelleArtikel);
        fireTableDataChanged();
-    /*artikelList.clear();
-    artikelList.addAll(aktuelleArtikel);
-
-     */
     }
 
     @Override
