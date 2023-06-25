@@ -9,7 +9,7 @@ import java.util.List;
 public class MitarbeiterTableModel extends AbstractTableModel {
 
     private List<Mitarbeiter> mitarbeiter;
-    private String[] header = {"Vorname", "Nachname", "Username", "Id.Nr.", "Adresse"};
+    private String[] header = {"Vorname", "Nachname", "Username", "Id.Nr."};
 
     public MitarbeiterTableModel(List<Mitarbeiter> mitarbeiterList){
         mitarbeiter = new ArrayList<>();
@@ -35,17 +35,16 @@ public class MitarbeiterTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Mitarbeiter gewaehlterKunde = mitarbeiter.get(rowIndex);
+        Mitarbeiter gewaehlterMitarbeiter = mitarbeiter.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return gewaehlterKunde.getVorname();
+                return gewaehlterMitarbeiter.getVorname();
             case 1:
-                return gewaehlterKunde.getNachname();
+                return gewaehlterMitarbeiter.getNachname();
             case 2:
-                return gewaehlterKunde.getUserName();
+                return gewaehlterMitarbeiter.getUserName();
             case 3:
-                return gewaehlterKunde.getidNummer();
-
+                return gewaehlterMitarbeiter.getidNummer();
             default:
                 return null;
         }
