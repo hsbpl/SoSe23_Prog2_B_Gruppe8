@@ -380,11 +380,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        //todo Artikelliste Aktualisieren hinzufügen
+
         //todo suchleiste
         //todo andere listen in tables umwandeln
-        //todo souts verlegen
-        //todo nach erhöhung/verringerung textfelder leeren
+
+
 
         //Strings für Exceptions
         String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
@@ -405,39 +405,49 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 String artikelbez = bezeichnungsTextfieldVerringerung.getText();
                 int menge = Integer.parseInt(veringerungsTextfield.getText());
                 eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
+                model.setArtikelListe(eshop.getAlleArtikel());
+
+                bezeichnungsTextfieldVerringerung.setText("");
+                veringerungsTextfield.setText("");
 
                 eshop.schreibeArtikel();
                 eshop.schreibeEreignis();
 
 
             } catch (ArtikelExistiertNichtException e) {
-                JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
-
-                bezeichnungsTextfieldVerringerung.setText("");
-                veringerungsTextfield.setText("");
                 System.err.println("*********************************************************************************\n" +
                         artikelExistiertNicht+
                         "*********************************************************************************\n");
 
+                JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
+
+                bezeichnungsTextfieldVerringerung.setText("");
+                veringerungsTextfield.setText("");
+
             } catch (UngueltigeMengeException u) {
-
-                JOptionPane.showMessageDialog(null, mengeZuHoch, "Angegebene Menge nicht vorhanden", JOptionPane.INFORMATION_MESSAGE);
-
                 System.err.println("*********************************************************************************\n" +
                         mengeZuHoch +
                         "*********************************************************************************\n");
 
-            } catch (LeeresTextfieldException e) {
-                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
 
+                JOptionPane.showMessageDialog(null, mengeZuHoch, "Angegebene Menge nicht vorhanden", JOptionPane.INFORMATION_MESSAGE);
+
+
+            } catch (LeeresTextfieldException e) {
                 System.err.println("*********************************************************************************\n" +
                         leeresTextfeld +
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
+
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
                 System.err.println("*********************************************************************************\n" +
                         numberFormat+
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -450,31 +460,41 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 int menge = Integer.parseInt(erhöhungTextfield.getText());
                 eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
 
+                model.setArtikelListe(eshop.getAlleArtikel());
+
+                bezeichnungsTextfieldErhöhung.setText("");
+                erhöhungTextfield.setText("");
+
                 eshop.schreibeArtikel();
                 eshop.schreibeEreignis();
 
             } catch (ArtikelExistiertNichtException e) {
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiertNicht+
+                        "*********************************************************************************\n");
+
                 JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
 
                 bezeichnungsTextfieldErhöhung.setText("");
                 erhöhungTextfield.setText("");
 
-                System.err.println("*********************************************************************************\n" +
-                        artikelExistiertNicht+
-                        "*********************************************************************************\n");
-            } catch (LeeresTextfieldException e) {
-                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
 
+            } catch (LeeresTextfieldException e) {
                 System.err.println("*********************************************************************************\n" +
                         leeresTextfeld+
                         "*********************************************************************************\n");
 
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
 
+
+            } catch (NumberFormatException e) {
                 System.err.println("*********************************************************************************\n" +
                         numberFormat+
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -494,23 +514,30 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 eshop.schreibeEreignis();
                 eshop.schreibeArtikel();
                 popup.dispose();
+
+                model.setArtikelListe(eshop.getAlleArtikel());
+
                 System.out.println("Erstellt: "+a);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
                 System.err.println("*********************************************************************************\n" +
                         numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+
             } catch
             (ArtikelExistiertBereitsException e) {
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiert +
+                        "*********************************************************************************\n");
+
                 JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
                 bezeichnungsTextfieldEinzelartikelAnlegen.setText("");
                 artikelnummerTextfieldEinzelartikelAnlegen.setText("");
                 bestandTextfieldEinzelartikelAnlegen.setText("");
                 preisTextfieldEinzelartikelAnlegen.setText("");
 
-                System.err.println("*********************************************************************************\n" +
-                        artikelExistiert +
-                        "*********************************************************************************\n");
+
 
             } catch (InputMismatchException e) {
                 System.err.println(
@@ -522,10 +549,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                                 "*********************************************************************************\n");
             } catch (LeeresTextfieldException e) {
-                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
                 System.err.println("*********************************************************************************\n" +
                         leeresTextfeld +
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -541,16 +570,25 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                 Massengutartikel m = new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar);
                 eshop.massengutArtikelHinzufügen(m, eingeloggterMitarbeiter);
+
+                model.setArtikelListe(eshop.getAlleArtikel());
+
                 eshop.schreibeArtikel();
                 eshop.schreibeEreignis();
                 System.out.println("Erstellt: "+m);
                 popup.dispose();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
                 System.err.println("*********************************************************************************\n" +
                         numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, numberFormat+"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (ArtikelExistiertBereitsException e) {
+                System.err.println("*********************************************************************************\n" +
+                        artikelExistiert +
+                        "*********************************************************************************\n");
+
                 JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
 
                 bezeichnungsTextfieldMassengutartikelAnlegen.setText("");
@@ -560,9 +598,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 verkäuflicheMengefield.setText("");
 
 
-                System.err.println("*********************************************************************************\n" +
-                        artikelExistiert +
-                        "*********************************************************************************\n");
+
 
             } catch (InputMismatchException e) {
                 System.err.println(
@@ -574,10 +610,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
 
                                 "*********************************************************************************\n");
             } catch (LeeresTextfieldException e) {
-                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
                 System.err.println("*********************************************************************************\n" +
                         leeresTextfeld +
                         "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -600,6 +638,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 eshop.schreibeMitarbeiter();
                 popup.dispose();
             } catch (UserExistiertBereitsException e) {
+                System.err.println(
+                        "*********************************************************************************\n" +
+                                kontoExistiertSchon +
+                                "*********************************************************************************\n");
+
                 popup.dispose();
                 JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
                 usernameTextfield.setText("");
@@ -607,18 +650,17 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
                 nachnameTextfield.setText("");
                 vornameTextfield.setText("");
 
-                System.err.println(
-                        "*********************************************************************************\n" +
-                                kontoExistiertSchon +
-                                "*********************************************************************************\n");
+
 
             } catch (LeeresTextfieldException e) {
-                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
-
                 System.err.println(
                         "*********************************************************************************\n" +
                                 leeresTextfeld +
                                 "*********************************************************************************\n");
+
+                JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

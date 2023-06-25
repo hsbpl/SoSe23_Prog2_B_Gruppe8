@@ -300,21 +300,22 @@ public class StartGUI extends JFrame implements ActionListener {
             System.err.println("Erfolgreich eingeloggt: "+kunde);
             //}
         } catch (UserExistiertBereitsException e) {
-            popup.dispose();
-            JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
             System.err.println("*********************************************************************************\n" +
                     kontoExistiertSchon +
                     "*********************************************************************************\n");
+            popup.dispose();
+            JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
 
         } catch (LeeresTextfieldException e) {
-            popup.dispose();
-            JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
             System.err.println("*********************************************************************************\n" +
                     leeresTextfeld +
                     "*********************************************************************************\n");
+            popup.dispose();
+            JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+
         }
     }
 
@@ -332,12 +333,14 @@ public class StartGUI extends JFrame implements ActionListener {
             System.out.println("Erfolgreich Eingeloggt: " + mitarbeiter);
 
         } catch (LoginFehlgeschlagenException e) {
-            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
-            usernameTextfieldMitarbeiter.setText("");
-            passwortTextfieldMitarbeiter.setText("");
             System.err.println("*********************************************************************************\n" +
                     unOpwFalsch +
                     "*********************************************************************************\n");
+
+            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
+            usernameTextfieldMitarbeiter.setText("");
+            passwortTextfieldMitarbeiter.setText("");
+
 
         }
     }
@@ -355,14 +358,15 @@ public class StartGUI extends JFrame implements ActionListener {
             System.out.println("Erfolgreich Eingeloggt: " + aktuellerKunde);
 
         } catch (LoginFehlgeschlagenException e) {
+            System.err.println("*********************************************************************************\n" +
+                    unOpwFalsch +
+                    "*********************************************************************************\n");
 
             JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
             usernameTextfield.setText("");
             passwortTextfield.setText("");
 
-            System.err.println("*********************************************************************************\n" +
-                    unOpwFalsch +
-                    "*********************************************************************************\n");
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
