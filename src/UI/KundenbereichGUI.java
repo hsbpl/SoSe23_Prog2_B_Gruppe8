@@ -75,9 +75,10 @@ public class KundenbereichGUI extends JFrame {
         // Artikel-Tabelle modellieren
         artikelTableModel.addColumn("Artikel");
         artikelTableModel.addColumn("Preis");
+        artikelTableModel.addColumn("Stückzahl");
 
         for (Artikel artikel : eShop.getAlleArtikel()) {
-            artikelTableModel.addRow(new Object[]{artikel.getBezeichnung(),artikel.getEinzelpreis()});
+            artikelTableModel.addRow(new Object[]{artikel.getBezeichnung(),artikel.getEinzelpreis(), 0});
         }
 
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -98,7 +99,20 @@ public class KundenbereichGUI extends JFrame {
         artikelKaufenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Implementiere hier deine Logik für den Artikel kaufen-Button
+                int selectedRow = artikelTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    Artikel artikel = eShop.getAlleArtikel().get(selectedRow);
+                    int stueckzahl = Integer.parseInt(artikelTableModel.getValueAt(selectedRow, 2).toString());
+                    if (stueckzahl > 0) {
+                        warenKorbDesKunden.getWarenkorb().put(artikel, stueckzahl);
+                        JOptionPane.showMessageDialog(null, "Artikel erfolgreich zum Warenkorb hinzugefügt.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Bitte geben Sie eine gültige Stückzahl ein.");
+                    }
+                    artikelTable.clearSelection();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Artikel aus.");
+                }
             }
         });
 
