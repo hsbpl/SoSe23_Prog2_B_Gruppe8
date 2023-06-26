@@ -43,6 +43,14 @@ public class KundenbereichGUI extends JFrame {
         JButton artikelEntfernenButton = new JButton("Artikel entfernen");
         JButton warenkorbButton = new JButton("Warenkorb anzeigen");
         JButton warenkorbLeerenButton = new JButton("Warenkorb leeren");
+        JPanel warenkorbPanel = new JPanel(new BorderLayout());
+        JTextArea rechnungsTextArea = new JTextArea();
+        JScrollPane rechnungsScrollPane = new JScrollPane(rechnungsTextArea);
+        JButton rechnungGenerierenButton = new JButton("Rechnung generieren");
+
+        rechnungsTextArea.setEditable(false);
+
+        warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
 
         DefaultTableModel artikelTableModel = new DefaultTableModel();
         JTable artikelTable = new JTable(artikelTableModel);
@@ -105,6 +113,7 @@ public class KundenbereichGUI extends JFrame {
                     int stueckzahl = Integer.parseInt(artikelTableModel.getValueAt(selectedRow, 2).toString());
                     if (stueckzahl > 0) {
                         warenKorbDesKunden.getWarenkorb().put(artikel, stueckzahl);
+                        artikelTableModel.setValueAt(stueckzahl, selectedRow, 2);
                         JOptionPane.showMessageDialog(null, "Artikel erfolgreich zum Warenkorb hinzugefügt.");
                     } else {
                         JOptionPane.showMessageDialog(null, "Bitte geben Sie eine gültige Stückzahl ein.");
@@ -150,6 +159,16 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
+        // ActionListener für Rechnung generieren-Button
+        rechnungGenerierenButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Code zum Generieren der Rechnung
+                String rechnungstext = generiereRechnungstext();
+                rechnungsTextArea.setText(rechnungstext);
+            }
+        });
+
         infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
         infoPanel.add(titleLabel);
 
@@ -159,18 +178,41 @@ public class KundenbereichGUI extends JFrame {
         buttonPanel.add(warenkorbButton);
         buttonPanel.add(warenkorbLeerenButton);
 
+        mainPanel.add(warenkorbPanel, BorderLayout.CENTER);
+        mainPanel.add(rechnungsScrollPane, BorderLayout.EAST);
+        mainPanel.add(rechnungGenerierenButton, BorderLayout.SOUTH);
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.WEST);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         this.add(mainPanel);
     }
+    private String generiereRechnungstext() {
+        StringBuilder rechnungstext = new StringBuilder();
+        rechnungstext.append("Rechnung\n");
+        rechnungstext.append("Kunde: ").append(eingeloggterKunde.getVorname()).append(" ").append(eingeloggterKunde.getNachname()).append("\n");
+        rechnungstext.append("----------\n");
+        rechnungstext.append("Artikel\t\tPreis\t\tStückzahl\tGesamtpreis\n");
+        rechnungstext.append("----------\n");
+        double gesamtsumme = 0;
+
+        for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
+            Artikel artikel = eintrag.getKey();
+            int menge = eintrag.getValue();
+            double gesamtpreis = artikel.getEinzelpreis() * menge;
+            rechnungstext.append(artikel.getBezeichnung()).append("\t\t").append(artikel.getEinzelpreis()).append("\t\t").append(menge).append("\t\t").append(gesamtpreis).append("\n");
+            gesamtsumme += gesamtpreis;
+        }
+
+        rechnungstext.append("----------\n");
+        rechnungstext.append("Gesamtsumme: ").append(gesamtsumme);
+
+        return rechnungstext.toString();
+    }
+
+
+
 
     private void kundenbereich() {
     }
 }
-
-
-
-
-
