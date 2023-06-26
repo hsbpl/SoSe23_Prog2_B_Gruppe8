@@ -8,15 +8,19 @@ import ValueObjekt.Massengutartikel;
 import ValueObjekt.Mitarbeiter;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
+public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener {
 
 
     private EShop eshop;
@@ -362,6 +366,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
         artikelTabelle = new JTable();
         model =new ArtikelTableModel(eshop.getAlleArtikel());
         artikelTabelle.setModel(model);
+        artikelTabelle.addMouseListener(this);
         tablePane = new JScrollPane(artikelTabelle);
 
         return tablePane;
@@ -388,10 +393,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-
+        //todo den comboboxen ein Label hinzufügen
         //todo suchleiste
-        //todo schau ob die ereignisse geupdated werden wenn was neues entsteht
-
+        //todo beim anlegen exception geworfen hersusfinden warum
 
 
         //Strings für Exceptions
@@ -635,8 +639,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             int menge = Integer.parseInt(erhöhungTextfield.getText());
             eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
 
-            model.setArtikelListe(eshop.getAlleArtikel());
             ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
+            model.setArtikelListe(eshop.getAlleArtikel());
+
 
             bezeichnungsTextfieldErhöhung.setText("");
             erhöhungTextfield.setText("");
@@ -682,9 +687,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             String artikelbez = bezeichnungsTextfieldVerringerung.getText();
             int menge = Integer.parseInt(veringerungsTextfield.getText());
             eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
-
-            model.setArtikelListe(eshop.getAlleArtikel());
             ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
+            model.setArtikelListe(eshop.getAlleArtikel());
+
+
 
             bezeichnungsTextfieldVerringerung.setText("");
             veringerungsTextfield.setText("");
@@ -731,4 +737,44 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener {
             throw new RuntimeException(e);
         }
     }
+
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        if (mouseEvent.getClickCount() == 2) {
+            int row = artikelTabelle.getSelectedRow();
+            int column = artikelTabelle.getSelectedColumn();
+
+            if (column >= 0 && column <= 1) {
+                String value = artikelTabelle.getValueAt(row, column).toString();
+
+                bezeichnungsTextfieldErhöhung.setText(value);
+
+                bezeichnungsTextfieldVerringerung.setText(value);
+                System.out.println("Clicked value: " + value);
+            }
+        }
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
 }
+
