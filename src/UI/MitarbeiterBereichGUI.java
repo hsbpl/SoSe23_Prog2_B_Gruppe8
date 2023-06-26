@@ -3,24 +3,23 @@ package UI;
 import Domain.EShop;
 import Exceptions.*;
 import ValueObjekt.Artikel;
-import ValueObjekt.Kunde;
 import ValueObjekt.Massengutartikel;
 import ValueObjekt.Mitarbeiter;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
-public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener {
+public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
 
     private EShop eshop;
@@ -30,19 +29,17 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private Mitarbeiter eingeloggterMitarbeiter;
     private JButton zurückButton = new JButton("Ausloggen");
     private JButton massengutArtikelAnlegenPopupButton = new JButton(" Massengutartikel anlegen ");
-    private JButton artikelAnlegenPopupButton = new JButton("  Einzelartikel anlegen   ");
+    private JButton artikelAnlegenPopupButton = new JButton ("   Einzelartikel anlegen   ");
     private JButton mitarbeiterkontoAnlegen = new JButton("Registrieren");
     private JTextField usernameTextfield = new JTextField(textfieldSize);
     private JTextField passwotTextfield = new JTextField(textfieldSize);
     private JTextField nachnameTextfield = new JTextField(textfieldSize);
     private JTextField vornameTextfield = new JTextField(textfieldSize);
     private JButton registerButton = new JButton("Mitarbeiter Registrieren");
-    private JButton bestandVerringernButton = new JButton("Aktualisieren");
-    private JTextField bezeichnungsTextfieldVerringerung = new JTextField(textfieldSize);
-    private JTextField veringerungsTextfield = new JTextField(digitInputTextfieldsize);
-    private JButton anlegenButtonErhöhen = new JButton("Aktualisieren");
-    private JTextField bezeichnungsTextfieldErhöhung = new JTextField(textfieldSize);
-    private JTextField erhöhungTextfield = new JTextField(digitInputTextfieldsize);
+    private JButton bestandVerringernButton = new JButton("Verringern");
+    private JButton anlegenButtonErhöhen = new JButton("  Erhöhen ");
+    private JTextField bezeichnungsTextfieldVeränderung = new JTextField(textfieldSize);
+    private JTextField mengenänderungstextfeld = new JTextField(digitInputTextfieldsize);
     private JTextField bezeichnungsTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
     private JTextField artikelnummerTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
     private JTextField bestandTextfieldEinzelartikelAnlegen = new JTextField(textfieldSize);
@@ -74,6 +71,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private JTable ereignisTabelle;
     private EreignisTableModel ereignisTableModel;
 
+    private JTextField sucheArtikel;
+
+    private TableRowSorter sorter;
 
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShop eshop){
         this.eshop = eshop;
@@ -131,9 +131,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         westpanel.setPreferredSize(new Dimension(300, 100));
 
         westpanel.add(Box.createVerticalStrut(40));
-        westpanel.add(bestandErhöhen());  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
+        westpanel.add(bestandVerändern());  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
         westpanel.add(Box.createVerticalStrut(40));
-        westpanel.add(bestandVerringern());
+        //westpanel.add(bestandVerringern());
 
 
         artikelAnlegenPopupButton.addActionListener(this);
@@ -170,6 +170,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         scrollPaneArtikelliste = new JScrollPane(artikellistTable()); //liste wird dem scrollpane hinzugefügt
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
+        sucheArtikel = new JTextField(30);
+        setPreferredSize(getPreferredSize());
+        sucheArtikel.getDocument().addDocumentListener(this);
+
+        midpanel.add(sucheArtikel, BorderLayout.NORTH);
         midpanel.add(scrollPaneArtikelliste);
         midpanel.add(artikelausgabe);
 
@@ -294,54 +299,32 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return anlegen;
     }
 
-    public JPanel bestandErhöhen() {
-        JPanel erhöhen = new JPanel();
-        erhöhen.setVisible(true);
-        erhöhen.setLayout(new BoxLayout(erhöhen, BoxLayout.Y_AXIS));
+    public JPanel bestandVerändern() {
+        JPanel bestandsAenderung = new JPanel();
+        bestandsAenderung.setVisible(true);
+        bestandsAenderung.setLayout(new BoxLayout(bestandsAenderung, BoxLayout.Y_AXIS));
 
 
-        erhöhen.add(new JLabel("Artikelbestand erhöhen"));
-        erhöhen.add(Box.createVerticalStrut(20));
+        bestandsAenderung.add(new JLabel("Artikelbestand Aktualisieren"));
+        bestandsAenderung.add(Box.createVerticalStrut(20));
 
-        bezeichnungsTextfieldErhöhung.setMaximumSize(bezeichnungsTextfieldErhöhung.getPreferredSize());
-        erhöhungTextfield.setMaximumSize(erhöhungTextfield.getPreferredSize());
-
-
-        erhöhen.add(new JLabel("Artikelbezeichnung: "));
-        erhöhen.add(bezeichnungsTextfieldErhöhung);
-        erhöhen.add(new JLabel("Zu erhöhende Menge: "));
-        erhöhen.add(erhöhungTextfield);
-
-        anlegenButtonErhöhen.addActionListener(this);
-        erhöhen.add(anlegenButtonErhöhen);
-
-        return erhöhen;
-    }
-
-    public JPanel bestandVerringern() {
-        JPanel veringern = new JPanel();
-        veringern.setVisible(true);
-        veringern.setLayout(new BoxLayout(veringern, BoxLayout.Y_AXIS));
+        bezeichnungsTextfieldVeränderung.setMaximumSize(bezeichnungsTextfieldVeränderung.getPreferredSize());
+        mengenänderungstextfeld.setMaximumSize(mengenänderungstextfeld.getPreferredSize());
 
 
-        veringern.add(new JLabel("Artikelbestand veringern"));
-        veringern.add(Box.createVerticalStrut(20));
-
-        bezeichnungsTextfieldVerringerung.setMaximumSize(bezeichnungsTextfieldVerringerung.getPreferredSize());
-        veringerungsTextfield.setMaximumSize(veringerungsTextfield.getPreferredSize());
-
-
-        veringern.add(new JLabel("Artikelbezeichnung: "));
-        veringern.add(bezeichnungsTextfieldVerringerung);
-        veringern.add(new JLabel("Zu verringernde Menge: "));
-        veringern.add(veringerungsTextfield);
+        bestandsAenderung.add(new JLabel("Artikelbezeichnung: "));
+        bestandsAenderung.add(bezeichnungsTextfieldVeränderung);
+        bestandsAenderung.add(new JLabel("Mengenänderung: "));
+        bestandsAenderung.add(mengenänderungstextfeld);
 
         bestandVerringernButton.addActionListener(this);
-        veringern.add(bestandVerringernButton);
+        anlegenButtonErhöhen.addActionListener(this);
 
-        return veringern;
+        bestandsAenderung.add(bestandVerringernButton);
+        bestandsAenderung.add(anlegenButtonErhöhen);
+
+        return bestandsAenderung;
     }
-
 
     private JComboBox<String> listenCombobox() {
         String[] listen = { "Registrierte Mitarbeiter ausgeben", "Registrierte Kunden ausgeben", "Ereignisse ausgeben"};
@@ -363,9 +346,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
     private JScrollPane artikellistTable(){
+
         artikelTabelle = new JTable();
         model =new ArtikelTableModel(eshop.getAlleArtikel());
+        sorter = new TableRowSorter<>(model);
         artikelTabelle.setModel(model);
+        artikelTabelle.setRowSorter(sorter);
         artikelTabelle.addMouseListener(this);
         tablePane = new JScrollPane(artikelTabelle);
 
@@ -395,7 +381,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
         //todo den comboboxen ein Label hinzufügen
         //todo suchleiste
-        //todo beim anlegen exception geworfen hersusfinden warum
+
 
 
         //Strings für Exceptions
@@ -521,8 +507,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             Massengutartikel m = new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar);
             eshop.massengutArtikelHinzufügen(m, eingeloggterMitarbeiter);
 
-            model.setArtikelListe(eshop.getAlleArtikel());
-            ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
+
+            //ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
 
             eshop.schreibeArtikel();
             eshop.schreibeEreignis();
@@ -587,7 +573,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             popup.dispose();
 
             model.setArtikelListe(eshop.getAlleArtikel());
-            ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
+            //ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
 
             System.out.println("Erstellt: "+a);
         } catch (NumberFormatException e) {
@@ -635,16 +621,16 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private void bestanErhoehen(String numberFormat, String leeresTextfeld, String artikelExistiertNicht) {
         try {
 
-            String artikelname = bezeichnungsTextfieldErhöhung.getText();
-            int menge = Integer.parseInt(erhöhungTextfield.getText());
+            String artikelname = bezeichnungsTextfieldVeränderung.getText();
+            int menge = Integer.parseInt(mengenänderungstextfeld.getText());
             eshop.bestandErhöhen(artikelname, menge, eingeloggterMitarbeiter);
 
-            ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
+            //ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
             model.setArtikelListe(eshop.getAlleArtikel());
 
 
-            bezeichnungsTextfieldErhöhung.setText("");
-            erhöhungTextfield.setText("");
+            bezeichnungsTextfieldVeränderung.setText("");
+            mengenänderungstextfeld.setText("");
 
             eshop.schreibeArtikel();
             eshop.schreibeEreignis();
@@ -656,8 +642,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
             JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
 
-            bezeichnungsTextfieldErhöhung.setText("");
-            erhöhungTextfield.setText("");
+            bezeichnungsTextfieldVeränderung.setText("");
+            mengenänderungstextfeld.setText("");
 
 
         } catch (LeeresTextfieldException e) {
@@ -684,16 +670,17 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private void bestandVerringern(String numberFormat, String leeresTextfeld, String mengeZuHoch, String artikelExistiertNicht) {
         try {
 
-            String artikelbez = bezeichnungsTextfieldVerringerung.getText();
-            int menge = Integer.parseInt(veringerungsTextfield.getText());
+            String artikelbez = bezeichnungsTextfieldVeränderung.getText();
+            int menge = Integer.parseInt(mengenänderungstextfeld.getText());
             eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
-            ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
+            //ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
             model.setArtikelListe(eshop.getAlleArtikel());
 
 
 
-            bezeichnungsTextfieldVerringerung.setText("");
-            veringerungsTextfield.setText("");
+
+           mengenänderungstextfeld.setText("");
+            bezeichnungsTextfieldVeränderung.setText("");
 
             eshop.schreibeArtikel();
             eshop.schreibeEreignis();
@@ -706,8 +693,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
             JOptionPane.showMessageDialog(null, artikelExistiertNicht, "Artikel nicht im Bestand vorhanden", JOptionPane.INFORMATION_MESSAGE);
 
-            bezeichnungsTextfieldVerringerung.setText("");
-            veringerungsTextfield.setText("");
+            bezeichnungsTextfieldVeränderung.setText("");
+            mengenänderungstextfeld.setText("");
 
         } catch (UngueltigeMengeException u) {
             System.err.println("*********************************************************************************\n" +
@@ -748,9 +735,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             if (column >= 0 && column <= 1) {
                 String value = artikelTabelle.getValueAt(row, column).toString();
 
-                bezeichnungsTextfieldErhöhung.setText(value);
+                bezeichnungsTextfieldVeränderung.setText("");
+                bezeichnungsTextfieldVeränderung.setText(value);
 
-                bezeichnungsTextfieldVerringerung.setText(value);
+
                 System.out.println("Clicked value: " + value);
             }
         }
@@ -775,6 +763,27 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
 
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent documentEvent) {
+
+
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent documentEvent) {
+
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent documentEvent) {
+        String suche = sucheArtikel.getText();
+        if (suche.length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter(suche));
+        }
     }
 }
 
