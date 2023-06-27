@@ -19,7 +19,6 @@ public class KundenbereichGUI extends JFrame {
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
-    private Label rechnungsTextArea;
 
     public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eShop) throws IOException {
         super("Kundenbereich");
@@ -49,7 +48,6 @@ public class KundenbereichGUI extends JFrame {
 
         rechnungsTextArea.setEditable(false);
 
-        warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
         warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
 
         DefaultTableModel artikelTableModel = new DefaultTableModel();
@@ -155,7 +153,7 @@ public class KundenbereichGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 warenKorbDesKunden.getWarenkorb().clear();
-                aktualisiereWarenkorb(); // Aktualisierung des Warenkorbs
+                aktualisiereWarenkorb(rechnungsTextArea); // Aktualisierung des Warenkorbs
             }
         });
 
@@ -190,7 +188,7 @@ public class KundenbereichGUI extends JFrame {
         this.pack();
     }
 
-    private void aktualisiereWarenkorb() {
+    private void aktualisiereWarenkorb(JTextArea rechnungsTextArea) {
         StringBuilder warenkorbText = new StringBuilder();
         for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
             Artikel artikel = eintrag.getKey();
