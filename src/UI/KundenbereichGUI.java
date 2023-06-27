@@ -19,6 +19,7 @@ public class KundenbereichGUI extends JFrame {
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
+    private Label rechnungsTextArea;
 
     public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eShop) throws IOException {
         super("Kundenbereich");
@@ -30,8 +31,6 @@ public class KundenbereichGUI extends JFrame {
         this.setResizable(true);
         this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        kundenbereich();
 
         // Erstellen der GUI-Komponenten
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -53,6 +52,7 @@ public class KundenbereichGUI extends JFrame {
 
         rechnungsTextArea.setEditable(false);
 
+        warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
         //warenkorbanzeige/tabelle
         warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
             warenkorbTabelle = new JTable();
@@ -100,7 +100,7 @@ public class KundenbereichGUI extends JFrame {
         artikelTableModel.addColumn("Stückzahl");
 
         for (Artikel artikel : eShop.getAlleArtikel()) {
-            artikelTableModel.addRow(new Object[]{artikel.getBezeichnung(),artikel.getEinzelpreis(), 0});
+            artikelTableModel.addRow(new Object[]{artikel.getBezeichnung(), artikel.getEinzelpreis(), 0});
         }
 
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -169,9 +169,10 @@ public class KundenbereichGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 warenKorbDesKunden.getWarenkorb().clear();
-                artikelTableModel.setRowCount(0);
+                aktualisiereWarenkorb(); // Aktualisierung des Warenkorbs
             }
         });
+
 
         // ActionListener für Rechnung generieren-Button
         rechnungGenerierenButton.addActionListener(new ActionListener() {
@@ -200,7 +201,20 @@ public class KundenbereichGUI extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         this.add(mainPanel);
+        this.pack();
     }
+
+    private void aktualisiereWarenkorb() {
+        StringBuilder warenkorbText = new StringBuilder();
+        for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
+            Artikel artikel = eintrag.getKey();
+            int menge = eintrag.getValue();
+            warenkorbText.append(artikel.toString()).append(" - Menge: ").append(menge).append("\n");
+        }
+        rechnungsTextArea.setText(warenkorbText.toString());
+    }
+
+
     private String generiereRechnungstext() {
         StringBuilder rechnungstext = new StringBuilder();
         rechnungstext.append("Rechnung\n");
@@ -223,9 +237,6 @@ public class KundenbereichGUI extends JFrame {
 
         return rechnungstext.toString();
     }
-
-
-
 
     private void kundenbereich() {
     }
