@@ -80,7 +80,7 @@ public class StartGUI extends JFrame implements ActionListener {
         start.add(westpanel(), BorderLayout.WEST); //Logins im Westen hinzugefügt
         start.add(northpanel(), BorderLayout.NORTH);
         start.add(midpanel(), BorderLayout.CENTER);
-        start.add(eastpanel(), BorderLayout.EAST);
+
 
         add(start);
     }
@@ -94,6 +94,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
         northpanel.add(Box.createVerticalStrut(100)); //sorgt für einen Abstand vor dem nächsten component
         JLabel wilkommen = new JLabel("Wilkommen!\nBitte loggen Sie sich zu allererst ein!");
+        wilkommen.setFont(new Font("Arial", Font.BOLD, 24));
         northpanel.add(wilkommen);
 
         return northpanel;
@@ -119,14 +120,6 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-
-    private JPanel eastpanel(){
-        JPanel eastpanel = new JPanel();
-        eastpanel.setVisible(true);
-        eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS));
-
-        return eastpanel;
-    }
 
     private JPanel midpanel() {
 
@@ -160,9 +153,8 @@ public class StartGUI extends JFrame implements ActionListener {
         loginfenster.setVisible(true);//Jpanel ist sichtbar
         loginfenster.setSize(300, 300);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
-
-
-        loginfenster.add(new JLabel("Kundenlogin")); // dem Loginbereich ein Label zur Bezeichnung hinugefügt
+        loginfenster.setBorder(BorderFactory.createTitledBorder("Kundenlogin"));
+        
 
         usernameTextfield.add(new JLabel("Username: ")); // Textfeld ein Label hinzugefügt
         passwortTextfield.add(new JLabel("Passwort: "));
@@ -184,8 +176,7 @@ public class StartGUI extends JFrame implements ActionListener {
         JPanel loginfenster = new JPanel();
         loginfenster.setVisible(true);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
-        loginfenster.add(new JLabel("Mitarbeiterlogin"));
-
+        loginfenster.setBorder(BorderFactory.createTitledBorder("Mitarbeiterlogin"));
 
         usernameTextfieldMitarbeiter.add(new JLabel("Username: "));
         passwortTextfieldMitarbeiter.add(new JLabel("Passwort: "));

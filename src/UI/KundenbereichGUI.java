@@ -168,8 +168,12 @@ public class KundenbereichGUI extends JFrame {
         warenkorbLeerenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                warenKorbDesKunden.getWarenkorb().clear();
+                eShop.warenkorbLeeren(warenKorbDesKunden);
+                warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+
                 aktualisiereWarenkorb(rechnungsTextArea); // Aktualisierung des Warenkorbs
+
+
             }
         });
 

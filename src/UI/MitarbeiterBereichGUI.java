@@ -312,9 +312,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         JPanel bestandsAenderung = new JPanel();
         bestandsAenderung.setVisible(true);
         bestandsAenderung.setLayout(new BoxLayout(bestandsAenderung, BoxLayout.Y_AXIS));
+        bestandsAenderung.setBorder(BorderFactory.createTitledBorder("Bestand aktualisieren"));
 
 
-        bestandsAenderung.add(new JLabel("Artikelbestand Aktualisieren"));
         bestandsAenderung.add(Box.createVerticalStrut(20));
 
         bezeichnungsTextfieldVeränderung.setMaximumSize(bezeichnungsTextfieldVeränderung.getPreferredSize());
