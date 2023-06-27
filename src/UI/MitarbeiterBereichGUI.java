@@ -75,6 +75,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     private TableRowSorter sorter;
 
+    private JTextField sucheListen;
+
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShop eshop){
         this.eshop = eshop;
 
@@ -170,7 +172,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         scrollPaneArtikelliste = new JScrollPane(artikellistTable()); //liste wird dem scrollpane hinzugefügt
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
-        sucheArtikel = new JTextField(30);
+        sucheArtikel = new JTextField(textfieldSize);
         setPreferredSize(getPreferredSize());
         sucheArtikel.getDocument().addDocumentListener(this);
 
@@ -195,6 +197,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return popup;
     }
 
+
+
     private Component listpopup(Component jList, String usage) {
         listpopup = new JDialog();
         listpopup.setVisible(true);
@@ -204,7 +208,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         listpopup.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         listpopup.setTitle(usage);
 
+        sucheListen = new JTextField(30);
+        setPreferredSize(getPreferredSize());
+        sucheListen.getDocument().addDocumentListener(this);
+
         JScrollPane scrollPane = new JScrollPane(jList); //liste wird dem scrollpane hinzugefügt
+        listpopup.add(sucheListen, BorderLayout.NORTH);
         listpopup.add(scrollPane);
 
         return listpopup;
@@ -336,15 +345,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
 
-    private Component kundenTable(){
-        kundenTabelle = new JTable();
-        kundenTableModel =new KundenTableModel(eshop.getAlleKunden());
-        kundenTabelle.setModel(kundenTableModel);
-
-        return kundenTabelle;
-    }
-
-
     private JScrollPane artikellistTable(){
 
         artikelTabelle = new JTable();
@@ -358,9 +358,23 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return tablePane;
     }
 
+    private Component kundenTable(){
+        kundenTabelle = new JTable();
+        kundenTableModel =new KundenTableModel(eshop.getAlleKunden());
+        sorter = new TableRowSorter<>(kundenTableModel);
+        kundenTabelle.setRowSorter(sorter);
+        kundenTabelle.setModel(kundenTableModel);
+
+        return kundenTabelle;
+    }
+
+
     private Component mitarbeiterTable(){
         mitarbeiterTabelle = new JTable();
         mitarbeiterTableModel =new MitarbeiterTableModel(eshop.getAlleMitarbeiter());
+        sorter = new TableRowSorter<>(mitarbeiterTableModel);
+        mitarbeiterTabelle.setModel(mitarbeiterTableModel);
+        mitarbeiterTabelle.setRowSorter(sorter);
         mitarbeiterTabelle.setModel(mitarbeiterTableModel);
 
         return mitarbeiterTabelle;
@@ -370,7 +384,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private Component ereignisTable(){
         ereignisTabelle = new JTable();
         ereignisTableModel =new EreignisTableModel(eshop.ereignisseNachDatum());
+        sorter = new TableRowSorter<>(ereignisTableModel);
         ereignisTabelle.setModel(ereignisTableModel);
+        ereignisTabelle.setRowSorter(sorter);
+
 
         return ereignisTabelle;
     }
@@ -379,7 +396,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        //todo den comboboxen ein Label hinzufügen
+
         //todo suchleiste
 
 
@@ -768,22 +785,43 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     @Override
     public void insertUpdate(DocumentEvent documentEvent) {
 
+        suche(documentEvent);
+
+
 
     }
 
     @Override
     public void removeUpdate(DocumentEvent documentEvent) {
+        suche(documentEvent);
 
     }
 
     @Override
     public void changedUpdate(DocumentEvent documentEvent) {
-        String suche = sucheArtikel.getText();
+    suche(documentEvent);
+    }
+
+
+    public void suche(DocumentEvent documentEvent){
+
+        if (documentEvent.getDocument() == sucheArtikel.getDocument()){
+            aktualisiereTabelle(sucheArtikel.getText());
+        } else if(documentEvent.getDocument() == sucheListen.getDocument()){
+            aktualisiereTabelle(sucheListen.getText());
+        }
+    }
+
+    public void aktualisiereTabelle(String suche){
+
         if (suche.length() == 0) {
             sorter.setRowFilter(null);
         } else {
             sorter.setRowFilter(RowFilter.regexFilter(suche));
+            System.out.println("typed");
         }
     }
+
+
 }
 
