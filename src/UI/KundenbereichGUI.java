@@ -47,10 +47,20 @@ public class KundenbereichGUI extends JFrame {
         JTextArea rechnungsTextArea = new JTextArea();
         JScrollPane rechnungsScrollPane = new JScrollPane(rechnungsTextArea);
         JButton rechnungGenerierenButton = new JButton("Rechnung generieren");
+        WarenkorbTableModel warenkorbTableModel;
+        JTable warenkorbTabelle;
+        JScrollPane warenkorbPane;
 
         rechnungsTextArea.setEditable(false);
 
+        //warenkorbanzeige/tabelle
         warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
+            warenkorbTabelle = new JTable();
+            warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
+            warenkorbTabelle.setModel(warenkorbTableModel);
+            warenkorbPane = new JScrollPane(warenkorbTabelle);
+            warenkorbPanel.add(warenkorbPane);
+
 
         DefaultTableModel artikelTableModel = new DefaultTableModel();
         JTable artikelTable = new JTable(artikelTableModel);
@@ -61,6 +71,8 @@ public class KundenbereichGUI extends JFrame {
         artikelTable.setRowSelectionAllowed(true);
 
         // Hinzufügen des ListSelectionListeners für die Artikel-Tabelle
+
+
         artikelTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -71,7 +83,9 @@ public class KundenbereichGUI extends JFrame {
                         int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + selectedArtikel + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
                         if (option == JOptionPane.YES_OPTION) {
                             Artikel artikel = eShop.getAlleArtikel().get(selectedRow);
+                            //todo mit der menge wählbar machen
                             warenKorbDesKunden.getWarenkorb().put(artikel, 1);
+                            warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                             JOptionPane.showMessageDialog(null, "Artikel erfolgreich zum Warenkorb hinzugefügt.");
                         }
                         artikelTable.clearSelection();
