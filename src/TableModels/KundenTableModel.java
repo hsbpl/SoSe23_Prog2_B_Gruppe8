@@ -1,4 +1,4 @@
-package UI;
+package TableModels;
 
 import ValueObjekt.Kunde;
 

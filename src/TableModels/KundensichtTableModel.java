@@ -1,29 +1,30 @@
-package UI;
+package TableModels;
 
 import ValueObjekt.Artikel;
-import ValueObjekt.Warenkorb;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class WarenkorbTableModel extends AbstractTableModel {
-    private Warenkorb waren;
-    private String[] header = {"Bezeichnung", "Artikelnummer", "Menge", "Preis"};
+public class KundensichtTableModel extends AbstractTableModel {
+    private List<Artikel> artikelList;
+    private String[] header = {"Bezeichnung", "Artikelnummer", "Preis"};
 
-    public WarenkorbTableModel(Warenkorb einkaufsliste) {
-        waren = einkaufsliste;
+    public KundensichtTableModel(List<Artikel> aktuelleArtikel) {
+        artikelList = new ArrayList<>();
+        artikelList.addAll(aktuelleArtikel);
+
     }
 
-    public void setWarenkorb(Warenkorb einkaufsliste){
-        waren = einkaufsliste;
+    public void setArtikelListe(List<Artikel> aktuelleArtikel){
+        artikelList.clear();
+        artikelList.addAll(aktuelleArtikel);
         fireTableDataChanged();
     }
 
     @Override
     public int getRowCount() {
-        return waren.getWarenkorb().size();
+        return artikelList.size();
     }
 
     @Override
@@ -33,23 +34,18 @@ public class WarenkorbTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        List<Artikel> artikelList = new ArrayList<>(waren.getWarenkorb().keySet());
         Artikel gewaehlterArtikel = artikelList.get(rowIndex);
-        int menge = waren.getWarenkorb().get(gewaehlterArtikel);
-
         switch (columnIndex) {
             case 0:
                 return gewaehlterArtikel.getBezeichnung();
             case 1:
                 return gewaehlterArtikel.getArtikelNummer();
+
             case 2:
-                return menge;
-            case 3:
                 return gewaehlterArtikel.getEinzelpreis();
             default:
                 return null;
         }
-
     }
 
     @Override

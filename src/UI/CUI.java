@@ -216,7 +216,6 @@ public class CUI {
                 {
                     System.out.println("---------------------");
                     System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
-                    //System.out.println(eshop.ereignisListeAusgeben());
                     System.out.println("---------------------");
                     startMenue();}
                 catch (WarenkorbIstLeerException e){

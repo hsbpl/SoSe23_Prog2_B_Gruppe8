@@ -1,6 +1,10 @@
 package UI;
 
 import Domain.EShop;
+import Exceptions.ArtikelExistiertNichtException;
+import Exceptions.UngueltigeMengeException;
+import TableModels.KundensichtTableModel;
+import TableModels.WarenkorbTableModel;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Warenkorb;
@@ -12,6 +16,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.Map;
 
@@ -38,7 +44,6 @@ public class KundenbereichGUI extends JFrame {
         JLabel titleLabel = new JLabel("Willkommen, " + eingeloggterKunde.getVorname() + "!");
         JButton logoutButton = new JButton("Ausloggen");
         JButton artikelKaufenButton = new JButton("Artikel kaufen");
-        JButton artikelEntfernenButton = new JButton("Artikel entfernen");
         JButton warenkorbButton = new JButton("Warenkorb anzeigen");
         JButton warenkorbLeerenButton = new JButton("Warenkorb leeren");
         JPanel warenkorbPanel = new JPanel(new BorderLayout());
@@ -54,7 +59,7 @@ public class KundenbereichGUI extends JFrame {
 
         warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
         //warenkorbanzeige/tabelle
-        warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
+            warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
             warenkorbTabelle = new JTable();
             warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
             warenkorbTabelle.setModel(warenkorbTableModel);
@@ -62,7 +67,7 @@ public class KundenbereichGUI extends JFrame {
             warenkorbPanel.add(warenkorbPane);
 
 
-        DefaultTableModel artikelTableModel = new DefaultTableModel();
+        KundensichtTableModel artikelTableModel = new KundensichtTableModel(eShop.getAlleArtikel());
         JTable artikelTable = new JTable(artikelTableModel);
         JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
 
@@ -71,8 +76,6 @@ public class KundenbereichGUI extends JFrame {
         artikelTable.setRowSelectionAllowed(true);
 
         // Hinzufügen des ListSelectionListeners für die Artikel-Tabelle
-
-
         artikelTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -94,14 +97,8 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
-        // Artikel-Tabelle modellieren
-        artikelTableModel.addColumn("Artikel");
-        artikelTableModel.addColumn("Preis");
-        artikelTableModel.addColumn("Stückzahl");
 
-        for (Artikel artikel : eShop.getAlleArtikel()) {
-            artikelTableModel.addRow(new Object[]{artikel.getBezeichnung(), artikel.getEinzelpreis(), 0});
-        }
+
 
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
@@ -139,16 +136,70 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
-        // ActionListener für Artikel entfernen-Button
-        artikelEntfernenButton.addActionListener(new ActionListener() {
+
+        // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
+        // bei
+        warenkorbTabelle.addMouseListener(new MouseListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = artikelTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    artikelTableModel.removeRow(selectedRow);
+            public void mouseClicked(MouseEvent mouseEvent) {
+                int row = warenkorbTabelle.getSelectedRow();
+
+                String artikel = warenkorbTabelle.getValueAt(row, 0).toString();
+
+                if (mouseEvent.getClickCount() == 2) {
+
+
+                    int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+
+                        eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
+                        warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+
+                    }
+
+                    System.out.println("Clicked value: " + artikel);
+
+                }else if (mouseEvent.getClickCount() != 2) {
+
+                    int option = JOptionPane.showConfirmDialog(null, "Menge des Gewählten Artikels ändern?", "Menge aktualisieren", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+                        String mengenString = JOptionPane.showInputDialog("Menge des gewählten Artikels abändern");
+                        int menge = Integer.parseInt(mengenString);
+                        try {
+                            eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
+                            eShop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
+                            warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                        } catch (ArtikelExistiertNichtException e) {
+                            System.out.println("Artikel nonexistent");
+                        } catch (UngueltigeMengeException e) {
+                            System.out.println("ungültige Menge"); //todo Excp definieren
+                        }
+                    }
+
                 }
             }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
         });
+
 
         // ActionListener für Warenkorb anzeigen-Button
         warenkorbButton.addActionListener(new ActionListener() {
@@ -193,7 +244,6 @@ public class KundenbereichGUI extends JFrame {
 
         buttonPanel.add(logoutButton);
         buttonPanel.add(artikelKaufenButton);
-        buttonPanel.add(artikelEntfernenButton);
         buttonPanel.add(warenkorbButton);
         buttonPanel.add(warenkorbLeerenButton);
 

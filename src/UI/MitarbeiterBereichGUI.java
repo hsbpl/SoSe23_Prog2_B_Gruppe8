@@ -2,6 +2,10 @@ package UI;
 
 import Domain.EShop;
 import Exceptions.*;
+import TableModels.ArtikelTableModel;
+import TableModels.EreignisTableModel;
+import TableModels.KundenTableModel;
+import TableModels.MitarbeiterTableModel;
 import ValueObjekt.Artikel;
 import ValueObjekt.Massengutartikel;
 import ValueObjekt.Mitarbeiter;

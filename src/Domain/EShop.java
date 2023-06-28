@@ -135,6 +135,10 @@ public class EShop {
 
 
     }
+
+    public void artikelAusWarenkorbEntfernen(String  artikel, Warenkorb warenkorb){
+        kv.artikelAusDemWarenkorbNehmen(artikel, warenkorb);
+    }
     public String ereignisListeAusgeben(){
         return av.ereignisseAusgeben();
     }

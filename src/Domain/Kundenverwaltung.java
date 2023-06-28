@@ -92,6 +92,26 @@ public class Kundenverwaltung {
 
     }
 
+    /*
+    public Kunde login(String username, String password) {
+        return kundenUndDazugehörigeWarenkörbe.keySet().stream()
+                .filter(a -> a.getUserName().equals(username) && a.getPasswort().equals(password))
+                .findFirst()
+                .orElse(null);
+    }
+     */
+
+    public void artikelAusDemWarenkorbNehmen(String artikel, Warenkorb warenkorb){
+
+        Artikel art = warenkorb.getWarenkorb().keySet().stream()
+                        .filter(a -> a.getBezeichnung().equals(artikel))
+                        .findFirst()
+                        .orElse(null);
+        if(art != null) {
+            warenkorb.getWarenkorb().remove(art);
+        }
+
+    }
     //Die im Warenkorb enthaltenen Waren werden mit dem Warenbestand abgeglichen und deren Bestand wird aktualisiert.
     // danach wird der Warenkorb geleert
     public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand, Kunde kunde, List<Ereignis> ereignisliste) throws WarenkorbIstLeerException {

@@ -4,6 +4,7 @@ import Domain.EShop;
 import Exceptions.LeeresTextfieldException;
 import Exceptions.LoginFehlgeschlagenException;
 import Exceptions.UserExistiertBereitsException;
+import TableModels.ArtikelTableModel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Warenkorb;
