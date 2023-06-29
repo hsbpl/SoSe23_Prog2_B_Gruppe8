@@ -1,23 +1,28 @@
 package TableModels;
 
+
+import ValueObjekt.Enum;
 import ValueObjekt.Ereignis;
 import ValueObjekt.Mitarbeiter;
 
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EreignisTableModel extends AbstractTableModel {
 
     private List<Ereignis> ereignisse;
-    private String[] header = {"Datum", "Artikel","Artikelnummer", "Ereignistyp", "Menge", "Aktualisierter Bestand","Beteiligter User"};
+    private String[] header = {"Datum", "Artikel", "Artikelnummer", "Ereignistyp", "Menge", "Aktualisierter Bestand", "Beteiligter User"};
 
-    public EreignisTableModel(List<Ereignis> ereignisList){
+    public EreignisTableModel(List<Ereignis> ereignisList) {
+        super();
         ereignisse = new ArrayList<>();
         ereignisse.addAll(ereignisList);
     }
 
-    public void setEreignisse(List<Ereignis> ereignisList){
+    public void setEreignisse(List<Ereignis> ereignisList) {
         ereignisse.clear();
         ereignisse.addAll(ereignisList);
         fireTableDataChanged();
@@ -25,13 +30,22 @@ public class EreignisTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return ereignisse.size();
+        if (ereignisse != null) {
+            return ereignisse.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public int getColumnCount() {
         return header.length;
     }
+
+    public String getColumnName(int columnIndex){
+        return header[columnIndex];
+    }
+
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -56,8 +70,6 @@ public class EreignisTableModel extends AbstractTableModel {
         }
     }
 
-    @Override
-    public String getColumnName(int column) {
-        return header[column];
-    }
 }
+
+

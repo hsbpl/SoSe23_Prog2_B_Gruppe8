@@ -190,3 +190,9 @@ Regenschirm
 14.22
 2
 Massengutartikel
+Mauspad
+698605
+300
+20.0
+1
+Einzelartikel
