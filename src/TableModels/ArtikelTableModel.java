@@ -1,37 +1,48 @@
 package TableModels;
 
 import ValueObjekt.Artikel;
+import ValueObjekt.Massengutartikel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtikelTableModel extends AbstractTableModel{
+public class ArtikelTableModel extends AbstractTableModel {
 
     private List<Artikel> artikelList;
-    private String[] header = {"Bezeichnung", "Artikelnummer", "Bestand", "Preis"};
+    private String[] header = {"Bezeichnung", "Artikelnummer", "Bestand", "Preis", "Massengut"};
 
     public ArtikelTableModel(List<Artikel> aktuelleArtikel) {
-    artikelList = new ArrayList<>();
-    artikelList.addAll(aktuelleArtikel);
+        artikelList = new ArrayList<>();
+        artikelList.addAll(aktuelleArtikel);
 
     }
 
-   public void setArtikelListe(List<Artikel> aktuelleArtikel){
-       artikelList.clear();
-       artikelList.addAll(aktuelleArtikel);
-       fireTableDataChanged();
+    public void setArtikelListe(List<Artikel> aktuelleArtikel) {
+        artikelList.clear();
+        artikelList.addAll(aktuelleArtikel);
+        fireTableDataChanged();
     }
 
     @Override
     public int getRowCount() {
-        return artikelList.size();
+        if (artikelList != null) {
+            return artikelList.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public int getColumnCount() {
         return header.length;
     }
+
+    @Override
+    public String getColumnName(int column) {
+        return header[column];
+    }
+
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -45,14 +56,16 @@ public class ArtikelTableModel extends AbstractTableModel{
                 return gewaehlterArtikel.getBestand();
             case 3:
                 return gewaehlterArtikel.getEinzelpreis();
+            case 4:
+                if (gewaehlterArtikel instanceof Massengutartikel)
+                    return ((Massengutartikel) gewaehlterArtikel).getErwerbwareMenge();
+                else {
+                    return 1;
+                }
             default:
                 return null;
         }
     }
-
-    @Override
-    public String getColumnName(int column) {
-        return header[column];
-    }
-
 }
+
+
