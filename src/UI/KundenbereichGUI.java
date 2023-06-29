@@ -22,6 +22,12 @@ import java.io.IOException;
 import java.util.Map;
 
 public class KundenbereichGUI extends JFrame {
+    //todo menge beim reinlegen übergeben
+    //todo exceptionhandling
+    //todo kaufen methode und rechnung -- beim Kauf ausloggen
+    //todo unten rechts gesamtsumme bei Warenkorb
+    //todo evtl Suchleiste zur artikeltabelle
+
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
@@ -59,12 +65,12 @@ public class KundenbereichGUI extends JFrame {
 
         warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
         //warenkorbanzeige/tabelle
-            warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
-            warenkorbTabelle = new JTable();
-            warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
-            warenkorbTabelle.setModel(warenkorbTableModel);
-            warenkorbPane = new JScrollPane(warenkorbTabelle);
-            warenkorbPanel.add(warenkorbPane);
+        warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
+        warenkorbTabelle = new JTable();
+        warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
+        warenkorbTabelle.setModel(warenkorbTableModel);
+        warenkorbPane = new JScrollPane(warenkorbTabelle);
+        warenkorbPanel.add(warenkorbPane);
 
 
         KundensichtTableModel artikelTableModel = new KundensichtTableModel(eShop.getAlleArtikel());
@@ -96,8 +102,6 @@ public class KundenbereichGUI extends JFrame {
                 }
             }
         });
-
-
 
 
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -146,23 +150,18 @@ public class KundenbereichGUI extends JFrame {
 
                 String artikel = warenkorbTabelle.getValueAt(row, 0).toString();
 
-                if (mouseEvent.getClickCount() == 2) {
+                int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
 
+                    eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
+                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
-                    int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
-                    if (option == JOptionPane.YES_OPTION) {
+                }
+                if (option == JOptionPane.NO_OPTION) {
 
-                        eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
-                        warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                    int optionpane = JOptionPane.showConfirmDialog(null, "Menge des Gewählten Artikels ändern?", "Menge aktualisieren", JOptionPane.YES_NO_OPTION);
+                    if (optionpane == JOptionPane.YES_OPTION) {
 
-                    }
-
-                    System.out.println("Clicked value: " + artikel);
-
-                }else if (mouseEvent.getClickCount() != 2) {
-
-                    int option = JOptionPane.showConfirmDialog(null, "Menge des Gewählten Artikels ändern?", "Menge aktualisieren", JOptionPane.YES_NO_OPTION);
-                    if (option == JOptionPane.YES_OPTION) {
                         String mengenString = JOptionPane.showInputDialog("Menge des gewählten Artikels abändern");
                         int menge = Integer.parseInt(mengenString);
                         try {
@@ -174,10 +173,12 @@ public class KundenbereichGUI extends JFrame {
                         } catch (UngueltigeMengeException e) {
                             System.out.println("ungültige Menge"); //todo Excp definieren
                         }
+
                     }
 
                 }
             }
+
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {

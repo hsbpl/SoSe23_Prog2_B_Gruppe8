@@ -25,6 +25,11 @@ import java.util.List;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
+    //todo den suchleisten ein label hinzufügen
+    //todo evtl recherchieren / nachdenken, ob man die tablemodele zusammenfassen kann
+    //todo ereignisse nach datum absteigend / ausfteigen sortieren lassen
+    //todo evtl einige components streichen / zusammen fassen die gemeinsam verwendet werden können
+
 
     private EShop eshop;
     private int textfieldSize = 50;
