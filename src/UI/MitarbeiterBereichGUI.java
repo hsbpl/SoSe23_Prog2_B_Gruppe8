@@ -144,7 +144,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         westpanel.add(Box.createVerticalStrut(40));
         westpanel.add(bestandVerändern());  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
         westpanel.add(Box.createVerticalStrut(40));
-        //westpanel.add(bestandVerringern());
+
 
 
         artikelAnlegenPopupButton.addActionListener(this);

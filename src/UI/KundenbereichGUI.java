@@ -3,6 +3,7 @@ package UI;
 import Domain.EShop;
 import Exceptions.ArtikelExistiertNichtException;
 import Exceptions.UngueltigeMengeException;
+import Exceptions.WarenkorbIstLeerException;
 import TableModels.KundensichtTableModel;
 import TableModels.WarenkorbTableModel;
 import ValueObjekt.Artikel;
@@ -10,9 +11,12 @@ import ValueObjekt.Kunde;
 import ValueObjekt.Warenkorb;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,9 +26,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class KundenbereichGUI extends JFrame {
-    //todo menge beim reinlegen übergeben
     //todo exceptionhandling
-    //todo kaufen methode und rechnung -- beim Kauf ausloggen
     //todo unten rechts gesamtsumme bei Warenkorb
     //todo evtl Suchleiste zur artikeltabelle
 
@@ -73,13 +75,59 @@ public class KundenbereichGUI extends JFrame {
         warenkorbPanel.add(warenkorbPane);
 
 
-        KundensichtTableModel artikelTableModel = new KundensichtTableModel(eShop.getAlleArtikel());
-        JTable artikelTable = new JTable(artikelTableModel);
-        JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
 
-        // Artikel-Tabelle konfigurieren
+        KundensichtTableModel artikelTableModel = new KundensichtTableModel(eShop.getAlleArtikel());
+        TableRowSorter sorter = new TableRowSorter<>(artikelTableModel);
+        JTable artikelTable = new JTable(artikelTableModel);
+        artikelTable.setRowSorter(sorter);
+        JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
+        artikelScrollPane.setMinimumSize(new Dimension(300, 400));
+        JTextField suchleiste = new JTextField(30);
+
+        //artikelScrollPane.add(suchleiste, BorderLayout.NORTH); //todo herausfinden warum die Suchleiste nicht hinzuge -evtl weil scrollpane keinen layout manager hat
+        suchleiste.setPreferredSize(getPreferredSize());
+
+
         artikelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         artikelTable.setRowSelectionAllowed(true);
+        suchleiste.getDocument().addDocumentListener(new DocumentListener() {
+            String suche = suchleiste.getText();
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {
+                if (suche.length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter(suche));
+                    System.out.println("typed");
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {
+                if (suche.length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter(suche));
+                    System.out.println("typed");
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                if (suche.length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter(suche));
+                    System.out.println("typed");
+                }
+            }
+        });
+
+
+
+
+
+
 
         // Hinzufügen des ListSelectionListeners für die Artikel-Tabelle
         artikelTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -87,17 +135,28 @@ public class KundenbereichGUI extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     int selectedRow = artikelTable.getSelectedRow();
+
                     if (selectedRow != -1) {
-                        String selectedArtikel = (String) artikelTableModel.getValueAt(selectedRow, 0);
-                        int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + selectedArtikel + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
+                        //String selectedArtikel = (String) artikelTableModel.getValueAt(selectedRow, 0);
+                        String artikelBezeichnung = artikelTable.getValueAt(selectedRow, 0).toString();
+                        int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
                         if (option == JOptionPane.YES_OPTION) {
-                            Artikel artikel = eShop.getAlleArtikel().get(selectedRow);
-                            //todo mit der menge wählbar machen
-                            warenKorbDesKunden.getWarenkorb().put(artikel, 1);
-                            warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
-                            JOptionPane.showMessageDialog(null, "Artikel erfolgreich zum Warenkorb hinzugefügt.");
+
+                            String mengenString = JOptionPane.showInputDialog("Menge eingeben");
+                            int menge = Integer.parseInt(mengenString);
+
+                            try {
+                                eShop.inDenWarenkorbLegen(artikelBezeichnung, menge,warenKorbDesKunden );
+                                warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                            } catch (ArtikelExistiertNichtException ex) {
+                                throw new RuntimeException(ex); //Todo Exceptions definieren, auch wenn statt einer Zahl was eingegeben wird
+                            } catch (UngueltigeMengeException ex) {
+                                throw new RuntimeException(ex);
+                            }
+
+
                         }
-                        artikelTable.clearSelection();
+
                     }
                 }
             }
@@ -122,21 +181,18 @@ public class KundenbereichGUI extends JFrame {
         artikelKaufenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = artikelTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    Artikel artikel = eShop.getAlleArtikel().get(selectedRow);
-                    int stueckzahl = Integer.parseInt(artikelTableModel.getValueAt(selectedRow, 2).toString());
-                    if (stueckzahl > 0) {
-                        warenKorbDesKunden.getWarenkorb().put(artikel, stueckzahl);
-                        artikelTableModel.setValueAt(stueckzahl, selectedRow, 2);
-                        JOptionPane.showMessageDialog(null, "Artikel erfolgreich zum Warenkorb hinzugefügt.");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Bitte geben Sie eine gültige Stückzahl ein.");
-                    }
-                    artikelTable.clearSelection();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Artikel aus.");
+
+                try {
+                    String rechnung = eShop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden); //TODo Rechnungstext ein wenig schöner
+                    JOptionPane.showMessageDialog(null, rechnung, "Vielen dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println(rechnung);
+
+                } catch (WarenkorbIstLeerException ex) {
+                    throw new RuntimeException(ex); //todo exceptions definieren
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
+
             }
         });
 
@@ -240,6 +296,8 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
+        //artikelScrollPane.add(suchleiste, BorderLayout.NORTH);
+
         infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
         infoPanel.add(titleLabel);
 
@@ -249,7 +307,7 @@ public class KundenbereichGUI extends JFrame {
         buttonPanel.add(warenkorbLeerenButton);
 
         mainPanel.add(warenkorbPanel, BorderLayout.CENTER);
-        mainPanel.add(rechnungsScrollPane, BorderLayout.EAST);
+        //mainPanel.add(rechnungsScrollPane, BorderLayout.EAST);
         mainPanel.add(rechnungGenerierenButton, BorderLayout.SOUTH);
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.WEST);

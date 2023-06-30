@@ -60,7 +60,7 @@ Energy
 Einzelartikel
 Glas
 56678
-10
+6
 12.23
 1
 Einzelartikel
@@ -108,7 +108,7 @@ Rucksack
 Massengutartikel
 Schüssel
 537265
-100
+98
 15.12
 1
 Einzelartikel
