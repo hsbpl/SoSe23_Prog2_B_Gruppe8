@@ -1,14 +1,8 @@
 package TableModels;
 
-
-import ValueObjekt.Enum;
 import ValueObjekt.Ereignis;
-import ValueObjekt.Mitarbeiter;
-
-
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class EreignisTableModel extends AbstractTableModel {

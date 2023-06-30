@@ -170,24 +170,24 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
-        // ActionListener für Artikel kaufen-Button
+
         artikelKaufenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 try {
-                    String rechnung = eShop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden); //TODo Rechnungstext ein wenig schöner
-                    JOptionPane.showMessageDialog(null, rechnung, "Vielen dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
+                    String rechnung = eShop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden);
+                    JOptionPane.showMessageDialog(null, rechnung, "Vielen Dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println(rechnung);
-
                 } catch (WarenkorbIstLeerException ex) {
-                    throw new RuntimeException(ex); //todo exceptions definieren
+                    JOptionPane.showMessageDialog(null, "Der Warenkorb ist leer.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    JOptionPane.showMessageDialog(null, "Fehler beim Generieren der Rechnung.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
-
             }
         });
+
 
 
         // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
@@ -201,10 +201,12 @@ public class KundenbereichGUI extends JFrame {
 
                 int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-
-                    eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
-                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
-
+                    try {
+                        eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
+                        warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 if (option == JOptionPane.NO_OPTION) {
 
@@ -218,7 +220,7 @@ public class KundenbereichGUI extends JFrame {
                             eShop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                         } catch (ArtikelExistiertNichtException e) {
-                            System.out.println("Artikel nonexistent");
+                            System.out.println("Artikel existiert nicht");
                         } catch (UngueltigeMengeException e) {
                             System.out.println("ungültige Menge"); //todo Excp definieren
                         }
@@ -269,11 +271,14 @@ public class KundenbereichGUI extends JFrame {
         warenkorbLeerenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                eShop.warenkorbLeeren(warenKorbDesKunden);
-                warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                try {
+                    eShop.warenkorbLeeren(warenKorbDesKunden);
+                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
-                aktualisiereWarenkorb(rechnungsTextArea); // Aktualisierung des Warenkorbs
-
+                    aktualisiereWarenkorb(rechnungsTextArea); // Aktualisierung des Warenkorbs
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
         });
@@ -288,6 +293,8 @@ public class KundenbereichGUI extends JFrame {
                 rechnungsTextArea.setText(rechnungstext);
             }
         });
+
+
 
         //artikelScrollPane.add(suchleiste, BorderLayout.NORTH);
 
@@ -334,7 +341,10 @@ public class KundenbereichGUI extends JFrame {
             Artikel artikel = eintrag.getKey();
             int menge = eintrag.getValue();
             double gesamtpreis = artikel.getEinzelpreis() * menge;
-            rechnungstext.append(artikel.getBezeichnung()).append("\t\t").append(artikel.getEinzelpreis()).append("\t\t").append(menge).append("\t\t").append(gesamtpreis).append("\n");
+            rechnungstext.append(artikel.getBezeichnung()).append("\t\t")
+                    .append(artikel.getEinzelpreis()).append("\t\t")
+                    .append(menge).append("\t\t")
+                    .append(gesamtpreis).append("\n");
             gesamtsumme += gesamtpreis;
         }
 
@@ -343,6 +353,7 @@ public class KundenbereichGUI extends JFrame {
 
         return rechnungstext.toString();
     }
+
 
     private void kundenbereich() {
     }

@@ -12,7 +12,7 @@ Armband
 Einzelartikel
 Brille
 1222333
-89
+87
 44.9
 1
 Einzelartikel
@@ -114,7 +114,7 @@ Schüssel
 Einzelartikel
 Seife
 47677
-270
+267
 12.23
 1
 Einzelartikel
@@ -144,7 +144,7 @@ Stuhl
 Einzelartikel
 Tastatur
 56677
-100
+98
 24.12
 1
 Einzelartikel
