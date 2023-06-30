@@ -137,32 +137,25 @@ public class KundenbereichGUI extends JFrame {
                     int selectedRow = artikelTable.getSelectedRow();
 
                     if (selectedRow != -1) {
-                        //String selectedArtikel = (String) artikelTableModel.getValueAt(selectedRow, 0);
                         String artikelBezeichnung = artikelTable.getValueAt(selectedRow, 0).toString();
                         int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
                         if (option == JOptionPane.YES_OPTION) {
-
                             String mengenString = JOptionPane.showInputDialog("Menge eingeben");
                             int menge = Integer.parseInt(mengenString);
-
                             try {
-                                eShop.inDenWarenkorbLegen(artikelBezeichnung, menge,warenKorbDesKunden );
+                                eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
                                 warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                             } catch (ArtikelExistiertNichtException ex) {
-                                throw new RuntimeException(ex); //Todo Exceptions definieren, auch wenn statt einer Zahl was eingegeben wird
-                            } catch (UngueltigeMengeException ex) {
                                 throw new RuntimeException(ex);
+                            } catch (UngueltigeMengeException ex) {
+                                JOptionPane.showMessageDialog(null, "Ungültige Menge", "Fehler", JOptionPane.ERROR_MESSAGE);
                             }
-
-
                         }
-
                     }
                 }
             }
         });
-
-
+        
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // ActionListener für Ausloggen-Button

@@ -12,7 +12,7 @@ Armband
 Einzelartikel
 Brille
 1222333
-90
+89
 44.9
 1
 Einzelartikel
@@ -54,7 +54,7 @@ Einleggläser
 Massengutartikel
 Energy
 56899
-300
+295
 1.0
 1
 Einzelartikel
@@ -90,7 +90,7 @@ Käsekuchen
 Einzelartikel
 Laaptop
 567788
-5
+4
 12.9
 1
 Einzelartikel
@@ -174,7 +174,7 @@ Gitarre
 Einzelartikel
 Tomatensaft
 10101
-700
+690
 4.99
 1
 Einzelartikel

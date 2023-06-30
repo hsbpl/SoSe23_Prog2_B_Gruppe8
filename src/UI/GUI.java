@@ -2,7 +2,7 @@ package UI;
 
 import java.io.IOException;
 
-public class GUI { //Listendopplung verhindern,
+public class GUI {
 
     public GUI(){
     }
