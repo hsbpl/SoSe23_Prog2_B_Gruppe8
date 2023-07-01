@@ -24,6 +24,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 
 public class KundenbereichGUI extends JFrame {
     //todo exceptionhandling
@@ -32,8 +36,7 @@ public class KundenbereichGUI extends JFrame {
     //todo zuvor hat die reinlegen methode automatische die neumals zu verändernde Menge so aktuallisiert, jetzt wird aber einfach drauf gerechnet
     //todo dadurch das das vorherige problem auftritt wird beim kaufen nicht die Richtige Ware aus dem bestand gezogen bzw man kann auch ins minus gehen
     //todo Im algemeinen scheint das Problem in der Methode zu sitzen, mit der man die Waren in den Korb gelegt werden
-    //todo Wenn man in der Suchleiste etwas neues suchen will und dabei das alte geschriebene löscht kommt immer wieder das pop up ob man den zu vorigen Artikel kaufen will. Passiert vor allem wenn man den artikel zuvor in den Warenkorb eingefügt hat.
-
+    //todo Suchleiste, wenn man einen Artikel einmal angeklickt hat und nicht wählt kann man diesen kein zweites mal auswählen
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
@@ -88,9 +91,7 @@ public class KundenbereichGUI extends JFrame {
         JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
         artikelScrollPane.setMinimumSize(new Dimension(300, 400));
 
-        //artikelScrollPane.add(suchleiste, BorderLayout.NORTH); //todo herausfinden warum die Suchleiste nicht hinzuge -evtl weil scrollpane keinen layout manager hat
         suchleiste.setPreferredSize(getPreferredSize());
-
 
         artikelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         artikelTable.setRowSelectionAllowed(true);
@@ -119,6 +120,7 @@ public class KundenbereichGUI extends JFrame {
 
 
         // Hinzufügen des ListSelectionListeners für die Artikel-Tabelle
+        final List<String> vorherigeArtikelBezeichnungen = new ArrayList<>();
         artikelTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -127,35 +129,41 @@ public class KundenbereichGUI extends JFrame {
 
                     if (selectedRow != -1) {
                         String artikelBezeichnung = artikelTable.getValueAt(selectedRow, 0).toString();
-                        int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
-                        if (option == JOptionPane.YES_OPTION) {
-                            try {
-                                String mengenString = JOptionPane.showInputDialog("Menge eingeben");
-                                int menge = Integer.parseInt(mengenString);
 
-                                eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
-                                warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
-                            } catch (ArtikelExistiertNichtException ex) {
-                                //kann hier eig nicht vorkommen, da die Artikel durchs cliken ausgewählt werden.
-                                //Nur relevant für CUI
-                            } catch (UngueltigeMengeException ex) {
-                                System.err.println("*********************************************************************************\n" +
-                                        "\nGewünschte Menge übersteigt Bestand!\n"+
-                                        "*********************************************************************************\n");
-                                JOptionPane.showMessageDialog(null, "Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                            }catch (NumberFormatException exc){
-                                System.err.println("*********************************************************************************\n" +
-                                        "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n"+
-                                        "*********************************************************************************\n");
-                                JOptionPane.showMessageDialog(null, "Bitte geben Sie eine Zahl ein!",
-                                        "Eingabe falsch", JOptionPane.ERROR_MESSAGE);
+                        if (!vorherigeArtikelBezeichnungen.contains(artikelBezeichnung)) {
+                            int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
+                            if (option == JOptionPane.YES_OPTION) {
+                                try {
+                                    String mengenString = JOptionPane.showInputDialog("Menge eingeben");
+                                    int menge = Integer.parseInt(mengenString);
+
+                                    eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
+                                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                                } catch (ArtikelExistiertNichtException ex) {
+
+                                } catch (UngueltigeMengeException ex) {
+                                    System.err.println("*********************************************************************************\n" +
+                                            "\nGewünschte Menge übersteigt Bestand!\n"+
+                                            "*********************************************************************************\n");
+                                    JOptionPane.showMessageDialog(null, "Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                                }catch (NumberFormatException exc){
+                                    System.err.println("*********************************************************************************\n" +
+                                            "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n"+
+                                            "*********************************************************************************\n");
+                                    JOptionPane.showMessageDialog(null, "Bitte geben Sie eine Zahl ein!",
+                                            "Eingabe falsch", JOptionPane.ERROR_MESSAGE);
+                                }
                             }
+
+                            vorherigeArtikelBezeichnungen.add(artikelBezeichnung);
                         }
                     }
                 }
             }
         });
-        
+
+
+
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // ActionListener für Ausloggen-Button
