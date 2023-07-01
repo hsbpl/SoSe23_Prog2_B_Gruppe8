@@ -126,11 +126,6 @@ public class KundenbereichGUI extends JFrame {
         });
 
 
-
-
-
-
-
         // Hinzufügen des ListSelectionListeners für die Artikel-Tabelle
         artikelTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -282,7 +277,7 @@ public class KundenbereichGUI extends JFrame {
 
                     aktualisiereWarenkorb(rechnungsTextArea); // Aktualisierung des Warenkorbs
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Warenkorb konnte nicht aktualisiert werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
