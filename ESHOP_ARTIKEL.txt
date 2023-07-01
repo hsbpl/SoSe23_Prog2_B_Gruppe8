@@ -84,7 +84,7 @@ Kaffee
 Massengutartikel
 Käsekuchen
 19002
-17
+7
 4.99
 1
 Einzelartikel
@@ -150,7 +150,7 @@ Tastatur
 Einzelartikel
 Venti
 46474
-50
+48
 23.23
 1
 Einzelartikel

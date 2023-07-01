@@ -28,11 +28,11 @@ import java.util.Map;
 public class KundenbereichGUI extends JFrame {
     //todo exceptionhandling
     //todo unten rechts gesamtsumme bei Warenkorb
-    //todo evtl Suchleiste zur artikeltabelle
     //todo es gibt Problemem bei den Massengutartikeln beim Reinlegen wird nicht die kaufbare menge gegen gerechnet
     //todo zuvor hat die reinlegen methode automatische die neumals zu verändernde Menge so aktuallisiert, jetzt wird aber einfach drauf gerechnet
     //todo dadurch das das vorherige problem auftritt wird beim kaufen nicht die Richtige Ware aus dem bestand gezogen bzw man kann auch ins minus gehen
     //todo Im algemeinen scheint das Problem in der Methode zu sitzen, mit der man die Waren in den Korb gelegt werden
+    //todo Wenn man in der Suchleiste etwas neues suchen will und dabei das alte geschriebene löscht kommt immer wieder das pop up ob man den zu vorigen Artikel kaufen will. Passiert vor allem wenn man den artikel zuvor in den Warenkorb eingefügt hat.
 
     private EShop eShop;
     private Kunde eingeloggterKunde;
@@ -63,12 +63,13 @@ public class KundenbereichGUI extends JFrame {
         WarenkorbTableModel warenkorbTableModel;
         JTable warenkorbTabelle;
         JScrollPane warenkorbPane;
+        JPanel suchleistenPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JTextField suchleiste = new JTextField(30);
 
         rechnungsTextArea.setEditable(false);
 
 
         warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
-        //warenkorbanzeige/tabelle
         warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
         warenkorbTabelle = new JTable();
         warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
@@ -76,6 +77,8 @@ public class KundenbereichGUI extends JFrame {
         warenkorbPane = new JScrollPane(warenkorbTabelle);
         warenkorbPanel.add(warenkorbPane);
 
+        suchleistenPanel.add(suchleiste);
+        mainPanel.add(suchleistenPanel, BorderLayout.NORTH);
 
 
         KundensichtTableModel artikelTableModel = new KundensichtTableModel(eShop.getAlleArtikel());
@@ -84,7 +87,6 @@ public class KundenbereichGUI extends JFrame {
         artikelTable.setRowSorter(sorter);
         JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
         artikelScrollPane.setMinimumSize(new Dimension(300, 400));
-        JTextField suchleiste = new JTextField(30);
 
         //artikelScrollPane.add(suchleiste, BorderLayout.NORTH); //todo herausfinden warum die Suchleiste nicht hinzuge -evtl weil scrollpane keinen layout manager hat
         suchleiste.setPreferredSize(getPreferredSize());
@@ -93,35 +95,25 @@ public class KundenbereichGUI extends JFrame {
         artikelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         artikelTable.setRowSelectionAllowed(true);
         suchleiste.getDocument().addDocumentListener(new DocumentListener() {
-            String suche = suchleiste.getText();
             @Override
             public void insertUpdate(DocumentEvent documentEvent) {
-                if (suche.length() == 0) {
-                    sorter.setRowFilter(null);
-                } else {
-                    sorter.setRowFilter(RowFilter.regexFilter(suche));
-                    System.out.println("typed");
-                }
+                filterArtikelTable();
             }
 
             @Override
             public void removeUpdate(DocumentEvent documentEvent) {
-                if (suche.length() == 0) {
-                    sorter.setRowFilter(null);
-                } else {
-                    sorter.setRowFilter(RowFilter.regexFilter(suche));
-                    System.out.println("typed");
-                }
+                filterArtikelTable();
             }
 
             @Override
             public void changedUpdate(DocumentEvent documentEvent) {
-                if (suche.length() == 0) {
-                    sorter.setRowFilter(null);
-                } else {
-                    sorter.setRowFilter(RowFilter.regexFilter(suche));
-                    System.out.println("typed");
-                }
+                filterArtikelTable();
+            }
+
+            private void filterArtikelTable() {
+                String suchtext = suchleiste.getText();
+                TableRowSorter<DefaultTableModel> rowSorter = (TableRowSorter<DefaultTableModel>) artikelTable.getRowSorter();
+                rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + suchtext)); // (?i) für case-insensitive Suche
             }
         });
 
@@ -199,8 +191,6 @@ public class KundenbereichGUI extends JFrame {
                 */
             }
         });
-
-
 
 
         warenkorbTabelle.addMouseListener(new MouseListener() {
@@ -296,6 +286,12 @@ public class KundenbereichGUI extends JFrame {
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.WEST);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(suchleistenPanel, BorderLayout.NORTH);
+        mainPanel.add(warenkorbPanel, BorderLayout.CENTER);
+        mainPanel.add(infoPanel, BorderLayout.WEST);
+        mainPanel.add(artikelScrollPane, BorderLayout.EAST);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
 
         this.add(mainPanel);
         this.pack();
