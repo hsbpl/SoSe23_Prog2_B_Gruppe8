@@ -232,7 +232,7 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-    private Component artikellistTable(){
+    private JScrollPane artikellistTable(){
         String[] bez= {"Bezeichnung", "Artikelnummer", "Bestand", "Preis"};
         tabelle = new JTable();
         model =new ArtikelTableModel(eshop.getAlleArtikel());
@@ -296,7 +296,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     kontoExistiertSchon +
                     "*********************************************************************************\n");
             popup.dispose();
-            JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.ERROR_MESSAGE);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -306,7 +306,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     leeresTextfeld +
                     "*********************************************************************************\n");
             popup.dispose();
-            JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.ERROR_MESSAGE);
 
         }
     }
@@ -329,7 +329,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     unOpwFalsch +
                     "*********************************************************************************\n");
 
-            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
             usernameTextfieldMitarbeiter.setText("");
             passwortTextfieldMitarbeiter.setText("");
 
@@ -354,7 +354,7 @@ public class StartGUI extends JFrame implements ActionListener {
                     unOpwFalsch +
                     "*********************************************************************************\n");
 
-            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, unOpwFalsch, "Login Fehlgeschlagen", JOptionPane.ERROR_MESSAGE);
             usernameTextfield.setText("");
             passwortTextfield.setText("");
 

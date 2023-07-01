@@ -29,6 +29,10 @@ public class KundenbereichGUI extends JFrame {
     //todo exceptionhandling
     //todo unten rechts gesamtsumme bei Warenkorb
     //todo evtl Suchleiste zur artikeltabelle
+    //todo es gibt Problemem bei den Massengutartikeln beim Reinlegen wird nicht die kaufbare menge gegen gerechnet
+    //todo zuvor hat die reinlegen methode automatische die neumals zu verändernde Menge so aktuallisiert, jetzt wird aber einfach drauf gerechnet
+    //todo dadurch das das vorherige problem auftritt wird beim kaufen nicht die Richtige Ware aus dem bestand gezogen bzw man kann auch ins minus gehen
+    //todo Im algemeinen scheint das Problem in der Methode zu sitzen, mit der man die Waren in den Korb gelegt werden
 
     private EShop eShop;
     private Kunde eingeloggterKunde;
@@ -52,12 +56,10 @@ public class KundenbereichGUI extends JFrame {
         JLabel titleLabel = new JLabel("Willkommen, " + eingeloggterKunde.getVorname() + "!");
         JButton logoutButton = new JButton("Ausloggen");
         JButton artikelKaufenButton = new JButton("Artikel kaufen");
-        JButton warenkorbButton = new JButton("Warenkorb anzeigen");
         JButton warenkorbLeerenButton = new JButton("Warenkorb leeren");
         JPanel warenkorbPanel = new JPanel(new BorderLayout());
         JTextArea rechnungsTextArea = new JTextArea();
         JScrollPane rechnungsScrollPane = new JScrollPane(rechnungsTextArea);
-        JButton rechnungGenerierenButton = new JButton("Rechnung generieren");
         WarenkorbTableModel warenkorbTableModel;
         JTable warenkorbTabelle;
         JScrollPane warenkorbPane;
@@ -140,15 +142,26 @@ public class KundenbereichGUI extends JFrame {
                         String artikelBezeichnung = artikelTable.getValueAt(selectedRow, 0).toString();
                         int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
                         if (option == JOptionPane.YES_OPTION) {
-                            String mengenString = JOptionPane.showInputDialog("Menge eingeben");
-                            int menge = Integer.parseInt(mengenString);
                             try {
+                                String mengenString = JOptionPane.showInputDialog("Menge eingeben");
+                                int menge = Integer.parseInt(mengenString);
+
                                 eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
                                 warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                             } catch (ArtikelExistiertNichtException ex) {
-                                throw new RuntimeException(ex);
+                                //kann hier eig nicht vorkommen, da die Artikel durchs cliken ausgewählt werden.
+                                //Nur relevant für CUI
                             } catch (UngueltigeMengeException ex) {
-                                JOptionPane.showMessageDialog(null, "Ungültige Menge", "Fehler", JOptionPane.ERROR_MESSAGE);
+                                System.err.println("*********************************************************************************\n" +
+                                        "\nGewünschte Menge übersteigt Bestand!\n"+
+                                        "*********************************************************************************\n");
+                                JOptionPane.showMessageDialog(null, "Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                            }catch (NumberFormatException exc){
+                                System.err.println("*********************************************************************************\n" +
+                                        "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n"+
+                                        "*********************************************************************************\n");
+                                JOptionPane.showMessageDialog(null, "Bitte geben Sie eine Zahl ein!",
+                                        "Eingabe falsch", JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }
@@ -179,19 +192,22 @@ public class KundenbereichGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, rechnung, "Vielen Dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println(rechnung);
                 } catch (WarenkorbIstLeerException ex) {
+                    System.err.println("*********************************************************************************\n" +
+                            "\nGewünschte Menge übersteigt Bestand!\n"+
+                            "*********************************************************************************\n");
                     JOptionPane.showMessageDialog(null, "Der Warenkorb ist leer.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Fehler beim Generieren der Rechnung.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception ex) {
+                } /*catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
+                */
             }
         });
 
 
 
-        // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
-        // bei
+
         warenkorbTabelle.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -201,28 +217,31 @@ public class KundenbereichGUI extends JFrame {
 
                 int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    try {
+
                         eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
                         warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                    }
+                    // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
+                    // bei
                 }
                 if (option == JOptionPane.NO_OPTION) {
 
                     int optionpane = JOptionPane.showConfirmDialog(null, "Menge des Gewählten Artikels ändern?", "Menge aktualisieren", JOptionPane.YES_NO_OPTION);
                     if (optionpane == JOptionPane.YES_OPTION) {
-
+                    //todo probleme beim abgleichen des bestands
                         String mengenString = JOptionPane.showInputDialog("Menge des gewählten Artikels abändern");
                         int menge = Integer.parseInt(mengenString);
                         try {
+                            //todo die erste Methode wurde zuvor nicht benötigt und die anwenundung macht auch für weitere Verwendung probleme
                             eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
                             eShop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                         } catch (ArtikelExistiertNichtException e) {
-                            System.out.println("Artikel existiert nicht");
+                            //kann hier nicht pasieren, da per click gewählt wird
                         } catch (UngueltigeMengeException e) {
-                            System.out.println("ungültige Menge"); //todo Excp definieren
+                            System.err.println("*********************************************************************************\n" +
+                                    "\nGewünschte Menge übersteigt Bestand!\n"+
+                                    "*********************************************************************************\n");
+                            JOptionPane.showMessageDialog(null, "Der Warenkorb ist leer.", "Fehler", JOptionPane.ERROR_MESSAGE);
                         }
 
                     }
@@ -253,20 +272,6 @@ public class KundenbereichGUI extends JFrame {
         });
 
 
-        // ActionListener für Warenkorb anzeigen-Button
-        warenkorbButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                StringBuilder warenkorbText = new StringBuilder();
-                for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
-                    Artikel artikel = eintrag.getKey();
-                    int menge = eintrag.getValue();
-                    warenkorbText.append(artikel.toString()).append(" - Menge: ").append(menge).append("\n");
-                }
-                JOptionPane.showMessageDialog(null, warenkorbText.toString(), "Warenkorb anzeigen", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
         // ActionListener für Warenkorb leeren-Button
         warenkorbLeerenButton.addActionListener(new ActionListener() {
             @Override
@@ -284,31 +289,15 @@ public class KundenbereichGUI extends JFrame {
         });
 
 
-        // ActionListener für Rechnung generieren-Button
-        rechnungGenerierenButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Code zum Generieren der Rechnung
-                String rechnungstext = generiereRechnungstext();
-                rechnungsTextArea.setText(rechnungstext);
-            }
-        });
-
-
-
-        //artikelScrollPane.add(suchleiste, BorderLayout.NORTH);
-
         infoPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 10));
         infoPanel.add(titleLabel);
 
         buttonPanel.add(logoutButton);
         buttonPanel.add(artikelKaufenButton);
-        buttonPanel.add(warenkorbButton);
         buttonPanel.add(warenkorbLeerenButton);
 
         mainPanel.add(warenkorbPanel, BorderLayout.CENTER);
         //mainPanel.add(rechnungsScrollPane, BorderLayout.EAST);
-        mainPanel.add(rechnungGenerierenButton, BorderLayout.SOUTH);
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.WEST);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -352,9 +341,5 @@ public class KundenbereichGUI extends JFrame {
         rechnungstext.append("Gesamtsumme: ").append(gesamtsumme);
 
         return rechnungstext.toString();
-    }
-
-
-    private void kundenbereich() {
     }
 }
