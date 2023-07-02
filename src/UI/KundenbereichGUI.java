@@ -30,23 +30,27 @@ import javax.swing.JOptionPane;
 
 
 public class KundenbereichGUI extends JFrame {
-    //todo unten rechts gesamtsumme bei Warenkorb
-    //todo Suchleiste
+    //todo gesamtsumme Nachkommastelle
+    //todo wenn man artikel aus dem Warenkorb entfernt wird die gesamtsumme noch nicht aktualisiert, und bei Massengut neuer artikel erhöhung hat der die gesamtsumme nicht Aktualisiert
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
+    private JLabel gesamtsumme;
+    private WarenkorbTableModel warenkorbTableModel;
 
     public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eShop) throws IOException {
         super("Kundenbereich");
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
         this.eShop = eShop;
+        this.warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
         this.setVisible(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        gesamtsumme = new JLabel();
         // Erstellen der GUI-Komponenten
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel infoPanel = new JPanel(new BorderLayout());
@@ -58,14 +62,14 @@ public class KundenbereichGUI extends JFrame {
         JPanel warenkorbPanel = new JPanel(new BorderLayout());
         JTextArea rechnungsTextArea = new JTextArea();
         JScrollPane rechnungsScrollPane = new JScrollPane(rechnungsTextArea);
-        WarenkorbTableModel warenkorbTableModel;
         JTable warenkorbTabelle;
         JScrollPane warenkorbPane;
         JPanel suchleistenPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JTextField suchleiste = new JTextField(30);
-
+        gesamtsumme = new JLabel("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
         rechnungsTextArea.setEditable(false);
 
+        gesamtsumme.setText("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
 
 
         warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
@@ -74,11 +78,11 @@ public class KundenbereichGUI extends JFrame {
         warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
         warenkorbTabelle.setModel(warenkorbTableModel);
         warenkorbPane = new JScrollPane(warenkorbTabelle);
-        JLabel gesamtsumme = new JLabel("Gesamtsumme:  " + warenkorbTableModel.getGesamtpreis());
-       //todo .add(gesamtsumme, BorderLayout.SOUTH); dahin wo sie hingehört
-        warenkorbPanel.add(warenkorbPane);
+        warenkorbPanel.add(warenkorbPane, BorderLayout.CENTER);
+        warenkorbPanel.add(gesamtsumme, BorderLayout.SOUTH);
 
         suchleistenPanel.add(suchleiste);
+
         mainPanel.add(suchleistenPanel, BorderLayout.NORTH);
 
 
@@ -131,6 +135,7 @@ public class KundenbereichGUI extends JFrame {
 
                             eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                            aktualisiereGesamtsumme();
                         } catch (ArtikelExistiertNichtException ex) {
 
                         } catch (UngueltigeMengeException ex) {
@@ -219,8 +224,9 @@ public class KundenbereichGUI extends JFrame {
 
                         eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
                         warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                        aktualisiereGesamtsumme();
                     // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
-                    // bei
+
                 }
                 if (option == JOptionPane.NO_OPTION) {
 
@@ -276,7 +282,8 @@ public class KundenbereichGUI extends JFrame {
                     eShop.warenkorbLeeren(warenKorbDesKunden);
                     warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
-                    aktualisiereWarenkorb(rechnungsTextArea); // Aktualisierung des Warenkorbs
+                    aktualisiereWarenkorb(rechnungsTextArea);
+                    aktualisiereGesamtsumme();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Warenkorb konnte nicht aktualisiert werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
@@ -302,10 +309,15 @@ public class KundenbereichGUI extends JFrame {
         mainPanel.add(artikelScrollPane, BorderLayout.EAST);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-
         this.add(mainPanel);
         this.pack();
+
+        aktualisiereGesamtsumme();
     }
+    private void aktualisiereGesamtsumme() {
+        gesamtsumme.setText("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
+    }
+
 
     private void aktualisiereWarenkorb(JTextArea rechnungsTextArea) {
         StringBuilder warenkorbText = new StringBuilder();
@@ -315,6 +327,8 @@ public class KundenbereichGUI extends JFrame {
             warenkorbText.append(artikel.toString()).append(" - Menge: ").append(menge).append("\n");
         }
         rechnungsTextArea.setText(warenkorbText.toString());
+
+        aktualisiereGesamtsumme();
     }
 
 
