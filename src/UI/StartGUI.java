@@ -201,6 +201,7 @@ public class StartGUI extends JFrame implements ActionListener {
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
         registerfenster.setSize(300, 500);
+        registerfenster.setBorder(BorderFactory.createTitledBorder("Kundenregistrierung"));
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
         usernameTextfieldRegistrierung.setMaximumSize(usernameTextfieldRegistrierung.getPreferredSize());
         passwortTextfieldRegistrierung.setMaximumSize(passwortTextfieldRegistrierung.getPreferredSize());
@@ -233,7 +234,6 @@ public class StartGUI extends JFrame implements ActionListener {
 
 
     private JScrollPane artikellistTable(){
-        String[] bez= {"Bezeichnung", "Artikelnummer", "Bestand", "Preis"};
         tabelle = new JTable();
         model =new ArtikelTableModel(eshop.getAlleArtikel());
         tabelle.setModel(model);

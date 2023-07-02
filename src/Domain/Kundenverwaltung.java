@@ -38,9 +38,6 @@ public class Kundenverwaltung {
         pm.schreibeKundeListe(kListe, datei);
     }
     public Kundenverwaltung() {
-        //this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
-        //kundenUndDazugehörigeWarenkörbe.put(k1, null);
-
         this.kundenliste = new HashMap<>();
     }
 
@@ -54,37 +51,28 @@ public class Kundenverwaltung {
 
 // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
-
     //TODO Massengut schöner lösen
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
-        int aktuelle_menge = menge;
+        int verkauft = menge;
         Artikel gefundenerArtikel = warenbestand.stream()
                 .filter(a -> a.getBezeichnung().equals(artikel))
                 .findFirst()
-                .orElse(null);
+                .orElse(null);  // steram durch artikebestand gebe gefundenen artikel wieder oder null
 
-        if (gefundenerArtikel != null)
+        if (gefundenerArtikel != null) //wenn artikel wiedergegeben wird dann:
         {
-            if(gefundenerArtikel instanceof Massengutartikel) {
-                int verkäuflich = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge();
-                if(!(menge > verkäuflich)) {
+            if(gefundenerArtikel instanceof Massengutartikel) { //wenn artikel ein massen gutist dann
+                verkauft = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge()*menge; //ist die mindestkaufmenge : eingegebene menge * verkäufliche menge
+                if((gefundenerArtikel.getBestand() < verkauft)) {
                     throw new UngueltigeMengeException();
+                }else{
+                    warenkorb.getWarenkorb().put(gefundenerArtikel, verkauft);
                 }
             }
-            if (menge > gefundenerArtikel.getBestand()) {
+            if (verkauft > gefundenerArtikel.getBestand()) {
                 throw new UngueltigeMengeException();
             } else {
-                if (warenkorb.getWarenkorb().containsKey(gefundenerArtikel)) {
-                    int finalMenge = menge;
-                    menge = warenkorb.getWarenkorb().compute(gefundenerArtikel, (artikel1, aktuelleMenge) -> {
-                        if (aktuelleMenge != null) {
-                            return aktuelleMenge + finalMenge;
-                        } else {
-                            return finalMenge;
-                        }
-                    });
-                }
-                warenkorb.getWarenkorb().put(gefundenerArtikel, menge);
+                warenkorb.getWarenkorb().put(gefundenerArtikel, verkauft);
             }
         } else {
             throw new ArtikelExistiertNichtException();
@@ -92,14 +80,6 @@ public class Kundenverwaltung {
 
     }
 
-    /*
-    public Kunde login(String username, String password) {
-        return kundenUndDazugehörigeWarenkörbe.keySet().stream()
-                .filter(a -> a.getUserName().equals(username) && a.getPasswort().equals(password))
-                .findFirst()
-                .orElse(null);
-    }
-     */
 
     public void artikelAusDemWarenkorbNehmen(String artikel, Warenkorb warenkorb){
 

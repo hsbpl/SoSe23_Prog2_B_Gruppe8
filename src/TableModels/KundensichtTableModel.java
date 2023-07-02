@@ -1,6 +1,7 @@
 package TableModels;
 
 import ValueObjekt.Artikel;
+import ValueObjekt.Massengutartikel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -8,13 +9,14 @@ import java.util.List;
 
 public class KundensichtTableModel extends AbstractTableModel {
     private List<Artikel> artikelList;
-    private String[] header = {"Bezeichnung", "Artikelnummer", "Preis"};
+    private String[] header = {"Bezeichnung", "Artikelnummer", "Einzelpreis", "Erwerbbare Menge"};
 
     public KundensichtTableModel(List<Artikel> aktuelleArtikel) {
         artikelList = new ArrayList<>();
         artikelList.addAll(aktuelleArtikel);
 
     }
+
 
     public void setArtikelListe(List<Artikel> aktuelleArtikel){
         artikelList.clear();
@@ -43,6 +45,12 @@ public class KundensichtTableModel extends AbstractTableModel {
 
             case 2:
                 return gewaehlterArtikel.getEinzelpreis();
+            case 3:
+                if (gewaehlterArtikel instanceof Massengutartikel)
+                    return ((Massengutartikel) gewaehlterArtikel).getErwerbwareMenge();
+                else {
+                    return 1;
+                }
             default:
                 return null;
         }
