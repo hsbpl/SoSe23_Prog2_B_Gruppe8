@@ -18,7 +18,7 @@ Brille
 Einzelartikel
 Chips
 39003
-100
+92
 1.79
 1
 Einzelartikel
@@ -90,7 +90,7 @@ Käsekuchen
 Einzelartikel
 Laaptop
 567788
-4
+2
 12.9
 1
 Einzelartikel
@@ -162,7 +162,7 @@ Wasser
 Massengutartikel
 Bleistiftset
 0
-691
+649
 4.99
 7
 Massengutartikel
@@ -186,7 +186,7 @@ Socken
 Massengutartikel
 Regenschirm
 6786969
-34
+20
 14.22
 2
 Massengutartikel

@@ -7,6 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WarenkorbTableModel extends AbstractTableModel {
     private Warenkorb waren;
@@ -50,6 +51,15 @@ public class WarenkorbTableModel extends AbstractTableModel {
                 return null;
         }
 
+    }
+    public double getGesamtpreis(){
+        double gesamtpreis = 0.0;
+        for (Map.Entry<Artikel, Integer> entry : waren.getWarenkorb().entrySet()) {
+            Artikel artikel = entry.getKey();
+            int menge = entry.getValue();
+            gesamtpreis += artikel.getEinzelpreis() * menge;
+        }
+        return gesamtpreis;
     }
 
     @Override

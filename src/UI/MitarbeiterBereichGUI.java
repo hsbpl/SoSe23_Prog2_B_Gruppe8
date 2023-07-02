@@ -163,7 +163,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         JPanel eastpanel = new JPanel();
         eastpanel.setVisible(true);//Jpanel ist sichtbar
         eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
-
+        eastpanel.setBorder(BorderFactory.createTitledBorder("Listen ausgeben lassen"));
         eastpanel.add(listenCombobox());
 
         return eastpanel;
@@ -235,7 +235,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
-
+        registerfenster.setBorder(BorderFactory.createTitledBorder("Mitarbeiter Resgistrieren"));
 
         usernameTextfield.setMaximumSize(usernameTextfield.getPreferredSize());
         passwotTextfield.setMaximumSize(passwotTextfield.getPreferredSize());
@@ -263,7 +263,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         JPanel anlegen = new JPanel();
         anlegen.setVisible(true);
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
-
+        anlegen.setBorder(BorderFactory.createTitledBorder("Einzelartikel"));
         anlegen.add(Box.createVerticalStrut(50));
 
         bezeichnungsTextfieldEinzelartikelAnlegen.setMaximumSize(bezeichnungsTextfieldEinzelartikelAnlegen.getPreferredSize());
@@ -291,6 +291,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         JPanel anlegen = new JPanel();
         anlegen.setVisible(true);
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
+        anlegen.setBorder(BorderFactory.createTitledBorder("Massengutartikel"));
 
         anlegen.add(Box.createVerticalStrut(50));
 

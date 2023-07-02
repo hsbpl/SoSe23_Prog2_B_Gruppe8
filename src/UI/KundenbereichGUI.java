@@ -30,13 +30,8 @@ import javax.swing.JOptionPane;
 
 
 public class KundenbereichGUI extends JFrame {
-    //todo exceptionhandling
     //todo unten rechts gesamtsumme bei Warenkorb
-    //todo es gibt Problemem bei den Massengutartikeln beim Reinlegen wird nicht die kaufbare menge gegen gerechnet
-    //todo zuvor hat die reinlegen methode automatische die neumals zu verändernde Menge so aktuallisiert, jetzt wird aber einfach drauf gerechnet
-    //todo dadurch das das vorherige problem auftritt wird beim kaufen nicht die Richtige Ware aus dem bestand gezogen bzw man kann auch ins minus gehen
-    //todo Im algemeinen scheint das Problem in der Methode zu sitzen, mit der man die Waren in den Korb gelegt werden
-    //todo Suchleiste, wenn man einen Artikel einmal angeklickt hat und nicht wählt kann man diesen kein zweites mal auswählen
+    //todo Suchleiste
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
@@ -72,12 +67,15 @@ public class KundenbereichGUI extends JFrame {
         rechnungsTextArea.setEditable(false);
 
 
+
         warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
         warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
         warenkorbTabelle = new JTable();
         warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
         warenkorbTabelle.setModel(warenkorbTableModel);
         warenkorbPane = new JScrollPane(warenkorbTabelle);
+        JLabel gesamtsumme = new JLabel("Gesamtsumme:  " + warenkorbTableModel.getGesamtpreis());
+       //todo .add(gesamtsumme, BorderLayout.SOUTH); dahin wo sie hingehört
         warenkorbPanel.add(warenkorbPane);
 
         suchleistenPanel.add(suchleiste);
@@ -118,51 +116,59 @@ public class KundenbereichGUI extends JFrame {
             }
         });
 
-
-        // Hinzufügen des ListSelectionListeners für die Artikel-Tabelle
-        final List<String> vorherigeArtikelBezeichnungen = new ArrayList<>();
-        artikelTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        artikelTable.addMouseListener(new MouseListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedRow = artikelTable.getSelectedRow();
+            public void mouseClicked(MouseEvent mouseEvent) {
+                int row = artikelTable.getSelectedRow();
+                String artikelBezeichnung = artikelTable.getValueAt(row, 0).toString();
 
-                    if (selectedRow != -1) {
-                        String artikelBezeichnung = artikelTable.getValueAt(selectedRow, 0).toString();
+                if(mouseEvent.getClickCount() == 2){
+                    int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+                        try {
+                            String mengenString = JOptionPane.showInputDialog("Menge eingeben");
+                            int menge = Integer.parseInt(mengenString);
 
-                        if (!vorherigeArtikelBezeichnungen.contains(artikelBezeichnung)) {
-                            int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
-                            if (option == JOptionPane.YES_OPTION) {
-                                try {
-                                    String mengenString = JOptionPane.showInputDialog("Menge eingeben");
-                                    int menge = Integer.parseInt(mengenString);
+                            eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
+                            warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                        } catch (ArtikelExistiertNichtException ex) {
 
-                                    eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
-                                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
-                                } catch (ArtikelExistiertNichtException ex) {
-
-                                } catch (UngueltigeMengeException ex) {
-                                    System.err.println("*********************************************************************************\n" +
-                                            "\nGewünschte Menge übersteigt Bestand!\n"+
-                                            "*********************************************************************************\n");
-                                    JOptionPane.showMessageDialog(null, "Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                                }catch (NumberFormatException exc){
-                                    System.err.println("*********************************************************************************\n" +
-                                            "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n"+
-                                            "*********************************************************************************\n");
-                                    JOptionPane.showMessageDialog(null, "Bitte geben Sie eine Zahl ein!",
-                                            "Eingabe falsch", JOptionPane.ERROR_MESSAGE);
-                                }
-                            }
-
-                            vorherigeArtikelBezeichnungen.add(artikelBezeichnung);
+                        } catch (UngueltigeMengeException ex) {
+                            System.err.println("*********************************************************************************\n" +
+                                    "\nGewünschte Menge übersteigt Bestand!\n"+
+                                    "*********************************************************************************\n");
+                            JOptionPane.showMessageDialog(null, "Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                        }catch (NumberFormatException exc){
+                            System.err.println("*********************************************************************************\n" +
+                                    "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n"+
+                                    "*********************************************************************************\n");
+                            JOptionPane.showMessageDialog(null, "Bitte geben Sie eine Zahl ein!",
+                                    "Eingabe falsch", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 }
             }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
         });
-
-
 
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
@@ -220,12 +226,9 @@ public class KundenbereichGUI extends JFrame {
 
                     int optionpane = JOptionPane.showConfirmDialog(null, "Menge des Gewählten Artikels ändern?", "Menge aktualisieren", JOptionPane.YES_NO_OPTION);
                     if (optionpane == JOptionPane.YES_OPTION) {
-                    //todo probleme beim abgleichen des bestands
                         String mengenString = JOptionPane.showInputDialog("Menge des gewählten Artikels abändern");
                         int menge = Integer.parseInt(mengenString);
                         try {
-                            //todo die erste Methode wurde zuvor nicht benötigt und die anwenundung macht auch für weitere Verwendung probleme
-                            eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
                             eShop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                         } catch (ArtikelExistiertNichtException e) {
@@ -290,7 +293,6 @@ public class KundenbereichGUI extends JFrame {
         buttonPanel.add(warenkorbLeerenButton);
 
         mainPanel.add(warenkorbPanel, BorderLayout.CENTER);
-        //mainPanel.add(rechnungsScrollPane, BorderLayout.EAST);
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.WEST);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
