@@ -25,11 +25,8 @@ import java.util.List;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
-    //todo den suchleisten ein label hinzufügen
     //todo evtl recherchieren / nachdenken, ob man die tablemodele zusammenfassen kann
-    //todo ereignisse nach datum absteigend / ausfteigen sortieren lassen
     //todo evtl einige components streichen / zusammen fassen die gemeinsam verwendet werden können
-    //todo excepptions in error message
 
 
     private EShop eshop;
@@ -183,6 +180,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
         sucheArtikel = new JTextField(textfieldSize);
+        sucheArtikel.setText("Suchen");
         setPreferredSize(getPreferredSize());
         sucheArtikel.getDocument().addDocumentListener(this);
 
@@ -219,6 +217,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         listpopup.setTitle(usage);
 
         sucheListen = new JTextField(30);
+        sucheArtikel.setText("Suchen");
         setPreferredSize(getPreferredSize());
         sucheListen.getDocument().addDocumentListener(this);
 

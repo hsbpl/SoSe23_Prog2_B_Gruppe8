@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 
 public class KundenbereichGUI extends JFrame {
     //todo gesamtsumme Nachkommastelle
-    //todo wenn man artikel aus dem Warenkorb entfernt wird die gesamtsumme noch nicht aktualisiert, und bei Massengut neuer artikel erhöhung hat der die gesamtsumme nicht Aktualisiert
     private EShop eShop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
@@ -93,6 +92,7 @@ public class KundenbereichGUI extends JFrame {
         JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
         artikelScrollPane.setMinimumSize(new Dimension(300, 400));
 
+        suchleiste.setText("Suchen");
         suchleiste.setPreferredSize(getPreferredSize());
 
         artikelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -197,6 +197,7 @@ public class KundenbereichGUI extends JFrame {
                     String rechnung = eShop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden);
                     JOptionPane.showMessageDialog(null, rechnung, "Vielen Dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println(rechnung);
+                    aktualisiereGesamtsumme();
                 } catch (WarenkorbIstLeerException ex) {
                     System.err.println("*********************************************************************************\n" +
                             "\nGewünschte Menge übersteigt Bestand!\n"+
@@ -204,10 +205,7 @@ public class KundenbereichGUI extends JFrame {
                     JOptionPane.showMessageDialog(null, "Der Warenkorb ist leer.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "Fehler beim Generieren der Rechnung.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                } /*catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Ein Fehler ist aufgetreten.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
-                */
             }
         });
 
@@ -237,6 +235,7 @@ public class KundenbereichGUI extends JFrame {
                         try {
                             eShop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                            aktualisiereGesamtsumme();
                         } catch (ArtikelExistiertNichtException e) {
                             //kann hier nicht pasieren, da per click gewählt wird
                         } catch (UngueltigeMengeException e) {
@@ -278,16 +277,11 @@ public class KundenbereichGUI extends JFrame {
         warenkorbLeerenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
                     eShop.warenkorbLeeren(warenKorbDesKunden);
                     warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
                     aktualisiereWarenkorb(rechnungsTextArea);
                     aktualisiereGesamtsumme();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Warenkorb konnte nicht aktualisiert werden.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                }
-
             }
         });
 
