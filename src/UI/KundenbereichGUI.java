@@ -9,6 +9,8 @@ import TableModels.WarenkorbTableModel;
 import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Warenkorb;
+import menus.FileMenu;
+import menus.HelpMenu;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -31,7 +33,7 @@ import javax.swing.JOptionPane;
 
 public class KundenbereichGUI extends JFrame {
     //todo gesamtsumme Nachkommastelle
-    private EShop eShop;
+    private EShop eshop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
     private JLabel gesamtsumme;
@@ -41,8 +43,10 @@ public class KundenbereichGUI extends JFrame {
         super("Kundenbereich");
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
-        this.eShop = eShop;
+        this.eshop = eShop;
         this.warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
+
+        setupMenu();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(true);
@@ -308,6 +312,19 @@ public class KundenbereichGUI extends JFrame {
 
         aktualisiereGesamtsumme();
     }
+    private void setupMenu() {
+        // Menuleiste anlegen ...
+        JMenuBar mBar = new JMenuBar();
+
+        JMenu fileMenu = new FileMenu(this, eshop);
+        mBar.add(fileMenu);
+
+        JMenu helpMenu = new HelpMenu();
+        mBar.add(helpMenu);
+
+        this.setJMenuBar(mBar);
+    }
+
     private void aktualisiereGesamtsumme() {
         gesamtsumme.setText("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
     }

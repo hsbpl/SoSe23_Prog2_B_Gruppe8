@@ -9,6 +9,8 @@ import TableModels.MitarbeiterTableModel;
 import ValueObjekt.Artikel;
 import ValueObjekt.Massengutartikel;
 import ValueObjekt.Mitarbeiter;
+import menus.FileMenu;
+import menus.HelpMenu;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -87,6 +89,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShop eshop){
         this.eshop = eshop;
 
+        //Menu definieren
+        setupMenu();
+
         this.eingeloggterMitarbeiter = eingeloggterMitarbeiter;
 
         this.setTitle("\"Roha & Sanjana's Eshop\""); //Title des Jframe wird erstellt
@@ -98,6 +103,19 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         mitarbeiterbereich();
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
 
+    }
+
+    private void setupMenu() {
+        // Menuleiste anlegen ...
+        JMenuBar mBar = new JMenuBar();
+
+        JMenu fileMenu = new FileMenu(this, eshop);
+        mBar.add(fileMenu);
+
+        JMenu helpMenu = new HelpMenu();
+        mBar.add(helpMenu);
+
+        this.setJMenuBar(mBar);
     }
 
 

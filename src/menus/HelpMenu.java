@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class HelpMenu extends JMenu implements ActionListener {
-
+   // todo mehr hinzufügen
     public HelpMenu() {
         super("Hilfe");
 
