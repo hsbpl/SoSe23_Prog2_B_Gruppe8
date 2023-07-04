@@ -1,10 +1,11 @@
 package ValueObjekt;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Rechnung {
 
-    private Date datum = new Date();
+    private LocalDateTime datum;
     private Kunde kunde;
     private Warenkorb warenkorb;
 
@@ -12,6 +13,7 @@ public class Rechnung {
     public Rechnung(Kunde kunde, Warenkorb warenkorb) {
         this.warenkorb = warenkorb;
         this.kunde = kunde;
+        this.datum = LocalDateTime.now();
     }
 
 
