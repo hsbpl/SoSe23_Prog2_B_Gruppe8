@@ -36,7 +36,7 @@ public class User {
 
 
     public String toString() {
-        return "Username: "+ userName + "\n" + "Name: " + vorname+" " + nachname + " ID: "+ getidNummer();
+        return "Username: "+ userName + "\n" + "Name: " + vorname+" " + nachname + "\nID: "+ getidNummer();
     }
 }
 

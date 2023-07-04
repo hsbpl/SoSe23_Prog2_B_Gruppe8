@@ -33,6 +33,10 @@ import javax.swing.JOptionPane;
 
 public class KundenbereichGUI extends JFrame {
     //todo gesamtsumme Nachkommastelle
+    // Todo Rechnung: Abstand verbessern/fragen ob als String wiedergabe okay ist oder ob Tabelle gewünscht ist
+    //TOdo alles was nicht verwendet wird löschen
+    //todo checken, ob die Exception Texte sinn ergeben
+
     private EShop eshop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
@@ -284,7 +288,7 @@ public class KundenbereichGUI extends JFrame {
                     eShop.warenkorbLeeren(warenKorbDesKunden);
                     warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
-                    aktualisiereWarenkorb(rechnungsTextArea);
+                   // aktualisiereWarenkorb(rechnungsTextArea);
                     aktualisiereGesamtsumme();
             }
         });
@@ -330,6 +334,7 @@ public class KundenbereichGUI extends JFrame {
     }
 
 
+    /*
     private void aktualisiereWarenkorb(JTextArea rechnungsTextArea) {
         StringBuilder warenkorbText = new StringBuilder();
         for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
@@ -368,4 +373,6 @@ public class KundenbereichGUI extends JFrame {
 
         return rechnungstext.toString();
     }
+
+     */
 }

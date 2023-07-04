@@ -151,7 +151,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     }
 
-    private Component westpanel() {
+    private JPanel westpanel() {
         JPanel westpanel = new JPanel();
         westpanel.setVisible(true);//Jpanel ist sichtbar
         westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
@@ -174,7 +174,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return westpanel;
     }
 
-    private Component eastpanel() {
+    private JPanel eastpanel() {
         JPanel eastpanel = new JPanel();
         eastpanel.setVisible(true);//Jpanel ist sichtbar
         eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
@@ -209,7 +209,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return midpanel;
     }
 
-    private Component popup(Component component, String usage) {
+    private JDialog popup(Component component, String usage) {
         popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
@@ -225,7 +225,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
 
-    private Component listpopup(Component jList, String usage) {
+    private JDialog listpopup(Component jList, String usage) {
         listpopup = new JDialog();
         listpopup.setVisible(true);
         listpopup.setSize(800, 500);
@@ -248,7 +248,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
 
-    private Component registrierung() {
+    private JPanel registrierung() {
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
         registerfenster.setLayout(new BoxLayout(registerfenster, BoxLayout.Y_AXIS));
@@ -304,7 +304,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
     // Feld zum Anlegen neuer MassengutArtikel
-    private Component neuenMassengutartikelAnlegen() {
+    private JPanel neuenMassengutartikelAnlegen() {
         JPanel anlegen = new JPanel();
         anlegen.setVisible(true);
         anlegen.setLayout(new BoxLayout(anlegen, BoxLayout.Y_AXIS));
@@ -386,7 +386,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return tablePane;
     }
 
-    private Component kundenTable(){
+    private JTable kundenTable(){
         kundenTabelle = new JTable();
         kundenTableModel =new KundenTableModel(eshop.getAlleKunden());
         sorter = new TableRowSorter<>(kundenTableModel);
@@ -397,7 +397,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-    private Component mitarbeiterTable(){
+    private JTable mitarbeiterTable(){
         mitarbeiterTabelle = new JTable();
         mitarbeiterTableModel =new MitarbeiterTableModel(eshop.getAlleMitarbeiter());
         sorter = new TableRowSorter<>(mitarbeiterTableModel);
@@ -409,7 +409,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-    private Component ereignisTable(){
+    private JTable ereignisTable(){
         ereignisTabelle = new JTable();
         ereignisTableModel =new EreignisTableModel(eshop.ereignisseNachDatum());
         sorter = new TableRowSorter<>(ereignisTableModel);

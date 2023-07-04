@@ -12,7 +12,7 @@ Armband
 Einzelartikel
 Brille
 1222333
-87
+86
 44.9
 1
 Einzelartikel
@@ -30,7 +30,7 @@ Coca Cola 1L
 Einzelartikel
 Cola6
 11111
-9
+4
 20.0
 5
 Massengutartikel
@@ -144,7 +144,7 @@ Stuhl
 Einzelartikel
 Tastatur
 56677
-97
+92
 24.12
 1
 Einzelartikel

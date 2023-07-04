@@ -265,12 +265,12 @@ public class StartGUI extends JFrame implements ActionListener {
             registerPopup();
 
         } else if (actionEvent.getSource() == neuenKundenAnlegenButton) {
-            kundenRegistrierugEvent(kontoExistiertSchon, leeresTextfeld);
+            kundenRegistrierungEvent(kontoExistiertSchon, leeresTextfeld);
         }
 
     }
 
-    private void kundenRegistrierugEvent(String kontoExistiertSchon, String leeresTextfeld) {
+    private void kundenRegistrierungEvent(String kontoExistiertSchon, String leeresTextfeld) {
         try {
             String username = usernameTextfieldRegistrierung.getText();
             String passwort = passwortTextfieldRegistrierung.getText();
@@ -289,7 +289,7 @@ public class StartGUI extends JFrame implements ActionListener {
             this.dispose();
 
             popup.dispose();
-            System.err.println("Erfolgreich eingeloggt: "+kunde);
+            System.err.println("Erfolgreich registriert: "+kunde);
             //}
         } catch (UserExistiertBereitsException e) {
             System.err.println("*********************************************************************************\n" +
@@ -322,7 +322,7 @@ public class StartGUI extends JFrame implements ActionListener {
             this.dispose();
 
 
-            System.out.println("Erfolgreich Eingeloggt: " + mitarbeiter);
+            System.out.println("Erfolgreich eingeloggt: " + mitarbeiter);
 
         } catch (LoginFehlgeschlagenException e) {
             System.err.println("*********************************************************************************\n" +
@@ -347,7 +347,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
             KundenbereichGUI k = new KundenbereichGUI(aktuellerKunde, warenkorb, eshop);
             this.dispose();
-            System.out.println("Erfolgreich Eingeloggt: " + aktuellerKunde);
+            System.out.println("Erfolgreich eingeloggt: " + aktuellerKunde);
 
         } catch (LoginFehlgeschlagenException e) {
             System.err.println("*********************************************************************************\n" +
