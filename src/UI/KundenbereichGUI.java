@@ -6,7 +6,6 @@ import Exceptions.UngueltigeMengeException;
 import Exceptions.WarenkorbIstLeerException;
 import TableModels.KundensichtTableModel;
 import TableModels.WarenkorbTableModel;
-import ValueObjekt.Artikel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Warenkorb;
 import menus.FileMenu;
@@ -15,19 +14,12 @@ import menus.HelpMenu;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.IOException;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import java.text.DecimalFormat;
 
@@ -36,6 +28,9 @@ public class KundenbereichGUI extends JFrame {
     // Todo Rechnung: Abstand verbessern/fragen ob als String wiedergabe okay ist oder ob Tabelle gewünscht ist
     //TOdo alles was nicht verwendet wird löschen
     //todo checken, ob die Exception Texte sinn ergeben
+    //todo fragen ob man bei der Artikelliste im Kundenbereich auch nach z.B Artikelnummer, Preis usw. sortieren/filtern muss
+    //todo evtl suchleiste, man muss das suchen immer zuerst löschen un dann kann man den artikel suchen
+
 
     private EShop eshop;
     private Kunde eingeloggterKunde;
@@ -108,6 +103,7 @@ public class KundenbereichGUI extends JFrame {
 
         artikelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         artikelTable.setRowSelectionAllowed(true);
+
         suchleiste.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent documentEvent) {

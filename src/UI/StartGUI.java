@@ -8,6 +8,8 @@ import TableModels.ArtikelTableModel;
 import ValueObjekt.Kunde;
 import ValueObjekt.Mitarbeiter;
 import ValueObjekt.Warenkorb;
+import menus.FileMenu;
+import menus.HelpMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,6 +53,8 @@ public class StartGUI extends JFrame implements ActionListener {
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
 
+        setupMenu();
+
         startpage();
 
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
@@ -69,6 +73,19 @@ public class StartGUI extends JFrame implements ActionListener {
         startpage();
 
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+    }
+
+    private void setupMenu() {
+        // Menuleiste anlegen ...
+        JMenuBar mBar = new JMenuBar();
+
+        JMenu fileMenu = new FileMenu(this, eshop);
+        mBar.add(fileMenu);
+
+        JMenu helpMenu = new HelpMenu();
+        mBar.add(helpMenu);
+
+        this.setJMenuBar(mBar);
     }
 
 

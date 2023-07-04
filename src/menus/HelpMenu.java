@@ -47,10 +47,10 @@ public class HelpMenu extends JMenu implements ActionListener {
             };
 
             String[] faqAnswers = {
-                    "Antwort 1: Um ein Konto zu erstellen, klicken Sie auf die Schaltfläche 'Registrieren' auf der Startseite...",
+                    "Antwort 1: Um ein Konto zu erstellen, klicken Sie auf die Schaltfläche 'als neuer Kunde Registrieren' auf der Startseite...",
                     "Antwort 2: Die Versanddauer variiert je nach Standort und Versandart. In der Regel beträgt sie 3-5 Werktage...",
                     "Antwort 3: Wir akzeptieren Kreditkarten (Visa, MasterCard) und PayPal als Zahlungsmethoden...",
-                    "Antwort 4: Sie können den Kundenservice unter dem Hilfemenü bei Kontakt finden und eine Nachricht hinterlassen.",
+                    "Antwort 4: Sie können den Kundenservice im Hilfemenü unter Kontakt finden und eine Nachricht hinterlassen.",
             };
 
             String faq = "";

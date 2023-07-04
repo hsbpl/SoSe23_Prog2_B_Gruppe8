@@ -26,7 +26,7 @@ public class FileMenu extends JMenu implements ActionListener {
 
         this.addSeparator();
 
-        mi = new JMenuItem("Abbrechen");
+        mi = new JMenuItem("Beenden");
         mi.addActionListener(this);
         this.add(mi);
 
@@ -48,7 +48,7 @@ public class FileMenu extends JMenu implements ActionListener {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (command.equals("Abbrechen")) {
+        } else if (command.equals("Beenden")) {
             frame.setVisible(false);
             frame.dispose();
             System.exit(0);
