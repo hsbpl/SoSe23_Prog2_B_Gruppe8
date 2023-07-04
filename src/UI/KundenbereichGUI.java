@@ -29,10 +29,10 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import java.text.DecimalFormat;
 
 
 public class KundenbereichGUI extends JFrame {
-    //todo gesamtsumme Nachkommastelle
     // Todo Rechnung: Abstand verbessern/fragen ob als String wiedergabe okay ist oder ob Tabelle gewünscht ist
     //TOdo alles was nicht verwendet wird löschen
     //todo checken, ob die Exception Texte sinn ergeben
@@ -41,6 +41,7 @@ public class KundenbereichGUI extends JFrame {
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
     private JLabel gesamtsumme;
+    private  DecimalFormat decimalFormat;
     private WarenkorbTableModel warenkorbTableModel;
 
     public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eShop) throws IOException {
@@ -76,8 +77,10 @@ public class KundenbereichGUI extends JFrame {
         gesamtsumme = new JLabel("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
         rechnungsTextArea.setEditable(false);
 
-        gesamtsumme.setText("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
+        gesamtsumme.setText("Gesamtsumme: " + String.format("%.2f", warenkorbTableModel.getGesamtpreis()));
 
+        decimalFormat = new DecimalFormat("0.00");
+        gesamtsumme = new JLabel("Gesamtsumme: " + formatiereGesamtsumme(warenkorbTableModel.getGesamtpreis()));
 
         warenkorbPanel.add(rechnungsScrollPane, BorderLayout.CENTER);
         warenkorbPanel.setBorder(BorderFactory.createTitledBorder("Warenkorb"));
@@ -330,7 +333,12 @@ public class KundenbereichGUI extends JFrame {
     }
 
     private void aktualisiereGesamtsumme() {
-        gesamtsumme.setText("Gesamtsumme: " + warenkorbTableModel.getGesamtpreis());
+        double gesamtsummeWert = warenkorbTableModel.getGesamtpreis();
+        gesamtsumme.setText("Gesamtsumme: " + formatiereGesamtsumme(gesamtsummeWert));
+    }
+
+    private String formatiereGesamtsumme(double gesamtsumme) {
+        return decimalFormat.format(gesamtsumme);
     }
 
 
