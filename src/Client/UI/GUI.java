@@ -1,7 +1,7 @@
 package Client.UI;
 
 import java.io.IOException;
-
+//todo ereignisliste wird erst gezeigt, wenn man was sucht
 public class GUI {
 
     public GUI(){

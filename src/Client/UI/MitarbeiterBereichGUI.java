@@ -551,6 +551,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
             System.out.println("Erstellt: "+m);
+            model.setArtikelListe(eshop.getAlleArtikel());
             popup.dispose();
         } catch (NumberFormatException e) {
             System.err.println("*********************************************************************************\n" +
