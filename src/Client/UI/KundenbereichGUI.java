@@ -37,11 +37,11 @@ public class KundenbereichGUI extends JFrame {
     private  DecimalFormat decimalFormat;
     private WarenkorbTableModel warenkorbTableModel;
 
-    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eShop) throws IOException {
+    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eshop) throws IOException {
         super("Kundenbereich");
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
-        this.eshop = eShop;
+        this.eshop = eshop;
         this.warenkorbTableModel = new WarenkorbTableModel(warenKorbDesKunden);
 
         setupMenu();
@@ -89,7 +89,7 @@ public class KundenbereichGUI extends JFrame {
         mainPanel.add(suchleistenPanel, BorderLayout.NORTH);
 
 
-        KundensichtTableModel artikelTableModel = new KundensichtTableModel(eShop.getAlleArtikel());
+        KundensichtTableModel artikelTableModel = new KundensichtTableModel(eshop.getAlleArtikel());
         TableRowSorter sorter = new TableRowSorter<>(artikelTableModel);
         JTable artikelTable = new JTable(artikelTableModel);
         artikelTable.setRowSorter(sorter);
@@ -138,7 +138,7 @@ public class KundenbereichGUI extends JFrame {
                             String mengenString = JOptionPane.showInputDialog("Menge eingeben");
                             int menge = Integer.parseInt(mengenString);
 
-                            eShop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
+                            eshop.inDenWarenkorbLegen(artikelBezeichnung, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                             aktualisiereGesamtsumme();
                         } catch (ArtikelExistiertNichtException ex) {
@@ -188,7 +188,7 @@ public class KundenbereichGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int option = JOptionPane.showConfirmDialog(null, "Möchten Sie sich wirklich ausloggen?", "Ausloggen", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    StartGUI s = new StartGUI(eShop);
+                    StartGUI s = new StartGUI(eshop);
                     dispose();
                 }
             }
@@ -199,7 +199,7 @@ public class KundenbereichGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String rechnung = eShop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden);
+                    String rechnung = eshop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden);
                     JOptionPane.showMessageDialog(null, rechnung, "Vielen Dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println(rechnung);
                     aktualisiereGesamtsumme();
@@ -225,7 +225,7 @@ public class KundenbereichGUI extends JFrame {
                 int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
 
-                        eShop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
+                        eshop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
                         warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                         aktualisiereGesamtsumme();
                     // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
@@ -238,7 +238,7 @@ public class KundenbereichGUI extends JFrame {
                         String mengenString = JOptionPane.showInputDialog("Menge des gewählten Artikels abändern");
                         int menge = Integer.parseInt(mengenString);
                         try {
-                            eShop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
+                            eshop.inDenWarenkorbLegen(artikel, menge, warenKorbDesKunden);
                             warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                             aktualisiereGesamtsumme();
                         } catch (ArtikelExistiertNichtException e) {
@@ -282,7 +282,7 @@ public class KundenbereichGUI extends JFrame {
         warenkorbLeerenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    eShop.warenkorbLeeren(warenKorbDesKunden);
+                    eshop.warenkorbLeeren(warenKorbDesKunden);
                     warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
                    // aktualisiereWarenkorb(rechnungsTextArea);
