@@ -27,8 +27,8 @@ import java.util.List;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
-    //todo evtl recherchieren / nachdenken, ob man die tablemodele zusammenfassen kann
-    //todo evtl einige components streichen / zusammen fassen die gemeinsam verwendet werden können
+    //todo switch case
+    //todo String für fehlermeldungen in die zugehörige methode
 
 
     private EShop eshop;

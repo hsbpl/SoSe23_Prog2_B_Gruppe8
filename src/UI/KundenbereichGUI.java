@@ -25,11 +25,9 @@ import java.text.DecimalFormat;
 
 
 public class KundenbereichGUI extends JFrame {
-    // Todo Rechnung: Abstand verbessern/fragen ob als String wiedergabe okay ist oder ob Tabelle gewünscht ist
     //TOdo alles was nicht verwendet wird löschen
     //todo checken, ob die Exception Texte sinn ergeben
-    //todo fragen ob man bei der Artikelliste im Kundenbereich auch nach z.B Artikelnummer, Preis usw. sortieren/filtern muss
-    //todo evtl suchleiste, man muss das suchen immer zuerst löschen un dann kann man den artikel suchen
+
 
 
     private EShop eshop;

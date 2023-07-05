@@ -16,7 +16,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
+//todo exceptions aus cui abgleichen
 public class StartGUI extends JFrame implements ActionListener {
 
     private EShop eshop;
