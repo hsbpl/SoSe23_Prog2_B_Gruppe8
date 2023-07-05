@@ -10,7 +10,7 @@ import java.util.*;
 
 import Common.Kunde;
 
-public class EShop {
+public class EShop implements EShopInterface {
 
     private String datei = "";
     private Artikelverwaltung av;
@@ -29,27 +29,35 @@ public class EShop {
 
     }
 
+    @Override
     public List<Artikel> getAlleArtikel() {
         return av.getArtikelListe();
     }
+    @Override
     public List<Mitarbeiter> getAlleMitarbeiter() {
         return mv.getListMitarbeiter();
     }
+    @Override
     public List<Kunde> getAlleKunden(){return kv.getKundenListe();}
+    @Override
     public List<Ereignis> getAlleEreignisse(){return av.getEreignisListe();}
 
+    @Override
     public void schreibeArtikel() throws IOException{
         av.schreibeDaten(datei + "_ARTIKEL.txt");
         schreibeEreignis();
     }
 
+    @Override
     public void schreibeMitarbeiter() throws IOException{
         mv.schreibeDaten(datei + "_MITARBEITER.txt");
     }
 
+    @Override
     public void schreibeKunde() throws IOException{
         kv.schreibeDaten(datei + "_KUNDEN.txt");
     }
+    @Override
     public void schreibeEreignis() throws IOException{
         av.schreibeDatenEreignisse(datei + "_EREIGNIS.txt");
     }
@@ -58,10 +66,12 @@ public class EShop {
         return kv.getGespeicherteWarenkörbeUndKunden();
     }
 
+    @Override
     public Warenkorb neuenWarenkorbErstellen(Kunde k){
       return   kv.neuerWarenkorb(k);
     }
 
+    @Override
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException, LeeresTextfieldException{
         Mitarbeiter neuerMitarbeiter = mv.mRegister(neu);
         if(neuerMitarbeiter == null){
@@ -70,6 +80,7 @@ public class EShop {
         return neuerMitarbeiter;
 
     }
+    @Override
     public Mitarbeiter mitarbeiterLogin(String username, String passwort) throws LoginFehlgeschlagenException {
         Mitarbeiter erfolgreicherLogin =mv.mitarbeiterEinloggen(username, passwort);
         if(erfolgreicherLogin == null){
@@ -84,22 +95,26 @@ public class EShop {
     }
 
 
+    @Override
     public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException,LeeresTextfieldException {
         av.artikelHinzufuegen(a, mitarbeiter);
     }
+    @Override
     public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
         av.massengutArtikelHinzufuegen(a, mitarbeiter);
     }
 
 
 
+    @Override
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, LeeresTextfieldException{
         if(!av.bestandErhoehen(artikelname, menge, u)){
             throw new ArtikelExistiertNichtException();}
     }
 
 
-    public void bestanNiedriger(String artikelname, int menge, User u ) throws ArtikelExistiertNichtException, UngueltigeMengeException, LeeresTextfieldException{
+    @Override
+    public void bestanNiedriger(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException, LeeresTextfieldException{
        if(!av.bestandVerringern(artikelname, menge, u)){
         throw new ArtikelExistiertNichtException();}
     }
@@ -108,6 +123,7 @@ public class EShop {
         return av.artikelSortierenNachBezeichnungString();
     }
 
+    @Override
     public List<Artikel>  artikelSortierenNachBezeichnung(){
        return av.artikelSortierenNachBezeichnung();
     }
@@ -116,12 +132,14 @@ public class EShop {
         return av.artikelSortierenNachArtikelnummerString();
     }
 
+    @Override
     public List<Artikel> artikelNachArtikelnummerGeordnetAusgeben(){
         return av.artikelSortierenNachArtikelnummer();
     }
 
     public String ereignisseNachDatumString(){return av.ereignisseSortiertNachDatumString();}
 
+    @Override
     public List<Ereignis> ereignisseNachDatum(){return av.ereignisseSortiertNachDatum();}
 
     public void artikelAusDemSortimentEntfernen(int artikelnummer) throws ArtikelExistiertNichtException{
@@ -129,6 +147,7 @@ public class EShop {
            throw new ArtikelExistiertNichtException();
        };
     }
+    @Override
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
 
        kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);
@@ -136,7 +155,8 @@ public class EShop {
 
     }
 
-    public void artikelAusWarenkorbEntfernen(String  artikel, Warenkorb warenkorb){
+    @Override
+    public void artikelAusWarenkorbEntfernen(String artikel, Warenkorb warenkorb){
         kv.artikelAusDemWarenkorbNehmen(artikel, warenkorb);
     }
     public String ereignisListeAusgeben(){
@@ -146,9 +166,11 @@ public class EShop {
     public void kaufenUndWarenkorbLeeren(Warenkorb warenkorb, Kunde kunde) throws WarenkorbIstLeerException {
         kv.beimKaufleerenUndBestandaktualisieren(warenkorb,getAlleArtikel(),kunde, getAlleEreignisse());
     }
+    @Override
     public void warenkorbLeeren(Warenkorb warenkorb){
         kv.leeren(warenkorb);;
     }
+    @Override
     public Kunde kundenLogin(String username, String password) throws LoginFehlgeschlagenException{
         Kunde erfolgreicherLogin=kv.login(username,password);
         if(erfolgreicherLogin == null){
@@ -157,6 +179,7 @@ public class EShop {
             return erfolgreicherLogin;}
     }
 
+    @Override
     public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException, LeeresTextfieldException {
         Kunde neuerKunde = kv.register(neu);
         if(neuerKunde == null){
@@ -166,6 +189,7 @@ public class EShop {
         return neuerKunde;}
     }
 
+    @Override
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
         Rechnung rechnung = new Rechnung(kunde, warenkorb);
         String r =  rechnung.toString();
