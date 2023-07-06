@@ -497,7 +497,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
                     listpopup(kundenTable(), "Registrierte Kunden");
 
                 } else if (selectedListItem.equals("Ereignisse ausgeben")) {
-                    listpopup(ereignisTable(), "Ereignisse nach Datum geordnet");
+                    JScrollPane ereignisScrollPane = new JScrollPane(ereignisTable());
+                    JOptionPane.showMessageDialog(null, ereignisScrollPane, "Ereignisse nach Datum geordnet", JOptionPane.PLAIN_MESSAGE);
                 }
                 break;
             case ARTIKEL_ORDNUNG:
