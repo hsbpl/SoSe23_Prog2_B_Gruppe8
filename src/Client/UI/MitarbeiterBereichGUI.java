@@ -522,67 +522,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
                 break;
         }
 
-      /*
-        if (actionEvent.getSource() == zurückButton) {
-
-            StartGUI s = new StartGUI(eshop);
-            this.dispose();
-
-        } else if (actionEvent.getSource() == bestandVerringernButton) {
-            bestandVerringern(numberFormat, leeresTextfeld, mengeZuHoch, artikelExistiertNicht);
-
-        } else if (actionEvent.getSource() == anlegenButtonErhöhen) {
-
-            bestanErhoehen(numberFormat, leeresTextfeld, artikelExistiertNicht);
-        } else if (actionEvent.getSource() == artikelAnlegenPopupButton) {
-            popup(neuenArtikelAnlegen(), "Neuen Einzelartikel anlegen");
-
-        } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
-
-            artikelAnlegenAbschließen(numberFormat, leeresTextfeld, artikelExistiert);
-
-        } else if (actionEvent.getSource() == massengutArtikelAnlegenPopupButton) {
-            popup(neuenMassengutartikelAnlegen(), "Neuen Massengutartikel anlegen");
-        } else if (actionEvent.getSource() == anlegenMassengutArtikelAbschliessen) {
-            massengutartikelAnlegenAbschließen(numberFormat, leeresTextfeld, artikelExistiert);
-        } else if (actionEvent.getSource() == registerButton) {
-
-            popup(registrierung(), "Neuen Mitarbeiter Registrieren");
-
-        } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
-            mitarbeiterRegistrieren(kontoExistiertSchon, leeresTextfeld);
-        } else if (actionEvent.getSource() == listenauswahl) {
-            String selectedListItem = listenauswahl.getSelectedItem().toString();
-            if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
-
-                listpopup(mitarbeiterTable(), "Registrierte Mitarbeiter");
-            } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
-
-                listpopup(kundenTable(), "Registrierte Kunden");
-            } else if (selectedListItem.equals("Ereignisse ausgeben")) {
-
-
-                listpopup(ereignisTable(), "Ereignisse nach Datum geordnet");
-            }
-        } else if (actionEvent.getSource() == artikelausgabe) {
-
-            String selectedArtikelItem = artikelausgabe.getSelectedItem().toString();
-            if (selectedArtikelItem.equals("Alphabetische Ausgabe")) {
-
-                List<Artikel> alphabetical = eshop.artikelSortierenNachBezeichnung();
-
-                model.setArtikelListe(alphabetical);
-
-            } else if (selectedArtikelItem.equals("Nummerische Ausgabe")) {
-                List<Artikel> nummerical = eshop.artikelNachArtikelnummerGeordnetAusgeben();
-
-                model.setArtikelListe(nummerical);
-            }
-        }
-
-
-       */
-
     }
 
     private void mitarbeiterRegistrieren() {
