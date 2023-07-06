@@ -19,14 +19,7 @@ public class FileMenu extends JMenu implements ActionListener {
         this.frame = frame;
         this.eShop =eShop;
 
-        JMenuItem mi = new JMenuItem("Sichern");
-        //mi.setEnabled(false);
-        mi.addActionListener(this);
-        this.add(mi);
-
-        this.addSeparator();
-
-        mi = new JMenuItem("Beenden");
+        JMenuItem mi = new JMenuItem("Beenden");
         mi.addActionListener(this);
         this.add(mi);
 
@@ -42,13 +35,7 @@ public class FileMenu extends JMenu implements ActionListener {
         String command = ae.getActionCommand();
         System.out.println(command);
 
-        if (command.equals("Sichern")) {
-            try {
-                eShop.schreibeArtikel();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (command.equals("Beenden")) {
+        if (command.equals("Beenden")) {
             frame.setVisible(false);
             frame.dispose();
             System.exit(0);

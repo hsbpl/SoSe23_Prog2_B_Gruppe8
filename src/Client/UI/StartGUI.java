@@ -43,6 +43,9 @@ public class StartGUI extends JFrame implements ActionListener {
     private JTable tabelle;
     private ArtikelTableModel model;
     private JScrollPane tablePane;
+    private JMenuBar menuBar;
+
+
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
@@ -70,6 +73,8 @@ public class StartGUI extends JFrame implements ActionListener {
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
 
+        setupMenu();
+
         startpage();
 
         this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
@@ -84,6 +89,8 @@ public class StartGUI extends JFrame implements ActionListener {
 
         JMenu helpMenu = new HelpMenu();
         mBar.add(helpMenu);
+
+        menuBar = mBar;
 
         this.setJMenuBar(mBar);
     }
