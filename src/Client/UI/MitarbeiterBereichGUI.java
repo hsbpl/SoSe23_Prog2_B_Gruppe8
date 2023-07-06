@@ -27,10 +27,6 @@ import java.util.List;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
-    //todo switch case
-    //todo String für fehlermeldungen in die zugehörige methode
-
-
     private EShop eshop;
     private int textfieldSize = 50;
     private int digitInputTextfieldsize = 10;
