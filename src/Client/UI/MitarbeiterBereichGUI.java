@@ -420,18 +420,109 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return ereignisTabelle;
     }
 
+    private enum Eventsource{
+        AUSLOGGEN,
+        BESTAND_VERRINGERN,
+        BESTAND_ERHÖHEN,
+        EINZELARTIKEL_ANLEGEN_FENSTER,
+        EINZELARTIKEL_ANLEGEN,
+        MASSENGUTARTIKEL_ANLEGEN_FENSTER,
+        MASSENGUTARTIKEL_ANLEGEN,
+        REGISTRIERUNGSFENSTER,
+        MITARBEITER_REGISTRIEREN,
+        LISTEN_AUSGEBE,
+        ARTIKEL_ORDNUNG
+    }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        //Strings für Common.ValueObjekt.Exceptions
-        String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
-        String numberFormat = "Bitte Nummer nicht richtig eingegeben.\n";
-        String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
-        String artikelExistiert = "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n";
-        String mengeZuHoch = "Die von Ihnen gewählte Menge ist zu höher als die im Bestand vorhandene Menge .\nBitte versuchen Sie es nochmal.\n";
-        String artikelExistiertNicht = "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n";
+        Eventsource source = null;
 
+        if (actionEvent.getSource() == zurückButton) {
+            source = Eventsource.AUSLOGGEN;
+        } else if (actionEvent.getSource() == bestandVerringernButton) {
+            source = Eventsource.BESTAND_VERRINGERN;
+        } else if (actionEvent.getSource() == anlegenButtonErhöhen) {
+            source = Eventsource.BESTAND_ERHÖHEN;
+        } else if (actionEvent.getSource() == artikelAnlegenPopupButton) {
+            source = Eventsource.EINZELARTIKEL_ANLEGEN_FENSTER;
+        } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
+            source = Eventsource.EINZELARTIKEL_ANLEGEN;
+        } else if (actionEvent.getSource() == massengutArtikelAnlegenPopupButton) {
+            source = Eventsource.MASSENGUTARTIKEL_ANLEGEN_FENSTER;
+        } else if (actionEvent.getSource() == anlegenMassengutArtikelAbschliessen) {
+            source = Eventsource.MASSENGUTARTIKEL_ANLEGEN;
+        } else if (actionEvent.getSource() == registerButton) {
+            source = Eventsource.REGISTRIERUNGSFENSTER;
+        } else if (actionEvent.getSource() == mitarbeiterkontoAnlegen) {
+            source = Eventsource.MITARBEITER_REGISTRIEREN;
+        } else if (actionEvent.getSource() == listenauswahl) {
+            source = Eventsource.LISTEN_AUSGEBE;
+        } else if (actionEvent.getSource() == artikelausgabe) {
+            source = Eventsource.ARTIKEL_ORDNUNG;
+        }
+
+        switch (source){
+            case AUSLOGGEN:
+                StartGUI s = new StartGUI(eshop);
+                this.dispose();
+                break;
+            case BESTAND_VERRINGERN:
+                bestandVerringern();
+                break;
+            case BESTAND_ERHÖHEN:
+                bestanErhoehen();
+                break;
+            case EINZELARTIKEL_ANLEGEN_FENSTER:
+                popup(neuenArtikelAnlegen(), "Neuen Einzelartikel anlegen");
+                break;
+            case EINZELARTIKEL_ANLEGEN:
+                artikelAnlegenAbschließen();
+                break;
+            case MASSENGUTARTIKEL_ANLEGEN_FENSTER:
+                popup(neuenMassengutartikelAnlegen(), "Neuen Massengutartikel anlegen");
+                break;
+            case MASSENGUTARTIKEL_ANLEGEN:
+                massengutartikelAnlegenAbschließen();
+                break;
+            case REGISTRIERUNGSFENSTER:
+                popup(registrierung(), "Neuen Mitarbeiter Registrieren");
+                break;
+            case MITARBEITER_REGISTRIEREN:
+                mitarbeiterRegistrieren();
+                break;
+            case LISTEN_AUSGEBE:
+                String selectedListItem = listenauswahl.getSelectedItem().toString();
+
+                if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
+                    listpopup(mitarbeiterTable(), "Registrierte Mitarbeiter");
+
+                } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
+                    listpopup(kundenTable(), "Registrierte Kunden");
+
+                } else if (selectedListItem.equals("Ereignisse ausgeben")) {
+                    listpopup(ereignisTable(), "Ereignisse nach Datum geordnet");
+                }
+                break;
+            case ARTIKEL_ORDNUNG:
+                String selectedArtikelItem = artikelausgabe.getSelectedItem().toString();
+
+                if (selectedArtikelItem.equals("Alphabetische Ausgabe")) {
+                    List<Artikel> alphabetical = eshop.artikelSortierenNachBezeichnung();
+                    model.setArtikelListe(alphabetical);
+
+                } else if (selectedArtikelItem.equals("Nummerische Ausgabe")) {
+                    List<Artikel> nummerical = eshop.artikelNachArtikelnummerGeordnetAusgeben();
+                    model.setArtikelListe(nummerical);
+                }
+                break;
+            default:
+                System.out.println("Event detected");
+                break;
+        }
+
+      /*
         if (actionEvent.getSource() == zurückButton) {
 
             StartGUI s = new StartGUI(eshop);
@@ -444,7 +535,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
             bestanErhoehen(numberFormat, leeresTextfeld, artikelExistiertNicht);
         } else if (actionEvent.getSource() == artikelAnlegenPopupButton) {
-
             popup(neuenArtikelAnlegen(), "Neuen Einzelartikel anlegen");
 
         } else if (actionEvent.getSource() == anlegenEinzelartikelAbschließen) {
@@ -491,9 +581,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         }
 
 
+       */
+
     }
 
-    private void mitarbeiterRegistrieren(String kontoExistiertSchon, String leeresTextfeld) {
+    private void mitarbeiterRegistrieren() {
         try {
 
             String username = usernameTextfield.getText();
@@ -503,11 +595,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
             Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
             eshop.mitarbeiterRegistrieren(neuerMitarbeiter);
-            mitarbeiterTableModel.setMitarbeiterliste(eshop.getAlleMitarbeiter());
-            System.out.println("Registriert: "+neuerMitarbeiter);
+
             eshop.schreibeMitarbeiter();
+            System.out.println("Registriert: "+neuerMitarbeiter);
             popup.dispose();
         } catch (UserExistiertBereitsException e) {
+            String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
             System.err.println(
                     "*********************************************************************************\n" +
                             kontoExistiertSchon +
@@ -515,19 +608,14 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
             popup.dispose();
             JOptionPane.showMessageDialog(null, kontoExistiertSchon, "Konto existiert bereits", JOptionPane.ERROR_MESSAGE);
-            usernameTextfield.setText("");
-            passwotTextfield.setText("");
-            nachnameTextfield.setText("");
-            vornameTextfield.setText("");
-
-
 
         } catch (LeeresTextfieldException e) {
+            String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
             System.err.println(
                     "*********************************************************************************\n" +
                             leeresTextfeld +
                             "*********************************************************************************\n");
-
+            popup.dispose();
             JOptionPane.showMessageDialog(null, leeresTextfeld, "Leere Textfelder", JOptionPane.ERROR_MESSAGE);
 
 
@@ -536,7 +624,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         }
     }
 
-    private void massengutartikelAnlegenAbschließen(String numberFormat, String leeresTextfeld, String artikelExistiert) {
+    private void massengutartikelAnlegenAbschließen() {
         try {
             String bezeichnung = bezeichnungsTextfieldMassengutartikelAnlegen.getText();
             int artikelnummer = Integer.parseInt(artikelnummerTextfieldMassengutartikelAnlegen.getText());
@@ -554,26 +642,21 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             model.setArtikelListe(eshop.getAlleArtikel());
             popup.dispose();
         } catch (NumberFormatException e) {
+            String numberFormat = "Bitte Nummer richtig eingegeben.\n";
             System.err.println("*********************************************************************************\n" +
                     numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
                     "*********************************************************************************\n");
-
+            popup.dispose();
             JOptionPane.showMessageDialog(null, numberFormat +"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.ERROR_MESSAGE);
 
         } catch (ArtikelExistiertBereitsException e) {
+            String artikelExistiert = "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     artikelExistiert +
                     "*********************************************************************************\n");
 
+            popup.dispose();
             JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.ERROR_MESSAGE);
-
-            bezeichnungsTextfieldMassengutartikelAnlegen.setText("");
-            artikelnummerTextfieldMassengutartikelAnlegen.setText("");
-            bestandTextfieldMassengutartikeAnlegen.setText("");
-            preisTextfieldMassengutartikelAnlegen.setText("");
-            verkäuflicheMengefield.setText("");
-
-
 
 
         } catch (InputMismatchException e) {
@@ -586,6 +669,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
                             "*********************************************************************************\n");
         } catch (LeeresTextfieldException e) {
+            String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
             System.err.println("*********************************************************************************\n" +
                     leeresTextfeld +
                     "*********************************************************************************\n");
@@ -597,7 +681,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         }
     }
 
-    private void artikelAnlegenAbschließen(String numberFormat, String leeresTextfeld, String artikelExistiert) {
+    private void artikelAnlegenAbschließen() {
         try {
             String bezeichnung = bezeichnungsTextfieldEinzelartikelAnlegen.getText();
             int artikelnummer = Integer.parseInt(artikelnummerTextfieldEinzelartikelAnlegen.getText());
@@ -610,28 +694,26 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             popup.dispose();
 
             model.setArtikelListe(eshop.getAlleArtikel());
-            //ereignisTableModel.setEreignisse(eshop.ereignisseNachDatum());
 
             System.out.println("Erstellt: "+a);
         } catch (NumberFormatException e) {
+            String numberFormat = "Bitte Nummer richtig eingegeben.\n" + "Bitte achten Sie beim Preis darauf ein “.“ zu verwenden.\n" ;
             System.err.println("*********************************************************************************\n" +
-                    numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
+                    numberFormat +
                     "*********************************************************************************\n");
+            popup.dispose();
+            JOptionPane.showMessageDialog(null, numberFormat, "Eingabenfehler", JOptionPane.ERROR_MESSAGE);
 
-            JOptionPane.showMessageDialog(null, numberFormat +"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.ERROR_MESSAGE);
 
         } catch
         (ArtikelExistiertBereitsException e) {
+            String artikelExistiert = "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     artikelExistiert +
                     "*********************************************************************************\n");
 
+            popup.dispose();
             JOptionPane.showMessageDialog(null, artikelExistiert, "Artikel im Bestand vorhanden", JOptionPane.ERROR_MESSAGE);
-            bezeichnungsTextfieldEinzelartikelAnlegen.setText("");
-            artikelnummerTextfieldEinzelartikelAnlegen.setText("");
-            bestandTextfieldEinzelartikelAnlegen.setText("");
-            preisTextfieldEinzelartikelAnlegen.setText("");
-
 
 
         } catch (InputMismatchException e) {
@@ -644,6 +726,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
                             "*********************************************************************************\n");
         } catch (LeeresTextfieldException e) {
+            String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
             System.err.println("*********************************************************************************\n" +
                     leeresTextfeld +
                     "*********************************************************************************\n");
@@ -655,7 +738,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         }
     }
 
-    private void bestanErhoehen(String numberFormat, String leeresTextfeld, String artikelExistiertNicht) {
+    private void bestanErhoehen() {
         try {
 
             String artikelname = bezeichnungsTextfieldVeränderung.getText();
@@ -673,6 +756,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             eshop.schreibeEreignis();
 
         } catch (ArtikelExistiertNichtException e) {
+            String artikelExistiertNicht = "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     artikelExistiertNicht +
                     "*********************************************************************************\n");
@@ -684,6 +768,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
         } catch (LeeresTextfieldException e) {
+            String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
             System.err.println("*********************************************************************************\n" +
                     leeresTextfeld +
                     "*********************************************************************************\n");
@@ -692,6 +777,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
         } catch (NumberFormatException e) {
+            String numberFormat = "Bitte Nummer richtig eingegeben.\n";
             System.err.println("*********************************************************************************\n" +
                     numberFormat +
                     "*********************************************************************************\n");
@@ -704,7 +790,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         }
     }
 
-    private void bestandVerringern(String numberFormat, String leeresTextfeld, String mengeZuHoch, String artikelExistiertNicht) {
+    private void bestandVerringern() {
         try {
 
             String artikelbez = bezeichnungsTextfieldVeränderung.getText();
@@ -712,10 +798,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             eshop.bestanNiedriger(artikelbez, menge, eingeloggterMitarbeiter);
             model.setArtikelListe(eshop.getAlleArtikel());
 
-
-
-
-           mengenänderungstextfeld.setText("");
+            mengenänderungstextfeld.setText("");
             bezeichnungsTextfieldVeränderung.setText("");
 
             eshop.schreibeArtikel();
@@ -723,6 +806,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
         } catch (ArtikelExistiertNichtException e) {
+            String artikelExistiertNicht = "Der von Ihnen gewählte Artikel existiert nicht. Bitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     artikelExistiertNicht +
                     "*********************************************************************************\n");
@@ -733,6 +817,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             mengenänderungstextfeld.setText("");
 
         } catch (UngueltigeMengeException u) {
+            String mengeZuHoch = "Die von Ihnen gewählte Menge ist zu höher als die im Bestand vorhandene Menge .\nBitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     mengeZuHoch +
                     "*********************************************************************************\n");
@@ -742,6 +827,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
         } catch (LeeresTextfieldException e) {
+            String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
             System.err.println("*********************************************************************************\n" +
                     leeresTextfeld +
                     "*********************************************************************************\n");
@@ -750,6 +836,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
 
         } catch (NumberFormatException e) {
+            String numberFormat = "Bitte Nummer richtig eingegeben.\n";
             System.err.println("*********************************************************************************\n" +
                     numberFormat +
                     "*********************************************************************************\n");
@@ -768,7 +855,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             int row = artikelTabelle.getSelectedRow();
             int column = artikelTabelle.getSelectedColumn();
 
-            if (column >= 0 && column <= 1) {
+            if (column ==0) {
                 String value = artikelTabelle.getValueAt(row, column).toString();
 
                 bezeichnungsTextfieldVeränderung.setText("");
@@ -806,14 +893,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
         suche(documentEvent);
 
-
-
     }
 
     @Override
     public void removeUpdate(DocumentEvent documentEvent) {
         suche(documentEvent);
-
     }
 
     @Override
