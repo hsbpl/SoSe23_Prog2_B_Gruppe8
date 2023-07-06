@@ -96,7 +96,7 @@ public class KundenbereichGUI extends JFrame {
         JScrollPane artikelScrollPane = new JScrollPane(artikelTable);
         artikelScrollPane.setMinimumSize(new Dimension(300, 400));
 
-        suchleiste.setText("Suchen");
+
         suchleiste.setPreferredSize(getPreferredSize());
 
         artikelTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

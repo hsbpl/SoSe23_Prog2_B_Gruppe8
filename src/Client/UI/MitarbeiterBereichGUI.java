@@ -194,7 +194,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
         sucheArtikel = new JTextField(textfieldSize);
-        sucheArtikel.setText("Suchen");
         setPreferredSize(getPreferredSize());
         sucheArtikel.getDocument().addDocumentListener(this);
 
