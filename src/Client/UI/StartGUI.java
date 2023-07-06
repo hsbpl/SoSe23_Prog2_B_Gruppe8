@@ -259,35 +259,54 @@ public class StartGUI extends JFrame implements ActionListener {
         return tablePane;
     }
 
+private enum Eventsource{
+        KUNDEN_LOGIN,
+        MITARBEITER_LOGIN,
+        REGISTRIERUNGSFENSTER_ÖFFNEN,
+        KUNDEN_REGISTRIEREN
 
+    }
     
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
-        //Exception Optionpanetext
-        String kontoExistiertSchon = "Dieses Konto Existiert bereits. Bitte versuchen Sie es nochmal.\n";
-        String unOpwFalsch = "Username oder Passwort falsch. Bitte versuchen Sie es nochmal.\n";
-        String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
+        Eventsource source = null;
 
         if (actionEvent.getSource() == loginButton) {
-            
-            kundenLoginEvent(unOpwFalsch);
-            
+          source = Eventsource.KUNDEN_LOGIN;
         } else if (actionEvent.getSource() == loginButtonMitarbeiter) {
-
-            mitarbeiterLoginEvent(unOpwFalsch);
-
+            source = Eventsource.MITARBEITER_LOGIN;
         } else if (actionEvent.getSource() == registrierungsButton) {
-
-            registerPopup();
-
+            source = Eventsource.REGISTRIERUNGSFENSTER_ÖFFNEN;
         } else if (actionEvent.getSource() == neuenKundenAnlegenButton) {
-            kundenRegistrierungEvent(kontoExistiertSchon, leeresTextfeld);
+            source = Eventsource.KUNDEN_REGISTRIEREN;
         }
+
+    switch (source){
+        case KUNDEN_LOGIN:
+            kundenLoginEvent();
+            break;
+
+        case MITARBEITER_LOGIN:
+            mitarbeiterLoginEvent();
+            break;
+
+        case REGISTRIERUNGSFENSTER_ÖFFNEN:
+            registerPopup();
+            break;
+
+        case KUNDEN_REGISTRIEREN:
+            kundenRegistrierungEvent();
+            break;
+
+        default:
+            System.out.println("Event Occured");
+            break;
+    }
 
     }
 
-    private void kundenRegistrierungEvent(String kontoExistiertSchon, String leeresTextfeld) {
+    private void kundenRegistrierungEvent() {
         try {
             String username = usernameTextfieldRegistrierung.getText();
             String passwort = passwortTextfieldRegistrierung.getText();
@@ -309,6 +328,8 @@ public class StartGUI extends JFrame implements ActionListener {
             System.err.println("Erfolgreich registriert: "+kunde);
             //}
         } catch (UserExistiertBereitsException e) {
+            String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
+
             System.err.println("*********************************************************************************\n" +
                     kontoExistiertSchon +
                     "*********************************************************************************\n");
@@ -319,6 +340,7 @@ public class StartGUI extends JFrame implements ActionListener {
             throw new RuntimeException(e);
 
         } catch (LeeresTextfieldException e) {
+            String leeresTextfeld = "Bitte füllen Sie alle Textfelder aus.\n";
             System.err.println("*********************************************************************************\n" +
                     leeresTextfeld +
                     "*********************************************************************************\n");
@@ -328,7 +350,7 @@ public class StartGUI extends JFrame implements ActionListener {
         }
     }
 
-    private void mitarbeiterLoginEvent(String unOpwFalsch) {
+    private void mitarbeiterLoginEvent() {
         try {
             String username = usernameTextfieldMitarbeiter.getText();
             String passwort = passwortTextfieldMitarbeiter.getText();
@@ -342,6 +364,7 @@ public class StartGUI extends JFrame implements ActionListener {
             System.out.println("Erfolgreich eingeloggt: " + mitarbeiter);
 
         } catch (LoginFehlgeschlagenException e) {
+            String unOpwFalsch = "Username oder Passwort falsch. Bitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     unOpwFalsch +
                     "*********************************************************************************\n");
@@ -354,7 +377,7 @@ public class StartGUI extends JFrame implements ActionListener {
         }
     }
 
-    private void kundenLoginEvent(String unOpwFalsch) {
+    private void kundenLoginEvent() {
         try {
             String username = usernameTextfield.getText();
             String passwort = passwortTextfield.getText();
@@ -367,6 +390,7 @@ public class StartGUI extends JFrame implements ActionListener {
             System.out.println("Erfolgreich eingeloggt: " + aktuellerKunde);
 
         } catch (LoginFehlgeschlagenException e) {
+            String unOpwFalsch = "Username oder Passwort falsch. Bitte versuchen Sie es nochmal.\n";
             System.err.println("*********************************************************************************\n" +
                     unOpwFalsch +
                     "*********************************************************************************\n");

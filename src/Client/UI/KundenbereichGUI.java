@@ -336,45 +336,5 @@ public class KundenbereichGUI extends JFrame {
     }
 
 
-    /*
-    private void aktualisiereWarenkorb(JTextArea rechnungsTextArea) {
-        StringBuilder warenkorbText = new StringBuilder();
-        for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
-            Artikel artikel = eintrag.getKey();
-            int menge = eintrag.getValue();
-            warenkorbText.append(artikel.toString()).append(" - Menge: ").append(menge).append("\n");
-        }
-        rechnungsTextArea.setText(warenkorbText.toString());
 
-        aktualisiereGesamtsumme();
-    }
-
-
-    private String generiereRechnungstext() {
-        StringBuilder rechnungstext = new StringBuilder();
-        rechnungstext.append("Rechnung\n");
-        rechnungstext.append("Kunde: ").append(eingeloggterKunde.getVorname()).append(" ").append(eingeloggterKunde.getNachname()).append("\n");
-        rechnungstext.append("----------\n");
-        rechnungstext.append("Artikel\t\tPreis\t\tStückzahl\tGesamtpreis\n");
-        rechnungstext.append("----------\n");
-        double gesamtsumme = 0;
-
-        for (Map.Entry<Artikel, Integer> eintrag : warenKorbDesKunden.getWarenkorb().entrySet()) {
-            Artikel artikel = eintrag.getKey();
-            int menge = eintrag.getValue();
-            double gesamtpreis = artikel.getEinzelpreis() * menge;
-            rechnungstext.append(artikel.getBezeichnung()).append("\t\t")
-                    .append(artikel.getEinzelpreis()).append("\t\t")
-                    .append(menge).append("\t\t")
-                    .append(gesamtpreis).append("\n");
-            gesamtsumme += gesamtpreis;
-        }
-
-        rechnungstext.append("----------\n");
-        rechnungstext.append("Gesamtsumme: ").append(gesamtsumme);
-
-        return rechnungstext.toString();
-    }
-
-     */
 }
