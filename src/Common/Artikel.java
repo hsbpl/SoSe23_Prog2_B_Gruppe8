@@ -4,7 +4,7 @@ package Common;
 
 import java.io.Serializable;
 
-public class Artikel implements Serializable {
+public class Artikel {
     protected String bezeichnung;
     protected int artikelNummer;
     protected int bestand;

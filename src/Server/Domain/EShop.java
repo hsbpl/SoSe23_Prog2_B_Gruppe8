@@ -137,22 +137,13 @@ public class EShop implements EShopInterface {
         return av.artikelSortierenNachArtikelnummer();
     }
 
-   // public String ereignisseNachDatumString(){return av.ereignisseSortiertNachDatumString();}
-
     @Override
     public List<Ereignis> ereignisseNachDatum(){return av.ereignisseSortiertNachDatum();}
 
-    public void artikelAusDemSortimentEntfernen(int artikelnummer) throws ArtikelExistiertNichtException{
-       if( av.artikelLoeschen(artikelnummer)){
-           throw new ArtikelExistiertNichtException();
-       };
-    }
     @Override
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
 
        kv.reinlegenOderMengeÄndern(getAlleArtikel(), artikel, menge, warenkorb);
-
-
     }
 
     @Override
@@ -198,11 +189,6 @@ public class EShop implements EShopInterface {
         return r;
     }
 
-    /*public String ausgabeMitarbeiterkonten(){
-        return mv.registrierteMitarbeiter();
-    }
-
-     */
     public String artikelImWarenkorb(Warenkorb warenkorb){
         return kv.einkaufsliste(warenkorb);
     }

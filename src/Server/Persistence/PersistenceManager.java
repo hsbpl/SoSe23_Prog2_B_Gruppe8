@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface PersistenceManager {
-     // todo HashMap zur Map machen
 
      List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException;
      void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException;
