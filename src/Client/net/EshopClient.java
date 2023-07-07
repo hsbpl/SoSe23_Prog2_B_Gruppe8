@@ -107,7 +107,8 @@ public class EshopClient implements EShopInterface {
 
     @Override
     public Warenkorb neuenWarenkorbErstellen(Kunde k) {
-        return null;
+        Warenkorb warenkorb = new Warenkorb();
+        return warenkorb;
     }
 
     @Override

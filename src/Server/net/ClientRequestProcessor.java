@@ -7,27 +7,39 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.List;
 
-public class ClientRequestProcessor implements Runnable{
+public class ClientRequestProcessor implements Runnable {
 
     private BufferedReader socketIn;
     private PrintStream socketOut;
     final String separator = ";";
+    private Socket clientSocket;
 
     EShopInterface eshop;
 
-    public ClientRequestProcessor(Socket s, EShopInterface eshop) throws IOException {
+    public ClientRequestProcessor(Socket socket, EShopInterface eshop) throws IOException {
         this.eshop = eshop;
+        this.clientSocket = socket;
 
-        OutputStream outputStream = s.getOutputStream();
-        socketOut = new PrintStream(outputStream);
+        try {
+            this.socketIn = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+            this.socketOut = new PrintStream(this.clientSocket.getOutputStream());
+        } catch (IOException var6) {
+            try {
+                this.clientSocket.close();
+            } catch (IOException var5) {
+            }
 
-        InputStream inputStream = s.getInputStream();
-        socketIn = new BufferedReader(new InputStreamReader(inputStream));
-    }
+            System.err.println("Ausnahme bei Bereitstellung des Streams: " + var6);
+            return;
+        }
+
+        System.out.println("Verbunden mit " + this.clientSocket.getInetAddress() + ":" + this.clientSocket.getPort());
+    }     //Hier wird eine Erfolgsmeldung ausgegeben, die die Verbindungsinformationen des Sockets enthält (IP-Adresse und Portnummer).
+
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 String receivedData = socketIn.readLine(); // BufferedReader bietet readLine()
                 handleCommandRequest(receivedData);
@@ -39,6 +51,7 @@ public class ClientRequestProcessor implements Runnable{
             }
         }
     }
+
     private void handleCommandRequest(String receivedData) {
         System.err.println("Vom Client empfangende Daten: " + receivedData);
         String[] parts = receivedData.split(separator);
@@ -87,7 +100,7 @@ public class ClientRequestProcessor implements Runnable{
 
     }
 
-    private void handleGibAlleArtikel(){
+    private void handleGibAlleArtikel() {
         List<Artikel> result = eshop.getAlleArtikel();
 
         String cmd = Commands.CMD_GIB_ALLE_ARTIKEL_RSP.name();
@@ -97,15 +110,15 @@ public class ClientRequestProcessor implements Runnable{
             cmd += separator + artikel.getArtikelNummer();
             cmd += separator + artikel.getBestand();
             cmd += separator + artikel.getEinzelpreis();
-            if(artikel instanceof Massengutartikel){
-                cmd += separator +"MG"+((Massengutartikel) artikel).getErwerbwareMenge();
+            if (artikel instanceof Massengutartikel) {
+                cmd += separator + "MG" + ((Massengutartikel) artikel).getErwerbwareMenge();
             }
 
         }
         socketOut.println(cmd);
     }
 
-    private void handleGibAlleKunden(){
+    private void handleGibAlleKunden() {
         List<Kunde> result = eshop.getAlleKunden();
 
         String cmd = Commands.CMD_GIB_ALLE_KUNDEN_RSP.name();
@@ -120,7 +133,7 @@ public class ClientRequestProcessor implements Runnable{
         socketOut.println(cmd);
     }
 
-    private void handleGibAlleEreignisse(){
+    private void handleGibAlleEreignisse() {
         List<Ereignis> result = eshop.getAlleEreignisse();
 
         String cmd = Commands.CMD_GIB_ALLE_EREIGNISSE_RSP.name();
@@ -169,8 +182,10 @@ public class ClientRequestProcessor implements Runnable{
     }
 
     //todo geht das einfach so ? wirkt auf mich gerade ein wenig faslch
-    private void handleWaremkorbErstellen(Kunde kunde){
+    private void handleWaremkorbErstellen(Kunde kunde) {
         eshop.neuenWarenkorbErstellen(kunde);
     }
-
 }
+
+
+
