@@ -6,13 +6,13 @@ import java.util.Objects;
 
 public class Warenkorb {
 
-    private static HashMap<Artikel, Integer> warenkorb;
+    private static Map<Artikel, Integer> warenkorb;
 
     public Warenkorb() {
         this.warenkorb = new HashMap<>();
     }
 
-    public HashMap<Artikel, Integer> getWarenkorb() {
+    public Map<Artikel, Integer> getWarenkorb() {
         return warenkorb;
     }
 

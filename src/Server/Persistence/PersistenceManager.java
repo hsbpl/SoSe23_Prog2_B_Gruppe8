@@ -12,6 +12,7 @@ import Common.Mitarbeiter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface PersistenceManager {
      // todo HashMap zur Map machen
@@ -19,7 +20,7 @@ public interface PersistenceManager {
      List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException;
      void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException;
 
-     HashMap<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException;
+     Map<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException;
      void schreibeKundeListe(List<Kunde> liste, String datei) throws IOException;
 
      List<Mitarbeiter> leseMitarbeiterList(String datei) throws IOException, UserExistiertBereitsException;

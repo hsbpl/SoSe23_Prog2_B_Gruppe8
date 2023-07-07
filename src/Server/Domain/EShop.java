@@ -62,7 +62,7 @@ public class EShop implements EShopInterface {
         av.schreibeDatenEreignisse(datei + "_EREIGNIS.txt");
     }
 
-    public HashMap<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
+    public Map<Kunde,Warenkorb> getAlleGespeichertenWarenkörbe(){
         return kv.getGespeicherteWarenkörbeUndKunden();
     }
 
@@ -137,7 +137,7 @@ public class EShop implements EShopInterface {
         return av.artikelSortierenNachArtikelnummer();
     }
 
-    public String ereignisseNachDatumString(){return av.ereignisseSortiertNachDatumString();}
+   // public String ereignisseNachDatumString(){return av.ereignisseSortiertNachDatumString();}
 
     @Override
     public List<Ereignis> ereignisseNachDatum(){return av.ereignisseSortiertNachDatum();}
@@ -198,14 +198,11 @@ public class EShop implements EShopInterface {
         return r;
     }
 
-  /*  public String ausgabeKundenkonten(){
-        return kv.kundenliste();
-    }
-   */
-
-    public String ausgabeMitarbeiterkonten(){
+    /*public String ausgabeMitarbeiterkonten(){
         return mv.registrierteMitarbeiter();
     }
+
+     */
     public String artikelImWarenkorb(Warenkorb warenkorb){
         return kv.einkaufsliste(warenkorb);
     }

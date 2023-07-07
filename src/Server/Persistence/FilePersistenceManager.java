@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FilePersistenceManager implements PersistenceManager{
@@ -21,7 +22,7 @@ public class FilePersistenceManager implements PersistenceManager{
 
     private static List<Artikel> artikelBestand = new ArrayList<>();
     private static List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
-    private static HashMap<String, Kunde> kundenBestand = new HashMap<>();
+    private static Map<String, Kunde> kundenBestand = new HashMap<>();
     private static List<Ereignis> ereignisliste = new ArrayList<>();
     private static List<Massengutartikel>massengutBestand = new ArrayList<>();
 
@@ -53,7 +54,7 @@ public class FilePersistenceManager implements PersistenceManager{
         return artikelBestand;
     }
 
-    public HashMap<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
+    public Map<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
         Kunde einKunde;

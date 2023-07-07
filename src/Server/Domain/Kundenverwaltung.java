@@ -16,8 +16,8 @@ import java.util.*;
 public class Kundenverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
 
-    private static HashMap<String, Kunde> kundenliste = new HashMap<>();
-    private static HashMap<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
+    private static Map<String, Kunde> kundenliste = new HashMap<>();
+    private static Map<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
     private Kunde kunde;
     private static List<Kunde> kListe = new ArrayList<>();
     private Artikelverwaltung av = new Artikelverwaltung();
@@ -48,7 +48,7 @@ public class Kundenverwaltung {
         return new ArrayList<>(kundenliste.values());
     }
 
-    public HashMap<Kunde, Warenkorb> getGespeicherteWarenkörbeUndKunden() {
+    public Map<Kunde, Warenkorb> getGespeicherteWarenkörbeUndKunden() {
         return kundenUndDazugehörigeWarenkörbe;
     }
 
