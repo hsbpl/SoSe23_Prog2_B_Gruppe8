@@ -25,10 +25,9 @@ import java.text.DecimalFormat;
 
 
 public class KundenbereichGUI extends JFrame {
+    public static int status;
     //TOdo alles was nicht verwendet wird löschen
     //todo checken, ob die Exception Texte sinn ergeben
-
-
 
     private EShop eshop;
     private Kunde eingeloggterKunde;

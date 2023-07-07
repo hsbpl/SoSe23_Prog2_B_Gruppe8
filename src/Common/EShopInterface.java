@@ -53,4 +53,5 @@ public interface EShopInterface {
     Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException, LeeresTextfieldException;
 
     String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException;
-}
+     void disconnect() throws IOException;
+    }
