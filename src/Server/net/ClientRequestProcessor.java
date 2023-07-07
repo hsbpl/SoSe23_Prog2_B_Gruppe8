@@ -47,6 +47,7 @@ public class ClientRequestProcessor implements Runnable{
             case CMD_GIB_ALLE_ARTIKEL -> handleGibAlleArtikel();
             case CMD_GIB_ALLE_KUNDEN -> handleGibAlleKunden();
             case CMD_GIB_ALLE_EREIGNISSE -> handleGibAlleEreignisse();
+            case CMD_GIB_ALLE_MITARBEITER -> handleGibAlleMitarbeiter();
             case CMD_SPEICHER_ARTIKEL -> handleArtikelSpeichern();
             case CMD_SPEICHER_MITAREBITER -> handleMitarbeiterSpeichern();
             case CMD_SPEICHER_KUNDEN -> handleKundeSpeichern();
@@ -80,6 +81,10 @@ public class ClientRequestProcessor implements Runnable{
 
             default -> System.err.println("Ungueltige Anfrage empfangen!");
         }
+    }
+
+    private void handleGibAlleMitarbeiter() {
+
     }
 
     private void handleGibAlleArtikel(){

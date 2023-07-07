@@ -55,42 +55,54 @@ public class EshopClient implements EShopInterface {
 
     @Override
     public List<Artikel> getAlleArtikel() {
+        String cmd = Commands.CMD_GIB_ALLE_ARTIKEL.name();
+        out.println(cmd);
         return null;
     }
 
     @Override
     public List<Mitarbeiter> getAlleMitarbeiter() {
+        String cmd = Commands.CMD_GIB_ALLE_MITARBEITER.name();
+        out.println(cmd);
         return null;
     }
 
     @Override
     public List<Kunde> getAlleKunden() {
+        String cmd = Commands.CMD_GIB_ALLE_KUNDEN.name();
+        out.println(cmd);
         return null;
     }
 
     @Override
     public List<Ereignis> getAlleEreignisse() {
+        String cmd = Commands.CMD_GIB_ALLE_EREIGNISSE.name();
+        out.println(cmd);
         return null;
     }
 
     @Override
     public void schreibeArtikel() throws IOException {
-
+        String cmd = Commands.CMD_SPEICHER_ARTIKEL.name();
+        out.println(cmd);
     }
 
     @Override
     public void schreibeMitarbeiter() throws IOException {
-
+        String cmd = Commands.CMD_SPEICHER_MITAREBITER.name();
+        out.println(cmd);
     }
 
     @Override
     public void schreibeKunde() throws IOException {
-
+        String cmd = Commands.CMD_SPEICHER_KUNDEN.name();
+        out.println(cmd);
     }
 
     @Override
     public void schreibeEreignis() throws IOException {
-
+        String cmd = Commands.CMD_SPEICHER_EREIGNISSE.name();
+        out.println(cmd);
     }
 
     @Override
