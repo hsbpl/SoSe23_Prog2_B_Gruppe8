@@ -23,7 +23,7 @@ public class ClientMain {
                         PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
 
                         // Nachricht an den Server senden
-                        output.println("Hallo, Server!");
+                        output.println("HALLO_SERVER");
 
                         // Antwort vom Server empfangen
                         String response = input.readLine();

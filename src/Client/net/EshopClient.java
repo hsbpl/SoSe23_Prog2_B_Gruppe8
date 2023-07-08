@@ -21,26 +21,22 @@ public class EshopClient implements EShopInterface {
 
     public EshopClient(String host, int port) throws IOException {
         try {
-            this.socket = new Socket(host, port); //Stelle Verbindung zum Server her
+            this.socket = new Socket(host, port);
             InputStream is = this.socket.getInputStream();
             this.in = new BufferedReader(new InputStreamReader(is));
             this.out = new PrintStream(this.socket.getOutputStream());
-        }catch (IOException var5) {
-            JOptionPane successMessage = new JOptionPane();
-            successMessage.getSize();
-            JOptionPane.showMessageDialog(this.popup, "Verbindung zum Server ist fehlgeschlagen!", "Error", 0);
-            if (this.socket != null) {
-                this.socket.close();
-            }
-                    System.exit(0);
+        } catch (IOException var5) {
+            var5.printStackTrace();
+            throw var5;
         }
+
         System.out.println("Verbindung hergestellt");
-        KundenbereichGUI.status = 1;
-        String nachricht = this.in.readLine();//Liest eine Nachricht vom Server
+        String nachricht = this.in.readLine();
         System.out.println(nachricht);
 
         out.println("HALLO_SERVER");
     }
+
 
     public void handleGibHalloServer() throws IOException {
         String response = in.readLine(); // Antwort des Servers lesen

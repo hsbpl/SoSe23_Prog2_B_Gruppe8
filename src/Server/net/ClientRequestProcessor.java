@@ -11,7 +11,7 @@ public class ClientRequestProcessor implements Runnable {
 
     private BufferedReader socketIn;
     private PrintStream socketOut;
-    final String separator = ";";
+    private static final String separator = ";";
     private Socket clientSocket;
 
     EShopInterface eshop;
@@ -55,9 +55,21 @@ public class ClientRequestProcessor implements Runnable {
 
     private void handleCommandRequest(String receivedData) {
         System.err.println("Vom Client empfangende Daten: " + receivedData);
-        String[] parts = receivedData.split(separator);
 
-        String command = parts[0];
+        String command = null;
+        if (receivedData != null) {
+            String[] parts = receivedData.split("\\|");
+
+            if (parts.length > 0) {
+                command = parts[0];
+                // Rest des Codes
+            } else {
+                System.err.println("Ungültige Anfrage empfangen: Keine Teile gefunden!");
+            }
+        } else {
+            System.err.println("Ungültige Anfrage empfangen: Keine Daten erhalten!");
+        }
+
 
         switch (command) {
             case "HALLO_SERVER":

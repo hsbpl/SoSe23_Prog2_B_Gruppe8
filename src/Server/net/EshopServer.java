@@ -34,7 +34,7 @@ public class EshopServer {
         }
     }
 
-    private void acceptClientRequestProcessor() {
+    public void acceptClientRequestProcessor() {
         try {
             while (true) {
                 Socket clientSocket = this.serverSocket.accept();
@@ -47,9 +47,6 @@ public class EshopServer {
         }
     }
 
-    public void start() {
-        acceptClientRequestProcessor();
-    }
 
     public static void main(String[] args) throws IOException {
         int port = DEFAULT_PORT;
@@ -64,9 +61,15 @@ public class EshopServer {
             fail(e, "Fehler während der Server-Erzeugung");
         }
     }
+    public void start() {
+        acceptClientRequestProcessor();
+    }
+
 
     private static void fail(Exception e, String msg) {
         System.err.println(msg + ": " + e);
+        e.printStackTrace();
         System.exit(1);
     }
+
 }
