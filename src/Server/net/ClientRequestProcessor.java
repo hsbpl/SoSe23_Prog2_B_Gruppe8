@@ -62,10 +62,11 @@ public class ClientRequestProcessor implements Runnable {
             System.err.println("Empfangene Daten sind null");
             return;
         }
-        System.err.println("Vom Client empfangende Daten: " + receivedData);
-        String[] parts = receivedData.split("separator");
 
-        if (parts.length == 0) { //überprüft, ob parts.length größer als 0 ist, um sicherzustellen, dass ein gültiger Befehl vorhanden ist, bevor versucht wird, darauf zuzugreifen.
+        System.err.println("Vom Client empfangende Daten: " + receivedData);
+
+        String[] parts = receivedData.split("separator");
+        if (parts.length == 0) {
             System.err.println("Kein Befehl in den empfangenen Daten gefunden");
             return;
         }
@@ -140,6 +141,7 @@ public class ClientRequestProcessor implements Runnable {
 
         }
     }
+
 
     private void handleHalloClientSpeichern() {
     }

@@ -15,6 +15,7 @@ public class EshopServer {
     protected int port;
     protected ServerSocket serverSocket;
     private EShopInterface eShopInterface;
+    private boolean running;
 
     public EshopServer(int port, EShopInterface eshop) throws IOException, ArtikelExistiertBereitsException, UserExistiertBereitsException {
         if (port == 0) {
@@ -22,6 +23,7 @@ public class EshopServer {
         }
         this.port = port;
         this.eShopInterface = eshop;
+        this.running = true;
 
         try {
             this.serverSocket = new ServerSocket(port);
@@ -36,7 +38,7 @@ public class EshopServer {
 
     public void acceptClientRequestProcessor() {
         try {
-            while (true) {
+            while (running) {
                 Socket clientSocket = this.serverSocket.accept();
                 ClientRequestProcessor c = new ClientRequestProcessor(clientSocket, this.eShopInterface);
                 Thread t = new Thread(c);
@@ -44,6 +46,20 @@ public class EshopServer {
             }
         } catch (IOException var4) {
             System.err.println("Fehler während des Verbindungssuche: " + var4.getMessage());
+        } finally {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void stop() {
+        running = false;
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
         }
     }
 
