@@ -11,7 +11,7 @@ public class ClientRequestProcessor implements Runnable {
 
     private BufferedReader socketIn;
     private PrintStream socketOut;
-    private static final String separator = ";";
+    final String separator = ";";
     private Socket clientSocket;
 
     EShopInterface eshop;
@@ -43,7 +43,11 @@ public class ClientRequestProcessor implements Runnable {
         while (true) {
             try {
                 String receivedData = socketIn.readLine(); // BufferedReader bietet readLine()
+                if (receivedData == null) {
+                    break;
+                }
                 handleCommandRequest(receivedData);
+                System.out.println(receivedData);
             } catch (SocketException e) {
                 System.err.println("Client hat Verbindung geschlossen");
                 break;
@@ -54,27 +58,26 @@ public class ClientRequestProcessor implements Runnable {
     }
 
     private void handleCommandRequest(String receivedData) {
+        if (receivedData == null) {
+            System.err.println("Empfangene Daten sind null");
+            return;
+        }
         System.err.println("Vom Client empfangende Daten: " + receivedData);
+        String[] parts = receivedData.split("separator");
 
-        String command = null;
-        if (receivedData != null) {
-            String[] parts = receivedData.split("\\|");
-
-            if (parts.length > 0) {
-                command = parts[0];
-                // Rest des Codes
-            } else {
-                System.err.println("Ungültige Anfrage empfangen: Keine Teile gefunden!");
-            }
-        } else {
-            System.err.println("Ungültige Anfrage empfangen: Keine Daten erhalten!");
+        if (parts.length == 0) { //überprüft, ob parts.length größer als 0 ist, um sicherzustellen, dass ein gültiger Befehl vorhanden ist, bevor versucht wird, darauf zuzugreifen.
+            System.err.println("Kein Befehl in den empfangenen Daten gefunden");
+            return;
         }
 
+        String command = parts[0];
 
         switch (command) {
             case "HALLO_SERVER":
                 handleGibHalloServer();
                 break;
+            case "HALLO_CLIENT":
+                handleGibHalloClient();
             case "CMD_GIB_ALLE_ARTIKEL":
                 handleGibAlleArtikel();
                 break;
@@ -90,10 +93,12 @@ public class ClientRequestProcessor implements Runnable {
             case "CMD_SPEICHER_HALLO_SERVER":
                 handleHalloServerSpeichern();
                 break;
+            case "CMD_SPEICHER_HALLO_CLIENT":
+                handleHalloClientSpeichern();
             case "CMD_SPEICHER_ARTIKEL":
                 handleArtikelSpeichern();
                 break;
-            case "CMD_SPEICHER_MITAREBITER":
+            case "CMD_SPEICHER_MITARBEITER":
                 handleMitarbeiterSpeichern();
                 break;
             case "CMD_SPEICHER_KUNDEN":
@@ -136,6 +141,18 @@ public class ClientRequestProcessor implements Runnable {
         }
     }
 
+    private void handleHalloClientSpeichern() {
+    }
+
+    private void handleGibHalloClient() {
+        String response = "Hallo, Client!";
+        try {
+            socketOut.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleGibHalloServer() {
         String response = "Hallo, Client!";
         try {
@@ -149,8 +166,8 @@ public class ClientRequestProcessor implements Runnable {
         socketOut.println("Befehl 'Hallo Server speichern' erhalten!");
 
     }
-    
-    
+
+
     private void handleGibAlleMitarbeiter() {
         List<Mitarbeiter> result = eshop.getAlleMitarbeiter();
 
