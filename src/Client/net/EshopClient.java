@@ -38,7 +38,15 @@ public class EshopClient implements EShopInterface {
         KundenbereichGUI.status = 1;
         String nachricht = this.in.readLine();//Liest eine Nachricht vom Server
         System.out.println(nachricht);
+
+        out.println("HALLO_SERVER");
     }
+
+    public void handleGibHalloServer() throws IOException {
+        String response = in.readLine(); // Antwort des Servers lesen
+        System.out.println("Antwort vom Server: " + response);
+    }
+
 
     public void disconnect() throws IOException {
         this.out.println("q");//Sende "q" zum Server, um die Verbindung  zu trennen
@@ -52,6 +60,7 @@ public class EshopClient implements EShopInterface {
         }
         System.out.println(antwort);
     }
+
 
     @Override
     public List<Artikel> getAlleArtikel() {
@@ -86,6 +95,7 @@ public class EshopClient implements EShopInterface {
         String cmd = Commands.CMD_SPEICHER_ARTIKEL.name();
         out.println(cmd);
     }
+
 
     @Override
     public void schreibeMitarbeiter() throws IOException {

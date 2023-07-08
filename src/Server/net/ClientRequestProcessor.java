@@ -19,6 +19,7 @@ public class ClientRequestProcessor implements Runnable {
     public ClientRequestProcessor(Socket socket, EShopInterface eshop) throws IOException {
         this.eshop = eshop;
         this.clientSocket = socket;
+        this.socketOut = new PrintStream(this.clientSocket.getOutputStream());
 
         try {
             this.socketIn = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
@@ -56,15 +57,43 @@ public class ClientRequestProcessor implements Runnable {
         System.err.println("Vom Client empfangende Daten: " + receivedData);
         String[] parts = receivedData.split(separator);
 
-        switch (Commands.valueOf(parts[0])) {
-            case CMD_GIB_ALLE_ARTIKEL -> handleGibAlleArtikel();
-            case CMD_GIB_ALLE_KUNDEN -> handleGibAlleKunden();
-            case CMD_GIB_ALLE_EREIGNISSE -> handleGibAlleEreignisse();
-            case CMD_GIB_ALLE_MITARBEITER -> handleGibAlleMitarbeiter();
-            case CMD_SPEICHER_ARTIKEL -> handleArtikelSpeichern();
-            case CMD_SPEICHER_MITAREBITER -> handleMitarbeiterSpeichern();
-            case CMD_SPEICHER_KUNDEN -> handleKundeSpeichern();
-            case CMD_SPEICHER_EREIGNISSE -> handleEreignisSpeichern();
+        String command = parts[0];
+
+        switch (command) {
+            case "HALLO_SERVER":
+                handleGibHalloServer();
+                break;
+            case "CMD_GIB_ALLE_ARTIKEL":
+                handleGibAlleArtikel();
+                break;
+            case "CMD_GIB_ALLE_KUNDEN":
+                handleGibAlleKunden();
+                break;
+            case "CMD_GIB_ALLE_EREIGNISSE":
+                handleGibAlleEreignisse();
+                break;
+            case "CMD_GIB_ALLE_MITARBEITER":
+                handleGibAlleMitarbeiter();
+                break;
+            case "CMD_SPEICHER_HALLO_SERVER":
+                handleHalloServerSpeichern();
+                break;
+            case "CMD_SPEICHER_ARTIKEL":
+                handleArtikelSpeichern();
+                break;
+            case "CMD_SPEICHER_MITAREBITER":
+                handleMitarbeiterSpeichern();
+                break;
+            case "CMD_SPEICHER_KUNDEN":
+                handleKundeSpeichern();
+                break;
+            case "CMD_SPEICHER_EREIGNISSE":
+                handleEreignisSpeichern();
+                break;
+            default:
+                System.err.println("Ungueltige Anfrage empfangen!");
+                break;
+
           /*  case CMD_NEUEN_WARENKORB_ERSTELLEN
             case CMD_MITARBEITER_REGISTRIEREN
             case CMD_MITARBEITER_EINLOGGEN
@@ -92,12 +121,36 @@ public class ClientRequestProcessor implements Runnable {
 
             */
 
-            default -> System.err.println("Ungueltige Anfrage empfangen!");
         }
     }
 
-    private void handleGibAlleMitarbeiter() {
+    private void handleGibHalloServer() {
+        String response = "Hallo, Client!";
+        try {
+            socketOut.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void handleHalloServerSpeichern() {
+        socketOut.println("Befehl 'Hallo Server speichern' erhalten!");
+
+    }
+    
+    
+    private void handleGibAlleMitarbeiter() {
+        List<Mitarbeiter> result = eshop.getAlleMitarbeiter();
+
+        String cmd = Commands.CMD_GIB_ALLE_ARTIKEL_RSP.name();
+
+        for (Mitarbeiter mitarbeiter : result){
+            cmd += separator + mitarbeiter.getUserName();
+            cmd += separator + mitarbeiter.getPasswort();
+            cmd += separator + mitarbeiter.getNachname();
+            cmd += separator + mitarbeiter.getVorname();
+        }
+        socketOut.println(cmd);
     }
 
     private void handleGibAlleArtikel() {
@@ -182,9 +235,11 @@ public class ClientRequestProcessor implements Runnable {
     }
 
     //todo geht das einfach so ? wirkt auf mich gerade ein wenig faslch
-    private void handleWaremkorbErstellen(Kunde kunde) {
+    /*private void handleWaremkorbErstellen(Kunde kunde) {
         eshop.neuenWarenkorbErstellen(kunde);
     }
+
+     */
 }
 
 

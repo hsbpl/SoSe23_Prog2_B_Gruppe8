@@ -6,6 +6,7 @@ import Common.Ereignis;
 import Common.Massengutartikel;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.*;
 
 import Common.Kunde;
@@ -16,6 +17,7 @@ public class EShop implements EShopInterface {
     private Artikelverwaltung av;
     private Kundenverwaltung kv;
     private Mitarbeiterverwaltung mv;
+    private PrintStream socketOut;
     public EShop(String datei) throws IOException {
         this.datei = datei;
         av = new Artikelverwaltung();
@@ -187,6 +189,17 @@ public class EShop implements EShopInterface {
         kaufenUndWarenkorbLeeren(warenkorb, kunde);
         schreibeArtikel();
         return r;
+    }
+
+    @Override
+    public void disconnect() throws IOException {
+
+    }
+
+    @Override
+    public void handleGibHalloServer() throws IOException {
+        String response = "Hallo, Client!";
+        socketOut.println(response);
     }
 
     public String artikelImWarenkorb(Warenkorb warenkorb){
