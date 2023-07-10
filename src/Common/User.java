@@ -33,6 +33,10 @@ public class User {
     public String getVorname(){ return vorname;}
     public String getidNummer(){return idNummer;}
 
+    public String setID(String id){
+        return this.idNummer = id;
+    }
+
 
 
     public String toString() {

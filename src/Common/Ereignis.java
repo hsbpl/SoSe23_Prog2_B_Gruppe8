@@ -41,6 +41,9 @@ public class Ereignis {
         return datum;
     }
 
+    public void setDatum(LocalDateTime datum) {
+        this.datum = datum;
+    }
 
     public String toString(){
         return  getDatum().toString() + "\n"+

@@ -7,8 +7,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.PrintStream;
+import java.lang.Enum;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,21 +105,113 @@ public class EshopClient implements EShopInterface {
     public List<Mitarbeiter> getAlleMitarbeiter() {
         String cmd = Commands.CMD_GIB_ALLE_MITARBEITER.name();
         socketOut.println(cmd);
-        return null;
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_GIB_ALLE_MITARBEITER_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createMitarbeiterlisteFromData(data);
+    }
+
+    private List<Mitarbeiter> createMitarbeiterlisteFromData(String[] data) {
+        List<Mitarbeiter> mitarbeiterListe = new ArrayList<>();
+
+        for(int i=1; i<data.length; i+=4) {
+
+            String username = data[i];
+            String passwort = data[i+1];
+            String nachname = data[i+2];
+            String vorname  = data[i+3];
+            String id = data[i+4];
+
+            Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
+            mitarbeiter.setID(id);
+            mitarbeiterListe.add(mitarbeiter);
+
+        }
+        return mitarbeiterListe;
     }
 
     @Override
     public List<Kunde> getAlleKunden() {
         String cmd = Commands.CMD_GIB_ALLE_KUNDEN.name();
         socketOut.println(cmd);
-        return null;
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_GIB_ALLE_KUNDEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createKundenListeFromData(data);
+    }
+
+    private List<Kunde> createKundenListeFromData(String[] data) {
+        List<Kunde> kundenListe = new ArrayList<>();
+
+        for(int i=1; i<data.length; i+=5) {
+
+            String username = data[i];
+            String passwort = data[i+1];
+            String nachname = data[i+2];
+            String vorname  = data[i+3];
+            String adresse =  data[i+4];
+            String id = data[i+5];
+
+            Kunde kunde = new Kunde(username, passwort, nachname, vorname, adresse);
+            kunde.setID(id);
+            kundenListe.add(kunde);
+
+        }
+        return kundenListe;
     }
 
     @Override
     public List<Ereignis> getAlleEreignisse() {
         String cmd = Commands.CMD_GIB_ALLE_EREIGNISSE.name();
         socketOut.println(cmd);
-        return null;
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_GIB_ALLE_EREIGNISSE_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createEreignisListeFromData(data);
+    }
+
+    //todo hier noch nicht fertig
+    private List<Ereignis> createEreignisListeFromData(String[] data) {
+        List<Ereignis> ereignisListe = new ArrayList<>();
+
+        for(int i=1; i<data.length; i+=13) {
+
+            LocalDateTime date = LocalDateTime.parse(data[i]);
+            //TODO wie man hier mit enums umgeht Enum ereignistyp = Enum.(data[i+1]);
+            int menge  = Integer.parseInt(data[i+2]);
+            int bestandAktualisierung = Integer.parseInt(data[i+3]);
+
+            String username = data[i+4];
+            String passwort = data[i+5];
+            String vorname  = data[i+6];
+            String nachname = data[i+7];
+            String id = data[i+8];
+
+            String bezeichnung = data[i+9];
+            int artikelnummer = Integer.parseInt(data[i+10]);
+            int bestand = Integer.parseInt(data[i+11]);
+            double einzelpreis = Double.parseDouble(data[i+12]);
+            int massengut = Integer.parseInt(data[i+13]);
+
+            User user = new User(username,passwort, nachname, vorname, id);
+            Artikel artikel = new Artikel(bezeichnung,artikelnummer,bestand,einzelpreis);
+           /* Ereignis ereignis = new Ereignis(menge,artikel,user,ereignistyp,bestandAktualisierung);
+            ereignis.setDatum(date);
+            ereignisListe.add(ereignis);
+
+            */
+
+        }
+        return ereignisListe;
     }
 
     @Override

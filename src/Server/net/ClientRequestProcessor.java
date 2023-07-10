@@ -174,6 +174,7 @@ public class ClientRequestProcessor implements Runnable {
             cmd += separator + mitarbeiter.getPasswort();
             cmd += separator + mitarbeiter.getNachname();
             cmd += separator + mitarbeiter.getVorname();
+            cmd += separator + mitarbeiter.getidNummer();
         }
         socketOut.println(cmd);
     }
@@ -203,10 +204,11 @@ public class ClientRequestProcessor implements Runnable {
 
         for (Kunde kunde : result) {
             cmd += separator + kunde.getUserName();
+            cmd += separator + kunde.getPasswort();
             cmd += separator + kunde.getNachname();
             cmd += separator + kunde.getVorname();
-            cmd += separator + kunde.getidNummer();
             cmd += separator + kunde.getKundenAdresse();
+            cmd += separator + kunde.getidNummer();
         }
         socketOut.println(cmd);
     }
@@ -219,10 +221,24 @@ public class ClientRequestProcessor implements Runnable {
         for (Ereignis ereignis : result) {
             cmd += separator + ereignis.getDatum();
             cmd += separator + ereignis.getEreignistyp();
-            cmd += separator + ereignis.getArtikel();
             cmd += separator + ereignis.getAnzahl();
             cmd += separator + ereignis.getAktualisierterBestand();
-            cmd += separator + ereignis.getUser();
+
+
+            cmd += separator + ereignis.getUser().getUserName();
+            cmd += separator + ereignis.getUser().getPasswort();
+            cmd += separator + ereignis.getUser().getVorname();
+            cmd += separator + ereignis.getUser().getNachname();
+            cmd += separator + ereignis.getUser().getidNummer();
+
+            //todo Massengutproblem
+            cmd += separator + ereignis.getArtikel().getBezeichnung();
+            cmd += separator + ereignis.getArtikel().getArtikelNummer();
+            cmd += separator + ereignis.getArtikel().getBestand();
+            cmd += separator + ereignis.getArtikel().getEinzelpreis();
+            if (ereignis.getArtikel() instanceof Massengutartikel) {
+                cmd += separator + ((Massengutartikel) ereignis.getArtikel()).getErwerbwareMenge();
+            }
         }
         socketOut.println(cmd);
     }
