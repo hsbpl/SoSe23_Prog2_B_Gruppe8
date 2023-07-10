@@ -4,9 +4,7 @@ import Common.*;
 import Common.Exceptions.*;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.PrintStream;
+import java.io.*;
 import java.lang.Enum;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -21,29 +19,27 @@ public class EshopClient implements EShopInterface {
     private Socket socket;
     private BufferedReader socketIn;
     private PrintStream socketOut;
-    private Component popup;
 
-     /*
+
     public EshopClient(String host, int port) throws IOException {
        try {
             this.socket = new Socket(host, port);
             InputStream is = this.socket.getInputStream();
-            this.in = new BufferedReader(new InputStreamReader(is));
-            this.out = new PrintStream(this.socket.getOutputStream());
+            this.socketIn = new BufferedReader(new InputStreamReader(is));
+            this.socketOut = new PrintStream(this.socket.getOutputStream());
         } catch (IOException var5) {
             var5.printStackTrace();
             throw var5;
         }
 
         System.out.println("Verbindung hergestellt");
-        String nachricht = this.in.readLine();
+        String nachricht = this.socketIn.readLine();
         System.out.println(nachricht);
 
-        out.println("HALLO_SERVER");
-
+        socketOut.println("HALLO_SERVER");
 
     }
-    */
+
 
 
 
@@ -52,19 +48,6 @@ public class EshopClient implements EShopInterface {
         System.out.println("Antwort vom Server: " + response);
     }
 
-
-    public void disconnect() throws IOException {
-        this.socketOut.println("q");//Sende "q" zum Server, um die Verbindung  zu trennen
-        String antwort = "Fehler";
-
-        try {
-            antwort = this.socketIn.readLine();// antwort vom server lesen
-        }catch (Exception var3) {
-            System.err.println(var3.getMessage());
-            return;
-        }
-        System.out.println(antwort);
-    }
 
 
     @Override
@@ -247,32 +230,40 @@ public class EshopClient implements EShopInterface {
 
     @Override
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException, LeeresTextfieldException {
-        return null;
+        String cmd = Commands.CMD_MITARBEITER_REGISTRIEREN.name();
+        socketOut.println(cmd);
+        return neu;
     }
 
     @Override
     public Mitarbeiter mitarbeiterLogin(String username, String passwort) throws LoginFehlgeschlagenException {
+        String cmd = Commands.CMD_MITARBEITER_EINLOGGEN.name();
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
-
+        String cmd = Commands.CMD_EINZELARTIKEL_HINZUFÜGEN.name();
+        socketOut.println(cmd);
     }
 
     @Override
     public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
-
+        String cmd = Commands.CMD_MASSENGUTARTIKEL_HINZUFÜGEN.name();
+        socketOut.println(cmd);
     }
 
     @Override
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, LeeresTextfieldException {
-
+        String cmd = Commands.CMD_BESTAND_VERRINGERN.name();
+        socketOut.println(cmd);
     }
 
     @Override
     public void bestanNiedriger(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException, LeeresTextfieldException {
-
+        String cmd = Commands.CMD_BESTAND_VERRINGERN.name();
+        socketOut.println(cmd);
     }
 
     @Override
@@ -282,41 +273,54 @@ public class EshopClient implements EShopInterface {
 
     @Override
     public List<Artikel> artikelNachArtikelnummerGeordnetAusgeben() {
+        String cmd = Commands.CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN.name();
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public List<Ereignis> ereignisseNachDatum() {
+        String cmd = Commands.CMD_EREIGNISSE_NACH_DATUM_SORTIEREN_RSP.name();
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
-
+        String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN.name();
+        socketOut.println(cmd);
     }
 
     @Override
     public void artikelAusWarenkorbEntfernen(String artikel, Warenkorb warenkorb) {
-
+        String cmd = Commands.CMD_AUS_DEM_WARENKORB_LEGEN.name();
+        socketOut.println(cmd);
     }
 
     @Override
     public void warenkorbLeeren(Warenkorb warenkorb) {
-
+        String cmd = Commands.CMD_WARENKORB_LEEREN.name();
+        socketOut.println(cmd);
     }
 
     @Override
     public Kunde kundenLogin(String username, String password) throws LoginFehlgeschlagenException {
+        String cmd = Commands.CMD_KUNDEN_EINLOGGEN.name();
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public Kunde kundenRegistrieren(Kunde neu) throws UserExistiertBereitsException, LeeresTextfieldException {
+        String cmd = Commands.CMD_KUNDEN_REGISTRIEREN.name();
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
+        String cmd = Commands.CMD_KAUF_ABSCHLIESSEN.name();
+        socketOut.println(cmd);
         return null;
     }
 
