@@ -5,6 +5,7 @@ import Common.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.Connection;
 import java.util.List;
 
 public class ClientRequestProcessor implements Runnable {
@@ -13,13 +14,14 @@ public class ClientRequestProcessor implements Runnable {
     private PrintStream socketOut;
     final String separator = ";";
     private Socket clientSocket;
-
+    private Connection connection;
     EShopInterface eshop;
 
     public ClientRequestProcessor(Socket socket, EShopInterface eshop) throws IOException {
         this.eshop = eshop;
         this.clientSocket = socket;
         this.socketOut = new PrintStream(this.clientSocket.getOutputStream());
+        this.connection = connection;
 
         try {
             this.socketIn = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
@@ -35,7 +37,7 @@ public class ClientRequestProcessor implements Runnable {
         }
 
         System.out.println("Verbunden mit " + this.clientSocket.getInetAddress() + ":" + this.clientSocket.getPort());
-    }     //Hier wird eine Erfolgsmeldung ausgegeben, die die Verbindungsinformationen des Sockets enthält (IP-Adresse und Portnummer).
+    }
 
 
     @Override
@@ -105,35 +107,63 @@ public class ClientRequestProcessor implements Runnable {
             default:
                 System.err.println("Ungueltige Anfrage empfangen!");
                 break;
+            case CMD_NEUEN_WARENKORB_ERSTELLEN:
+                handleNeuenWarenkornErstellen();
+                break;
+            case CMD_MITARBEITER_REGISTRIEREN:
+                handleNuenMitarbeiterRegistrieren();
+            case CMD_MITARBEITER_EINLOGGEN:
+                handleNeuenMitarbeiterEinloggen();
+            case CMD_EINZELARTIKEL_HINZUFÜGEN:
+                handleEinzelartikelHinzufügen();
+            case CMD_MASSENGUTARTIKEL_HINZUFÜGEN:
+                handleMassengutartikelHinzufügen();
+            case CMD_BESTAND_ERHÖHEN:
+                handleBestandErhöhen();
+            case CMD_BESTAND_VERRINGERN:
+                handleBestandVerringern();
+            case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN:
+                handleArtikelNachAlphabetSortieren();
+            case CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN:
+                handleArtikelNachArtikelnummerSortieren();
+            case CMD_EREIGNISSE_NACH_DATUM_SORTIEREN:
+                handleEreignisseNachDatumSortieren();
+            case CMD_IN_DEN_WARENKORB_LEGEN:
+                handleInDenWarenkorbLegen();
+            case CMD_AUS_DEM_WARENKORB_LEGEN:
+                handleAusDemWarenkorbLegen();
+            case CMD_WARENKORB_LEEREN:
+                handleWarenkorbLeeren();
+            case CMD_KUNDEN_REGISTRIEREN:
+                handleKundenRegistrieren();
+            case CMD_KUNDEN_EINLOGGEN:
+                handleKundenEinloggen();
+            case CMD_KAUF_ABSCHLIESSEN:
+                handleKaufAbschliessen();
+            case CMD_BUCH_SUCHEN:
+                handleBuchSuchen();
+            case CMD_BUCH_EINFUEGEN:
+                handleBuchEinfuegen();
+            case CMD_BUCH_LOESCHEN:
+                handleBuchLoeschen();
 
-          /*  case CMD_NEUEN_WARENKORB_ERSTELLEN
-            case CMD_MITARBEITER_REGISTRIEREN
-            case CMD_MITARBEITER_EINLOGGEN
-            case CMD_EINZELARTIKEL_HINZUFÜGEN
-            case CMD_MASSENGUTARTIKEL_HINZUFÜGEN
-            case CMD_BESTAND_ERHÖHEN
-            case CMD_BESTAND_VERRINGERN
-            case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN
-            case CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN
-            case CMD_EREIGNISSE_NACH_DATUM_SORTIEREN
-            case CMD_IN_DEN_WARENKORB_LEGEN
-            case CMD_AUS_DEM_WARENKORB_LEGEN
-            case CMD_WARENKORB_LEEREN
-            case CMD_KUNDEN_REGISTRIEREN
-            case CMD_KUNDEN_EINLOGGEN
-            case CMD_KAUF_ABSCHLIESSEN
+
+          /*
 
            */
 
             /*
 
-            case CMD_BUCH_SUCHEN -> handleSuchen(parts);
-            case CMD_BUCH_EINFUEGEN -> handleEinfuegen(parts);
-            case CMD_BUCH_LOESCHEN -> handleLoeschen(parts);
 
             */
 
         }
+    }
+
+
+
+
+    private void handleBestandErhöhen() {
     }
 
 
@@ -273,6 +303,45 @@ public class ClientRequestProcessor implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void handleNeuenWarenkornErstellen() {
+    }
+
+    private void handleNuenMitarbeiterRegistrieren() {
+    }
+
+    private void handleNeuenMitarbeiterEinloggen() {
+    }
+    private void handleEinzelartikelHinzufügen() {
+    }
+    private void handleMassengutartikelHinzufügen() {
+    }
+    private void handleBestandVerringern() {
+    }
+    private void handleArtikelNachAlphabetSortieren() {
+    }
+    private void handleArtikelNachArtikelnummerSortieren() {
+    }
+    private void handleEreignisseNachDatumSortieren() {
+    }
+    private void handleInDenWarenkorbLegen() {
+    }
+    private void handleAusDemWarenkorbLegen() {
+    }
+    private void handleWarenkorbLeeren() {
+    }
+    private void handleKundenRegistrieren() {
+    }
+    private void handleKundenEinloggen() {
+    }
+    private void handleKaufAbschliessen() {
+    }
+    private void handleBuchSuchen() {
+    }
+    private void handleBuchEinfuegen() {
+    }
+    private void handleBuchLoeschen() {
     }
 
     //todo geht das einfach so ? wirkt auf mich gerade ein wenig faslch
