@@ -58,54 +58,48 @@ public class ClientRequestProcessor implements Runnable {
     }
 
     private void handleCommandRequest(String receivedData) {
-        if (receivedData == null) {
-            System.err.println("Empfangene Daten sind null");
-            return;
-        }
 
         System.err.println("Vom Client empfangende Daten: " + receivedData);
+        String[] parts = receivedData.split(separator);
 
-        String[] parts = receivedData.split("separator");
         if (parts.length == 0) {
             System.err.println("Kein Befehl in den empfangenen Daten gefunden");
             return;
         }
 
-        String command = parts[0];
-
-        switch (command) {
-            case "HALLO_SERVER":
+        switch (Commands.valueOf(parts[0])) {
+            case HALLO_SERVER:
                 handleGibHalloServer();
                 break;
-            case "HALLO_CLIENT":
+            case HALLO_CLIENT:
                 handleGibHalloClient();
-            case "CMD_GIB_ALLE_ARTIKEL":
+            case CMD_GIB_ALLE_ARTIKEL:
                 handleGibAlleArtikel();
                 break;
-            case "CMD_GIB_ALLE_KUNDEN":
+            case CMD_GIB_ALLE_KUNDEN:
                 handleGibAlleKunden();
                 break;
-            case "CMD_GIB_ALLE_EREIGNISSE":
+            case CMD_GIB_ALLE_EREIGNISSE:
                 handleGibAlleEreignisse();
                 break;
-            case "CMD_GIB_ALLE_MITARBEITER":
+            case CMD_GIB_ALLE_MITARBEITER:
                 handleGibAlleMitarbeiter();
                 break;
-            case "CMD_SPEICHER_HALLO_SERVER":
+            case CMD_SPEICHER_HALLO_SERVER:
                 handleHalloServerSpeichern();
                 break;
-            case "CMD_SPEICHER_HALLO_CLIENT":
+            case CMD_SPEICHER_HALLO_CLIENT:
                 handleHalloClientSpeichern();
-            case "CMD_SPEICHER_ARTIKEL":
+            case CMD_SPEICHER_ARTIKEL:
                 handleArtikelSpeichern();
                 break;
-            case "CMD_SPEICHER_MITARBEITER":
+            case CMD_SPEICHER_MITAREBITER:
                 handleMitarbeiterSpeichern();
                 break;
-            case "CMD_SPEICHER_KUNDEN":
+            case CMD_SPEICHER_KUNDEN:
                 handleKundeSpeichern();
                 break;
-            case "CMD_SPEICHER_EREIGNISSE":
+            case CMD_SPEICHER_EREIGNISSE:
                 handleEreignisSpeichern();
                 break;
             default:
@@ -195,7 +189,7 @@ public class ClientRequestProcessor implements Runnable {
             cmd += separator + artikel.getBestand();
             cmd += separator + artikel.getEinzelpreis();
             if (artikel instanceof Massengutartikel) {
-                cmd += separator + "MG" + ((Massengutartikel) artikel).getErwerbwareMenge();
+                cmd += separator + ((Massengutartikel) artikel).getErwerbwareMenge();
             }
 
         }

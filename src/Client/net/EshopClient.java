@@ -1,28 +1,24 @@
 package Client.net;
 
-import Client.UI.KundenbereichGUI;
 import Common.*;
 import Common.Exceptions.*;
 
 import java.awt.*;
-import java.io.*;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EshopClient implements EShopInterface {
 
-    private BufferedReader socketIn;
-    private PrintStream socketOut; // Vorteil: flushed automatisch
-
     final String separator = ";";
 
     private Socket socket;
-    private BufferedReader in;
-    private PrintStream out;
+    private BufferedReader socketIn;
+    private PrintStream socketOut;
     private Component popup;
 
      /*
@@ -50,17 +46,17 @@ public class EshopClient implements EShopInterface {
 
 
     public void handleGibHalloServer() throws IOException {
-        String response = in.readLine(); // Antwort des Servers lesen
+        String response = socketIn.readLine(); // Antwort des Servers lesen
         System.out.println("Antwort vom Server: " + response);
     }
 
 
     public void disconnect() throws IOException {
-        this.out.println("q");//Sende "q" zum Server, um die Verbindung  zu trennen
+        this.socketOut.println("q");//Sende "q" zum Server, um die Verbindung  zu trennen
         String antwort = "Fehler";
 
         try {
-            antwort = this.in.readLine();// antwort vom server lesen
+            antwort = this.socketIn.readLine();// antwort vom server lesen
         }catch (Exception var3) {
             System.err.println(var3.getMessage());
             return;
@@ -72,54 +68,81 @@ public class EshopClient implements EShopInterface {
     @Override
     public List<Artikel> getAlleArtikel() {
         String cmd = Commands.CMD_GIB_ALLE_ARTIKEL.name();
-        out.println(cmd);
-        return null;
+        socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_GIB_ALLE_ARTIKEL_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createArtikellisteFromData(data);
+    }
+
+
+    private List<Artikel> createArtikellisteFromData(String[] data) {
+        List<Artikel> artikelliste = new ArrayList<>();
+
+        //todo die länge wird problematisch beim massengut, da es ein Attribut mehr hat statt 4 = 5...
+        for(int i=1; i<data.length; i+=4) {
+
+            String bezeicnung = data[i];
+            int artikelnummer = Integer.parseInt(data[i+1]);
+            int bestand = Integer.parseInt(data[i+2]);
+            double einzelpreis = Double.parseDouble(data[i+3]);
+            int massengut = Integer.parseInt(data[i+4]);
+
+            Artikel artikel = new Artikel(bezeicnung,artikelnummer,bestand,einzelpreis);
+            artikelliste.add(artikel);
+
+        }
+        return artikelliste;
     }
 
     @Override
     public List<Mitarbeiter> getAlleMitarbeiter() {
         String cmd = Commands.CMD_GIB_ALLE_MITARBEITER.name();
-        out.println(cmd);
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public List<Kunde> getAlleKunden() {
         String cmd = Commands.CMD_GIB_ALLE_KUNDEN.name();
-        out.println(cmd);
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public List<Ereignis> getAlleEreignisse() {
         String cmd = Commands.CMD_GIB_ALLE_EREIGNISSE.name();
-        out.println(cmd);
+        socketOut.println(cmd);
         return null;
     }
 
     @Override
     public void schreibeArtikel() throws IOException {
         String cmd = Commands.CMD_SPEICHER_ARTIKEL.name();
-        out.println(cmd);
+        socketOut.println(cmd);
     }
 
 
     @Override
     public void schreibeMitarbeiter() throws IOException {
         String cmd = Commands.CMD_SPEICHER_MITAREBITER.name();
-        out.println(cmd);
+        socketOut.println(cmd);
     }
 
     @Override
     public void schreibeKunde() throws IOException {
         String cmd = Commands.CMD_SPEICHER_KUNDEN.name();
-        out.println(cmd);
+        socketOut.println(cmd);
     }
 
     @Override
     public void schreibeEreignis() throws IOException {
         String cmd = Commands.CMD_SPEICHER_EREIGNISSE.name();
-        out.println(cmd);
+        socketOut.println(cmd);
     }
 
     @Override
