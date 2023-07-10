@@ -3,24 +3,31 @@ package Client.net;
 import Client.UI.KundenbereichGUI;
 import Common.*;
 import Common.Exceptions.*;
-import javax.swing.*;
+
 import java.awt.*;
 import java.io.*;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.List;
 
 public class EshopClient implements EShopInterface {
-    
-    private Socket socket = null;
+
+    private BufferedReader socketIn;
+    private PrintStream socketOut; // Vorteil: flushed automatisch
+
+    final String separator = ";";
+
+    private Socket socket;
     private BufferedReader in;
     private PrintStream out;
     private Component popup;
 
+     /*
     public EshopClient(String host, int port) throws IOException {
-        try {
+       try {
             this.socket = new Socket(host, port);
             InputStream is = this.socket.getInputStream();
             this.in = new BufferedReader(new InputStreamReader(is));
@@ -35,7 +42,11 @@ public class EshopClient implements EShopInterface {
         System.out.println(nachricht);
 
         out.println("HALLO_SERVER");
+
+
     }
+    */
+
 
 
     public void handleGibHalloServer() throws IOException {
@@ -190,5 +201,23 @@ public class EshopClient implements EShopInterface {
     @Override
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
         return null;
+    }
+
+
+    private String[] readResponse() {
+        String[] parts = null;
+        try {
+            // Auf Antwort warten. Es wird maximal 1000ms gewartet
+            String receivedData = socketIn.readLine();
+            parts = receivedData.split(separator);
+
+            System.err.println("Empfangene Antwort: " + receivedData);
+        } catch(SocketTimeoutException e) {
+            System.out.println("Server hat nicht geantwortet.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return parts;
     }
 }
