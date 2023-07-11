@@ -55,13 +55,6 @@ public class EshopServer {
         }
     }
 
-    public void stop() {
-        running = false;
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-        }
-    }
 
 
     public static void main(String[] args) throws IOException {

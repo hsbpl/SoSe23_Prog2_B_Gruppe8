@@ -46,7 +46,7 @@ public class ClientRequestProcessor implements Runnable {
     public void run() {
         while (true) {
             try {
-                String receivedData = socketIn.readLine(); // BufferedReader bietet readLine()
+                String receivedData = socketIn.readLine();
                 if (receivedData == null) {
                     break;
                 }
@@ -55,13 +55,13 @@ public class ClientRequestProcessor implements Runnable {
             } catch (SocketException e) {
                 System.err.println("Client hat Verbindung geschlossen");
                 break;
-            } catch (IOException e) {
+            } catch (IOException | UserExistiertBereitsException | LeeresTextfieldException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void handleCommandRequest(String receivedData) {
+    private void handleCommandRequest(String receivedData) throws UserExistiertBereitsException, LeeresTextfieldException {
 
         System.err.println("Vom Client empfangende Daten: " + receivedData);
         String[] parts = receivedData.split(separator);
@@ -163,6 +163,7 @@ public class ClientRequestProcessor implements Runnable {
 
 
 
+
     private void handleBestandErhöhen() {
     }
 
@@ -180,7 +181,7 @@ public class ClientRequestProcessor implements Runnable {
     }
 
     private void handleGibHalloServer() {
-        String response = "Hallo, Client!";
+        String response = "Hallo, Server!";
         try {
             socketOut.println(response);
         } catch (Exception e) {
@@ -199,7 +200,7 @@ public class ClientRequestProcessor implements Runnable {
 
         String cmd = Commands.CMD_GIB_ALLE_ARTIKEL_RSP.name();
 
-        for (Mitarbeiter mitarbeiter : result){
+        for (Mitarbeiter mitarbeiter : result) {
             cmd += separator + mitarbeiter.getUserName();
             cmd += separator + mitarbeiter.getPasswort();
             cmd += separator + mitarbeiter.getNachname();
@@ -329,7 +330,7 @@ public class ClientRequestProcessor implements Runnable {
         socketOut.println(cmd);
     }
 
-    private void handleNuenMitarbeiterRegistrieren(String[] data) {
+    private void handleNuenMitarbeiterRegistrieren(String[] data) throws UserExistiertBereitsException, LeeresTextfieldException{
         String username = data[1];
         String passwort = data[2];
         String nachname = data[3];
@@ -353,9 +354,9 @@ public class ClientRequestProcessor implements Runnable {
             socketOut.println(cmd);
 
         } catch (UserExistiertBereitsException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (LeeresTextfieldException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
 
     }
@@ -380,7 +381,7 @@ public class ClientRequestProcessor implements Runnable {
     }
     private void handleWarenkorbLeeren() {
     }
-    private void handleKundenRegistrieren(String[] data) {
+    private void handleKundenRegistrieren(String[] data) throws UserExistiertBereitsException, LeeresTextfieldException {
 
         String username = data[1];
         String passwort = data[2];
@@ -407,9 +408,9 @@ public class ClientRequestProcessor implements Runnable {
             socketOut.println(cmd);
 
         } catch (UserExistiertBereitsException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (LeeresTextfieldException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
 
 
