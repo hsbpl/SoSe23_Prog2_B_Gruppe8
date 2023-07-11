@@ -167,7 +167,7 @@ public class EshopClient implements EShopInterface {
         return createEreignisListeFromData(data);
     }
 
-    //todo hier noch nicht fertig
+
     private List<Ereignis> createEreignisListeFromData(String[] data) {
         List<Ereignis> ereignisListe = new ArrayList<>();
 
@@ -302,32 +302,134 @@ public class EshopClient implements EShopInterface {
     @Override
     public Mitarbeiter mitarbeiterLogin(String username, String passwort) throws LoginFehlgeschlagenException {
         String cmd = Commands.CMD_MITARBEITER_EINLOGGEN.name();
+
+        cmd += separator + username;
+        cmd += separator + passwort;
+
         socketOut.println(cmd);
-        return null;
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_MITARBEITER_EINLOGGEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        String eingeloggterUsername = data[1];
+        String eingeloggtesPasswort = data[2];
+        String eingeloggterNachname = data[3];
+        String eingeloggterVorname = data[4];
+        String eingeloggteId = data[5];
+
+        Mitarbeiter eingeloggterMitarbeiter = new Mitarbeiter(eingeloggterUsername, eingeloggtesPasswort, eingeloggterNachname, eingeloggterVorname);
+        eingeloggterMitarbeiter.setID(eingeloggteId);
+
+        return eingeloggterMitarbeiter;
     }
 
     @Override
     public void artHinzufügen(Artikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
         String cmd = Commands.CMD_EINZELARTIKEL_HINZUFÜGEN.name();
+
+        cmd += separator + a.getBezeichnung();
+        cmd += separator + a.getArtikelNummer();
+        cmd += separator + a.getBestand();
+        cmd += separator + a.getEinzelpreis();
+
+        cmd += separator + mitarbeiter.getUserName();
+        cmd += separator + mitarbeiter.getPasswort();
+        cmd += separator + mitarbeiter.getVorname();
+        cmd += separator + mitarbeiter.getNachname();
+        cmd += separator + mitarbeiter.getidNummer();
+
         socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_EINZELARTIKEL_HINZUFÜGEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        System.out.println(data);
+
     }
 
     @Override
     public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
         String cmd = Commands.CMD_MASSENGUTARTIKEL_HINZUFÜGEN.name();
         socketOut.println(cmd);
+
+
+        cmd += separator + a.getBezeichnung();
+        cmd += separator + a.getArtikelNummer();
+        cmd += separator + a.getBestand();
+        cmd += separator + a.getEinzelpreis();
+        cmd += separator + a.getErwerbwareMenge();
+
+        cmd += separator + mitarbeiter.getUserName();
+        cmd += separator + mitarbeiter.getPasswort();
+        cmd += separator + mitarbeiter.getVorname();
+        cmd += separator + mitarbeiter.getNachname();
+        cmd += separator + mitarbeiter.getidNummer();
+
+        socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_MASSENGUTARTIKEL_HINZUFÜGEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        System.out.println(data);
     }
 
     @Override
     public void bestandErhöhen(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, LeeresTextfieldException {
-        String cmd = Commands.CMD_BESTAND_VERRINGERN.name();
+        String cmd = Commands.CMD_BESTAND_ERHÖHEN.name();
+
+        cmd += separator + artikelname;
+        cmd += separator + menge;
+
+        cmd += separator + u.getUserName();
+        cmd += separator + u.getPasswort();
+        cmd += separator + u.getNachname();
+        cmd += separator + u.getVorname();
+        cmd += separator + u.getidNummer();
+
+
         socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_BESTAND_ERHÖHEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        System.out.println(data);
     }
 
     @Override
     public void bestanNiedriger(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException, LeeresTextfieldException {
         String cmd = Commands.CMD_BESTAND_VERRINGERN.name();
+
+        cmd += separator + artikelname;
+        cmd += separator + menge;
+
+        cmd += separator + u.getUserName();
+        cmd += separator + u.getPasswort();
+        cmd += separator + u.getNachname();
+        cmd += separator + u.getVorname();
+        cmd += separator + u.getidNummer();
+
+
         socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_BESTAND_VERRINGERN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        System.out.println(data);
     }
 
     @Override
@@ -371,7 +473,29 @@ public class EshopClient implements EShopInterface {
     public Kunde kundenLogin(String username, String password) throws LoginFehlgeschlagenException {
         String cmd = Commands.CMD_KUNDEN_EINLOGGEN.name();
         socketOut.println(cmd);
-        return null;
+
+        cmd += separator + username;
+        cmd += separator + password;
+
+        socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_KUNDEN_EINLOGGEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        String eingeloggterUsername = data[1];
+        String eingeloggtesPasswort = data[2];
+        String eingeloggterNachname = data[3];
+        String eingeloggterVorname = data[4];
+        String eingeloggteAdresse = data[5];
+        String eingeloggteId = data[6];
+
+        Kunde eingeloggterKunde = new Kunde(eingeloggterUsername, eingeloggtesPasswort, eingeloggterNachname, eingeloggterVorname, eingeloggteAdresse);
+        eingeloggterKunde.setID(eingeloggteId);
+
+        return eingeloggterKunde;
     }
 
     @Override

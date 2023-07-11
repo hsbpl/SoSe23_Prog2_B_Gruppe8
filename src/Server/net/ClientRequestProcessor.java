@@ -1,8 +1,7 @@
 package Server.net;
 
 import Common.*;
-import Common.Exceptions.LeeresTextfieldException;
-import Common.Exceptions.UserExistiertBereitsException;
+import Common.Exceptions.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -113,19 +112,19 @@ public class ClientRequestProcessor implements Runnable {
                 handleNuenMitarbeiterRegistrieren(parts);
                 break;
             case CMD_MITARBEITER_EINLOGGEN:
-                handleNeuenMitarbeiterEinloggen();
+                handleMitarbeiterEinloggen(parts);
                 break;
             case CMD_EINZELARTIKEL_HINZUFÜGEN:
-                handleEinzelartikelHinzufügen();
+                handleEinzelartikelHinzufügen(parts);
                 break;
             case CMD_MASSENGUTARTIKEL_HINZUFÜGEN:
-                handleMassengutartikelHinzufügen();
+                handleMassengutartikelHinzufügen(parts);
                 break;
             case CMD_BESTAND_ERHÖHEN:
-                handleBestandErhöhen();
+                handleBestandErhöhen(parts);
                 break;
             case CMD_BESTAND_VERRINGERN:
-                handleBestandVerringern();
+                handleBestandVerringern(parts);
                 break;
             case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN:
                 handleArtikelNachAlphabetSortieren();
@@ -149,7 +148,7 @@ public class ClientRequestProcessor implements Runnable {
                 handleKundenRegistrieren(parts);
                 break;
             case CMD_KUNDEN_EINLOGGEN:
-                handleKundenEinloggen();
+                handleKundenEinloggen(parts);
                 break;
             case CMD_KAUF_ABSCHLIESSEN:
                 handleKaufAbschliessen();
@@ -164,7 +163,34 @@ public class ClientRequestProcessor implements Runnable {
 
 
 
-    private void handleBestandErhöhen() {
+    private void handleBestandErhöhen(String[] data) {
+        String cmd = Commands.CMD_BESTAND_ERHÖHEN_RSP.name();
+
+        String artikelname = data[1];
+        int menge = Integer.parseInt(data[2]);
+
+        String username = data[3];
+        String passwort = data[4];
+        String nachname = data[5];
+        String vorname  = data[6];
+        String id = data[7];
+        User user = new User(username, passwort, nachname,vorname, id);
+
+        //todo Exceptions
+
+
+        try {
+            eshop.bestandErhöhen(artikelname,menge,user);
+            cmd +=separator + "Erfolgreich";
+            socketOut.println(cmd);
+        } catch (ArtikelExistiertNichtException e) {
+            throw new RuntimeException(e);
+        } catch (LeeresTextfieldException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        socketOut.println(cmd);
     }
 
 
@@ -361,13 +387,119 @@ public class ClientRequestProcessor implements Runnable {
 
     }
 
-    private void handleNeuenMitarbeiterEinloggen() {
+    private void handleMitarbeiterEinloggen(String[] data) {
+        //todo Exceptionhandling
+        String username = data[1];
+        String passwort = data[2];
+
+        try {
+            Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username,passwort);
+
+            String cmd = Commands.CMD_MITARBEITER_EINLOGGEN_RSP.name() + separator;
+
+            cmd += mitarbeiter.getUserName() + separator;
+            cmd += mitarbeiter.getPasswort() + separator;
+            cmd += mitarbeiter.getNachname() + separator;
+            cmd += mitarbeiter.getVorname() + separator;
+            cmd += mitarbeiter.getidNummer();
+
+            socketOut.println(cmd);
+        } catch (LoginFehlgeschlagenException e) {
+            throw new RuntimeException(e);
+        }
     }
-    private void handleEinzelartikelHinzufügen() {
+    private void handleEinzelartikelHinzufügen(String[] data) {
+        String cmd = Commands.CMD_EINZELARTIKEL_HINZUFÜGEN_RSP.name() + separator;
+
+        String bezeichnung = data[1];
+        int artikelnummer = Integer.parseInt(data[2]);
+        int bestand = Integer.parseInt(data[3]);
+        double einzelpreis  = Double.parseDouble(data[4]);
+        Artikel artikel = new Artikel(bezeichnung, artikelnummer, bestand, einzelpreis);
+
+        //miarbeiterdaten
+        String username = data[5];
+        String passwort = data[6];
+        String nachname = data[7];
+        String vorname  = data[8];
+        String id = data[9];
+        Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
+        mitarbeiter.setID(id);
+
+        //todo exceptions
+        try {
+            eshop.artHinzufügen(artikel,mitarbeiter);
+            cmd += "Erfolgreich";
+            socketOut.println(cmd);
+        } catch (ArtikelExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        } catch (LeeresTextfieldException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
-    private void handleMassengutartikelHinzufügen() {
+    private void handleMassengutartikelHinzufügen(String[] data) {
+        String cmd = Commands.CMD_MASSENGUTARTIKEL_HINZUFÜGEN_RSP.name() + separator;
+
+        String bezeichnung = data[1];
+        int artikelnummer = Integer.parseInt(data[2]);
+        int bestand = Integer.parseInt(data[3]);
+        double einzelpreis  = Double.parseDouble(data[4]);
+        int kaufmenge = Integer.parseInt(data[5]);
+        Massengutartikel artikel = new Massengutartikel(bezeichnung, artikelnummer, bestand, einzelpreis,kaufmenge);
+
+        //miarbeiterdaten
+        String username = data[6];
+        String passwort = data[7];
+        String nachname = data[8];
+        String vorname  = data[9];
+        String id = data[10];
+        Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
+        mitarbeiter.setID(id);
+
+        //todo exceptions
+        try {
+            eshop.massengutArtikelHinzufügen(artikel,mitarbeiter);
+            cmd += "Erfolgreich";
+            socketOut.println(cmd);
+        } catch (ArtikelExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        } catch (LeeresTextfieldException e) {
+            throw new RuntimeException(e);
+        }
     }
-    private void handleBestandVerringern() {
+    private void handleBestandVerringern(String[] data) {
+        String cmd = Commands.CMD_BESTAND_VERRINGERN_RSP.name();
+
+        String artikelname = data[1];
+        int menge = Integer.parseInt(data[2]);
+
+        String username = data[3];
+        String passwort = data[4];
+        String nachname = data[5];
+        String vorname  = data[6];
+        String id = data[7];
+        User user = new User(username, passwort, nachname,vorname, id);
+
+        //todo Exceptions
+
+        try {
+            eshop.bestanNiedriger(artikelname,menge,user);
+
+            cmd +=separator + "Erfolgreich";
+            socketOut.println(cmd);
+        } catch (ArtikelExistiertNichtException e) {
+            throw new RuntimeException(e);
+        } catch (UngueltigeMengeException e) {
+            throw new RuntimeException(e);
+        } catch (LeeresTextfieldException e) {
+            throw new RuntimeException(e);
+        }
+
+        socketOut.println(cmd);
+
+
     }
     private void handleArtikelNachAlphabetSortieren() {
     }
@@ -413,14 +545,32 @@ public class ClientRequestProcessor implements Runnable {
             throw e;
         }
 
-
-
-
-
-
-
     }
-    private void handleKundenEinloggen() {
+    private void handleKundenEinloggen(String data[]) {
+
+        //todo Exceptionhandling
+        String username = data[1];
+        String passwort = data[2];
+
+        try {
+            Kunde kunde = eshop.kundenLogin(username, passwort);
+
+            String cmd = Commands.CMD_KUNDEN_EINLOGGEN_RSP.name() + separator;
+
+            cmd += kunde.getUserName() + separator;
+            cmd += kunde.getPasswort() + separator;
+            cmd += kunde.getNachname() + separator;
+            cmd += kunde.getVorname() + separator;
+            cmd += kunde.getKundenAdresse() + separator;
+            cmd += kunde.getidNummer();
+
+            socketOut.println(cmd);
+        } catch (LoginFehlgeschlagenException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
     }
     private void handleKaufAbschliessen() {
     }
