@@ -1,6 +1,8 @@
 package Server.net;
 
 import Common.*;
+import Common.Exceptions.LeeresTextfieldException;
+import Common.Exceptions.UserExistiertBereitsException;
 
 import java.io.*;
 import java.net.Socket;
@@ -104,59 +106,57 @@ public class ClientRequestProcessor implements Runnable {
             case CMD_SPEICHER_EREIGNISSE:
                 handleEreignisSpeichern();
                 break;
+            case CMD_NEUEN_WARENKORB_ERSTELLEN:
+                handleNeuenWarenkornErstellen(parts);
+                break;
+            case CMD_MITARBEITER_REGISTRIEREN:
+                handleNuenMitarbeiterRegistrieren(parts);
+                break;
+            case CMD_MITARBEITER_EINLOGGEN:
+                handleNeuenMitarbeiterEinloggen();
+                break;
+            case CMD_EINZELARTIKEL_HINZUFÜGEN:
+                handleEinzelartikelHinzufügen();
+                break;
+            case CMD_MASSENGUTARTIKEL_HINZUFÜGEN:
+                handleMassengutartikelHinzufügen();
+                break;
+            case CMD_BESTAND_ERHÖHEN:
+                handleBestandErhöhen();
+                break;
+            case CMD_BESTAND_VERRINGERN:
+                handleBestandVerringern();
+                break;
+            case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN:
+                handleArtikelNachAlphabetSortieren();
+                break;
+            case CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN:
+                handleArtikelNachArtikelnummerSortieren();
+                break;
+            case CMD_EREIGNISSE_NACH_DATUM_SORTIEREN:
+                handleEreignisseNachDatumSortieren();
+                break;
+            case CMD_IN_DEN_WARENKORB_LEGEN:
+                handleInDenWarenkorbLegen();
+                break;
+            case CMD_AUS_DEM_WARENKORB_LEGEN:
+                handleAusDemWarenkorbLegen();
+                break;
+            case CMD_WARENKORB_LEEREN:
+                handleWarenkorbLeeren();
+                break;
+            case CMD_KUNDEN_REGISTRIEREN:
+                handleKundenRegistrieren(parts);
+                break;
+            case CMD_KUNDEN_EINLOGGEN:
+                handleKundenEinloggen();
+                break;
+            case CMD_KAUF_ABSCHLIESSEN:
+                handleKaufAbschliessen();
+                break;
             default:
                 System.err.println("Ungueltige Anfrage empfangen!");
                 break;
-            case CMD_NEUEN_WARENKORB_ERSTELLEN:
-                handleNeuenWarenkornErstellen();
-                break;
-            case CMD_MITARBEITER_REGISTRIEREN:
-                handleNuenMitarbeiterRegistrieren();
-            case CMD_MITARBEITER_EINLOGGEN:
-                handleNeuenMitarbeiterEinloggen();
-            case CMD_EINZELARTIKEL_HINZUFÜGEN:
-                handleEinzelartikelHinzufügen();
-            case CMD_MASSENGUTARTIKEL_HINZUFÜGEN:
-                handleMassengutartikelHinzufügen();
-            case CMD_BESTAND_ERHÖHEN:
-                handleBestandErhöhen();
-            case CMD_BESTAND_VERRINGERN:
-                handleBestandVerringern();
-            case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN:
-                handleArtikelNachAlphabetSortieren();
-            case CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN:
-                handleArtikelNachArtikelnummerSortieren();
-            case CMD_EREIGNISSE_NACH_DATUM_SORTIEREN:
-                handleEreignisseNachDatumSortieren();
-            case CMD_IN_DEN_WARENKORB_LEGEN:
-                handleInDenWarenkorbLegen();
-            case CMD_AUS_DEM_WARENKORB_LEGEN:
-                handleAusDemWarenkorbLegen();
-            case CMD_WARENKORB_LEEREN:
-                handleWarenkorbLeeren();
-            case CMD_KUNDEN_REGISTRIEREN:
-                handleKundenRegistrieren();
-            case CMD_KUNDEN_EINLOGGEN:
-                handleKundenEinloggen();
-            case CMD_KAUF_ABSCHLIESSEN:
-                handleKaufAbschliessen();
-            case CMD_BUCH_SUCHEN:
-                handleBuchSuchen();
-            case CMD_BUCH_EINFUEGEN:
-                handleBuchEinfuegen();
-            case CMD_BUCH_LOESCHEN:
-                handleBuchLoeschen();
-
-
-          /*
-
-           */
-
-            /*
-
-
-            */
-
         }
     }
 
@@ -261,13 +261,17 @@ public class ClientRequestProcessor implements Runnable {
             cmd += separator + ereignis.getUser().getNachname();
             cmd += separator + ereignis.getUser().getidNummer();
 
-            //todo Massengutproblem
+
             cmd += separator + ereignis.getArtikel().getBezeichnung();
             cmd += separator + ereignis.getArtikel().getArtikelNummer();
             cmd += separator + ereignis.getArtikel().getBestand();
             cmd += separator + ereignis.getArtikel().getEinzelpreis();
+
+            //Um Massengut verkaufsmenge zu checken
             if (ereignis.getArtikel() instanceof Massengutartikel) {
                 cmd += separator + ((Massengutartikel) ereignis.getArtikel()).getErwerbwareMenge();
+            }else{
+                cmd += separator + 1;
             }
         }
         socketOut.println(cmd);
@@ -305,10 +309,55 @@ public class ClientRequestProcessor implements Runnable {
         }
     }
 
-    private void handleNeuenWarenkornErstellen() {
+    private void handleNeuenWarenkornErstellen(String[] data) {
+
+        String username = data[1];
+        String passwort = data[2];
+        String nachname = data[3];
+        String vorname  = data[4];
+        String adresse =  data[5];
+        String id = data[6];
+
+        Kunde kunde = new Kunde(username,passwort,nachname,vorname,adresse);
+        kunde.setID(id);
+
+        String cmd = Commands.CMD_NEUEN_WARENKORB_ERSTELLEN_RSP.name();
+
+        //todo könnte das prolematisch sein ?
+        //Der Warenkorb der hier erstellt wurde ist sowieso leer, es geht hier eher um den Eintrag in die Kundenhasmap
+        Warenkorb warenkorb =  eshop.neuenWarenkorbErstellen(kunde);
+        socketOut.println(cmd);
     }
 
-    private void handleNuenMitarbeiterRegistrieren() {
+    private void handleNuenMitarbeiterRegistrieren(String[] data) {
+        String username = data[1];
+        String passwort = data[2];
+        String nachname = data[3];
+        String vorname  = data[4];
+        String id = data[5];
+
+        Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
+        mitarbeiter.setID(id);
+
+        //todo fragen wie man mit exceptions umgeht
+        try {
+            eshop.mitarbeiterRegistrieren(mitarbeiter);
+            String cmd = Commands.CMD_GIB_ALLE_MITARBEITER_RSP.name() + separator;
+
+            cmd += mitarbeiter.getUserName() + separator;
+            cmd += mitarbeiter.getPasswort() + separator;
+            cmd += mitarbeiter.getNachname() + separator;
+            cmd += mitarbeiter.getVorname() + separator;
+            cmd += mitarbeiter.getidNummer();
+
+            socketOut.println(cmd);
+
+        } catch (UserExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        } catch (LeeresTextfieldException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void handleNeuenMitarbeiterEinloggen() {
@@ -331,25 +380,49 @@ public class ClientRequestProcessor implements Runnable {
     }
     private void handleWarenkorbLeeren() {
     }
-    private void handleKundenRegistrieren() {
+    private void handleKundenRegistrieren(String[] data) {
+
+        String username = data[1];
+        String passwort = data[2];
+        String nachname = data[3];
+        String vorname  = data[4];
+        String adresse  = data[5];
+        String id = data[6];
+
+        Kunde kunde = new Kunde(username, passwort, nachname, vorname,adresse);
+        kunde.setID(id);
+
+        //todo fragen wie man mit exceptions umgeht
+        try {
+            eshop.kundenRegistrieren(kunde);
+            String cmd = Commands.CMD_KUNDEN_REGISTRIEREN_RSP.name() + separator;
+
+            cmd += kunde.getUserName() + separator;
+            cmd += kunde.getPasswort() + separator;
+            cmd += kunde.getNachname() + separator;
+            cmd += kunde.getVorname() + separator;
+            cmd += kunde.getKundenAdresse() + separator;
+            cmd += kunde.getidNummer();
+
+            socketOut.println(cmd);
+
+        } catch (UserExistiertBereitsException e) {
+            throw new RuntimeException(e);
+        } catch (LeeresTextfieldException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
+
+
+
     }
     private void handleKundenEinloggen() {
     }
     private void handleKaufAbschliessen() {
     }
-    private void handleBuchSuchen() {
-    }
-    private void handleBuchEinfuegen() {
-    }
-    private void handleBuchLoeschen() {
-    }
-
-    //todo geht das einfach so ? wirkt auf mich gerade ein wenig faslch
-    /*private void handleWaremkorbErstellen(Kunde kunde) {
-        eshop.neuenWarenkorbErstellen(kunde);
-    }
-
-     */
 }
 
 
