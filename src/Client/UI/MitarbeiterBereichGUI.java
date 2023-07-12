@@ -491,11 +491,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
                 String selectedListItem = listenauswahl.getSelectedItem().toString();
 
                 if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
-                    listpopup(mitarbeiterTable(), "Registrierte Mitarbeiter");
-
+                    JScrollPane mitarbeiterScrollPane = new JScrollPane(mitarbeiterTable());
+                    JOptionPane.showMessageDialog(null, mitarbeiterScrollPane, "Registrierte Mitarbeiter", JOptionPane.PLAIN_MESSAGE);
                 } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
-                    listpopup(kundenTable(), "Registrierte Kunden");
-
+                    JScrollPane kundenScrollPane = new JScrollPane(kundenTable());
+                    JOptionPane.showMessageDialog(null, kundenScrollPane, "Registrierte Kunden", JOptionPane.PLAIN_MESSAGE);
                 } else if (selectedListItem.equals("Ereignisse ausgeben")) {
                     JScrollPane ereignisScrollPane = new JScrollPane(ereignisTable());
                     JOptionPane.showMessageDialog(null, ereignisScrollPane, "Ereignisse nach Datum geordnet", JOptionPane.PLAIN_MESSAGE);
