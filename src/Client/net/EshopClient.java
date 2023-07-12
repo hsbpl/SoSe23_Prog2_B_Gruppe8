@@ -22,8 +22,10 @@ public class EshopClient implements EShopInterface {
     private BufferedReader socketIn;
     private PrintStream socketOut;
 
+    private Warenkorb warenkorb;
 
     public EshopClient(String host, int port) throws IOException {
+
        try {
             this.socket = new Socket(host, port);
             InputStream is = this.socket.getInputStream();
@@ -261,7 +263,7 @@ public class EshopClient implements EShopInterface {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
         //Der Warenkorb der hier erstellt wurde ist sowieso leer, es geht hier eher um den Eintrag in die Kundenhasmap
-        Warenkorb warenkorb = new Warenkorb();
+       warenkorb = new Warenkorb();
         return warenkorb;
     }
 
@@ -465,7 +467,6 @@ public class EshopClient implements EShopInterface {
 
     }
 
-    //todo here
     @Override
     public List<Ereignis> ereignisseNachDatum() {
         String cmd = Commands.CMD_EREIGNISSE_NACH_DATUM_SORTIEREN.name();
@@ -484,21 +485,48 @@ public class EshopClient implements EShopInterface {
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
         String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN.name();
 
-        cmd += artikel + separator + menge + separator;
+        cmd += separator + artikel;
+        cmd += separator + menge;
 
         socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
     }
 
     @Override
     public void artikelAusWarenkorbEntfernen(String artikel, Warenkorb warenkorb) {
         String cmd = Commands.CMD_AUS_DEM_WARENKORB_LEGEN.name();
+
+        cmd += separator + artikel;
+
         socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_AUS_DEM_WARENKORB_LEGEN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
     }
 
+    //todo checken ob man das schöner lösen kann
     @Override
     public void warenkorbLeeren(Warenkorb warenkorb) {
         String cmd = Commands.CMD_WARENKORB_LEEREN.name();
         socketOut.println(cmd);
+
+        String [] data = readResponse();
+        if(Commands.valueOf(data[0]) != Commands.CMD_WARENKORB_LEEREN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        warenkorb.getWarenkorb().clear();
+
     }
 
     @Override
@@ -569,9 +597,26 @@ public class EshopClient implements EShopInterface {
         return registrierterKunde;
     }
 
+    //TODO HEREEEEEE IST NOCH NICHT FERTIGG
     @Override
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
         String cmd = Commands.CMD_KAUF_ABSCHLIESSEN.name();
+
+        cmd += separator + kunde.getUserName();
+        cmd += separator + kunde.getPasswort();
+        cmd += separator + kunde.getKundenAdresse();
+        cmd += separator + kunde.getNachname();
+        cmd += separator + kunde.getVorname();
+        cmd += separator + kunde.getKundenAdresse();
+        cmd += separator + kunde.getidNummer();
+
+
+         warenkorb.getWarenkorb().keySet().forEach(artikel -> {
+          String  waren = separator+ artikel.getBezeichnung();
+            waren += separator + artikel.getArtikelNummer();
+            waren += separator +artikel.getBestand();
+            waren+= separator +artikel.getEinzelpreis();});
+
         socketOut.println(cmd);
         return null;
     }

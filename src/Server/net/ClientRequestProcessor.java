@@ -18,6 +18,8 @@ public class ClientRequestProcessor implements Runnable {
     private Connection connection;
     EShopInterface eshop;
 
+    Warenkorb warenkorb;
+
     public ClientRequestProcessor(Socket socket, EShopInterface eshop) throws IOException {
         this.eshop = eshop;
         this.clientSocket = socket;
@@ -139,7 +141,7 @@ public class ClientRequestProcessor implements Runnable {
                 handleInDenWarenkorbLegen(parts);
                 break;
             case CMD_AUS_DEM_WARENKORB_LEGEN:
-                handleAusDemWarenkorbLegen();
+                handleAusDemWarenkorbLegen(parts);
                 break;
             case CMD_WARENKORB_LEEREN:
                 handleWarenkorbLeeren();
@@ -345,7 +347,7 @@ public class ClientRequestProcessor implements Runnable {
 
         //todo könnte das prolematisch sein ?
         //Der Warenkorb der hier erstellt wurde ist sowieso leer, es geht hier eher um den Eintrag in die Kundenhasmap
-        Warenkorb warenkorb =  eshop.neuenWarenkorbErstellen(kunde);
+        warenkorb =  eshop.neuenWarenkorbErstellen(kunde);
         socketOut.println(cmd);
     }
 
@@ -565,11 +567,38 @@ public class ClientRequestProcessor implements Runnable {
         socketOut.println(cmd);
     }
     private void handleInDenWarenkorbLegen(String[] data) {
+        String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name();
+
+        String artikel = data[1];
+        int menge = Integer.parseInt(data[2]);
+
+        //todo exceptions
+        try {
+            eshop.inDenWarenkorbLegen(artikel, menge, warenkorb);
+
+        } catch (UngueltigeMengeException e) {
+            throw new RuntimeException(e);
+        } catch (ArtikelExistiertNichtException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
-    private void handleAusDemWarenkorbLegen() {
+    private void handleAusDemWarenkorbLegen(String[] data) {
+        String cmd= Commands.CMD_AUS_DEM_WARENKORB_LEGEN_RSP.name();
+
+        String artikel = data[1];
+
+        eshop.artikelAusWarenkorbEntfernen(artikel, warenkorb);
+
+        socketOut.println(cmd);
+
     }
     private void handleWarenkorbLeeren() {
+        String cmd = Commands.CMD_WARENKORB_LEEREN_RSP.name();
+        eshop.warenkorbLeeren(warenkorb);
+
+        socketOut.println(cmd);
     }
     private void handleKundenRegistrieren(String[] data) throws UserExistiertBereitsException, LeeresTextfieldException {
 
