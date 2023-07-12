@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 public class StartGUI extends JFrame implements ActionListener {
 
@@ -185,6 +187,12 @@ public class StartGUI extends JFrame implements ActionListener {
         usernameTextfield.setMaximumSize(usernameTextfieldMitarbeiter.getPreferredSize());
         passwortTextfield.setMaximumSize(passwortTextfieldMitarbeiter.getPreferredSize());
 
+        passwortTextfield.addKeyListener(new EnterKeyListener());
+        usernameTextfield.addKeyListener(new EnterKeyListener());
+
+
+
+
         loginButton.addActionListener(this);
 
         loginfenster.add(new JLabel("Username: "));
@@ -207,6 +215,9 @@ public class StartGUI extends JFrame implements ActionListener {
         usernameTextfieldMitarbeiter.setMaximumSize(usernameTextfieldMitarbeiter.getPreferredSize());
         passwortTextfieldMitarbeiter.setMaximumSize(passwortTextfieldMitarbeiter.getPreferredSize());
 
+        usernameTextfieldMitarbeiter.addKeyListener(new EnterKeyListener());
+        passwortTextfieldMitarbeiter.addKeyListener(new EnterKeyListener());
+
         loginButtonMitarbeiter.addActionListener(this);
 
         loginfenster.add(new JLabel("Username: "));
@@ -219,6 +230,24 @@ public class StartGUI extends JFrame implements ActionListener {
 
         return loginfenster;
     }
+
+    private class EnterKeyListener extends KeyAdapter {
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getSource() == usernameTextfield) {
+                    passwortTextfield.requestFocus();
+                } else if (e.getSource() == passwortTextfield) {
+                    loginButton.doClick();
+                } else if (e.getSource() == usernameTextfieldMitarbeiter) {
+                    passwortTextfieldMitarbeiter.requestFocus();
+                } else if (e.getSource() == passwortTextfieldMitarbeiter) {
+                    loginButtonMitarbeiter.doClick();
+                }
+            }
+        }
+    }
+
 
     private JPanel kundenregistrierung() {
         JPanel registerfenster = new JPanel();
@@ -410,5 +439,7 @@ private enum Eventsource{
             throw new RuntimeException(e);
         }
     }
+
+
 
 }
