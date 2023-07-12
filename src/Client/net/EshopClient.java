@@ -14,7 +14,8 @@ import java.util.List;
 public class EshopClient implements EShopInterface {
 
     //todo später Exceptionhandling
-
+    //todo warenkorb reinlegen/rauslegen... auf beiden seiten
+    //todo dopplung mininmieren
     final String separator = ";";
 
     private Socket socket;
@@ -283,7 +284,9 @@ public class EshopClient implements EShopInterface {
         socketOut.println(cmd);
 
         String[] data = readResponse();
-
+/*
+        if(CMD_SUCCESS)
+            else if(CMD_REGIS_EXP)*/
         if(Commands.valueOf(data[0]) != Commands.CMD_MITARBEITER_REGISTRIEREN_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
@@ -434,26 +437,55 @@ public class EshopClient implements EShopInterface {
 
     @Override
     public List<Artikel> artikelSortierenNachBezeichnung() {
-        return null;
+
+        String cmd = Commands.CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN.name();
+        socketOut.println(cmd);
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createArtikellisteFromData(data);
     }
 
     @Override
     public List<Artikel> artikelNachArtikelnummerGeordnetAusgeben() {
         String cmd = Commands.CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN.name();
         socketOut.println(cmd);
-        return null;
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createArtikellisteFromData(data);
+
     }
 
+    //todo here
     @Override
     public List<Ereignis> ereignisseNachDatum() {
-        String cmd = Commands.CMD_EREIGNISSE_NACH_DATUM_SORTIEREN_RSP.name();
+        String cmd = Commands.CMD_EREIGNISSE_NACH_DATUM_SORTIEREN.name();
         socketOut.println(cmd);
-        return null;
+
+        String[] data = readResponse();
+
+        if(Commands.valueOf(data[0]) != Commands.CMD_EREIGNISSE_NACH_DATUM_SORTIEREN_RSP) {
+            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
+        }
+
+        return createEreignisListeFromData(data);
     }
 
     @Override
     public void inDenWarenkorbLegen(String artikel, int menge, Warenkorb warenkorb) throws ArtikelExistiertNichtException, UngueltigeMengeException {
         String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN.name();
+
+        cmd += artikel + separator + menge + separator;
+
         socketOut.println(cmd);
     }
 

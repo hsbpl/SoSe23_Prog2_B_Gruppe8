@@ -191,10 +191,6 @@ public class EShop implements EShopInterface {
         return r;
     }
 
-    @Override
-    public void disconnect() throws IOException {
-
-    }
 
     @Override
     public void handleGibHalloServer() throws IOException {

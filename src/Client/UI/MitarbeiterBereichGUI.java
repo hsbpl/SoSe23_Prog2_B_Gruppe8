@@ -528,6 +528,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             String nachname = nachnameTextfield.getText();
             String vorname = vornameTextfield.getText();
 
+            //vornameTextfield.getText().isEmpty()
+
+
             Mitarbeiter neuerMitarbeiter = new Mitarbeiter(username, pw, nachname, vorname);
             eshop.mitarbeiterRegistrieren(neuerMitarbeiter);
 

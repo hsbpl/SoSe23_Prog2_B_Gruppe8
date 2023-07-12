@@ -136,7 +136,7 @@ public class ClientRequestProcessor implements Runnable {
                 handleEreignisseNachDatumSortieren();
                 break;
             case CMD_IN_DEN_WARENKORB_LEGEN:
-                handleInDenWarenkorbLegen();
+                handleInDenWarenkorbLegen(parts);
                 break;
             case CMD_AUS_DEM_WARENKORB_LEGEN:
                 handleAusDemWarenkorbLegen();
@@ -160,9 +160,6 @@ public class ClientRequestProcessor implements Runnable {
     }
 
 
-
-
-
     private void handleBestandErhöhen(String[] data) {
         String cmd = Commands.CMD_BESTAND_ERHÖHEN_RSP.name();
 
@@ -178,7 +175,6 @@ public class ClientRequestProcessor implements Runnable {
 
         //todo Exceptions
 
-
         try {
             eshop.bestandErhöhen(artikelname,menge,user);
             cmd +=separator + "Erfolgreich";
@@ -189,10 +185,8 @@ public class ClientRequestProcessor implements Runnable {
             throw new RuntimeException(e);
         }
 
-
         socketOut.println(cmd);
     }
-
 
     private void handleHalloClientSpeichern() {
     }
@@ -219,7 +213,6 @@ public class ClientRequestProcessor implements Runnable {
         socketOut.println("Befehl 'Hallo Server speichern' erhalten!");
 
     }
-
 
     private void handleGibAlleMitarbeiter() {
         List<Mitarbeiter> result = eshop.getAlleMitarbeiter();
@@ -380,6 +373,7 @@ public class ClientRequestProcessor implements Runnable {
             socketOut.println(cmd);
 
         } catch (UserExistiertBereitsException e) {
+            // out.write(CMD_REGISTRIEREN_EXCEP...);
             throw e;
         } catch (LeeresTextfieldException e) {
             throw e;
@@ -502,12 +496,76 @@ public class ClientRequestProcessor implements Runnable {
 
     }
     private void handleArtikelNachAlphabetSortieren() {
+        List<Artikel> result = eshop.artikelSortierenNachBezeichnung();
+
+        String cmd = Commands.CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN_RSP.name();
+
+        for (Artikel artikel : result) {
+            cmd += separator + artikel.getBezeichnung();
+            cmd += separator + artikel.getArtikelNummer();
+            cmd += separator + artikel.getBestand();
+            cmd += separator + artikel.getEinzelpreis();
+            if (artikel instanceof Massengutartikel) {
+                cmd += separator + ((Massengutartikel) artikel).getErwerbwareMenge();
+            }
+
+        }
+        socketOut.println(cmd);
     }
     private void handleArtikelNachArtikelnummerSortieren() {
+
+        List<Artikel> result = eshop.artikelNachArtikelnummerGeordnetAusgeben();
+
+        String cmd = Commands.CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN_RSP.name();
+
+        for (Artikel artikel : result) {
+            cmd += separator + artikel.getBezeichnung();
+            cmd += separator + artikel.getArtikelNummer();
+            cmd += separator + artikel.getBestand();
+            cmd += separator + artikel.getEinzelpreis();
+            if (artikel instanceof Massengutartikel) {
+                cmd += separator + ((Massengutartikel) artikel).getErwerbwareMenge();
+            }
+
+        }
+        socketOut.println(cmd);
+
     }
     private void handleEreignisseNachDatumSortieren() {
+        List<Ereignis> result = eshop.ereignisseNachDatum();
+
+        String cmd = Commands.CMD_EREIGNISSE_NACH_DATUM_SORTIEREN_RSP.name();
+
+        for (Ereignis ereignis : result) {
+            cmd += separator + ereignis.getDatum();
+            cmd += separator + ereignis.getEreignistyp();
+            cmd += separator + ereignis.getAnzahl();
+            cmd += separator + ereignis.getAktualisierterBestand();
+
+
+            cmd += separator + ereignis.getUser().getUserName();
+            cmd += separator + ereignis.getUser().getPasswort();
+            cmd += separator + ereignis.getUser().getVorname();
+            cmd += separator + ereignis.getUser().getNachname();
+            cmd += separator + ereignis.getUser().getidNummer();
+
+
+            cmd += separator + ereignis.getArtikel().getBezeichnung();
+            cmd += separator + ereignis.getArtikel().getArtikelNummer();
+            cmd += separator + ereignis.getArtikel().getBestand();
+            cmd += separator + ereignis.getArtikel().getEinzelpreis();
+
+            //Um Massengut verkaufsmenge zu checken
+            if (ereignis.getArtikel() instanceof Massengutartikel) {
+                cmd += separator + ((Massengutartikel) ereignis.getArtikel()).getErwerbwareMenge();
+            }else{
+                cmd += separator + 1;
+            }
+        }
+        socketOut.println(cmd);
     }
-    private void handleInDenWarenkorbLegen() {
+    private void handleInDenWarenkorbLegen(String[] data) {
+
     }
     private void handleAusDemWarenkorbLegen() {
     }
