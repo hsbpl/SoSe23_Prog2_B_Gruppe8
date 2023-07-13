@@ -154,7 +154,7 @@ public class ClientRequestProcessor implements Runnable {
                 handleKundenEinloggen(parts);
                 break;
             case CMD_KAUF_ABSCHLIESSEN:
-                handleKaufAbschliessen();
+                handleKaufAbschliessen(parts);
                 break;
             default:
                 System.err.println("Ungueltige Anfrage empfangen!");
@@ -688,6 +688,44 @@ public class ClientRequestProcessor implements Runnable {
 
 
     }
-    private void handleKaufAbschliessen() {
+    private void handleKaufAbschliessen(String[] data) {
+
+        String username = data[1];
+        String passwort = data[2];
+        String nachname = data[3];
+        String vorname = data[4];
+        String adresse = data[5];
+        String id = data[6];
+        Kunde kunde = new Kunde(username,passwort,nachname,vorname,adresse);
+        kunde.setID(id);
+
+        for(int i=7; i<data.length; i+=6) { //todo checken ob das sinn macht, den waren korb haben wird hier eh drinn muss man die artikel dann unbedingt reintun, wenn oben die methoden das theoretisc schon tun
+
+            String bezeicnung = data[i];
+            int artikelnummer = Integer.parseInt(data[i+1]);
+            int bestand = Integer.parseInt(data[i+2]);
+            double einzelpreis = Double.parseDouble(data[i+3]);
+            int kaufszahl = Integer.parseInt(data[i+4]);
+            int menge = Integer.parseInt(data[i+5]);
+
+            //gegenchecken ob Artikel ein Massengut oder EinzelArtikel ist
+            if(kaufszahl != 1){
+                Massengutartikel massengutartikel = new Massengutartikel(bezeicnung,artikelnummer,bestand, einzelpreis, kaufszahl);
+                warenkorb.getWarenkorb().put(massengutartikel, menge);
+            } else {
+                Artikel artikel = new Artikel(bezeicnung,artikelnummer,bestand,einzelpreis, 1);
+                warenkorb.getWarenkorb().put(artikel, menge);}
+
+        }
+
+        //todo exceptions
+        try {
+           String rechnung = eshop.kaufenUndRechnungEhalten(kunde, warenkorb);
+            socketOut.println(Commands.CMD_KAUF_ABSCHLIESSEN_RSP.name()+ separator + rechnung);
+        } catch (WarenkorbIstLeerException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class EshopClient implements EShopInterface {
 
@@ -244,19 +245,12 @@ public class EshopClient implements EShopInterface {
 
         String cmd = Commands.CMD_NEUEN_WARENKORB_ERSTELLEN.name();
 
-        String username = k.getUserName();
-        String passwort = k.getPasswort();
-        String nachname = k.getNachname();
-        String vorname  = k.getVorname();
-        String adresse =  k.getKundenAdresse();
-        String id = k.getidNummer();
-
-        cmd += separator + username;
-        cmd += separator + passwort;
-        cmd += separator + nachname;
-        cmd += separator + vorname;
-        cmd += separator + adresse;
-        cmd += separator + id;
+        cmd += separator + k.getUserName();
+        cmd += separator + k.getPasswort();
+        cmd += separator + k.getNachname();
+        cmd += separator + k.getVorname();
+        cmd += separator + k.getKundenAdresse();
+        cmd += separator + k.getidNummer();
 
         socketOut.println(cmd);
 
@@ -274,17 +268,11 @@ public class EshopClient implements EShopInterface {
     public Mitarbeiter mitarbeiterRegistrieren(Mitarbeiter neu) throws UserExistiertBereitsException, LeeresTextfieldException {
         String cmd = Commands.CMD_MITARBEITER_REGISTRIEREN.name();
 
-        String username = neu.getUserName();
-        String passwort = neu.getPasswort();
-        String nachname = neu.getNachname();
-        String vorname  = neu.getVorname();
-        String id = neu.getidNummer();
-
-        cmd += separator + username;
-        cmd += separator + passwort;
-        cmd += separator + nachname;
-        cmd += separator + vorname;
-        cmd += separator + id;
+        cmd += separator + neu.getUserName();
+        cmd += separator + neu.getPasswort();
+        cmd += separator + neu.getNachname();
+        cmd += separator + neu.getVorname();
+        cmd += separator + neu.getidNummer();
 
         socketOut.println(cmd);
 
@@ -597,25 +585,35 @@ public class EshopClient implements EShopInterface {
         return registrierterKunde;
     }
 
-    //TODO HEREEEEEE IST NOCH NICHT FERTIGG
+
     @Override
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
         String cmd = Commands.CMD_KAUF_ABSCHLIESSEN.name();
 
         cmd += separator + kunde.getUserName();
         cmd += separator + kunde.getPasswort();
-        cmd += separator + kunde.getKundenAdresse();
         cmd += separator + kunde.getNachname();
         cmd += separator + kunde.getVorname();
         cmd += separator + kunde.getKundenAdresse();
         cmd += separator + kunde.getidNummer();
 
 
-        warenkorb.getWarenkorb().keySet().forEach(artikel -> {
-            String  waren = separator+ artikel.getBezeichnung();
-            waren += separator + artikel.getArtikelNummer();
-            waren += separator +artikel.getBestand();
-            waren+= separator +artikel.getEinzelpreis();});
+        for(Map.Entry<Artikel, Integer> eintrag : warenkorb.getWarenkorb().entrySet()){
+            Artikel artikel = eintrag.getKey();
+            int menge = eintrag.getValue();
+
+            cmd += separator+  artikel.getBezeichnung();
+            cmd += separator + artikel.getArtikelNummer();
+            cmd += separator + artikel.getBestand();
+            cmd += separator + artikel.getEinzelpreis();
+            if(artikel instanceof Massengutartikel){
+                cmd += separator + artikel.getErwerbmenge();
+            } else {
+                cmd += separator + 1;
+            }
+            cmd += separator + menge;
+        }
+
 
         socketOut.println(cmd);
         return null;
