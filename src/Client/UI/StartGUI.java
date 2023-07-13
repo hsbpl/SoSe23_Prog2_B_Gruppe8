@@ -394,7 +394,7 @@ public class StartGUI extends JFrame implements ActionListener {
             String passwort = passwortTextfieldMitarbeiter.getText();
             Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
 
-            MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, (EShop) eshop);
+            MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, eshop);
 
             this.dispose();
 
