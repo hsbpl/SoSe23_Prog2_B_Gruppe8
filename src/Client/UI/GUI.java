@@ -8,6 +8,6 @@ public class GUI {
     }
     public static void main(String[] args) throws IOException {
         new StartGUI();
-        new StartGUI();
+      //  new StartGUI();
     }
 }

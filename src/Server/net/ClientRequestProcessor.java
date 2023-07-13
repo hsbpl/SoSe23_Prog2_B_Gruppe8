@@ -79,6 +79,7 @@ public class ClientRequestProcessor implements Runnable {
                 break;
             case HALLO_CLIENT:
                 handleGibHalloClient();
+                break;
             case CMD_GIB_ALLE_ARTIKEL:
                 handleGibAlleArtikel();
                 break;

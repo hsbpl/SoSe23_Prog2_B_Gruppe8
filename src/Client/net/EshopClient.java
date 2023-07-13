@@ -24,7 +24,6 @@ public class EshopClient implements EShopInterface {
     private Socket socket;
     private BufferedReader socketIn;
     private PrintStream socketOut;
-
     private Warenkorb warenkorb;
 
     public EshopClient() throws IOException {
