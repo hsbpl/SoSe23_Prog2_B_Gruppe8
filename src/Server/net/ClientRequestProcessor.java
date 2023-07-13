@@ -590,7 +590,6 @@ public class ClientRequestProcessor implements Runnable {
         socketOut.println(cmd);
     }
     private void handleInDenWarenkorbLegen(String[] data) {
-        //String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name();
 
         String artikel = data[1];
         int menge = Integer.parseInt(data[2]);
@@ -602,6 +601,7 @@ public class ClientRequestProcessor implements Runnable {
             System.out.println(warenkorb);
             eshop.inDenWarenkorbLegen(artikel, menge, warenkorb);
 
+            socketOut.println(Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name());
         } catch (UngueltigeMengeException e) {
             throw new RuntimeException(e);
         } catch (ArtikelExistiertNichtException e) {
@@ -623,7 +623,6 @@ public class ClientRequestProcessor implements Runnable {
     private void handleWarenkorbLeeren() {
         String cmd = Commands.CMD_WARENKORB_LEEREN_RSP.name();
         eshop.warenkorbLeeren(warenkorb);
-
         socketOut.println(cmd);
     }
     private void handleKundenRegistrieren(String[] data) throws UserExistiertBereitsException, LeeresTextfieldException {
