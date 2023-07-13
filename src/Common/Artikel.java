@@ -10,6 +10,8 @@ public class Artikel {
     protected int bestand;
     protected double einzelpreis;
 
+    protected int erwerbmenge;
+
 
 
     public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis) {
@@ -18,6 +20,14 @@ public class Artikel {
         this.bestand = bestand;
         this.einzelpreis = preis;
 
+    }
+
+    public Artikel(String bezeichnung, int artikelNummer,int bestand, double preis, int erwerbmenge) {
+        this.bezeichnung = bezeichnung;
+        this.artikelNummer = artikelNummer;
+        this.bestand = bestand;
+        this.einzelpreis = preis;
+        this.erwerbmenge = erwerbmenge;
     }
     public Artikel(int artikelnummer, int bestand, int preis) {
     }
@@ -44,7 +54,7 @@ public class Artikel {
     public int  getArtikelNummer() {
         return artikelNummer;
     }
-
+    public int getErwerbmenge() {return erwerbmenge;}
 
     public String toString() {
         return "Artikel: "+ bezeichnung+ " Artikelnummer: " + artikelNummer  + " Preis: " + einzelpreis + " Bestand: " +bestand;

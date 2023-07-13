@@ -1,6 +1,7 @@
 package Client.UI.menus;
 
 import Client.UI.StartGUI;
+import Common.EShopInterface;
 import Server.Domain.EShop;
 
 import javax.swing.*;
@@ -11,9 +12,9 @@ import java.io.IOException;
 public class FileMenu extends JMenu implements ActionListener {
 
     private JFrame frame;
-    private EShop eShop;
+    private EShopInterface eShop;
 
-    public FileMenu(JFrame frame, EShop eShop) {
+    public FileMenu(JFrame frame, EShopInterface eShop) {
         super("File");
 
         this.frame = frame;

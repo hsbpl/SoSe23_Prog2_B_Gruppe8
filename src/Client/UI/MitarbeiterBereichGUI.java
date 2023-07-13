@@ -2,6 +2,7 @@ package Client.UI;
 
 import Client.UI.TableModels.KundenTableModel;
 import Client.UI.TableModels.MitarbeiterTableModel;
+import Common.EShopInterface;
 import Common.Exceptions.*;
 import Server.Domain.EShop;
 import Client.UI.TableModels.ArtikelTableModel;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class MitarbeiterBereichGUI extends JFrame implements ActionListener, MouseListener, DocumentListener {
 
-    private EShop eshop;
+    private EShopInterface eshop;
     private int textfieldSize = 50;
     private int digitInputTextfieldsize = 10;
 
@@ -82,7 +83,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     private JTextField sucheListen;
 
-    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShop eshop){
+    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShopInterface eshop){
         this.eshop = eshop;
 
         //Menu definieren
@@ -840,7 +841,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     @Override
     public void changedUpdate(DocumentEvent documentEvent) {
-    suche(documentEvent);
+        suche(documentEvent);
     }
 
 

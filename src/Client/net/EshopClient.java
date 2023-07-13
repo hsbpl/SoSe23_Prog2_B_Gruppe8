@@ -7,8 +7,10 @@ import Common.Exceptions.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EshopClient implements EShopInterface {
@@ -24,23 +26,23 @@ public class EshopClient implements EShopInterface {
 
     private Warenkorb warenkorb;
 
-    public EshopClient(String host, int port) throws IOException {
+    public EshopClient() throws IOException {
 
-       try {
-            this.socket = new Socket(host, port);
-            InputStream is = this.socket.getInputStream();
-            this.socketIn = new BufferedReader(new InputStreamReader(is));
-            this.socketOut = new PrintStream(this.socket.getOutputStream());
+        try {
+            socket = new Socket("127.0.0.1", 1399);
+            InputStream is = socket.getInputStream();
+            socketIn = new BufferedReader(new InputStreamReader(is));
+            socketOut = new PrintStream(socket.getOutputStream());
         } catch (IOException var5) {
             var5.printStackTrace();
             throw var5;
         }
 
         System.out.println("Verbindung hergestellt");
-        String nachricht = this.socketIn.readLine();
-        System.out.println(nachricht);
+        //String nachricht = this.socketIn.readLine();
+        //System.out.println(nachricht);
 
-        socketOut.println("HALLO_SERVER");
+        //socketOut.println("HALLO_SERVER");
 
     }
 
@@ -59,20 +61,20 @@ public class EshopClient implements EShopInterface {
         String cmd = Commands.CMD_GIB_ALLE_ARTIKEL.name();
         socketOut.println(cmd);
 
-        String[] data = readResponse();
 
+        String[] data = readResponse();
         if(Commands.valueOf(data[0]) != Commands.CMD_GIB_ALLE_ARTIKEL_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
-
         return createArtikellisteFromData(data);
     }
 
 
     private List<Artikel> createArtikellisteFromData(String[] data) {
         List<Artikel> artikelliste = new ArrayList<>();
+        data = Arrays.copyOfRange(data, 1, data.length);
 
-        for(int i=1; i<data.length; i+=4) {
+        for(int i=0; i<data.length; i+=5) {
 
             String bezeicnung = data[i];
             int artikelnummer = Integer.parseInt(data[i+1]);
@@ -80,13 +82,14 @@ public class EshopClient implements EShopInterface {
             double einzelpreis = Double.parseDouble(data[i+3]);
             int kaufszahl = Integer.parseInt(data[i+4]);
 
+
             //gegenchecken ob Artikel ein Massengut oder EinzelArtikel ist
             if(kaufszahl != 1){
                 Massengutartikel massengutartikel = new Massengutartikel(bezeicnung,artikelnummer,bestand, einzelpreis, kaufszahl);
                 artikelliste.add(massengutartikel);
             } else {
-            Artikel artikel = new Artikel(bezeicnung,artikelnummer,bestand,einzelpreis);
-            artikelliste.add(artikel);}
+                Artikel artikel = new Artikel(bezeicnung,artikelnummer,bestand,einzelpreis, 1);
+                artikelliste.add(artikel);}
 
         }
         return artikelliste;
@@ -263,7 +266,7 @@ public class EshopClient implements EShopInterface {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
         //Der Warenkorb der hier erstellt wurde ist sowieso leer, es geht hier eher um den Eintrag in die Kundenhasmap
-       warenkorb = new Warenkorb();
+        warenkorb = new Warenkorb();
         return warenkorb;
     }
 
@@ -307,12 +310,9 @@ public class EshopClient implements EShopInterface {
     @Override
     public Mitarbeiter mitarbeiterLogin(String username, String passwort) throws LoginFehlgeschlagenException {
         String cmd = Commands.CMD_MITARBEITER_EINLOGGEN.name();
-
         cmd += separator + username;
         cmd += separator + passwort;
-
         socketOut.println(cmd);
-
         String[] data = readResponse();
 
         if(Commands.valueOf(data[0]) != Commands.CMD_MITARBEITER_EINLOGGEN_RSP) {
@@ -487,7 +487,6 @@ public class EshopClient implements EShopInterface {
 
         cmd += separator + artikel;
         cmd += separator + menge;
-
         socketOut.println(cmd);
 
         String[] data = readResponse();
@@ -531,14 +530,15 @@ public class EshopClient implements EShopInterface {
 
     @Override
     public Kunde kundenLogin(String username, String password) throws LoginFehlgeschlagenException {
+        System.out.println(username+password);
         String cmd = Commands.CMD_KUNDEN_EINLOGGEN.name();
-        socketOut.println(cmd);
+        //socketOut.println(cmd);
 
         cmd += separator + username;
         cmd += separator + password;
 
         socketOut.println(cmd);
-
+        System.out.println("dfadsfsadfdasfds");
         String[] data = readResponse();
 
         if(Commands.valueOf(data[0]) != Commands.CMD_KUNDEN_EINLOGGEN_RSP) {
@@ -611,8 +611,8 @@ public class EshopClient implements EShopInterface {
         cmd += separator + kunde.getidNummer();
 
 
-         warenkorb.getWarenkorb().keySet().forEach(artikel -> {
-          String  waren = separator+ artikel.getBezeichnung();
+        warenkorb.getWarenkorb().keySet().forEach(artikel -> {
+            String  waren = separator+ artikel.getBezeichnung();
             waren += separator + artikel.getArtikelNummer();
             waren += separator +artikel.getBestand();
             waren+= separator +artikel.getEinzelpreis();});
@@ -628,7 +628,6 @@ public class EshopClient implements EShopInterface {
             // Auf Antwort warten. Es wird maximal 1000ms gewartet
             String receivedData = socketIn.readLine();
             parts = receivedData.split(separator);
-
             System.err.println("Empfangene Antwort: " + receivedData);
         } catch(SocketTimeoutException e) {
             System.out.println("Server hat nicht geantwortet.");

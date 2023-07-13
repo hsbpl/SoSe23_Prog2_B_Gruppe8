@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClientRequestProcessor implements Runnable {
@@ -171,15 +172,15 @@ public class ClientRequestProcessor implements Runnable {
         String username = data[3];
         String passwort = data[4];
         String nachname = data[5];
-        String vorname  = data[6];
+        String vorname = data[6];
         String id = data[7];
-        User user = new User(username, passwort, nachname,vorname, id);
+        User user = new User(username, passwort, nachname, vorname, id);
 
         //todo Exceptions
 
         try {
-            eshop.bestandErhöhen(artikelname,menge,user);
-            cmd +=separator + "Erfolgreich";
+            eshop.bestandErhöhen(artikelname, menge, user);
+            cmd += separator + "Erfolgreich";
             socketOut.println(cmd);
         } catch (ArtikelExistiertNichtException e) {
             throw new RuntimeException(e);
@@ -241,13 +242,35 @@ public class ClientRequestProcessor implements Runnable {
             cmd += separator + artikel.getArtikelNummer();
             cmd += separator + artikel.getBestand();
             cmd += separator + artikel.getEinzelpreis();
+
             if (artikel instanceof Massengutartikel) {
                 cmd += separator + ((Massengutartikel) artikel).getErwerbwareMenge();
+            } else{
+                cmd += separator + 1;
+            }
+        }
+
+        // Artikel an den Client senden
+        socketOut.println(cmd);
+
+        // Artikel im Server-Terminal ausgeben
+        System.out.println("Alle Artikel:");
+        for (Artikel artikel : result) {
+            System.out.println("Bezeichnung: " + artikel.getBezeichnung());
+            System.out.println("Artikelnummer: " + artikel.getArtikelNummer());
+            System.out.println("Bestand: " + artikel.getBestand());
+            System.out.println("Einzelpreis: " + artikel.getEinzelpreis());
+
+            if (artikel instanceof Massengutartikel) {
+                System.out.println("ErwerbwareMenge: " + ((Massengutartikel) artikel).getErwerbwareMenge());
             }
 
+            System.out.println("----------------------");
         }
-        socketOut.println(cmd);
     }
+
+
+
 
     private void handleGibAlleKunden() {
         List<Kunde> result = eshop.getAlleKunden();
@@ -567,13 +590,16 @@ public class ClientRequestProcessor implements Runnable {
         socketOut.println(cmd);
     }
     private void handleInDenWarenkorbLegen(String[] data) {
-        String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name();
+        //String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name();
 
         String artikel = data[1];
         int menge = Integer.parseInt(data[2]);
 
         //todo exceptions
         try {
+            System.out.println(artikel);
+            System.out.println(menge);
+            System.out.println(warenkorb);
             eshop.inDenWarenkorbLegen(artikel, menge, warenkorb);
 
         } catch (UngueltigeMengeException e) {
@@ -636,8 +662,11 @@ public class ClientRequestProcessor implements Runnable {
     private void handleKundenEinloggen(String data[]) {
 
         //todo Exceptionhandling
+        System.out.println(Arrays.toString(data));
         String username = data[1];
+        System.out.println(username);
         String passwort = data[2];
+        System.out.println(passwort);
 
         try {
             Kunde kunde = eshop.kundenLogin(username, passwort);
@@ -662,6 +691,3 @@ public class ClientRequestProcessor implements Runnable {
     private void handleKaufAbschliessen() {
     }
 }
-
-
-

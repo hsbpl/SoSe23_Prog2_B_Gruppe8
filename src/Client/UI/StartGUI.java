@@ -1,5 +1,7 @@
 package Client.UI;
 
+import Client.net.EshopClient;
+import Common.EShopInterface;
 import Server.Domain.EShop;
 import Common.Exceptions.LeeresTextfieldException;
 import Common.Exceptions.LoginFehlgeschlagenException;
@@ -20,7 +22,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 public class StartGUI extends JFrame implements ActionListener {
 
-    private EShop eshop;
+    private EShopInterface eshop;
     int textfieldSize = 50;
 
     //Kundenlogin Teile
@@ -50,9 +52,10 @@ public class StartGUI extends JFrame implements ActionListener {
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
+        System.out.println("HI");
         String datei = "ESHOP";
-        eshop = new EShop(datei);
-
+        eshop = new EshopClient();
+        System.out.println("HI");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
@@ -65,7 +68,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-    public StartGUI(EShop eShop){
+    public StartGUI(EShopInterface eShop){
         super("Roha & Sanjana's Eshop");
         String datei = "ESHOP";
         eshop = eShop;
@@ -85,7 +88,7 @@ public class StartGUI extends JFrame implements ActionListener {
         // Menuleiste anlegen ...
         JMenuBar mBar = new JMenuBar();
 
-        JMenu fileMenu = new FileMenu(this, eshop);
+        JMenu fileMenu = new FileMenu((JFrame) this, eshop);
         mBar.add(fileMenu);
 
         JMenu helpMenu = new HelpMenu();
@@ -180,7 +183,7 @@ public class StartGUI extends JFrame implements ActionListener {
         loginfenster.setSize(300, 300);
         loginfenster.setLayout(new BoxLayout(loginfenster, BoxLayout.Y_AXIS));
         loginfenster.setBorder(BorderFactory.createTitledBorder("Kundenlogin"));
-        
+
 
         usernameTextfield.add(new JLabel("Username: ")); // Textfeld ein Label hinzugefügt
         passwortTextfield.add(new JLabel("Passwort: "));
@@ -294,21 +297,21 @@ public class StartGUI extends JFrame implements ActionListener {
         return tablePane;
     }
 
-private enum Eventsource{
+    private enum Eventsource{
         KUNDEN_LOGIN,
         MITARBEITER_LOGIN,
         REGISTRIERUNGSFENSTER_ÖFFNEN,
         KUNDEN_REGISTRIEREN
 
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
         Eventsource source = null;
 
         if (actionEvent.getSource() == loginButton) {
-          source = Eventsource.KUNDEN_LOGIN;
+            source = Eventsource.KUNDEN_LOGIN;
         } else if (actionEvent.getSource() == loginButtonMitarbeiter) {
             source = Eventsource.MITARBEITER_LOGIN;
         } else if (actionEvent.getSource() == registrierungsButton) {
@@ -317,27 +320,27 @@ private enum Eventsource{
             source = Eventsource.KUNDEN_REGISTRIEREN;
         }
 
-    switch (source){
-        case KUNDEN_LOGIN:
-            kundenLoginEvent();
-            break;
+        switch (source){
+            case KUNDEN_LOGIN:
+                kundenLoginEvent();
+                break;
 
-        case MITARBEITER_LOGIN:
-            mitarbeiterLoginEvent();
-            break;
+            case MITARBEITER_LOGIN:
+                mitarbeiterLoginEvent();
+                break;
 
-        case REGISTRIERUNGSFENSTER_ÖFFNEN:
-            registerPopup();
-            break;
+            case REGISTRIERUNGSFENSTER_ÖFFNEN:
+                registerPopup();
+                break;
 
-        case KUNDEN_REGISTRIEREN:
-            kundenRegistrierungEvent();
-            break;
+            case KUNDEN_REGISTRIEREN:
+                kundenRegistrierungEvent();
+                break;
 
-        default:
-            System.out.println("Event Occured");
-            break;
-    }
+            default:
+                System.out.println("Event Occured");
+                break;
+        }
 
     }
 
@@ -354,7 +357,7 @@ private enum Eventsource{
             Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
 
             eshop.schreibeKunde();
-            KundenbereichGUI k = new KundenbereichGUI(kunde, w, eshop);
+            KundenbereichGUI k = new KundenbereichGUI(kunde, w, (EShop) eshop);
 
 
             this.dispose();
@@ -391,7 +394,7 @@ private enum Eventsource{
             String passwort = passwortTextfieldMitarbeiter.getText();
             Mitarbeiter mitarbeiter = eshop.mitarbeiterLogin(username, passwort);
 
-            MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, eshop);
+            MitarbeiterBereichGUI m = new MitarbeiterBereichGUI(mitarbeiter, (EShop) eshop);
 
             this.dispose();
 

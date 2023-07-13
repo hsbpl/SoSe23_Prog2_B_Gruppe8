@@ -2,6 +2,7 @@ package Client.UI;
 
 import Client.UI.TableModels.KundensichtTableModel;
 import Client.UI.TableModels.WarenkorbTableModel;
+import Common.EShopInterface;
 import Server.Domain.EShop;
 import Common.Exceptions.ArtikelExistiertNichtException;
 import Common.Exceptions.UngueltigeMengeException;
@@ -29,14 +30,14 @@ public class KundenbereichGUI extends JFrame {
     //TOdo alles was nicht verwendet wird löschen
     //todo checken, ob die Exception Texte sinn ergeben
 
-    private EShop eshop;
+    private EShopInterface eshop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
     private JLabel gesamtsumme;
     private  DecimalFormat decimalFormat;
     private WarenkorbTableModel warenkorbTableModel;
 
-    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShop eshop) throws IOException {
+    public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShopInterface eshop) throws IOException {
         super("Kundenbereich");
         this.eingeloggterKunde = eingeloggterKunde;
         this.warenKorbDesKunden = warenKorbDesKunden;
@@ -224,9 +225,9 @@ public class KundenbereichGUI extends JFrame {
                 int option = JOptionPane.showConfirmDialog(null, "Artikel aus dem Warenkorb entfernen?", "Artikel entferne", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
 
-                        eshop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
-                        warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
-                        aktualisiereGesamtsumme();
+                    eshop.artikelAusWarenkorbEntfernen(artikel, warenKorbDesKunden);
+                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                    aktualisiereGesamtsumme();
                     // Bei Doppelklick soll gefragt werden, ob man den Artikel aus dem Warenkorb entfernen möchte
 
                 }
@@ -281,11 +282,11 @@ public class KundenbereichGUI extends JFrame {
         warenkorbLeerenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    eshop.warenkorbLeeren(warenKorbDesKunden);
-                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
+                eshop.warenkorbLeeren(warenKorbDesKunden);
+                warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
-                   // aktualisiereWarenkorb(rechnungsTextArea);
-                    aktualisiereGesamtsumme();
+                // aktualisiereWarenkorb(rechnungsTextArea);
+                aktualisiereGesamtsumme();
             }
         });
 
