@@ -54,7 +54,7 @@ public class StartGUI extends JFrame implements ActionListener {
         super("Roha & Sanjana's Eshop");
         System.out.println("HI");
         String datei = "ESHOP";
-        eshop = new EShop(datei);
+        eshop = new EshopClient();
         System.out.println("HI");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern

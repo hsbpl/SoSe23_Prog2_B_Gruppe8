@@ -18,7 +18,7 @@ Brille
 Einzelartikel
 Chips
 39003
-92
+290
 1.79
 1
 Einzelartikel
@@ -78,13 +78,13 @@ Handy
 Einzelartikel
 Kaffee
 56778
-33
+23
 23.33
 5
 Massengutartikel
 Käsekuchen
 19002
-7
+4
 4.99
 1
 Einzelartikel
@@ -96,7 +96,7 @@ Laaptop
 Einzelartikel
 Mehl
 29290
-20
+14
 0.39
 3
 Massengutartikel

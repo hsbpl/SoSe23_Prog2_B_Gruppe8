@@ -329,12 +329,12 @@ public class KundenbereichGUI extends JFrame {
     private void aktualisiereGesamtsumme() {
         double gesamtsummeWert = warenkorbTableModel.getGesamtpreis();
         gesamtsumme.setText("Gesamtsumme: " + formatiereGesamtsumme(gesamtsummeWert));
+        gesamtsumme.revalidate();
     }
 
     private String formatiereGesamtsumme(double gesamtsumme) {
         return decimalFormat.format(gesamtsumme);
     }
-
 
 
 }
