@@ -402,7 +402,9 @@ public class StartGUI extends JFrame implements ActionListener {
             System.out.println("Erfolgreich eingeloggt: " + mitarbeiter);
 
         } catch (LoginFehlgeschlagenException e) {
+            e.printStackTrace();
             String unOpwFalsch = "Username oder Passwort falsch. Bitte versuchen Sie es nochmal.\n";
+            System.out.println("HIIIII");
             System.err.println("*********************************************************************************\n" +
                     unOpwFalsch +
                     "*********************************************************************************\n");

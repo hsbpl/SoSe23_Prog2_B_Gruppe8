@@ -61,7 +61,6 @@ public class EshopClient implements EShopInterface {
         String cmd = Commands.CMD_GIB_ALLE_ARTIKEL.name();
         socketOut.println(cmd);
 
-
         String[] data = readResponse();
         if(Commands.valueOf(data[0]) != Commands.CMD_GIB_ALLE_ARTIKEL_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
@@ -71,24 +70,27 @@ public class EshopClient implements EShopInterface {
 
 
     private List<Artikel> createArtikellisteFromData(String[] data) {
+        int artikelnummer = 0, bestand = 0,kaufszahl = 0;
+        String bezeichnung = null;
+        double einzelpreis = 0;
         List<Artikel> artikelliste = new ArrayList<>();
         data = Arrays.copyOfRange(data, 1, data.length);
-
+        System.out.println(Arrays.toString(data));
         for(int i=0; i<data.length; i+=5) {
-
-            String bezeicnung = data[i];
-            int artikelnummer = Integer.parseInt(data[i+1]);
-            int bestand = Integer.parseInt(data[i+2]);
-            double einzelpreis = Double.parseDouble(data[i+3]);
-            int kaufszahl = Integer.parseInt(data[i+4]);
-
+            if (i + 4 < data.length) {
+                bezeichnung = data[i];
+                artikelnummer = Integer.parseInt(data[i + 1]);
+                bestand = Integer.parseInt(data[i + 2]);
+                einzelpreis = Double.parseDouble(data[i + 3]);
+                kaufszahl = Integer.parseInt(data[i + 4]);
+            }
 
             //gegenchecken ob Artikel ein Massengut oder EinzelArtikel ist
             if(kaufszahl != 1){
-                Massengutartikel massengutartikel = new Massengutartikel(bezeicnung,artikelnummer,bestand, einzelpreis, kaufszahl);
+                Massengutartikel massengutartikel = new Massengutartikel(bezeichnung,artikelnummer,bestand, einzelpreis, kaufszahl);
                 artikelliste.add(massengutartikel);
             } else {
-                Artikel artikel = new Artikel(bezeicnung,artikelnummer,bestand,einzelpreis, 1);
+                Artikel artikel = new Artikel(bezeichnung,artikelnummer,bestand,einzelpreis, 1);
                 artikelliste.add(artikel);}
 
         }
@@ -111,7 +113,7 @@ public class EshopClient implements EShopInterface {
     private List<Mitarbeiter> createMitarbeiterlisteFromData(String[] data) {
         List<Mitarbeiter> mitarbeiterListe = new ArrayList<>();
 
-        for(int i=1; i<data.length; i+=4) {
+        for(int i=1; i<data.length; i+=5) {
 
             String username = data[i];
             String passwort = data[i+1];
@@ -143,7 +145,7 @@ public class EshopClient implements EShopInterface {
     private List<Kunde> createKundenListeFromData(String[] data) {
         List<Kunde> kundenListe = new ArrayList<>();
 
-        for(int i=1; i<data.length; i+=5) {
+        for(int i=1; i<data.length; i+=6) {
 
             String username = data[i];
             String passwort = data[i+1];
@@ -176,11 +178,11 @@ public class EshopClient implements EShopInterface {
 
     private List<Ereignis> createEreignisListeFromData(String[] data) {
         List<Ereignis> ereignisListe = new ArrayList<>();
-
-        for(int i=1; i<data.length; i+=13) { //todo habe ich die anzahl richtig gesetzt?
+        System.out.println((data.toString()));
+        for(int i=1; i<data.length; i+=14) { //todo habe ich die anzahl richtig gesetzt?
 
             LocalDateTime date = LocalDateTime.parse(data[i]);
-            Enum ereignistyp = Enum.valueOf(data[i+2]); // todo ob das richtig funktioniert
+            Enum ereignistyp = Enum.valueOf(data[i+1]); // todo ob das richtig funktioniert
             int menge  = Integer.parseInt(data[i+2]);
             int bestandAktualisierung = Integer.parseInt(data[i+3]);
 
@@ -295,13 +297,14 @@ public class EshopClient implements EShopInterface {
     }
 
     @Override
-    public Mitarbeiter mitarbeiterLogin(String username, String passwort) throws LoginFehlgeschlagenException {
+    public Mitarbeiter mitarbeiterLogin(String username, String passwort) {
         String cmd = Commands.CMD_MITARBEITER_EINLOGGEN.name();
         cmd += separator + username;
         cmd += separator + passwort;
         socketOut.println(cmd);
-        String[] data = readResponse();
 
+        String[] data = readResponse();
+        System.out.println("hallo " +data[0]);
         if(Commands.valueOf(data[0]) != Commands.CMD_MITARBEITER_EINLOGGEN_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
@@ -387,7 +390,7 @@ public class EshopClient implements EShopInterface {
         cmd += separator + u.getVorname();
         cmd += separator + u.getidNummer();
 
-
+        System.out.println(cmd);
         socketOut.println(cmd);
 
         String[] data = readResponse();

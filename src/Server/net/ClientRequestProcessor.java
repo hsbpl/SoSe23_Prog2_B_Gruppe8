@@ -163,6 +163,10 @@ public class ClientRequestProcessor implements Runnable {
         }
     }
 
+    private void handleZeigWarenkorb() {
+
+    }
+
 
     private void handleBestandErhöhen(String[] data) {
         String cmd = Commands.CMD_BESTAND_ERHÖHEN_RSP.name();
@@ -182,6 +186,7 @@ public class ClientRequestProcessor implements Runnable {
         try {
             eshop.bestandErhöhen(artikelname, menge, user);
             cmd += separator + "Erfolgreich";
+            System.out.println(cmd);
             socketOut.println(cmd);
         } catch (ArtikelExistiertNichtException e) {
             throw new RuntimeException(e);
@@ -221,7 +226,7 @@ public class ClientRequestProcessor implements Runnable {
     private void handleGibAlleMitarbeiter() {
         List<Mitarbeiter> result = eshop.getAlleMitarbeiter();
 
-        String cmd = Commands.CMD_GIB_ALLE_ARTIKEL_RSP.name();
+        String cmd = Commands.CMD_GIB_ALLE_MITARBEITER_RSP.name();
 
         for (Mitarbeiter mitarbeiter : result) {
             cmd += separator + mitarbeiter.getUserName();
@@ -235,9 +240,9 @@ public class ClientRequestProcessor implements Runnable {
 
     private void handleGibAlleArtikel() {
         List<Artikel> result = eshop.getAlleArtikel();
-
         String cmd = Commands.CMD_GIB_ALLE_ARTIKEL_RSP.name();
-
+        System.out.println("sdfasnfsnf hehe");
+        System.out.println(result);
         for (Artikel artikel : result) {
             cmd += separator + artikel.getBezeichnung();
             cmd += separator + artikel.getArtikelNummer();
@@ -425,7 +430,7 @@ public class ClientRequestProcessor implements Runnable {
 
             socketOut.println(cmd);
         } catch (LoginFehlgeschlagenException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
     private void handleEinzelartikelHinzufügen(String[] data) {
@@ -597,12 +602,13 @@ public class ClientRequestProcessor implements Runnable {
 
         //todo exceptions
         try {
+            String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name();
+            System.out.println("Was geht ab?");
             System.out.println(artikel);
             System.out.println(menge);
             System.out.println(warenkorb);
             eshop.inDenWarenkorbLegen(artikel, menge, warenkorb);
-
-            socketOut.println(Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name());
+            socketOut.println(cmd);
         } catch (UngueltigeMengeException e) {
             throw new RuntimeException(e);
         } catch (ArtikelExistiertNichtException e) {
@@ -720,7 +726,7 @@ public class ClientRequestProcessor implements Runnable {
 
         //todo exceptions
         try {
-           String rechnung = eshop.kaufenUndRechnungEhalten(kunde, warenkorb);
+            String rechnung = eshop.kaufenUndRechnungEhalten(kunde, warenkorb);
             socketOut.println(Commands.CMD_KAUF_ABSCHLIESSEN_RSP.name()+ separator + rechnung);
         } catch (WarenkorbIstLeerException e) {
             throw new RuntimeException(e);
