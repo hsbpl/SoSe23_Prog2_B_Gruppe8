@@ -52,10 +52,9 @@ public class StartGUI extends JFrame implements ActionListener {
 
     public StartGUI() throws IOException {
         super("Roha & Sanjana's Eshop");
-        System.out.println("HI");
-        String datei = "ESHOP";
+     //   System.out.println("HI");
         eshop = new EshopClient();
-        System.out.println("HI");
+       // System.out.println("HI");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
         this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
         this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
@@ -70,7 +69,7 @@ public class StartGUI extends JFrame implements ActionListener {
 
     public StartGUI(EShopInterface eShop){
         super("Roha & Sanjana's Eshop");
-        String datei = "ESHOP";
+      //  String datei = "ESHOP";
         eshop = eShop;
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird

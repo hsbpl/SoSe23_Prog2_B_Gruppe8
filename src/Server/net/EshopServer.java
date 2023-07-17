@@ -11,32 +11,31 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EshopServer {
-    public static final int DEFAULT_PORT = 1399;
-    protected int port;
-    protected ServerSocket serverSocket;
-    private EShopInterface eShopInterface;
-    private boolean running;
 
-    public EshopServer(int port, EShopInterface eshop) throws IOException, ArtikelExistiertBereitsException, UserExistiertBereitsException {
-        if (port == 0) {
-            port = DEFAULT_PORT;
+    public static void main(String[] args) throws IOException {
+        EShopInterface bib = new EShop("Eshop");
+
+        ServerSocket ss = new ServerSocket(1399);
+        System.out.println("Server laeuft und wartet auf eingehende Verbindungen!");
+
+        while (true) {
+            Socket s = ss.accept();
+
+            ClientRequestProcessor c = new ClientRequestProcessor(s, bib);
+
+
+            Thread t = new Thread(c);
+            t.start();
+
+            System.err.println("Client verbunden!");
         }
-        this.port = port;
-        this.eShopInterface = eshop;
-        this.running = true;
 
-        try {
-            this.serverSocket = new ServerSocket(port);
-            InetAddress ia = InetAddress.getLocalHost();
-            System.out.println("Host: " + ia.getHostName());
-            System.out.println("Server: " + ia.getHostAddress() + " Port: " + port);
-            System.out.println("Waiting for connections...\n");
-        } catch (IOException var3) {
-            fail(var3, "Ein Ausnahmefall ist beim Anlegen des Server-Sockets aufgetreten");
-        }
-    }
 
+/*
     public void acceptClientRequestProcessor() {
+
+
+
         try {
             while (running) {
                 Socket clientSocket = this.serverSocket.accept();
@@ -81,4 +80,7 @@ public class EshopServer {
         System.exit(1);
     }
 
+ */
+
+    }
 }

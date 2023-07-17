@@ -26,10 +26,13 @@ public class EshopClient implements EShopInterface {
     private PrintStream socketOut;
     private Warenkorb warenkorb;
 
+
+
     public EshopClient() throws IOException {
 
         try {
             socket = new Socket("127.0.0.1", 1399);
+
             InputStream is = socket.getInputStream();
             socketIn = new BufferedReader(new InputStreamReader(is));
             socketOut = new PrintStream(socket.getOutputStream());
@@ -68,32 +71,34 @@ public class EshopClient implements EShopInterface {
         return createArtikellisteFromData(data);
     }
 
+    /*
 
+
+     */
+
+
+    //todo diese methode geändert
     private List<Artikel> createArtikellisteFromData(String[] data) {
-        int artikelnummer = 0, bestand = 0,kaufszahl = 0;
-        String bezeichnung = null;
-        double einzelpreis = 0;
+
         List<Artikel> artikelliste = new ArrayList<>();
-        data = Arrays.copyOfRange(data, 1, data.length);
-        System.out.println(Arrays.toString(data));
-        for(int i=0; i<data.length; i+=5) {
-            if (i + 4 < data.length) {
-                bezeichnung = data[i];
-                artikelnummer = Integer.parseInt(data[i + 1]);
-                bestand = Integer.parseInt(data[i + 2]);
-                einzelpreis = Double.parseDouble(data[i + 3]);
-                kaufszahl = Integer.parseInt(data[i + 4]);
+
+        for(int i=1; i<data.length; i+=5) {
+
+                String bezeichnung = data[i];
+                int artikelnummer = Integer.parseInt(data[i + 1]);
+                int bestand = Integer.parseInt(data[i + 2]);
+                double einzelpreis = Double.parseDouble(data[i + 3]);
+                int kaufszahl = Integer.parseInt(data[i + 4]);
+                if(kaufszahl != 1){
+                    Massengutartikel massengutartikel = new Massengutartikel(bezeichnung,artikelnummer,bestand, einzelpreis, kaufszahl);
+                    artikelliste.add(massengutartikel);
+                } else {
+                    Artikel artikel = new Artikel(bezeichnung,artikelnummer,bestand,einzelpreis, 1);
+                    artikelliste.add(artikel);}
+
+
             }
 
-            //gegenchecken ob Artikel ein Massengut oder EinzelArtikel ist
-            if(kaufszahl != 1){
-                Massengutartikel massengutartikel = new Massengutartikel(bezeichnung,artikelnummer,bestand, einzelpreis, kaufszahl);
-                artikelliste.add(massengutartikel);
-            } else {
-                Artikel artikel = new Artikel(bezeichnung,artikelnummer,bestand,einzelpreis, 1);
-                artikelliste.add(artikel);}
-
-        }
         return artikelliste;
     }
 
@@ -351,8 +356,6 @@ public class EshopClient implements EShopInterface {
     @Override
     public void massengutArtikelHinzufügen(Massengutartikel a, Mitarbeiter mitarbeiter) throws ArtikelExistiertBereitsException, LeeresTextfieldException {
         String cmd = Commands.CMD_MASSENGUTARTIKEL_HINZUFÜGEN.name();
-        socketOut.println(cmd);
-
 
         cmd += separator + a.getBezeichnung();
         cmd += separator + a.getArtikelNummer();
@@ -362,8 +365,8 @@ public class EshopClient implements EShopInterface {
 
         cmd += separator + mitarbeiter.getUserName();
         cmd += separator + mitarbeiter.getPasswort();
-        cmd += separator + mitarbeiter.getVorname();
         cmd += separator + mitarbeiter.getNachname();
+        cmd += separator + mitarbeiter.getVorname();
         cmd += separator + mitarbeiter.getidNummer();
 
         socketOut.println(cmd);
@@ -390,19 +393,13 @@ public class EshopClient implements EShopInterface {
         cmd += separator + u.getVorname();
         cmd += separator + u.getidNummer();
 
-        System.out.println(cmd);
+
         socketOut.println(cmd);
 
-        String[] data = readResponse();
-
-        if(Commands.valueOf(data[0]) != Commands.CMD_BESTAND_ERHÖHEN_RSP) {
-            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
-        }
-
-        System.out.println(data);
     }
 
     @Override
+    //todo hier verändert
     public void bestanNiedriger(String artikelname, int menge, User u) throws ArtikelExistiertNichtException, UngueltigeMengeException, LeeresTextfieldException {
         String cmd = Commands.CMD_BESTAND_VERRINGERN.name();
 
@@ -415,16 +412,8 @@ public class EshopClient implements EShopInterface {
         cmd += separator + u.getVorname();
         cmd += separator + u.getidNummer();
 
-
         socketOut.println(cmd);
 
-        String[] data = readResponse();
-
-        if(Commands.valueOf(data[0]) != Commands.CMD_BESTAND_VERRINGERN_RSP) {
-            throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
-        }
-
-        System.out.println(data);
     }
 
     @Override
@@ -485,6 +474,28 @@ public class EshopClient implements EShopInterface {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
 
+        String bezeichnung = data[1];
+        int artikelnummer = Integer.parseInt(data[2]);
+        int bestand = Integer.parseInt(data[3]);
+        double einzelpreis = Double.parseDouble(data[4]);
+        int kaufszahl = Integer.parseInt(data[5]);
+        if(kaufszahl !=1){
+            Massengutartikel massengutartikel = new Massengutartikel(bezeichnung, artikelnummer, bestand, einzelpreis, kaufszahl);
+            if(warenkorb.getWarenkorb().containsKey(massengutartikel)){
+                warenkorb.getWarenkorb().replace(massengutartikel, menge);
+            }else {
+                warenkorb.getWarenkorb().put(massengutartikel, menge);
+            }
+        } else {
+            Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, einzelpreis);
+            if(warenkorb.getWarenkorb().containsKey(a)){
+                warenkorb.getWarenkorb().replace(a, menge);
+            }else {
+                warenkorb.getWarenkorb().put(a, menge);
+            }
+        }
+
+
     }
 
     @Override
@@ -500,6 +511,20 @@ public class EshopClient implements EShopInterface {
         if(Commands.valueOf(data[0]) != Commands.CMD_AUS_DEM_WARENKORB_LEGEN_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
+
+        String bezeichnung = data[1];
+        int artikelnummer = Integer.parseInt(data[2]);
+        int bestand = Integer.parseInt(data[3]);
+        double einzelpreis = Double.parseDouble(data[4]);
+        int kaufszahl = Integer.parseInt(data[5]);
+        if(kaufszahl !=1){
+            Massengutartikel massengutartikel = new Massengutartikel(bezeichnung, artikelnummer, bestand, einzelpreis, kaufszahl);
+            warenkorb.getWarenkorb().remove(massengutartikel);
+        } else {
+            Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, einzelpreis);
+            warenkorb.getWarenkorb().remove(a);
+        }
+
 
     }
 
