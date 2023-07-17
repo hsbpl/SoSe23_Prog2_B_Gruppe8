@@ -4,7 +4,6 @@ import Client.UI.TableModels.KundenTableModel;
 import Client.UI.TableModels.MitarbeiterTableModel;
 import Common.EShopInterface;
 import Common.Exceptions.*;
-import Server.Domain.EShop;
 import Client.UI.TableModels.ArtikelTableModel;
 import Client.UI.TableModels.EreignisTableModel;
 import Common.Artikel;
@@ -35,7 +34,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private Mitarbeiter eingeloggterMitarbeiter;
     private JButton zurückButton = new JButton("Ausloggen");
     private JButton massengutArtikelAnlegenPopupButton = new JButton(" Massengutartikel anlegen ");
-    private JButton artikelAnlegenPopupButton = new JButton ("   Einzelartikel anlegen   ");
+    private JButton artikelAnlegenPopupButton = new JButton("   Einzelartikel anlegen   ");
     private JButton mitarbeiterkontoAnlegen = new JButton("Registrieren");
     private JTextField usernameTextfield = new JTextField(textfieldSize);
     private JTextField passwotTextfield = new JTextField(textfieldSize);
@@ -58,7 +57,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private JButton anlegenEinzelartikelAbschließen = new JButton("Neuen artikel anlegen");
     private JButton anlegenMassengutArtikelAbschliessen = new JButton("Neuen artikel anlegen");
     private JComboBox<String> listenauswahl;
-    private JComboBox <String> artikelausgabe;
+    private JComboBox<String> artikelausgabe;
     private JDialog popup;
     private JDialog listpopup;
     private JPanel midpanel;
@@ -83,7 +82,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     private JTextField sucheListen;
 
-    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShopInterface eshop){
+    public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShopInterface eshop) {
         this.eshop = eshop;
 
         //Menu definieren
@@ -159,7 +158,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         westpanel.add(Box.createVerticalStrut(40));
 
 
-
         artikelAnlegenPopupButton.addActionListener(this);
         massengutArtikelAnlegenPopupButton.addActionListener(this);
 
@@ -187,7 +185,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         midpanel.setLayout(new FlowLayout());
 
 
-        String[] listen = { "Alphabetische Ausgabe", "Nummerische Ausgabe"};
+        String[] listen = {"Alphabetische Ausgabe", "Nummerische Ausgabe"};
         artikelausgabe = new JComboBox<>(listen);
         artikelausgabe.addActionListener(this);
 
@@ -220,7 +218,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-
     private JDialog listpopup(Component jList, String usage) {
         listpopup = new JDialog();
         listpopup.setVisible(true);
@@ -241,7 +238,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
         return listpopup;
     }
-
 
 
     private JPanel registrierung() {
@@ -360,7 +356,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
     private JComboBox<String> listenCombobox() {
-        String[] listen = { "Registrierte Mitarbeiter ausgeben", "Registrierte Kunden ausgeben", "Ereignisse ausgeben"};
+        String[] listen = {"Registrierte Mitarbeiter ausgeben", "Registrierte Kunden ausgeben", "Ereignisse ausgeben"};
         listenauswahl = new JComboBox<>(listen);
         listenauswahl.addActionListener(this);
 
@@ -368,11 +364,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-
-    private JScrollPane artikellistTable(){
+    private JScrollPane artikellistTable() {
 
         artikelTabelle = new JTable();
-        model =new ArtikelTableModel(eshop.getAlleArtikel());
+        model = new ArtikelTableModel(eshop.getAlleArtikel());
         sorter = new TableRowSorter<>(model);
         artikelTabelle.setModel(model);
         artikelTabelle.setRowSorter(sorter);
@@ -382,9 +377,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return tablePane;
     }
 
-    private JTable kundenTable(){
+    private JTable kundenTable() {
         kundenTabelle = new JTable();
-        kundenTableModel =new KundenTableModel(eshop.getAlleKunden());
+        kundenTableModel = new KundenTableModel(eshop.getAlleKunden());
         sorter = new TableRowSorter<>(kundenTableModel);
         kundenTabelle.setRowSorter(sorter);
         kundenTabelle.setModel(kundenTableModel);
@@ -393,9 +388,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-    private JTable mitarbeiterTable(){
+    private JTable mitarbeiterTable() {
         mitarbeiterTabelle = new JTable();
-        mitarbeiterTableModel =new MitarbeiterTableModel(eshop.getAlleMitarbeiter());
+        mitarbeiterTableModel = new MitarbeiterTableModel(eshop.getAlleMitarbeiter());
         sorter = new TableRowSorter<>(mitarbeiterTableModel);
         mitarbeiterTabelle.setModel(mitarbeiterTableModel);
         mitarbeiterTabelle.setRowSorter(sorter);
@@ -405,9 +400,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-    private JTable ereignisTable(){
+    private JTable ereignisTable() {
         ereignisTabelle = new JTable();
-        ereignisTableModel =new EreignisTableModel(eshop.ereignisseNachDatum());
+        ereignisTableModel = new EreignisTableModel(eshop.ereignisseNachDatum());
         sorter = new TableRowSorter<>(ereignisTableModel);
         ereignisTabelle.setModel(ereignisTableModel);
         ereignisTabelle.setRowSorter(sorter);
@@ -416,7 +411,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return ereignisTabelle;
     }
 
-    private enum Eventsource{
+    private enum Eventsource {
         AUSLOGGEN,
         BESTAND_VERRINGERN,
         BESTAND_ERHÖHEN,
@@ -459,7 +454,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             source = Eventsource.ARTIKEL_ORDNUNG;
         }
 
-        switch (source){
+        switch (source) {
             case AUSLOGGEN:
                 StartGUI s = new StartGUI(eshop);
                 this.dispose();
@@ -536,7 +531,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             eshop.mitarbeiterRegistrieren(neuerMitarbeiter);
 
             eshop.schreibeMitarbeiter();
-            System.out.println("Registriert: "+neuerMitarbeiter);
+            System.out.println("Registriert: " + neuerMitarbeiter);
             popup.dispose();
         } catch (UserExistiertBereitsException e) {
             String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
@@ -577,16 +572,16 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             eshop.schreibeEreignis();
 
 
-            System.out.println("Erstellt: "+m);
+            System.out.println("Erstellt: " + m);
             model.setArtikelListe(eshop.getAlleArtikel());
             popup.dispose();
         } catch (NumberFormatException e) {
             String numberFormat = "Bitte Nummer richtig eingegeben.\n";
             System.err.println("*********************************************************************************\n" +
-                    numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden."+
+                    numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden." +
                     "*********************************************************************************\n");
             popup.dispose();
-            JOptionPane.showMessageDialog(null, numberFormat +"\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, numberFormat + "\nBitte achten Sie beim Preis darauf ein “.“ zu verwenden.", "Eingabenfehler", JOptionPane.ERROR_MESSAGE);
 
         } catch (ArtikelExistiertBereitsException e) {
             String artikelExistiert = "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n";
@@ -634,9 +629,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
             model.setArtikelListe(eshop.getAlleArtikel());
 
-            System.out.println("Erstellt: "+a);
+            System.out.println("Erstellt: " + a);
         } catch (NumberFormatException e) {
-            String numberFormat = "Bitte Nummer richtig eingegeben.\n" + "Bitte achten Sie beim Preis darauf ein “.“ zu verwenden.\n" ;
+            String numberFormat = "Bitte Nummer richtig eingegeben.\n" + "Bitte achten Sie beim Preis darauf ein “.“ zu verwenden.\n";
             System.err.println("*********************************************************************************\n" +
                     numberFormat +
                     "*********************************************************************************\n");
@@ -794,7 +789,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             int row = artikelTabelle.getSelectedRow();
             int column = artikelTabelle.getSelectedColumn();
 
-            if (column ==0) {
+            if (column == 0) {
                 String value = artikelTabelle.getValueAt(row, column).toString();
 
                 bezeichnungsTextfieldVeränderung.setText("");
@@ -830,40 +825,36 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     @Override
     public void insertUpdate(DocumentEvent documentEvent) {
 
-        suche(documentEvent);
+        aktualisiereTabelle(sucheArtikel.getText());
 
     }
 
     @Override
     public void removeUpdate(DocumentEvent documentEvent) {
-        suche(documentEvent);
+        aktualisiereTabelle(sucheArtikel.getText());
     }
 
     @Override
     public void changedUpdate(DocumentEvent documentEvent) {
-        suche(documentEvent);
     }
 
 
-    public void suche(DocumentEvent documentEvent){
-
-        if (documentEvent.getDocument() == sucheArtikel.getDocument()){
-            aktualisiereTabelle(sucheArtikel.getText());
-        } else if(documentEvent.getDocument() == sucheListen.getDocument()){
-            aktualisiereTabelle(sucheListen.getText());
-        }
+    private void aktualisiereTabelle(String suche) {
+        RowFilter<ArtikelTableModel, Object> filter = new RowFilter<ArtikelTableModel, Object>() {
+            public boolean include(Entry<? extends ArtikelTableModel, ? extends Object> entry) {
+                String searchText = suche.toLowerCase(); // Suchtext in Kleinbuchstaben umwandeln
+                ArtikelTableModel model = entry.getModel();
+                int columnCount = model.getColumnCount();
+                for (int i = 0; i < columnCount; i++) {
+                    String cellText = model.getValueAt((int) entry.getIdentifier(), i).toString();
+                    if (cellText.toLowerCase().contains(searchText)) { // Vergleich in Kleinbuchstaben durchführen
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+        sorter.setRowFilter(filter);
     }
-
-    public void aktualisiereTabelle(String suche){
-
-        if (suche.length() == 0) {
-            sorter.setRowFilter(null);
-        } else {
-            sorter.setRowFilter(RowFilter.regexFilter(suche));
-            System.out.println("typed");
-        }
-    }
-
 
 }
-
