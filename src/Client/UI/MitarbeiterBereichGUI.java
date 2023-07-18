@@ -31,6 +31,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private int textfieldSize = 50;
     private int digitInputTextfieldsize = 10;
 
+    //Componenten
+
     private Mitarbeiter eingeloggterMitarbeiter;
     private JButton zurückButton = new JButton("Ausloggen");
     private JButton massengutArtikelAnlegenPopupButton = new JButton(" Massengutartikel anlegen ");
@@ -99,7 +101,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
     private void setupMenu() {
-        // Menuleiste anlegen ...
+        // Menuleiste anlegen
         JMenuBar mBar = new JMenuBar();
 
         JMenu fileMenu = new FileMenu(this, eshop);
@@ -112,11 +114,11 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     }
 
 
-    //Extrafenster wenn der Mitarbeiter eingeloggt / registriert ist
+    //Zusammenbau  aller Himmelsrichtungen
     private void mitarbeiterbereich() {
         JPanel mitarbeiterFenster = new JPanel();
-        mitarbeiterFenster.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
-        mitarbeiterFenster.setLayout(new BorderLayout(5, 5)); //aufteilung in borderlayout, die Zahlen sind für den Abstand da
+        mitarbeiterFenster.setVisible(true);
+        mitarbeiterFenster.setLayout(new BorderLayout(5, 5));
 
 
         mitarbeiterFenster.add(westpanel(), BorderLayout.WEST);
@@ -146,12 +148,12 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     private JPanel westpanel() {
         JPanel westpanel = new JPanel();
-        westpanel.setVisible(true);//Jpanel ist sichtbar
-        westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
+        westpanel.setVisible(true);
+        westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS));
         westpanel.setPreferredSize(new Dimension(300, 100));
 
         westpanel.add(Box.createVerticalStrut(40));
-        westpanel.add(bestandVerändern());  //Erhöhen und verringern der warenmengen soll im WEsten angezeigt werden
+        westpanel.add(bestandVerändern());
         westpanel.add(Box.createVerticalStrut(40));
 
 
@@ -169,7 +171,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private JPanel eastpanel() {
         JPanel eastpanel = new JPanel();
         eastpanel.setVisible(true);//Jpanel ist sichtbar
-        eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
+        eastpanel.setLayout(new BoxLayout(eastpanel, BoxLayout.Y_AXIS));
         eastpanel.setBorder(BorderFactory.createTitledBorder("Listen ausgeben lassen"));
         eastpanel.add(listenCombobox());
 
@@ -178,10 +180,10 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     private JPanel midpanel() {
         midpanel = new JPanel();
-        midpanel.setVisible(true);//Jpanel ist sichtbar
+        midpanel.setVisible(true);
         midpanel.setLayout(new FlowLayout());
 
-        scrollPaneArtikelliste = new JScrollPane(artikellistTable()); //liste wird dem scrollpane hinzugefügt
+        scrollPaneArtikelliste = new JScrollPane(artikellistTable());
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
         sucheArtikel = new JTextField(textfieldSize);
@@ -195,13 +197,14 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return midpanel;
     }
 
+    //wird beim Anlegen neuer Artikel und beim Registrieren der Mitarbeiter hinzugefügt
     private JDialog popup(Component component, String usage) {
         popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
-        popup.setLocationRelativeTo(null);//popup erscheint in der mitte
-        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
+        popup.setLocationRelativeTo(null);
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        popup.setResizable(false);
         popup.setTitle(usage);
 
         popup.add(component);
@@ -298,6 +301,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         return anlegen;
     }
 
+    //Kann beides, Erhöhen und Verringern
     public JPanel bestandVerändern() {
         JPanel bestandsAenderung = new JPanel();
         bestandsAenderung.setVisible(true);
@@ -392,7 +396,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         REGISTRIERUNGSFENSTER,
         MITARBEITER_REGISTRIEREN,
         LISTEN_AUSGEBE,
-        
+
     }
 
     @Override
@@ -420,8 +424,9 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             source = Eventsource.MITARBEITER_REGISTRIEREN;
         } else if (actionEvent.getSource() == listenauswahl) {
             source = Eventsource.LISTEN_AUSGEBE;
-        } 
+        }
 
+        //Methoden darunter
         switch (source) {
             case AUSLOGGEN:
                 StartGUI s = new StartGUI(eshop);
@@ -461,6 +466,8 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     }
 
+
+    // Methoden der Switchcase
     private void gewählteListeAusgeben() {
         String selectedListItem = listenauswahl.getSelectedItem().toString();
 

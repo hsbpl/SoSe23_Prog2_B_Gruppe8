@@ -38,7 +38,7 @@ public class HelpMenu extends JMenu implements ActionListener {
             JOptionPane.showMessageDialog(null, "Nachricht wurde verschickt.", "Nachricht versendet", JOptionPane.INFORMATION_MESSAGE);
 
 
-        }else if (actionCommand.equals("FAQ")) {
+        } else if (actionCommand.equals("FAQ")) {
             String[] faqQuestions = {
                     "Frage 1: Wie kann ich ein Konto erstellen?",
                     "Frage 2: Wie lange dauert der Versand?",
