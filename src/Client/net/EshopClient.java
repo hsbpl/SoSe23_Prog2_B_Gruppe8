@@ -14,7 +14,6 @@ public class EshopClient implements EShopInterface {
 
     //todo Exceptionhandling undalles was mit dem Warenkorb zu tun hat
     final String separator = ";";
-
     private Socket socket;
     private BufferedReader socketIn;
     private PrintStream socketOut;
@@ -366,6 +365,13 @@ public class EshopClient implements EShopInterface {
 
 
         socketOut.println(cmd);
+        String [] data = readResponse();
+        if (Commands.valueOf(data[0]) == Commands.ARTIKEL_EXISTIERT_EXCEPTION) {
+            throw new ArtikelExistiertNichtException();
+        }if (Commands.valueOf(data[0]) == Commands.LEERES_TEXTFELD_EXCEPTION) {
+            throw new LeeresTextfieldException();
+
+        }
 
     }
 
