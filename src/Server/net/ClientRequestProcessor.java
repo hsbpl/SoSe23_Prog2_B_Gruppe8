@@ -59,12 +59,6 @@ public class ClientRequestProcessor implements Runnable {
         String[] parts = receivedData.split(separator);
 
         switch (Commands.valueOf(parts[0])) {
-            case HALLO_SERVER:
-                handleGibHalloServer();
-                break;
-            case HALLO_CLIENT:
-                handleGibHalloClient();
-                break;
             case CMD_GIB_ALLE_ARTIKEL:
                 handleGibAlleArtikel();
                 break;
@@ -77,11 +71,6 @@ public class ClientRequestProcessor implements Runnable {
             case CMD_GIB_ALLE_MITARBEITER:
                 handleGibAlleMitarbeiter();
                 break;
-            case CMD_SPEICHER_HALLO_SERVER:
-                handleHalloServerSpeichern();
-                break;
-            case CMD_SPEICHER_HALLO_CLIENT:
-                handleHalloClientSpeichern();
             case CMD_SPEICHER_ARTIKEL:
                 handleArtikelSpeichern();
                 break;
@@ -172,31 +161,7 @@ public class ClientRequestProcessor implements Runnable {
 
     }
 
-    private void handleHalloClientSpeichern() {
-    }
 
-    private void handleGibHalloClient() {
-        String response = "Hallo, Client!";
-        try {
-            socketOut.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleGibHalloServer() {
-        String response = "Hallo, Server!";
-        try {
-            socketOut.println(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleHalloServerSpeichern() {
-        socketOut.println("Befehl 'Hallo Server speichern' erhalten!");
-
-    }
 
     private void handleGibAlleMitarbeiter() {
         List<Mitarbeiter> result = eshop.getAlleMitarbeiter();

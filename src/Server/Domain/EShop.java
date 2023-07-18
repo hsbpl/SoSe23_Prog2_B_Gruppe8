@@ -17,7 +17,7 @@ public class EShop implements EShopInterface {
     private Artikelverwaltung av;
     private Kundenverwaltung kv;
     private Mitarbeiterverwaltung mv;
-    private PrintStream socketOut;
+
     public EShop(String datei) throws IOException {
         this.datei = datei;
         av = new Artikelverwaltung();
@@ -195,11 +195,6 @@ public class EShop implements EShopInterface {
     }
 
 
-    @Override
-    public void handleGibHalloServer() throws IOException {
-        String response = "Hallo, Client!";
-        socketOut.println(response);
-    }
 
     public String artikelImWarenkorb(Warenkorb warenkorb){
         return kv.einkaufsliste(warenkorb);
