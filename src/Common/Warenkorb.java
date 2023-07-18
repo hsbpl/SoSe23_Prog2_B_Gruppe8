@@ -18,6 +18,7 @@ public class Warenkorb {
     }
 
 
+
     @Override
     public String toString() {
 
@@ -35,7 +36,7 @@ public class Warenkorb {
 
             einkaufsliste += "\n" + artikelDaten;
             gesamtsumme += aktuelleMenge * einzelPreis;
-            gesamtsumme = Math.round(gesamtsumme * 100.0) / 100.0;
+            gesamtsumme = Math.round(gesamtsumme*100.0)/ 100.0;
         }
 
         return einkaufsliste + "\n" + "\nGesamtsumme:" + "                " + gesamtsumme + "€";

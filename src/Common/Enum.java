@@ -8,7 +8,7 @@ public enum Enum {
 
 
     public String toString() {
-        switch (this.ordinal()) {
+        switch (this.ordinal()){
             case 0:
                 return "AUSLAGERUNG";
             case 1:

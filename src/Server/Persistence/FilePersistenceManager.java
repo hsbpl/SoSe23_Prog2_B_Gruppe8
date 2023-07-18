@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class FilePersistenceManager implements PersistenceManager {
+public class FilePersistenceManager implements PersistenceManager{
 
     private BufferedReader reader = null;
     private PrintWriter writer = null;
@@ -24,70 +24,70 @@ public class FilePersistenceManager implements PersistenceManager {
     private static List<Mitarbeiter> mitarbeiterBestand = new ArrayList<>();
     private static Map<String, Kunde> kundenBestand = new HashMap<>();
     private static List<Ereignis> ereignisliste = new ArrayList<>();
-    private static List<Massengutartikel> massengutBestand = new ArrayList<>();
+    private static List<Massengutartikel>massengutBestand = new ArrayList<>();
 
     public FilePersistenceManager() {
 
     }
 
 
-    public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException {
+
+    public List<Artikel> leseArtikelListe(String datei) throws IOException, ArtikelExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
         Artikel einArtikel;
 
         do {
             einArtikel = ladeArtikel();
-            if (einArtikel != null) {
-                if (artikelBestand.contains(einArtikel)) {
+            if (einArtikel !=null){
+                if (artikelBestand.contains(einArtikel)){
                     throw new ArtikelExistiertBereitsException();
                 }
 
-                if (einArtikel instanceof Massengutartikel) {
+                if(einArtikel instanceof Massengutartikel){
                     artikelBestand.add((Massengutartikel) einArtikel);
                 } else {
                     artikelBestand.add(einArtikel);
                 }
             }
-        } while (einArtikel != null);
+        }while (einArtikel !=null);
         return artikelBestand;
     }
 
-    public Map<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException {
+    public Map<String, Kunde> leseKundenListe(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
         Kunde einKunde;
         int count = 0;
         do {
             einKunde = ladeKunde();
-            if (einKunde != null) {
-                if (kundenBestand.containsValue(einKunde)) {
+            if (einKunde !=null){
+                if (kundenBestand.containsValue(einKunde)){
                     throw new UserExistiertBereitsException();
                 }
                 kundenBestand.put(String.valueOf(count), einKunde);
                 count += 1;
             }
-        } while (einKunde != null);
+        }while (einKunde !=null);
         return kundenBestand;
     }
 
-    public List<Mitarbeiter> leseMitarbeiterList(String datei) throws IOException, UserExistiertBereitsException {
+    public List<Mitarbeiter> leseMitarbeiterList(String datei) throws IOException, UserExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
         Mitarbeiter einMitarbeiter;
 
         do {
             einMitarbeiter = ladeMitarbeiter();
-            if (einMitarbeiter != null) {
-                if (mitarbeiterBestand.contains(einMitarbeiter)) {
+            if (einMitarbeiter !=null){
+                if (mitarbeiterBestand.contains(einMitarbeiter)){
                     throw new UserExistiertBereitsException();
                 }
                 mitarbeiterBestand.add(einMitarbeiter);
             }
-        } while (einMitarbeiter != null);
+        }while (einMitarbeiter !=null);
         return mitarbeiterBestand;
     }
-
     public List<Ereignis> leseEreignisList(String datei) throws IOException, EreignisExistiertBereitsException {
         reader = new BufferedReader(new FileReader(datei));
 
@@ -95,48 +95,47 @@ public class FilePersistenceManager implements PersistenceManager {
 
         do {
             einEreignis = ladeEreignis();
-            if (einEreignis != null) {
-                if (ereignisliste.contains(einEreignis)) {
+            if (einEreignis !=null){
+                if (ereignisliste.contains(einEreignis)){
                     throw new EreignisExistiertBereitsException();
                 }
                 ereignisliste.add(einEreignis);
             }
-        } while (einEreignis != null);
+        }while (einEreignis !=null);
         return ereignisliste;
     }
-
-    public List<Artikel> leseMassengutListe(String datei) throws IOException, EreignisExistiertBereitsException {
+    public List<Artikel> leseMassengutListe(String datei) throws IOException, EreignisExistiertBereitsException{
         reader = new BufferedReader(new FileReader(datei));
 
         Artikel einArtikel;
         do {
             einArtikel = ladeArtikel();
-            if (einArtikel != null) {
+            if (einArtikel !=null){
                 if (artikelBestand.contains(einArtikel)) {
                     throw new EreignisExistiertBereitsException();
                 }
                 artikelBestand.add(einArtikel);
             }
-        } while (einArtikel != null);
+        }while(einArtikel !=null);
         return artikelBestand;
     }
 
     public void schreibeArtikelListe(List<Artikel> liste, String datei) throws IOException {
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
-        for (Artikel a : liste) {
-            if (a instanceof Massengutartikel) {
+        for(Artikel a : liste){
+            if(a instanceof Massengutartikel) {
                 Massengutartikel mg = (Massengutartikel) a;
                 speichereArtikel(mg, "Massengutartikel");
             } else {
-                speichereArtikel(a, "Einzelartikel");
+                speichereArtikel(a,"Einzelartikel");
             }
         }
 
         writer.close();
     }
 
-    public void schreibeMassengutListe(List<Artikel> liste, String datei) throws IOException {
+    public void schreibeMassengutListe(List<Artikel> liste, String datei) throws IOException{
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
         for (Artikel mg : liste)
@@ -147,7 +146,7 @@ public class FilePersistenceManager implements PersistenceManager {
     public void schreibeKundeListe(List<Kunde> liste, String datei) throws IOException {
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
-        for (Kunde k : liste)
+        for(Kunde k : liste)
             speichereKunde(k);
 
         writer.close();
@@ -156,7 +155,7 @@ public class FilePersistenceManager implements PersistenceManager {
     public void schreibeMitarbeiterListe(List<Mitarbeiter> liste, String datei) throws IOException {
         writer = new PrintWriter(new BufferedWriter(new FileWriter(datei)));
 
-        for (Mitarbeiter m : liste)
+        for(Mitarbeiter m : liste)
             speichereMitarbeiter(m);
 
         writer.close();
@@ -171,10 +170,10 @@ public class FilePersistenceManager implements PersistenceManager {
     }
 
     //private Method
-    private Artikel ladeArtikel() throws IOException {
+    private Artikel ladeArtikel() throws IOException{
         //Bezeichnung einlesen
         String bezeichnung = liesZeile();
-        if (bezeichnung == null) {
+        if (bezeichnung == null){
             //es sind keine Daten mehr vorhanden
             return null;
         }
@@ -193,14 +192,14 @@ public class FilePersistenceManager implements PersistenceManager {
 
         String artikeltyp = liesZeile();
 
-        if (artikeltyp.equalsIgnoreCase("Massengutartikel")) {
+        if(artikeltyp.equalsIgnoreCase("Massengutartikel")) {
             return new Massengutartikel(bezeichnung, artikelnummer, bestand, epreis, mindestErwerbMenge);
         } else {
             return new Artikel(bezeichnung, artikelnummer, bestand, epreis);
         }
     }
 
-    private boolean speichereArtikel(Artikel a, String artikeltyp) throws IOException {
+    private boolean speichereArtikel(Artikel a, String artikeltyp) throws IOException{
         schreibeZeile(a.getBezeichnung());
         schreibeZeile(String.valueOf(a.getArtikelNummer()));
         schreibeZeile(String.valueOf(a.getBestand()));
@@ -214,10 +213,9 @@ public class FilePersistenceManager implements PersistenceManager {
         }
         return true;
     }
-
-    private Massengutartikel ladeMassengutArtikel() throws IOException {
+    private Massengutartikel ladeMassengutArtikel() throws IOException{
         String bezeichnung = liesZeile();
-        if (bezeichnung == null) {
+        if (bezeichnung == null){
             return null;
         }
         String artikelnummer_string = liesZeile();
@@ -235,7 +233,7 @@ public class FilePersistenceManager implements PersistenceManager {
         return new Massengutartikel(bezeichnung, artikelnummer, bestand, einzelpreis, erwerbwaremenge);
     }
 
-    private boolean speichereMassengutartikel(Massengutartikel mg) throws IOException {
+    private boolean speichereMassengutartikel(Massengutartikel mg) throws IOException{
         schreibeZeile(mg.getBezeichnung());
         schreibeZeile(String.valueOf(mg.getArtikelNummer()));
         schreibeZeile(String.valueOf(mg.getBestand()));
@@ -246,22 +244,22 @@ public class FilePersistenceManager implements PersistenceManager {
 
     }
 
-    private Kunde ladeKunde() throws IOException {
+    private Kunde ladeKunde() throws IOException{
         //Bezeichnung einlesen
         String username = liesZeile();
-        if (username == null) {
+        if (username == null){
             //keine Daten mehr vorhanden
             return null;
         }
         String passwort = liesZeile();
-        String nachname = liesZeile();
+        String nachname = liesZeile() ;
         String vorname = liesZeile();
         String adresse = liesZeile();
 
         return new Kunde(username, passwort, nachname, vorname, adresse);
     }
 
-    private boolean speichereKunde(Kunde k) throws IOException {
+    private boolean speichereKunde(Kunde k) throws IOException{
         schreibeZeile(k.getUserName());
         schreibeZeile(k.getPasswort());
         schreibeZeile(k.getNachname());
@@ -271,29 +269,27 @@ public class FilePersistenceManager implements PersistenceManager {
         return true;
     }
 
-    private Mitarbeiter ladeMitarbeiter() throws IOException {
+    private Mitarbeiter ladeMitarbeiter() throws IOException{
         String username = liesZeile();
-        if (username == null) {
+        if (username == null){
             //keine Daten mehr vorhanden
             return null;
         }
         String passwort = liesZeile();
-        String nachname = liesZeile();
+        String nachname = liesZeile() ;
         String vorname = liesZeile();
         return new Mitarbeiter(username, passwort, nachname, vorname);
     }
-
-    private boolean speichereMitarbeiter(Mitarbeiter m) throws IOException {
+    private boolean speichereMitarbeiter(Mitarbeiter m) throws IOException{
         schreibeZeile(m.getUserName());
         schreibeZeile(m.getPasswort());
         schreibeZeile(m.getNachname());
         schreibeZeile(m.getVorname());
         return true;
     }
-
     private Ereignis ladeEreignis() throws IOException {
         String anzahl_string = liesZeile();
-        if (anzahl_string == null) {
+        if (anzahl_string == null){
             //keine Daten mehr vorhanden
             return null;
         }
@@ -325,8 +321,7 @@ public class FilePersistenceManager implements PersistenceManager {
 
         return new Ereignis(anzahl, artikel, user, ereignistyp, aktualisierterBestand, zeitstempel);
     }
-
-    private boolean speichereEreignis(Ereignis e) throws IOException {
+    private boolean speichereEreignis(Ereignis e) throws IOException{
         schreibeZeile(String.valueOf(e.getAnzahl()));
         schreibeZeile(String.valueOf(e.getArtikel().getArtikelNummer()));
         schreibeZeile(String.valueOf(e.getUser().getUserName()));
@@ -336,8 +331,8 @@ public class FilePersistenceManager implements PersistenceManager {
         return true;
     }
 
-    public Artikel getArtikelByNumber(int artikelnummer) {
-        for (Artikel artikel : artikelBestand) {
+    public Artikel getArtikelByNumber(int artikelnummer){
+        for (Artikel artikel : artikelBestand){
             if (artikel.getArtikelNummer() == artikelnummer) {
                 return artikel;
             }
@@ -345,19 +340,18 @@ public class FilePersistenceManager implements PersistenceManager {
 
         return null;
     }
-
-    public Massengutartikel getMassengutByNumber(int artikelnummer) {
-        for (Artikel artikel : massengutBestand) {
-            if (artikel.getArtikelNummer() == artikelnummer) {
+    public Massengutartikel getMassengutByNumber(int artikelnummer){
+        for (Artikel artikel : massengutBestand){
+            if (artikel.getArtikelNummer() == artikelnummer){
                 return (Massengutartikel) artikel;
             }
         }
         return null;
     }
 
-    public Kunde getKundeByUsername(String username) {
+    public Kunde getKundeByUsername(String username){
         List<Kunde> kList = new ArrayList<>(kundenBestand.values());
-        for (Kunde kunde : kList) {
+        for (Kunde kunde : kList){
             if (kunde.getUserName().equals(username)) {
                 return kunde;
             }
@@ -366,8 +360,8 @@ public class FilePersistenceManager implements PersistenceManager {
         return null;
     }
 
-    public Mitarbeiter getMitarbeiterByUsername(String username) {
-        for (Mitarbeiter mitarbeiter : mitarbeiterBestand) {
+    public Mitarbeiter getMitarbeiterByUsername(String username){
+        for (Mitarbeiter mitarbeiter : mitarbeiterBestand){
             if (mitarbeiter.getUserName().equals(username)) {
                 return mitarbeiter;
             }
@@ -376,12 +370,13 @@ public class FilePersistenceManager implements PersistenceManager {
         return null;
     }
 
-    public List<Mitarbeiter> gitMitarbeiterbestand() {
+    public List<Mitarbeiter> gitMitarbeiterbestand(){
         return mitarbeiterBestand;
     }
 
 
-    private String liesZeile() throws IOException {
+
+    private String liesZeile() throws IOException{
         if (reader != null)
             return reader.readLine();
         else
