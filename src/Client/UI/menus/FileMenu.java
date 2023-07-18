@@ -18,7 +18,7 @@ public class FileMenu extends JMenu implements ActionListener {
         super("File");
 
         this.frame = frame;
-        this.eShop =eShop;
+        this.eShop = eShop;
 
         JMenuItem mi = new JMenuItem("Beenden");
         mi.addActionListener(this);
@@ -43,7 +43,7 @@ public class FileMenu extends JMenu implements ActionListener {
         } else if (command.equals("Ausloggen")) {
             frame.setVisible(false);
             frame.dispose();
-            StartGUI eShop = new StartGUI( this.eShop);
+            StartGUI eShop = new StartGUI(this.eShop);
         }
     }
 }

@@ -16,7 +16,7 @@ public class WarenkorbTableModel extends AbstractTableModel {
         waren = einkaufsliste;
     }
 
-    public void setWarenkorb(Warenkorb einkaufsliste){
+    public void setWarenkorb(Warenkorb einkaufsliste) {
         waren = einkaufsliste;
         fireTableDataChanged();
     }
@@ -51,7 +51,8 @@ public class WarenkorbTableModel extends AbstractTableModel {
         }
 
     }
-    public double getGesamtpreis(){
+
+    public double getGesamtpreis() {
         double gesamtpreis = 0.0;
         for (Map.Entry<Artikel, Integer> entry : waren.getWarenkorb().entrySet()) {
             Artikel artikel = entry.getKey();

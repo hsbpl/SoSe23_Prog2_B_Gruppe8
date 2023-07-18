@@ -11,17 +11,11 @@ public class MitarbeiterTableModel extends AbstractTableModel {
     private List<Mitarbeiter> mitarbeiter;
     private String[] header = {"Vorname", "Nachname", "Username", "Id.Nr."};
 
-    public MitarbeiterTableModel(List<Mitarbeiter> mitarbeiterList){
+    public MitarbeiterTableModel(List<Mitarbeiter> mitarbeiterList) {
         mitarbeiter = new ArrayList<>();
         mitarbeiter.addAll(mitarbeiterList);
     }
 
-
-    public void setMitarbeiterliste(List<Mitarbeiter> mitarbeiterList){
-        mitarbeiter.clear();
-        mitarbeiter.addAll(mitarbeiterList);
-        fireTableDataChanged();
-    }
 
     @Override
     public int getRowCount() {

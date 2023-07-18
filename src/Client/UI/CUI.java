@@ -18,10 +18,10 @@ public class CUI {
     private EShop eshop;
 
 
-
     public CUI(String datei) throws IOException {
         eshop = new EShop(datei);
     }
+
     private void startMenue() {
 
 
@@ -31,11 +31,10 @@ public class CUI {
         System.out.println("Zum Mitarbeiterlogin        `3`");
 
 
-        try{
+        try {
             int input = scan.nextInt();
             startEingabenVerarbeiten(input);
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
 
             System.out.println(
                     "*********************************************************************************\n" +
@@ -83,7 +82,7 @@ public class CUI {
                     String vorname = scan.next();
                     System.out.println("Adressse:");
                     String adr = scan.next();
-                    Kunde kunde = new Kunde(uname, pasw, nachname, vorname,adr);
+                    Kunde kunde = new Kunde(uname, pasw, nachname, vorname, adr);
                     System.out.println(eshop.kundenRegistrieren(kunde));
                     eshop.schreibeKunde();
                     Warenkorb w = eshop.neuenWarenkorbErstellen(kunde);
@@ -95,14 +94,13 @@ public class CUI {
                                     "*********************************************************************************\n");
                     startMenue();
 
-                }catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Textfelder leer.\n" +
                                     "*********************************************************************************\n");
                     startMenue();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 break;
@@ -154,16 +152,15 @@ public class CUI {
 
         try {
 
-            int input= scan.nextInt();
+            int input = scan.nextInt();
             eshopEingabenVerarbeiten(input, k, w);
-        }
-        catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println(
                     "*********************************************************************************\n" +
                             "Ungültige Eingabe! Bitte geben Sie eine Zahl für Option '1', '2', '3','4' oder '0' ein.\n" +
                             "*********************************************************************************\n");
             scan.nextLine();
-            eshopMenue(k,w);
+            eshopMenue(k, w);
 
         }
 
@@ -214,13 +211,12 @@ public class CUI {
                 break;
 
             case 4:
-                try
-                {
+                try {
                     System.out.println("---------------------");
                     System.out.println(eshop.kaufenUndRechnungEhalten(k, w));
                     System.out.println("---------------------");
-                    startMenue();}
-                catch (WarenkorbIstLeerException e){
+                    startMenue();
+                } catch (WarenkorbIstLeerException e) {
                     System.out.println("*********************************************************************************\n" +
                             "Ihr Warenkorb ist leer.\n" +
                             "*********************************************************************************\n");
@@ -321,18 +317,18 @@ public class CUI {
                             "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
-                } catch (InputMismatchException e){
+                } catch (InputMismatchException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Ungültige Eingabe!\n" +
                                     "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
-                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n"+
+                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n" +
                                     "Bitte versuchen Sie es nochmal.\n" +
 
                                     "*********************************************************************************\n");
                     scan.nextLine();
                     artbeitsMenue(m);
-                } catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Leeres Textfeld\n" +
@@ -355,7 +351,7 @@ public class CUI {
                     double preis = scan.nextDouble();
                     System.out.println("Minimale Einkaufsmenge: ");
                     int zumKaufVerfügbar = scan.nextInt();
-                    if(zumKaufVerfügbar <= 1) {
+                    if (zumKaufVerfügbar <= 1) {
                         throw new InputMismatchException();
                     }
                     eshop.artHinzufügen(new Massengutartikel(bezeichnung, artikelnummer, bestand, preis, zumKaufVerfügbar), m);
@@ -365,18 +361,18 @@ public class CUI {
                             "Der von Ihnen gewählte Artikel existiert bereits. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
-                } catch (InputMismatchException e){
+                } catch (InputMismatchException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Ungültige Eingabe!\n" +
                                     "Bei Eingabe der Artikelnummer bitte nur Zahlen verwenden.\n" +
-                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n"+
+                                    "Ungültige Eingabe! Bei Eingabe des Preises achten Sie darauf ein Komma zu verwenden.\n" +
                                     "Bitte versuchen Sie es nochmal.\n" +
 
                                     "*********************************************************************************\n");
                     scan.nextLine();
                     artbeitsMenue(m);
-                }catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Leeres Textfeld\n" +
@@ -402,7 +398,7 @@ public class CUI {
 
 
                     artbeitsMenue(m);
-                } catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.out.println("*********************************************************************************\n" +
                             "Bezeichnungstextfeld ist leer.\n" +
                             "*********************************************************************************\n");
@@ -432,7 +428,7 @@ public class CUI {
                             "Die von Ihnen gewählte Menge ist zu höher als die Bestandsmenge. Bitte versuchen Sie es nochmal.\n" +
                             "*********************************************************************************\n");
                     artbeitsMenue(m);
-                } catch (LeeresTextfieldException e){
+                } catch (LeeresTextfieldException e) {
                     System.out.println("*********************************************************************************\n" +
                             "Leeres Textfeld.\n" +
                             "*********************************************************************************\n");
@@ -464,7 +460,7 @@ public class CUI {
                                     "*********************************************************************************\n");
                     artbeitsMenue(m);
 
-                }catch (LeeresTextfieldException e) {
+                } catch (LeeresTextfieldException e) {
                     System.out.println(
                             "*********************************************************************************\n" +
                                     "Leeres Textfield.\n" +
@@ -506,7 +502,7 @@ public class CUI {
             cui.startMenue();
 
 
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

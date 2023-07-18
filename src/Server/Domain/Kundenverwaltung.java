@@ -15,10 +15,8 @@ import java.util.*;
 
 public class Kundenverwaltung {
     private PersistenceManager pm = new FilePersistenceManager();
-
     private static Map<String, Kunde> kundenliste = new HashMap<>();
     private static Map<Kunde, Warenkorb> kundenUndDazugehörigeWarenkörbe;
-    private Kunde kunde;
     private static List<Kunde> kListe = new ArrayList<>();
     private Artikelverwaltung av = new Artikelverwaltung();
 
@@ -27,7 +25,7 @@ public class Kundenverwaltung {
         this.kundenUndDazugehörigeWarenkörbe = new HashMap<>();
         try {
             kundenliste = pm.leseKundenListe(datei);
-            for (Kunde kunde: kundenliste.values()) {
+            for (Kunde kunde : kundenliste.values()) {
                 kundenUndDazugehörigeWarenkörbe.put(kunde, null);
             }
 
@@ -36,10 +34,12 @@ public class Kundenverwaltung {
         }
 
     }
-    public void schreibeDaten(String datei) throws IOException{
+
+    public void schreibeDaten(String datei) throws IOException {
         kListe = getKundenListe();
         pm.schreibeKundeListe(kListe, datei);
     }
+
     public Kundenverwaltung() {
         this.kundenliste = new HashMap<>();
     }
@@ -48,11 +48,8 @@ public class Kundenverwaltung {
         return new ArrayList<>(kundenliste.values());
     }
 
-    public Map<Kunde, Warenkorb> getGespeicherteWarenkörbeUndKunden() {
-        return kundenUndDazugehörigeWarenkörbe;
-    }
 
-// man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
+    // man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
         int verkauft = menge;
@@ -63,11 +60,11 @@ public class Kundenverwaltung {
 
         if (gefundenerArtikel != null) //wenn artikel wiedergegeben wird dann:
         {
-            if(gefundenerArtikel instanceof Massengutartikel) { //wenn artikel ein massen gutist dann
-                verkauft = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge()*menge; //ist die mindestkaufmenge : eingegebene menge * verkäufliche menge
-                if((gefundenerArtikel.getBestand() < verkauft)) {
+            if (gefundenerArtikel instanceof Massengutartikel) { //wenn artikel ein massen gutist dann
+                verkauft = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge() * menge; //ist die mindestkaufmenge : eingegebene menge * verkäufliche menge
+                if ((gefundenerArtikel.getBestand() < verkauft)) {
                     throw new UngueltigeMengeException();
-                }else{
+                } else {
                     warenkorb.getWarenkorb().put(gefundenerArtikel, verkauft);
                 }
             }
@@ -83,17 +80,18 @@ public class Kundenverwaltung {
     }
 
 
-    public void artikelAusDemWarenkorbNehmen(String artikel, Warenkorb warenkorb){
+    public void artikelAusDemWarenkorbNehmen(String artikel, Warenkorb warenkorb) {
 
         Artikel art = warenkorb.getWarenkorb().keySet().stream()
-                        .filter(a -> a.getBezeichnung().equals(artikel))
-                        .findFirst()
-                        .orElse(null);
-        if(art != null) {
+                .filter(a -> a.getBezeichnung().equals(artikel))
+                .findFirst()
+                .orElse(null);
+        if (art != null) {
             warenkorb.getWarenkorb().remove(art);
         }
 
     }
+
     //Die im Warenkorb enthaltenen Waren werden mit dem Warenbestand abgeglichen und deren Bestand wird aktualisiert.
     // danach wird der Warenkorb geleert
     public void beimKaufleerenUndBestandaktualisieren(Warenkorb warenkorb, List<Artikel> warenbestand, Kunde kunde, List<Ereignis> ereignisliste) throws WarenkorbIstLeerException {
@@ -125,28 +123,29 @@ public class Kundenverwaltung {
     }
 
 
-    /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
+    //Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) throws LeeresTextfieldException {
 
-        if(neu.getUserName().isEmpty() || neu.getPasswort().isEmpty() || neu.getVorname().isEmpty() ||
+        if (neu.getUserName().isEmpty() || neu.getPasswort().isEmpty() || neu.getVorname().isEmpty() ||
                 neu.getNachname().isEmpty() ||
-                neu.getKundenAdresse().isEmpty()){
+                neu.getKundenAdresse().isEmpty()) {
             throw new LeeresTextfieldException();
-        }else{
-
-        Kunde registrierungErfolgreich= kundenUndDazugehörigeWarenkörbe.keySet().stream()
-                .filter(a -> a.getUserName().equalsIgnoreCase(neu.getUserName()))
-                .findFirst()
-                .orElse(null);
-
-        if(registrierungErfolgreich == null){
-            kundenliste.put(null, neu);
-            kundenUndDazugehörigeWarenkörbe.put(neu, null);
-            registrierungErfolgreich = neu;
         } else {
-            return null;
+
+            Kunde registrierungErfolgreich = kundenUndDazugehörigeWarenkörbe.keySet().stream()
+                    .filter(a -> a.getUserName().equalsIgnoreCase(neu.getUserName()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (registrierungErfolgreich == null) {
+                kundenliste.put(null, neu);
+                kundenUndDazugehörigeWarenkörbe.put(neu, null);
+                registrierungErfolgreich = neu;
+            } else {
+                return null;
+            }
+            return registrierungErfolgreich;
         }
-        return registrierungErfolgreich;}
     }
 
     /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
@@ -162,17 +161,6 @@ public class Kundenverwaltung {
         Warenkorb w = new Warenkorb();
         kundenUndDazugehörigeWarenkörbe.put(k, w);
         return kundenUndDazugehörigeWarenkörbe.get(k);
-    }
-
-    public Kunde getKundeByUsername(String username){
-        List<Kunde> kList =getKundenListe();
-        for (Kunde kunde : kList){
-            if (kunde.getUserName().equals(username)) {
-                return kunde;
-            }
-        }
-
-        return null;
     }
 
 

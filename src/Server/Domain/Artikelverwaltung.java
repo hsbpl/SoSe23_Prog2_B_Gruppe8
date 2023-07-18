@@ -23,8 +23,6 @@ public class Artikelverwaltung {
     private static List<Artikel> artikelListe = new ArrayList<>();
 
     //liste in den Constructor
-
-
     public Artikelverwaltung() {
     }
 
@@ -45,7 +43,6 @@ public class Artikelverwaltung {
         }
 
     }
-
 
     public void schreibeDaten(String datei) throws IOException {
         pm.schreibeArtikelListe(artikelListe, datei);
@@ -100,32 +97,21 @@ public class Artikelverwaltung {
         return artikelListe;
 
     }
-    public String artikelSortierenNachBezeichnungString(){
+
+    public String artikelSortierenNachBezeichnungString() {
         List<Artikel> geordneteListe = artikelSortierenNachBezeichnung();
-        String s ="";
+        String s = "";
         for (Artikel artikel : geordneteListe) {
-            s +=  artikel.toString() + "\n";
+            s += artikel.toString() + "\n";
         }
         return s;
     }
 
 
-
-    public  List<Ereignis> ereignisseSortiertNachDatum(){
+    public List<Ereignis> ereignisseSortiertNachDatum() {
         Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum).reversed());
         return ereignisse;
     }
-
-    public  String ereignisseSortiertNachDatumString(){
-
-        String s="";
-        for (Ereignis ereignis: ereignisseSortiertNachDatum()){
-            s+= ereignis.toString()+"\n";
-        }
-        return s;
-    }
-
-
 
     public List<Artikel> artikelSortierenNachArtikelnummer() {
         Collections.sort(artikelListe, Comparator.comparing(Artikel::getArtikelNummer));
@@ -133,20 +119,20 @@ public class Artikelverwaltung {
         return artikelListe;
     }
 
-    public String artikelSortierenNachArtikelnummerString(){
-        String s ="";
+    public String artikelSortierenNachArtikelnummerString() {
+        String s = "";
         for (Artikel artikel : artikelSortierenNachArtikelnummer()) {
-            s +=  artikel.toString() + "\n";
+            s += artikel.toString() + "\n";
         }
         return s;
     }
 
 
-    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u)throws LeeresTextfieldException{
+    public boolean bestandErhoehen(String artikelBezeichnung, int anzahl, User u) throws LeeresTextfieldException {
 
-        if(artikelBezeichnung.isEmpty()){
+        if (artikelBezeichnung.isEmpty()) {
             throw new LeeresTextfieldException();
-        }else{
+        } else {
 
             for (Artikel artikel : artikelListe) {
                 if (artikel.getBezeichnung().equals(artikelBezeichnung)) {
@@ -159,19 +145,19 @@ public class Artikelverwaltung {
                 }
             }
 
-            return  false;}
+            return false;
+        }
     }
 
 
+    public boolean bestandVerringern(String artikelname, int menge, User u) throws UngueltigeMengeException, LeeresTextfieldException {
 
-    public boolean bestandVerringern(String artikelname, int menge, User u) throws UngueltigeMengeException, LeeresTextfieldException{
-
-        if(artikelname.isEmpty()){
+        if (artikelname.isEmpty()) {
             throw new LeeresTextfieldException();
-        }else{
+        } else {
 
             for (Artikel artikel : artikelListe) {
-                if(artikel.getBezeichnung().equals(artikelname)){
+                if (artikel.getBezeichnung().equals(artikelname)) {
                     if (artikel.getBestand() < menge) {
                         throw new UngueltigeMengeException();
                     } else {
@@ -184,31 +170,27 @@ public class Artikelverwaltung {
                     }
                 }
             }
-            return false;}
+            return false;
+        }
     }
 
     public String artikelAusgeben() {
-        String s ="";
+        String s = "";
         for (Artikel artikel : artikelListe) {
-            s +=  artikel.toString() + "\n";
+            s += artikel.toString() + "\n";
         }
         return s;
-    }
-
-    public List<Ereignis> getEreignisse() {
-        return ereignisse;
     }
 
     public String ereignisseAusgeben() {
-        String s ="";
+        String s = "";
         for (Ereignis a : ereignisse) {
-            s +=  a.toString() + "\n";
+            s += a.toString() + "\n";
         }
         return s;
     }
 
-    public ArrayList<Artikel> getArtikelListe()
-    {
+    public ArrayList<Artikel> getArtikelListe() {
         return (ArrayList<Artikel>) artikelListe;
     }
 
@@ -220,36 +202,5 @@ public class Artikelverwaltung {
         ereignisse.add(ereignis);
     }
 
-    public void artikelBearbeiten(Artikel artikel) {
-        for (Artikel a : artikelListe) {
-            if (a.getArtikelNummer() == artikel.getArtikelNummer()) {
-                a.setBezeichnung(artikel.getBezeichnung());
-                a.setBestand(artikel.getBestand());
-                break;
-            }
-        }
-    }
-
-    public boolean artikelLoeschen(int artikelnummer){
-        Artikel artikelToRemove;
-        for (Artikel artikel : artikelListe) {
-            if (artikel.getArtikelNummer() == artikelnummer) {
-                artikelToRemove = artikel;
-                artikelListe.remove(artikelToRemove);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Artikel getArtikelByNumber(int artikelnummer){
-        for (Artikel artikel : artikelListe){
-            if (artikel.getArtikelNummer() == artikelnummer) {
-                return artikel;
-            }
-        }
-
-        return null;
-    }
 
 }

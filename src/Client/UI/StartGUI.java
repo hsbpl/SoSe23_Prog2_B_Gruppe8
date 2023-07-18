@@ -20,21 +20,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+
 public class StartGUI extends JFrame implements ActionListener {
 
     private EShopInterface eshop;
     int textfieldSize = 50;
 
-    //Kundenlogin Teile
+    //Komponenten
     private JTextField passwortTextfield = new JTextField(textfieldSize); // Passworteingabe Kundenlogin
     private JTextField usernameTextfield = new JTextField(textfieldSize); //UsernameTextfed Kundenlogin
     private JButton loginButton = new JButton("Einloggen"); //button erstellt
     private JButton registrierungsButton = new JButton("Als neuer Kunde registrieren"); //Button erstellt der später seperat Reg öffnen soll
-    //Mitarbeiterlogin Teile
     private JTextField usernameTextfieldMitarbeiter = new JTextField(textfieldSize);
     private JTextField passwortTextfieldMitarbeiter = new JTextField(textfieldSize);
     private JButton loginButtonMitarbeiter = new JButton("Einloggen");
-    //Kundenregistrierungsteile
     private JTextField usernameTextfieldRegistrierung = new JTextField(textfieldSize);
     private JTextField passwortTextfieldRegistrierung = new JTextField(textfieldSize);
     private JTextField nachnameTextfield = new JTextField(textfieldSize);
@@ -47,7 +46,6 @@ public class StartGUI extends JFrame implements ActionListener {
     private ArtikelTableModel model;
     private JScrollPane tablePane;
     private JMenuBar menuBar;
-
 
 
     public StartGUI() throws IOException {
@@ -65,9 +63,9 @@ public class StartGUI extends JFrame implements ActionListener {
 
     }
 
-    public StartGUI(EShopInterface eShop){
+    //Extra Konstruktor der beim zurückkommen auf die Startseite verwendet wird
+    public StartGUI(EShopInterface eShop) {
         super("Roha & Sanjana's Eshop");
-      //  String datei = "ESHOP";
         eshop = eShop;
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,19 +95,13 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-
+    // Alle Himmelsrichtungen zusammengeführt
     private void startpage() {
-<<<<<<< HEAD
         JPanel start = new JPanel();
         start.setVisible(true);
         start.setLayout(new BorderLayout(5, 5));
-=======
-        JPanel start = new JPanel(); //neues Jpanel
-        start.setVisible(true);//Jpanel ist sichtbar
-        start.setLayout(new BorderLayout(5,5));
->>>>>>> parent of 01d9739 (Ünnötiges gelöscht, Kommentare hinzugefüg, Reformatiert.)
 
-        start.add(westpanel(), BorderLayout.WEST); //Logins im Westen hinzugefügt
+        start.add(westpanel(), BorderLayout.WEST);
         start.add(northpanel(), BorderLayout.NORTH);
         start.add(midpanel(), BorderLayout.CENTER);
 
@@ -117,7 +109,7 @@ public class StartGUI extends JFrame implements ActionListener {
         add(start);
     }
 
-    private JPanel northpanel(){
+    private JPanel northpanel() {
         JPanel northpanel = new JPanel();
         northpanel.setVisible(true);
         northpanel.setLayout(new FlowLayout());
@@ -165,7 +157,7 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-
+    //popt auf, wenn der Kunde sich registrieren möchte
     private JDialog registerPopup() {
         popup = new JDialog();
         popup.setVisible(true);
@@ -195,8 +187,6 @@ public class StartGUI extends JFrame implements ActionListener {
 
         passwortTextfield.addKeyListener(new EnterKeyListener());
         usernameTextfield.addKeyListener(new EnterKeyListener());
-
-
 
 
         loginButton.addActionListener(this);
@@ -254,7 +244,7 @@ public class StartGUI extends JFrame implements ActionListener {
         }
     }
 
-
+    // wird im Popup angezeigt
     private JPanel kundenregistrierung() {
         JPanel registerfenster = new JPanel();
         registerfenster.setVisible(true);
@@ -291,16 +281,16 @@ public class StartGUI extends JFrame implements ActionListener {
     }
 
 
-    private JScrollPane artikellistTable(){
+    private JScrollPane artikellistTable() {
         tabelle = new JTable();
-        model =new ArtikelTableModel(eshop.getAlleArtikel());
+        model = new ArtikelTableModel(eshop.getAlleArtikel());
         tabelle.setModel(model);
         tablePane = new JScrollPane(tabelle);
 
         return tablePane;
     }
 
-    private enum Eventsource{
+    private enum Eventsource {
         KUNDEN_LOGIN,
         MITARBEITER_LOGIN,
         REGISTRIERUNGSFENSTER_ÖFFNEN,
@@ -322,8 +312,8 @@ public class StartGUI extends JFrame implements ActionListener {
         } else if (actionEvent.getSource() == neuenKundenAnlegenButton) {
             source = Eventsource.KUNDEN_REGISTRIEREN;
         }
-
-        switch (source){
+//Methoden sarunter
+        switch (source) {
             case KUNDEN_LOGIN:
                 kundenLoginEvent();
                 break;
@@ -341,12 +331,13 @@ public class StartGUI extends JFrame implements ActionListener {
                 break;
 
             default:
-                System.out.println("Event Occured");
+                System.out.println("Üngültige Eingabe");
                 break;
         }
 
     }
 
+    // Methoden der Switchcase
     private void kundenRegistrierungEvent() {
         try {
             String username = usernameTextfieldRegistrierung.getText();
@@ -366,7 +357,7 @@ public class StartGUI extends JFrame implements ActionListener {
             this.dispose();
 
             popup.dispose();
-            System.err.println("Erfolgreich registriert: "+kunde);
+            System.err.println("Erfolgreich registriert: " + kunde);
             //}
         } catch (UserExistiertBereitsException e) {
             String kontoExistiertSchon = "Dieses Konto existiert bereits. Bitte versuchen Sie es nochmal.\n";
@@ -446,7 +437,6 @@ public class StartGUI extends JFrame implements ActionListener {
             throw new RuntimeException(e);
         }
     }
-
 
 
 }
