@@ -7,12 +7,8 @@ import Common.Exceptions.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EshopClient implements EShopInterface {
 
@@ -24,7 +20,7 @@ public class EshopClient implements EShopInterface {
     private Socket socket;
     private BufferedReader socketIn;
     private PrintStream socketOut;
-    private Warenkorb warenkorb;
+    private Warenkorb korb;
 
 
 
@@ -266,8 +262,8 @@ public class EshopClient implements EShopInterface {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
         //Der Warenkorb der hier erstellt wurde ist sowieso leer, es geht hier eher um den Eintrag in die Kundenhasmap
-        warenkorb = new Warenkorb();
-        return warenkorb;
+        korb = new Warenkorb();
+        return korb;
     }
 
     @Override
@@ -466,6 +462,7 @@ public class EshopClient implements EShopInterface {
 
         cmd += separator + artikel;
         cmd += separator + menge;
+
         socketOut.println(cmd);
 
         String[] data = readResponse();
@@ -473,6 +470,7 @@ public class EshopClient implements EShopInterface {
         if(Commands.valueOf(data[0]) != Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
         }
+        //setWarenkorbByData(data);
 
         String bezeichnung = data[1];
         int artikelnummer = Integer.parseInt(data[2]);
@@ -481,22 +479,48 @@ public class EshopClient implements EShopInterface {
         int kaufszahl = Integer.parseInt(data[5]);
         if(kaufszahl !=1){
             Massengutartikel massengutartikel = new Massengutartikel(bezeichnung, artikelnummer, bestand, einzelpreis, kaufszahl);
-            if(warenkorb.getWarenkorb().containsKey(massengutartikel)){
-                warenkorb.getWarenkorb().replace(massengutartikel, menge);
-            }else {
-                warenkorb.getWarenkorb().put(massengutartikel, menge);
+            if(warenkorb.getWarenkorb().containsKey(massengutartikel)) {
+                korb.getWarenkorb().remove(massengutartikel, menge);
             }
+                korb.getWarenkorb().put(massengutartikel, menge);
+
         } else {
             Artikel a = new Artikel(bezeichnung, artikelnummer, bestand, einzelpreis);
-            if(warenkorb.getWarenkorb().containsKey(a)){
-                warenkorb.getWarenkorb().replace(a, menge);
-            }else {
-                warenkorb.getWarenkorb().put(a, menge);
+            if(warenkorb.getWarenkorb().containsKey(a)) {
+                korb.getWarenkorb().remove(a, menge);
             }
+                korb.getWarenkorb().put(a, menge);
+
         }
 
-
     }
+
+
+    private Map<Artikel, Integer> setWarenkorbByData(String[] data) {
+
+       // Map<Artikel, Integer> waren = new HashMap<>();
+        korb.getWarenkorb().clear();
+
+        for(int i=1; i<data.length; i+=6) {
+
+            String bezeichnung = data[i];
+            int artikelnummer = Integer.parseInt(data[i + 1]);
+            int bestand = Integer.parseInt(data[i + 2]);
+            double einzelpreis = Double.parseDouble(data[i + 3]);
+            int menge = Integer.parseInt(data[i + 4]);
+            int kaufszahl = Integer.parseInt(data[i + 5]);
+            if(kaufszahl != 1){
+                Massengutartikel massengutartikel = new Massengutartikel(bezeichnung,artikelnummer,bestand, einzelpreis, kaufszahl);
+                korb.getWarenkorb().put(massengutartikel, menge);
+            } else {
+                Artikel artikel = new Artikel(bezeichnung,artikelnummer,bestand,einzelpreis, 1);
+                korb.getWarenkorb().put(artikel, menge);;}
+
+        }
+
+        return korb.getWarenkorb();
+    }
+
 
     @Override
     public void artikelAusWarenkorbEntfernen(String artikel, Warenkorb warenkorb) {
