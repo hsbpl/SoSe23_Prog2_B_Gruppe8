@@ -302,6 +302,8 @@ public class KundenbereichGUI extends JFrame {
         mainPanel.add(infoPanel, BorderLayout.NORTH);
         mainPanel.add(artikelScrollPane, BorderLayout.WEST);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(suchleistenPanel, BorderLayout.NORTH);
+
 
         mainPanel.add(warenkorbPanel, BorderLayout.CENTER);
         mainPanel.add(infoPanel, BorderLayout.WEST);
