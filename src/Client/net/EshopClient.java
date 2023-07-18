@@ -643,7 +643,7 @@ public class EshopClient implements EShopInterface {
 
 
         socketOut.println(cmd);
-        return null;
+        return String.valueOf(new Rechnung(kunde, warenkorb));
     }
 
 
