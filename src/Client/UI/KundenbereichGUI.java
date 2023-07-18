@@ -244,7 +244,7 @@ public class KundenbereichGUI extends JFrame {
                             System.err.println("*********************************************************************************\n" +
                                     "\nGewünschte Menge übersteigt Bestand!\n" +
                                     "*********************************************************************************\n");
-                            JOptionPane.showMessageDialog(null, "Der Warenkorb ist leer.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Die Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
                         }
 
                     }
