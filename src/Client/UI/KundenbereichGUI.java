@@ -202,6 +202,7 @@ public class KundenbereichGUI extends JFrame {
                     String rechnung = eshop.kaufenUndRechnungEhalten(eingeloggterKunde, warenKorbDesKunden);
                     JOptionPane.showMessageDialog(null, rechnung, "Vielen Dank für Ihren Einkauf", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println(rechnung);
+                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                     aktualisiereGesamtsumme();
                 } catch (WarenkorbIstLeerException ex) {
                     System.err.println("*********************************************************************************\n" +
