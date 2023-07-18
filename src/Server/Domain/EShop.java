@@ -184,8 +184,11 @@ public class EShop implements EShopInterface {
 
     @Override
     public String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException {
+        System.out.println(warenkorb.toString());
         Rechnung rechnung = new Rechnung(kunde, warenkorb);
+        System.out.println(rechnung.toString());
         String r =  rechnung.toString();
+        System.out.println(r);
         kaufenUndWarenkorbLeeren(warenkorb, kunde);
         schreibeArtikel();
         return r;
