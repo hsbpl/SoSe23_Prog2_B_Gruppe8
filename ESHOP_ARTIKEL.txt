@@ -12,7 +12,7 @@ Armband
 Einzelartikel
 Armbanduhr
 2138822
-240
+239
 79.99
 1
 Einzelartikel
@@ -30,7 +30,7 @@ Brille
 Einzelartikel
 Chips
 39003
-423
+440
 1.79
 1
 Einzelartikel

@@ -57,9 +57,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
     private JButton anlegenEinzelartikelAbschließen = new JButton("Neuen artikel anlegen");
     private JButton anlegenMassengutArtikelAbschliessen = new JButton("Neuen artikel anlegen");
     private JComboBox<String> listenauswahl;
-    private JComboBox<String> artikelausgabe;
     private JDialog popup;
-    private JDialog listpopup;
     private JPanel midpanel;
     private JScrollPane scrollPaneArtikelliste;
     private JTable artikelTabelle;
@@ -80,7 +78,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
     private TableRowSorter sorter;
 
-    private JTextField sucheListen;
 
     public MitarbeiterBereichGUI(Mitarbeiter eingeloggterMitarbeiter, EShopInterface eshop) {
         this.eshop = eshop;
@@ -184,11 +181,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         midpanel.setVisible(true);//Jpanel ist sichtbar
         midpanel.setLayout(new FlowLayout());
 
-
-        String[] listen = {"Alphabetische Ausgabe", "Nummerische Ausgabe"};
-        artikelausgabe = new JComboBox<>(listen);
-        artikelausgabe.addActionListener(this);
-
         scrollPaneArtikelliste = new JScrollPane(artikellistTable()); //liste wird dem scrollpane hinzugefügt
         scrollPaneArtikelliste.setPreferredSize(new Dimension(700, 500));
 
@@ -198,7 +190,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
 
         midpanel.add(sucheArtikel, BorderLayout.NORTH);
         midpanel.add(scrollPaneArtikelliste);
-        midpanel.add(artikelausgabe);
+
 
         return midpanel;
     }
@@ -215,28 +207,6 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         popup.add(component);
 
         return popup;
-    }
-
-
-    private JDialog listpopup(Component jList, String usage) {
-        listpopup = new JDialog();
-        listpopup.setVisible(true);
-        listpopup.setSize(800, 500);
-        listpopup.setLocationRelativeTo(null);//popup erscheint in der mitte
-        listpopup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        listpopup.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        listpopup.setTitle(usage);
-
-        sucheListen = new JTextField(30);
-        sucheArtikel.setText("Suchen");
-        setPreferredSize(getPreferredSize());
-        sucheListen.getDocument().addDocumentListener(this);
-
-        JScrollPane scrollPane = new JScrollPane(jList); //liste wird dem scrollpane hinzugefügt
-        listpopup.add(sucheListen, BorderLayout.NORTH);
-        listpopup.add(scrollPane);
-
-        return listpopup;
     }
 
 
@@ -422,7 +392,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
         REGISTRIERUNGSFENSTER,
         MITARBEITER_REGISTRIEREN,
         LISTEN_AUSGEBE,
-        ARTIKEL_ORDNUNG
+        
     }
 
     @Override
@@ -450,9 +420,7 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
             source = Eventsource.MITARBEITER_REGISTRIEREN;
         } else if (actionEvent.getSource() == listenauswahl) {
             source = Eventsource.LISTEN_AUSGEBE;
-        } else if (actionEvent.getSource() == artikelausgabe) {
-            source = Eventsource.ARTIKEL_ORDNUNG;
-        }
+        } 
 
         switch (source) {
             case AUSLOGGEN:
@@ -484,36 +452,28 @@ public class MitarbeiterBereichGUI extends JFrame implements ActionListener, Mou
                 mitarbeiterRegistrieren();
                 break;
             case LISTEN_AUSGEBE:
-                String selectedListItem = listenauswahl.getSelectedItem().toString();
-
-                if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
-                    JScrollPane mitarbeiterScrollPane = new JScrollPane(mitarbeiterTable());
-                    JOptionPane.showMessageDialog(null, mitarbeiterScrollPane, "Registrierte Mitarbeiter", JOptionPane.PLAIN_MESSAGE);
-                } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
-                    JScrollPane kundenScrollPane = new JScrollPane(kundenTable());
-                    JOptionPane.showMessageDialog(null, kundenScrollPane, "Registrierte Kunden", JOptionPane.PLAIN_MESSAGE);
-                } else if (selectedListItem.equals("Ereignisse ausgeben")) {
-                    JScrollPane ereignisScrollPane = new JScrollPane(ereignisTable());
-                    JOptionPane.showMessageDialog(null, ereignisScrollPane, "Ereignisse nach Datum geordnet", JOptionPane.PLAIN_MESSAGE);
-                }
-                break;
-            case ARTIKEL_ORDNUNG:
-                String selectedArtikelItem = artikelausgabe.getSelectedItem().toString();
-
-                if (selectedArtikelItem.equals("Alphabetische Ausgabe")) {
-                    List<Artikel> alphabetical = eshop.artikelSortierenNachBezeichnung();
-                    model.setArtikelListe(alphabetical);
-
-                } else if (selectedArtikelItem.equals("Nummerische Ausgabe")) {
-                    List<Artikel> nummerical = eshop.artikelNachArtikelnummerGeordnetAusgeben();
-                    model.setArtikelListe(nummerical);
-                }
+                gewählteListeAusgeben();
                 break;
             default:
                 System.out.println("Event detected");
                 break;
         }
 
+    }
+
+    private void gewählteListeAusgeben() {
+        String selectedListItem = listenauswahl.getSelectedItem().toString();
+
+        if (selectedListItem.equals("Registrierte Mitarbeiter ausgeben")) {
+            JScrollPane mitarbeiterScrollPane = new JScrollPane(mitarbeiterTable());
+            JOptionPane.showMessageDialog(null, mitarbeiterScrollPane, "Registrierte Mitarbeiter", JOptionPane.PLAIN_MESSAGE);
+        } else if (selectedListItem.equals("Registrierte Kunden ausgeben")) {
+            JScrollPane kundenScrollPane = new JScrollPane(kundenTable());
+            JOptionPane.showMessageDialog(null, kundenScrollPane, "Registrierte Kunden", JOptionPane.PLAIN_MESSAGE);
+        } else if (selectedListItem.equals("Ereignisse ausgeben")) {
+            JScrollPane ereignisScrollPane = new JScrollPane(ereignisTable());
+            JOptionPane.showMessageDialog(null, ereignisScrollPane, "Ereignisse nach Datum geordnet", JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     private void mitarbeiterRegistrieren() {
