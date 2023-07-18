@@ -52,15 +52,14 @@ public class StartGUI extends JFrame implements ActionListener {
         super("Roha & Sanjana's Eshop");
         eshop = new EShop("ESHOP"); //todo wenn Client-Server nicht funktioniert statt new EshopClient das hier
         //eshop = new EshopClient();
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
-
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         setupMenu();
 
         startpage();
 
-        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+        this.setVisible(true);
 
     }
 
@@ -69,15 +68,15 @@ public class StartGUI extends JFrame implements ActionListener {
         super("Roha & Sanjana's Eshop");
         eshop = eShop;
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        this.setResizable(true); // erlaubt uns die Größe des fensters zu ändern
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Maximiert das fenster
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         setupMenu();
 
         startpage();
 
-        this.setVisible(true);//sorgt dafür das der Frame auch zu sehen ist
+        this.setVisible(true);
     }
 
     private void setupMenu() {
@@ -98,8 +97,8 @@ public class StartGUI extends JFrame implements ActionListener {
 
     // Alle Himmelsrichtungen zusammengeführt
     private void startpage() {
-        JPanel start = new JPanel(); //neues Jpanel
-        start.setVisible(true);//Jpanel ist sichtbar
+        JPanel start = new JPanel();
+        start.setVisible(true);
         start.setLayout(new BorderLayout(5, 5));
 
         start.add(westpanel(), BorderLayout.WEST);
@@ -112,12 +111,12 @@ public class StartGUI extends JFrame implements ActionListener {
 
     private JPanel northpanel() {
         JPanel northpanel = new JPanel();
-        northpanel.setVisible(true);//Jpanel ist sichtbar
+        northpanel.setVisible(true);
         northpanel.setLayout(new FlowLayout());
         northpanel.setPreferredSize(new Dimension(200, 100));
 
 
-        northpanel.add(Box.createVerticalStrut(100)); //sorgt für einen Abstand vor dem nächsten component
+        northpanel.add(Box.createVerticalStrut(100));
         JLabel wilkommen = new JLabel("Wilkommen!\nBitte loggen Sie sich zu allererst ein!");
         wilkommen.setFont(new Font("Arial", Font.BOLD, 24));
         northpanel.add(wilkommen);
@@ -127,19 +126,19 @@ public class StartGUI extends JFrame implements ActionListener {
 
 
     private JPanel westpanel() {
-        JPanel westpanel = new JPanel(); //neues Jpanel
-        westpanel.setVisible(true);//Jpanel ist sichtbar
-        westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS)); // sorgt dafür das alles auf der Y-Achse liegt
-        westpanel.setPreferredSize(new Dimension(300, 100)); //sorgt für eine feste größe des westpanels
+        JPanel westpanel = new JPanel();
+        westpanel.setVisible(true);
+        westpanel.setLayout(new BoxLayout(westpanel, BoxLayout.Y_AXIS));
+        westpanel.setPreferredSize(new Dimension(300, 100));
 
         westpanel.add(Box.createVerticalStrut(40));
-        westpanel.add(kundeLogin()); //Kundenloginbereich wird hinzugefügt
+        westpanel.add(kundeLogin());
         westpanel.add(Box.createVerticalStrut(40));
-        westpanel.add(mitarbeiterLogin()); //Mitarbeiterloginbereichwird hinzugefügt
+        westpanel.add(mitarbeiterLogin());
         westpanel.add(Box.createVerticalStrut(40));
 
         registrierungsButton.addActionListener(this);
-        westpanel.add(registrierungsButton); // button wird dem westpanel hinzugefügt
+        westpanel.add(registrierungsButton);
 
         return westpanel;
 
@@ -149,7 +148,7 @@ public class StartGUI extends JFrame implements ActionListener {
     private JPanel midpanel() {
 
         midpanel = new JPanel();
-        midpanel.setVisible(true);//Jpanel ist sichtbar
+        midpanel.setVisible(true);
         midpanel.setLayout(new BoxLayout(midpanel, BoxLayout.Y_AXIS));
 
         midpanel.add(artikellistTable());
@@ -163,9 +162,9 @@ public class StartGUI extends JFrame implements ActionListener {
         popup = new JDialog();
         popup.setVisible(true);
         popup.setSize(300, 500);
-        popup.setLocationRelativeTo(null);//popup erscheint in der mitte
-        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); //Sorgt dafür, das beim klicken des Exit das fenster auch geschlossen wird
-        popup.setResizable(false); // erlaubt uns die Größe des fensters zu ändern
+        popup.setLocationRelativeTo(null);
+        popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        popup.setResizable(false);
         popup.setTitle("Kunden Registrierung");
         popup.add(Box.createVerticalStrut(60));
         popup.add(kundenregistrierung());
@@ -181,7 +180,7 @@ public class StartGUI extends JFrame implements ActionListener {
         loginfenster.setBorder(BorderFactory.createTitledBorder("Kundenlogin"));
 
 
-        usernameTextfield.add(new JLabel("Username: ")); // Textfeld ein Label hinzugefügt
+        usernameTextfield.add(new JLabel("Username: "));
         passwortTextfield.add(new JLabel("Passwort: "));
         usernameTextfield.setMaximumSize(usernameTextfieldMitarbeiter.getPreferredSize());
         passwortTextfield.setMaximumSize(passwortTextfieldMitarbeiter.getPreferredSize());
@@ -193,7 +192,7 @@ public class StartGUI extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
 
         loginfenster.add(new JLabel("Username: "));
-        loginfenster.add(usernameTextfield); //dem loginfenster werden die einzelnen komponenten hinzugefügt
+        loginfenster.add(usernameTextfield);
         loginfenster.add(new JLabel("Passwort: "));
         loginfenster.add(passwortTextfield);
         loginfenster.add(loginButton);
@@ -218,7 +217,7 @@ public class StartGUI extends JFrame implements ActionListener {
         loginButtonMitarbeiter.addActionListener(this);
 
         loginfenster.add(new JLabel("Username: "));
-        loginfenster.add(usernameTextfieldMitarbeiter); //dem loginfenster werden die einzelnen komponenten hinzugefügt
+        loginfenster.add(usernameTextfieldMitarbeiter);
 
         loginfenster.add(new JLabel("Passwort: "));
         loginfenster.add(passwortTextfieldMitarbeiter);
