@@ -2,6 +2,8 @@ package Server.net;
 
 import Common.*;
 import Common.Exceptions.*;
+import Common.Exceptions.LoginFehlgeschlagenException;
+
 
 import java.io.*;
 import java.net.Socket;
@@ -15,10 +17,10 @@ public class ClientRequestProcessor implements Runnable {
     private BufferedReader socketIn;
     private PrintStream socketOut;
     final String separator = ";";
-   /* private Socket clientSocket;
-    private Connection connection;
+    /* private Socket clientSocket;
+     private Connection connection;
 
-    */
+     */
     EShopInterface eshop;
 
     Warenkorb warenkorb;
@@ -36,7 +38,7 @@ public class ClientRequestProcessor implements Runnable {
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 String receivedData = socketIn.readLine(); // BufferedReader bietet readLine()
                 handleCommandRequest(receivedData);
@@ -45,99 +47,101 @@ public class ClientRequestProcessor implements Runnable {
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (UserExistiertBereitsException e) {
-                throw new RuntimeException(e);
-            } catch (LeeresTextfieldException e) {
-                throw new RuntimeException(e);
             }
         }
     }
 
-    private void handleCommandRequest(String receivedData) throws UserExistiertBereitsException, LeeresTextfieldException {
-
+    private void handleCommandRequest(String receivedData) {
         System.err.println("Vom Client empfangende Daten: " + receivedData);
         String[] parts = receivedData.split(separator);
 
-        switch (Commands.valueOf(parts[0])) {
-            case CMD_GIB_ALLE_ARTIKEL:
-                handleGibAlleArtikel();
-                break;
-            case CMD_GIB_ALLE_KUNDEN:
-                handleGibAlleKunden();
-                break;
-            case CMD_GIB_ALLE_EREIGNISSE:
-                handleGibAlleEreignisse();
-                break;
-            case CMD_GIB_ALLE_MITARBEITER:
-                handleGibAlleMitarbeiter();
-                break;
-            case CMD_SPEICHER_ARTIKEL:
-                handleArtikelSpeichern();
-                break;
-            case CMD_SPEICHER_MITAREBITER:
-                handleMitarbeiterSpeichern();
-                break;
-            case CMD_SPEICHER_KUNDEN:
-                handleKundeSpeichern();
-                break;
-            case CMD_SPEICHER_EREIGNISSE:
-                handleEreignisSpeichern();
-                break;
-            case CMD_NEUEN_WARENKORB_ERSTELLEN:
-                handleNeuenWarenkornErstellen(parts);
-                break;
-            case CMD_MITARBEITER_REGISTRIEREN:
-                handleNuenMitarbeiterRegistrieren(parts);
-                break;
-            case CMD_MITARBEITER_EINLOGGEN:
-                handleMitarbeiterEinloggen(parts);
-                break;
-            case CMD_EINZELARTIKEL_HINZUFÜGEN:
-                handleEinzelartikelHinzufügen(parts);
-                break;
-            case CMD_MASSENGUTARTIKEL_HINZUFÜGEN:
-                handleMassengutartikelHinzufügen(parts);
-                break;
-            case CMD_BESTAND_ERHÖHEN:
-                handleBestandErhöhen(parts);
-                break;
-            case CMD_BESTAND_VERRINGERN:
-                handleBestandVerringern(parts);
-                break;
-            case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN:
-                handleArtikelNachAlphabetSortieren();
-                break;
-            case CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN:
-                handleArtikelNachArtikelnummerSortieren();
-                break;
-            case CMD_EREIGNISSE_NACH_DATUM_SORTIEREN:
-                handleEreignisseNachDatumSortieren();
-                break;
-            case CMD_IN_DEN_WARENKORB_LEGEN:
-                handleInDenWarenkorbLegen(parts);
-                break;
-            case CMD_AUS_DEM_WARENKORB_LEGEN:
-                handleAusDemWarenkorbLegen(parts);
-                break;
-            case CMD_WARENKORB_LEEREN:
-                handleWarenkorbLeeren();
-                break;
-            case CMD_KUNDEN_REGISTRIEREN:
-                handleKundenRegistrieren(parts);
-                break;
-            case CMD_KUNDEN_EINLOGGEN:
-                handleKundenEinloggen(parts);
-                break;
-            case CMD_KAUF_ABSCHLIESSEN:
-                handleKaufAbschliessen(parts);
-                break;
-            default:
-                System.err.println("Ungueltige Anfrage empfangen!");
-                break;
+        try {
+            switch (Commands.valueOf(parts[0])) {
+                case CMD_GIB_ALLE_ARTIKEL:
+                    handleGibAlleArtikel();
+                    break;
+                case CMD_GIB_ALLE_KUNDEN:
+                    handleGibAlleKunden();
+                    break;
+                case CMD_GIB_ALLE_EREIGNISSE:
+                    handleGibAlleEreignisse();
+                    break;
+                case CMD_GIB_ALLE_MITARBEITER:
+                    handleGibAlleMitarbeiter();
+                    break;
+                case CMD_SPEICHER_ARTIKEL:
+                    handleArtikelSpeichern();
+                    break;
+                case CMD_SPEICHER_MITAREBITER:
+                    handleMitarbeiterSpeichern();
+                    break;
+                case CMD_SPEICHER_KUNDEN:
+                    handleKundeSpeichern();
+                    break;
+                case CMD_SPEICHER_EREIGNISSE:
+                    handleEreignisSpeichern();
+                    break;
+                case CMD_NEUEN_WARENKORB_ERSTELLEN:
+                    handleNeuenWarenkornErstellen(parts);
+                    break;
+                case CMD_MITARBEITER_REGISTRIEREN:
+                    handleNuenMitarbeiterRegistrieren(parts);
+                    break;
+                case CMD_MITARBEITER_EINLOGGEN:
+                    handleMitarbeiterEinloggen(parts);
+                    break;
+                case CMD_EINZELARTIKEL_HINZUFÜGEN:
+                    handleEinzelartikelHinzufügen(parts);
+                    break;
+                case CMD_MASSENGUTARTIKEL_HINZUFÜGEN:
+                    handleMassengutartikelHinzufügen(parts);
+                    break;
+                case CMD_BESTAND_ERHÖHEN:
+                    handleBestandErhöhen(parts);
+                    break;
+                case CMD_BESTAND_VERRINGERN:
+                    handleBestandVerringern(parts);
+                    break;
+                case CMD_ARTIKEL_NACH_ALPHABET_SORTIEREN:
+                    handleArtikelNachAlphabetSortieren();
+                    break;
+                case CMD_ARTIKEL_NACH_ARTIKELNUMMER_SORTIEREN:
+                    handleArtikelNachArtikelnummerSortieren();
+                    break;
+                case CMD_EREIGNISSE_NACH_DATUM_SORTIEREN:
+                    handleEreignisseNachDatumSortieren();
+                    break;
+                case CMD_IN_DEN_WARENKORB_LEGEN:
+                    handleInDenWarenkorbLegen(parts);
+                    break;
+                case CMD_AUS_DEM_WARENKORB_LEGEN:
+                    handleAusDemWarenkorbLegen(parts);
+                    break;
+                case CMD_WARENKORB_LEEREN:
+                    handleWarenkorbLeeren();
+                    break;
+                case CMD_KUNDEN_REGISTRIEREN:
+                    handleKundenRegistrieren(parts);
+                    break;
+                case CMD_KUNDEN_EINLOGGEN:
+                    handleKundenEinloggen(parts);
+                    break;
+                case CMD_KAUF_ABSCHLIESSEN:
+                    handleKaufAbschliessen(parts);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Ungültige Anfrage empfangen!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errorMessage = "Fehler beim Verarbeiten der Anfrage: " + e.getMessage();
+            socketOut.println(Commands.CMD_ERROR.name() + separator + errorMessage);
         }
     }
 
-    private void handleBestandErhöhen(String[] data) {
+
+
+    private void handleBestandErhöhen(String[] data) throws ArtikelExistiertNichtException, LeeresTextfieldException {
 
         String artikelname = data[1];
         int menge = Integer.parseInt(data[2]);
@@ -153,13 +157,12 @@ public class ClientRequestProcessor implements Runnable {
 
         try {
             eshop.bestandErhöhen(artikelname, menge, user);
-        } catch (ArtikelExistiertNichtException e) {
-            throw new RuntimeException(e);
-        } catch (LeeresTextfieldException e) {
-            throw new RuntimeException(e);
+        } catch (ArtikelExistiertNichtException | LeeresTextfieldException e) {
+            throw e;
         }
-
     }
+
+
 
 
 
@@ -356,8 +359,8 @@ public class ClientRequestProcessor implements Runnable {
 
             socketOut.println(cmd);
         } catch (LoginFehlgeschlagenException e) {
-            e.printStackTrace();
-        }
+            String response = "Fehler bei der Mitarbeiteranmeldung: Ungültige Anmeldeinformationen";
+            socketOut.println(response);        }
     }
     private void handleEinzelartikelHinzufügen(String[] data) {
         String cmd = Commands.CMD_EINZELARTIKEL_HINZUFÜGEN_RSP.name() + separator;
@@ -446,8 +449,6 @@ public class ClientRequestProcessor implements Runnable {
         } catch (LeeresTextfieldException e) {
             throw new RuntimeException(e);
         }
-
-      // handleGibAlleArtikel();
 
 
     }
@@ -648,8 +649,8 @@ public class ClientRequestProcessor implements Runnable {
 
             socketOut.println(cmd);
         } catch (LoginFehlgeschlagenException e) {
-            throw new RuntimeException(e);
-        }
+            String response = "Fehler bei der Kundenanmeldung: Ungültige Anmeldeinformationen";
+            socketOut.println(response);        }
 
 
 
