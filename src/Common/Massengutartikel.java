@@ -1,36 +1,25 @@
 package Common;
 
-public class Massengutartikel extends Artikel {
+public class Massengutartikel extends Artikel{
 
     private int erwerbwareMenge;
-
-    public Massengutartikel(String bezeichnung, int artikelNummer, int bestand, double preis, int erwerbwareMenge) {
+    public Massengutartikel(String bezeichnung, int artikelNummer,int bestand, double preis, int erwerbwareMenge){
         super(bezeichnung, artikelNummer, bestand, preis);
         this.erwerbwareMenge = erwerbwareMenge;
     }
 
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
-
-    public int getArtikelNummer() {
-        return artikelNummer;
-    }
-
-    public int getBestand() {
-        return bestand;
-    }
-
-    public double getEinzelpreis() {
-        return einzelpreis;
-    }
-
+    public String getBezeichnung(){ return bezeichnung;}
+    public int getArtikelNummer(){return artikelNummer;}
+    public int getBestand(){return bestand;}
+    public double getEinzelpreis(){return einzelpreis;}
     public int getErwerbwareMenge() {
         return erwerbwareMenge;
-    } //wird in der Domain zum gegenrechnen beim reinlegen in den Warenkorb verwedet
+    }
 
-    public String string() {
-        return super.toString() + " Pakungspreis: " + erwerbwareMenge * einzelpreis + "€";
+
+
+    public String string(){
+        return super.toString() + " Pakungspreis: " + erwerbwareMenge*einzelpreis+"€";
     }
 }
 

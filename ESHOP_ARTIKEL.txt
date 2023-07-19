@@ -18,7 +18,7 @@ Armbanduhr
 Einzelartikel
 Bleistiftset
 0
-649
+628
 4.99
 7
 Massengutartikel
@@ -30,7 +30,7 @@ Brille
 Einzelartikel
 Chips
 39003
-440
+428
 1.79
 1
 Einzelartikel

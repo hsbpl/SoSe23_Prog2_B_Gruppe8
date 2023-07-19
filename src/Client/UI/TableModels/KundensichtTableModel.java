@@ -17,6 +17,13 @@ public class KundensichtTableModel extends AbstractTableModel {
 
     }
 
+
+    public void setArtikelListe(List<Artikel> aktuelleArtikel){
+        artikelList.clear();
+        artikelList.addAll(aktuelleArtikel);
+        fireTableDataChanged();
+    }
+
     @Override
     public int getRowCount() {
         return artikelList.size();

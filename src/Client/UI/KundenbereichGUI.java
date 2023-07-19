@@ -3,6 +3,7 @@ package Client.UI;
 import Client.UI.TableModels.KundensichtTableModel;
 import Client.UI.TableModels.WarenkorbTableModel;
 import Common.EShopInterface;
+import Server.Domain.EShop;
 import Common.Exceptions.ArtikelExistiertNichtException;
 import Common.Exceptions.UngueltigeMengeException;
 import Common.Exceptions.WarenkorbIstLeerException;
@@ -25,12 +26,15 @@ import java.text.DecimalFormat;
 
 
 public class KundenbereichGUI extends JFrame {
+    public static int status;
+    //TOdo alles was nicht verwendet wird löschen
+    //todo checken, ob die Exception Texte sinn ergeben
 
     private EShopInterface eshop;
     private Kunde eingeloggterKunde;
     private Warenkorb warenKorbDesKunden;
     private JLabel gesamtsumme;
-    private DecimalFormat decimalFormat;
+    private  DecimalFormat decimalFormat;
     private WarenkorbTableModel warenkorbTableModel;
 
     public KundenbereichGUI(Kunde eingeloggterKunde, Warenkorb warenKorbDesKunden, EShopInterface eshop) throws IOException {
@@ -84,7 +88,7 @@ public class KundenbereichGUI extends JFrame {
 
         mainPanel.add(suchleistenPanel, BorderLayout.NORTH);
 
-        //Table auf der rechten Seite
+
         KundensichtTableModel artikelTableModel = new KundensichtTableModel(eshop.getAlleArtikel());
         TableRowSorter sorter = new TableRowSorter<>(artikelTableModel);
         JTable artikelTable = new JTable(artikelTableModel);
@@ -127,7 +131,7 @@ public class KundenbereichGUI extends JFrame {
                 int row = artikelTable.getSelectedRow();
                 String artikelBezeichnung = artikelTable.getValueAt(row, 0).toString();
 
-                if (mouseEvent.getClickCount() == 2) {
+                if(mouseEvent.getClickCount() == 2){
                     int option = JOptionPane.showConfirmDialog(null, "Möchten Sie den Artikel\n" + artikelBezeichnung + "\nzum Warenkorb hinzufügen?", "Artikel zum Warenkorb hinzufügen", JOptionPane.YES_NO_OPTION);
                     if (option == JOptionPane.YES_OPTION) {
                         try {
@@ -141,12 +145,12 @@ public class KundenbereichGUI extends JFrame {
 
                         } catch (UngueltigeMengeException ex) {
                             System.err.println("*********************************************************************************\n" +
-                                    "\nGewünschte Menge übersteigt Bestand!\n" +
+                                    "\nGewünschte Menge übersteigt Bestand!\n"+
                                     "*********************************************************************************\n");
                             JOptionPane.showMessageDialog(null, "Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
-                        } catch (NumberFormatException exc) {
+                        }catch (NumberFormatException exc){
                             System.err.println("*********************************************************************************\n" +
-                                    "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n" +
+                                    "\nBitte geben Sie eine Zahl im Textfeld ein ein!\n"+
                                     "*********************************************************************************\n");
                             JOptionPane.showMessageDialog(null, "Bitte geben Sie eine Zahl ein!",
                                     "Eingabe falsch", JOptionPane.ERROR_MESSAGE);
@@ -202,7 +206,7 @@ public class KundenbereichGUI extends JFrame {
                     aktualisiereGesamtsumme();
                 } catch (WarenkorbIstLeerException ex) {
                     System.err.println("*********************************************************************************\n" +
-                            "\nGewünschte Menge übersteigt Bestand!\n" +
+                            "\nGewünschte Menge übersteigt Bestand!\n"+
                             "*********************************************************************************\n");
                     JOptionPane.showMessageDialog(null, "Der Warenkorb ist leer.", "Fehler", JOptionPane.ERROR_MESSAGE);
                 } catch (IOException ex) {
@@ -242,7 +246,7 @@ public class KundenbereichGUI extends JFrame {
                             //kann hier nicht pasieren, da per click gewählt wird
                         } catch (UngueltigeMengeException e) {
                             System.err.println("*********************************************************************************\n" +
-                                    "\nGewünschte Menge übersteigt Bestand!\n" +
+                                    "\nGewünschte Menge übersteigt Bestand!\n"+
                                     "*********************************************************************************\n");
                             JOptionPane.showMessageDialog(null, "Die Gewünschte Menge übersteigt Bestand.", "Fehler", JOptionPane.ERROR_MESSAGE);
                         }
@@ -282,6 +286,7 @@ public class KundenbereichGUI extends JFrame {
                 eshop.warenkorbLeeren(warenKorbDesKunden);
                 warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
 
+                // aktualisiereWarenkorb(rechnungsTextArea);
                 aktualisiereGesamtsumme();
             }
         });
@@ -311,7 +316,6 @@ public class KundenbereichGUI extends JFrame {
 
         aktualisiereGesamtsumme();
     }
-
     private void setupMenu() {
         // Menuleiste anlegen ...
         JMenuBar mBar = new JMenuBar();

@@ -11,11 +11,17 @@ public class KundenTableModel extends AbstractTableModel {
     private List<Kunde> kunden;
     private String[] header = {"Vorname", "Nachname", "Username", "Id.Nr.", "Adresse"};
 
-    public KundenTableModel(List<Kunde> kundeList) {
+    public KundenTableModel(List<Kunde> kundeList){
         kunden = new ArrayList<>();
         kunden.addAll(kundeList);
     }
 
+
+    public void setKundenliste(List<Kunde> aktuelleArtikel){
+        kunden.clear();
+        kunden.addAll(aktuelleArtikel);
+        fireTableDataChanged();
+    }
 
     @Override
     public int getRowCount() {

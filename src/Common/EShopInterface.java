@@ -55,4 +55,4 @@ public interface EShopInterface {
     String kaufenUndRechnungEhalten(Kunde kunde, Warenkorb warenkorb) throws WarenkorbIstLeerException, IOException;
 
 
-}
+    }

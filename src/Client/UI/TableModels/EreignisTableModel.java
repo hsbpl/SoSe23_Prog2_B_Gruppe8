@@ -1,7 +1,6 @@
 package Client.UI.TableModels;
 
 import Common.Ereignis;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class EreignisTableModel extends AbstractTableModel {
         return header.length;
     }
 
-    public String getColumnName(int columnIndex) {
+    public String getColumnName(int columnIndex){
         return header[columnIndex];
     }
 
