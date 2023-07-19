@@ -8,9 +8,9 @@ import java.net.Socket;
 
 public class ClientMain {
     public static void main(String[] args) {
-        String serverAddress = "127.0.0.1"; // Server-IP-Adresse
-        int serverPort = 1399; // Server-Port
-        int numClients = 5; // Anzahl der Clients, die gleichzeitig ausgeführt werden könnten
+        String serverAddress = "127.0.0.1";
+        int serverPort = 1399;
+        int numClients = 5;
 
         for (int i = 0; i < numClients; i++) {
             Thread clientThread = new Thread(() -> {
@@ -21,9 +21,6 @@ public class ClientMain {
 
                     BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-
-                    // Nachricht an den Server senden
-                    output.println("HALLO_SERVER");
 
                     // Antwort vom Server empfangen
                     String response;

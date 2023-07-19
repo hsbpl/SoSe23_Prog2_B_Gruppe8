@@ -2,7 +2,6 @@
 
 package Common;
 
-import java.io.Serializable;
 
 public class Artikel {
     protected String bezeichnung;

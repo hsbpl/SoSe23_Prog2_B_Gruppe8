@@ -36,7 +36,6 @@ public class Mitarbeiterverwaltung {
         return listMitarbeiter;
     }
 
-    //  Mitarbeiter einloggen
     public Mitarbeiter mitarbeiterEinloggen(String username, String passwort) {
         Mitarbeiter loginstatus = null;
         for (Mitarbeiter m : listMitarbeiter) {

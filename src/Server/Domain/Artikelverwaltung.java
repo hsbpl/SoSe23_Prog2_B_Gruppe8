@@ -22,7 +22,6 @@ public class Artikelverwaltung {
 
     private static List<Artikel> artikelListe = new ArrayList<>();
 
-    //liste in den Constructor
 
 
     public Artikelverwaltung() {
@@ -110,21 +109,10 @@ public class Artikelverwaltung {
     }
 
 
-
     public  List<Ereignis> ereignisseSortiertNachDatum(){
         Collections.sort(ereignisse, Comparator.comparing(Ereignis::getDatum).reversed());
         return ereignisse;
     }
-
-    public  String ereignisseSortiertNachDatumString(){
-
-        String s="";
-        for (Ereignis ereignis: ereignisseSortiertNachDatum()){
-            s+= ereignis.toString()+"\n";
-        }
-        return s;
-    }
-
 
 
     public List<Artikel> artikelSortierenNachArtikelnummer() {
@@ -220,36 +208,8 @@ public class Artikelverwaltung {
         ereignisse.add(ereignis);
     }
 
-    public void artikelBearbeiten(Artikel artikel) {
-        for (Artikel a : artikelListe) {
-            if (a.getArtikelNummer() == artikel.getArtikelNummer()) {
-                a.setBezeichnung(artikel.getBezeichnung());
-                a.setBestand(artikel.getBestand());
-                break;
-            }
-        }
-    }
 
-    public boolean artikelLoeschen(int artikelnummer){
-        Artikel artikelToRemove;
-        for (Artikel artikel : artikelListe) {
-            if (artikel.getArtikelNummer() == artikelnummer) {
-                artikelToRemove = artikel;
-                artikelListe.remove(artikelToRemove);
-                return true;
-            }
-        }
-        return false;
-    }
 
-    public Artikel getArtikelByNumber(int artikelnummer){
-        for (Artikel artikel : artikelListe){
-            if (artikel.getArtikelNummer() == artikelnummer) {
-                return artikel;
-            }
-        }
 
-        return null;
-    }
 
 }

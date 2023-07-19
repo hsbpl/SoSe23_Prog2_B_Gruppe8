@@ -510,16 +510,6 @@ public class CUI {
             e.printStackTrace();
         }
 
-        //Kunde k1 = new Kunde("k1", "abc", "Mann", "Thomas", 001, "Am Berg");
-        //eshop.neuenWarenkorbErstellen(k1);
-
-        //Vor dem Start des Menüs die Daten laden
-        //  eshop.loadData();
-
-
-        //Nach dem Beenden des Menüs werden die Daten gespeichert
-        //  eshop.saveData();
-
 
     }
 }

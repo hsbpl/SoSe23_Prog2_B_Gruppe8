@@ -11,8 +11,6 @@ public class Ereignis {
     private int aktualisierterBestand;
     private LocalDateTime datum;
 
-    // Initialer Konstruktor um beim Erstellen eines
-    // Ereignisses neben den wichtigen Eigenschaften, den aktuellen Zeitstempel zu generieren.
     public Ereignis( int anzahl, Artikel artikel, User user, Enum ereignistyp, int aktualisierterBestand) {
         this.anzahl = anzahl;
         this.artikel = artikel;

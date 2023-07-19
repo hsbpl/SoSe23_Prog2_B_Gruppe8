@@ -8,7 +8,6 @@ import Common.Exceptions.LoginFehlgeschlagenException;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.sql.Connection;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,10 +16,7 @@ public class ClientRequestProcessor implements Runnable {
     private BufferedReader socketIn;
     private PrintStream socketOut;
     final String separator = ";";
-    /* private Socket clientSocket;
-     private Connection connection;
 
-     */
     EShopInterface eshop;
 
     Warenkorb warenkorb;
@@ -163,9 +159,6 @@ public class ClientRequestProcessor implements Runnable {
     }
 
 
-
-
-
     private void handleGibAlleMitarbeiter() {
         List<Mitarbeiter> result = eshop.getAlleMitarbeiter();
 
@@ -303,8 +296,7 @@ public class ClientRequestProcessor implements Runnable {
 
         String cmd = Commands.CMD_NEUEN_WARENKORB_ERSTELLEN_RSP.name();
 
-        //todo könnte das prolematisch sein ?
-        //Der Warenkorb der hier erstellt wurde ist sowieso leer, es geht hier eher um den Eintrag in die Kundenhasmap
+
         warenkorb =  eshop.neuenWarenkorbErstellen(kunde);
         socketOut.println(cmd);
     }
@@ -319,7 +311,6 @@ public class ClientRequestProcessor implements Runnable {
         Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
         mitarbeiter.setID(id);
 
-        //todo fragen wie man mit exceptions umgeht
         try {
             eshop.mitarbeiterRegistrieren(mitarbeiter);
             String cmd = Commands.CMD_MITARBEITER_REGISTRIEREN_RSP.name() + separator;
@@ -342,7 +333,6 @@ public class ClientRequestProcessor implements Runnable {
     }
 
     private void handleMitarbeiterEinloggen(String[] data) {
-        //todo Exceptionhandling
         String username = data[1];
         String passwort = data[2];
 
@@ -380,7 +370,6 @@ public class ClientRequestProcessor implements Runnable {
         Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
         mitarbeiter.setID(id);
 
-        //todo exceptions
         try {
             eshop.artHinzufügen(artikel,mitarbeiter);
             cmd += "Erfolgreich";
@@ -412,7 +401,6 @@ public class ClientRequestProcessor implements Runnable {
         Mitarbeiter mitarbeiter = new Mitarbeiter(username, passwort, nachname, vorname);
         mitarbeiter.setID(id);
 
-        //todo exceptions
         try {
             eshop.massengutArtikelHinzufügen(artikel,mitarbeiter);
             cmd += "Erfolgreich";
@@ -424,7 +412,6 @@ public class ClientRequestProcessor implements Runnable {
         }
     }
 
-    //todo hier verändert
     private void handleBestandVerringern(String[] data) {
 
         String artikelname = data[1];
@@ -437,7 +424,6 @@ public class ClientRequestProcessor implements Runnable {
         String id = data[7];
         User user = new User(username, passwort, nachname,vorname, id);
 
-        //todo Exceptions
 
         try {
             eshop.bestanNiedriger(artikelname,menge,user);
@@ -453,7 +439,6 @@ public class ClientRequestProcessor implements Runnable {
 
     }
 
-    //todo untere beiden methoden umgeändert
     private void handleArtikelNachAlphabetSortieren() {
         List<Artikel> result = eshop.artikelSortierenNachBezeichnung();
 
@@ -532,7 +517,6 @@ public class ClientRequestProcessor implements Runnable {
         String artikel = data[1];
         int menge = Integer.parseInt(data[2]);
 
-        //todo exceptions
         try {
             String cmd = Commands.CMD_IN_DEN_WARENKORB_LEGEN_RSP.name();
             eshop.inDenWarenkorbLegen(artikel, menge, warenkorb);
@@ -605,7 +589,6 @@ public class ClientRequestProcessor implements Runnable {
         Kunde kunde = new Kunde(username, passwort, nachname, vorname,adresse);
         kunde.setID(id);
 
-        //todo fragen wie man mit exceptions umgeht
         try {
             eshop.kundenRegistrieren(kunde);
             String cmd = Commands.CMD_KUNDEN_REGISTRIEREN_RSP.name() + separator;
@@ -666,7 +649,7 @@ public class ClientRequestProcessor implements Runnable {
         Kunde kunde = new Kunde(username,passwort,nachname,vorname,adresse);
         kunde.setID(id);
 
-        for(int i=7; i<data.length; i+=6) { //todo checken ob das sinn macht, den waren korb haben wird hier eh drinn muss man die artikel dann unbedingt reintun, wenn oben die methoden das theoretisc schon tun
+        for(int i=7; i<data.length; i+=6) {
 
             String bezeicnung = data[i];
             int artikelnummer = Integer.parseInt(data[i+1]);
@@ -685,7 +668,6 @@ public class ClientRequestProcessor implements Runnable {
 
         }
 
-        //todo exceptions
         try {
             String rechnung = eshop.kaufenUndRechnungEhalten(kunde, warenkorb);
             socketOut.println(Commands.CMD_KAUF_ABSCHLIESSEN_RSP.name()+ separator + rechnung);

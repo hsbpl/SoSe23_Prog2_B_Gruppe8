@@ -12,9 +12,6 @@ import java.util.*;
 
 public class EshopClient implements EShopInterface {
 
-    //todo später Exceptionhandling
-    //todo warenkorb reinlegen/rauslegen... auf beiden seiten
-    //todo dopplung mininmieren
     final String separator = ";";
 
     private Socket socket;

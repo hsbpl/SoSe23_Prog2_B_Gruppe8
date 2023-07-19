@@ -52,7 +52,6 @@ public class Kundenverwaltung {
         return kundenUndDazugehörigeWarenkörbe;
     }
 
-// man kann Waren in den Warenkorb legen oder die Menge Bereits vorhandener Artikel umändern.
 
     public void reinlegenOderMengeÄndern(List<Artikel> warenbestand, String artikel, int menge, Warenkorb warenkorb) throws UngueltigeMengeException, ArtikelExistiertNichtException {
         int verkauft = menge;
@@ -61,10 +60,10 @@ public class Kundenverwaltung {
                 .findFirst()
                 .orElse(null);  // steram durch artikebestand gebe gefundenen artikel wieder oder null
 
-        if (gefundenerArtikel != null) //wenn artikel wiedergegeben wird dann:
+        if (gefundenerArtikel != null)
         {
-            if(gefundenerArtikel instanceof Massengutartikel) { //wenn artikel ein massen gutist dann
-                verkauft = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge()*menge; //ist die mindestkaufmenge : eingegebene menge * verkäufliche menge
+            if(gefundenerArtikel instanceof Massengutartikel) {
+                verkauft = ((Massengutartikel) gefundenerArtikel).getErwerbwareMenge()*menge;
                 if((gefundenerArtikel.getBestand() < verkauft)) {
                     throw new UngueltigeMengeException();
                 }else{
@@ -119,13 +118,11 @@ public class Kundenverwaltung {
 
     }
 
-    //Der Warenkorb wird kompltett geleert
     public void leeren(Warenkorb warenkorb) {
         warenkorb.getWarenkorb().clear();
     }
 
 
-    /*Es wird überprüft ob das Konto bereits existiert, Kunden können sich registrieren */
     public Kunde register(Kunde neu) throws LeeresTextfieldException {
 
         if(neu.getUserName().isEmpty() || neu.getPasswort().isEmpty() || neu.getVorname().isEmpty() ||
@@ -149,7 +146,6 @@ public class Kundenverwaltung {
         return registrierungErfolgreich;}
     }
 
-    /*Es wird überprüft, ob Username und Passwort übereinstimmen, der Kunde kann sich einloggen. */
     public Kunde login(String username, String password) {
         return kundenUndDazugehörigeWarenkörbe.keySet().stream()
                 .filter(a -> a.getUserName().equals(username) && a.getPasswort().equals(password))
@@ -164,16 +160,6 @@ public class Kundenverwaltung {
         return kundenUndDazugehörigeWarenkörbe.get(k);
     }
 
-    public Kunde getKundeByUsername(String username){
-        List<Kunde> kList =getKundenListe();
-        for (Kunde kunde : kList){
-            if (kunde.getUserName().equals(username)) {
-                return kunde;
-            }
-        }
-
-        return null;
-    }
 
 
     //Liste der im Warenkorb gelegten Artikel wird ausgegeben
