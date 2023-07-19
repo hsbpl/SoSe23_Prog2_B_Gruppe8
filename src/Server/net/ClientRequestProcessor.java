@@ -157,10 +157,8 @@ public class ClientRequestProcessor implements Runnable {
 
         try {
             eshop.bestandErhöhen(artikelname, menge, user);
-        } catch (ArtikelExistiertNichtException e) {
-            socketOut.println(Commands.ARTIKEL_EXISTIERT_NICHT_EXCEPTION.name());
-        } catch (LeeresTextfieldException e){
-            socketOut.println(Commands.LEERES_TEXTFELD_EXCEPTION.name());
+        } catch (ArtikelExistiertNichtException | LeeresTextfieldException e) {
+            throw e;
         }
     }
 
