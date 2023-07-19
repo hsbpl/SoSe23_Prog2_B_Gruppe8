@@ -1,6 +1,6 @@
 Armband
 202101
-140
+142
 1.99
 1
 Einzelartikel
@@ -36,7 +36,7 @@ Chips
 Einzelartikel
 Coca Cola 1L
 17890
-40
+39
 2.0
 1
 Einzelartikel
@@ -242,5 +242,11 @@ wwwww
 1233
 340
 1.99
+1
+Einzelartikel
+Webcam_4K
+201011012
+13
+14.99
 1
 Einzelartikel
