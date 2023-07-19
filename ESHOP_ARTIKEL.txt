@@ -24,7 +24,7 @@ Bleistiftset
 Massengutartikel
 Brille
 1222333
-80
+79
 44.9
 1
 Einzelartikel
@@ -96,7 +96,7 @@ Handy
 Einzelartikel
 Kaffee
 56778
-23
+18
 23.33
 5
 Massengutartikel
@@ -108,7 +108,7 @@ Kaugummis
 Massengutartikel
 Käsekuchen
 19002
-105
+104
 4.99
 1
 Einzelartikel

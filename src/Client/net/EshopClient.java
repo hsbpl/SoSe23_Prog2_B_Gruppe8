@@ -565,9 +565,9 @@ public class EshopClient implements EShopInterface {
         socketOut.println(cmd);
 
         String [] data = readResponse();
-        if(Commands.valueOf(data[0]) != Commands.CMD_WARENKORB_LEEREN_RSP) {
+        /*if(Commands.valueOf(data[0]) != Commands.CMD_WARENKORB_LEEREN_RSP) {
             throw new RuntimeException("Ungueltige Antwort auf Anfrage erhalten!");
-        }
+        }*/
 
         warenkorb.getWarenkorb().clear();
 

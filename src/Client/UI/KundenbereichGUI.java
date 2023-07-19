@@ -204,6 +204,8 @@ public class KundenbereichGUI extends JFrame {
                     System.out.println(rechnung);
                     warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                     aktualisiereGesamtsumme();
+                    eshop.warenkorbLeeren(warenKorbDesKunden);
+                    warenkorbTableModel.setWarenkorb(warenKorbDesKunden);
                 } catch (WarenkorbIstLeerException ex) {
                     System.err.println("*********************************************************************************\n" +
                             "\nGewünschte Menge übersteigt Bestand!\n"+
